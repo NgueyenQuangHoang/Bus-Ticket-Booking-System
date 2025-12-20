@@ -40,6 +40,7 @@ export interface BusCompany {
   company_name: string
   image?: string
   descriptions?: string
+  rating?: number
   created_at?: Timestamp
   updated_at?: Timestamp
 }
@@ -73,6 +74,7 @@ export interface Route {
   price?: Decimal
   duration?: number // minutes
   distance?: number // km
+  total_bookings?: number
   created_at?: Timestamp
   updated_at?: Timestamp
 }
@@ -159,7 +161,10 @@ export interface Payment {
 export interface Banner {
   banner_id: number
   banner_url?: string
+  start_date?: Timestamp
+  end_date?: Timestamp
   position?: string
+  link_to?: string
 }
 
 export interface CancellationPolicy {

@@ -1,1 +1,10 @@
-// Navbar + Footer + Outlet (Guest/Customer)
+
+import { Outlet } from 'react-router-dom';
+
+const CustomerLayout = () => {
+  return (
+    <Outlet />
+  );
+};
+
+export default CustomerLayout;
