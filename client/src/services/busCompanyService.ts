@@ -1,5 +1,5 @@
-import api from "./api";
-import type { BusCompany } from "../types";
+import api from "../api/api";
+import type { BusCompany } from "../types/index";
 
 export const busCompanyService = {
     getAllBusCompanies: async (): Promise<BusCompany[]> => {

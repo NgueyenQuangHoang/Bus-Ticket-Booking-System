@@ -1,5 +1,5 @@
-import api from "./api";
-import type { Route } from "../types";
+import api from "../api/api";
+import type { Route } from "../types/index";
 export const routesService = {
     getAllRoutes: async (): Promise<Route[]> => {
         try {

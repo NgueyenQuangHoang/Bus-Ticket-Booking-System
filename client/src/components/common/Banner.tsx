@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { bannerService } from "../../services/bannerService";
-import type { Banner }  from "../../types.ts";
+import type { Banner }  from "../../types/index";
 
 const Banner:React.FC = () => {
     const [activeBanners, setActiveBanners] = useState<Banner[]>([]);

@@ -1,5 +1,5 @@
-import api from './api';
-import type { Banner } from '../types.ts';
+import api from '../api/api';
+import type { Banner } from '../types/index';
 
 export const bannerService = {
   // TypeScript sẽ đảm bảo hàm này trả về một mảng Banner
