@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { routesService } from '../services/routesService';
 import type { Route } from '../types/index';
 
@@ -22,6 +23,7 @@ export const fetchRoutes = createAsyncThunk(
     try {
       const data = await routesService.getAllRoutes();
       return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch routes');
     }
@@ -34,6 +36,7 @@ export const fetchPopularRoutes = createAsyncThunk(
     try {
       const data = await routesService.getPopularRoutes(limit);
       return data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch popular routes');
     }
