@@ -2,8 +2,10 @@ import { useAppDispatch, useAppSelector } from './hooks'
 import { Link, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import About from './pages/About'
-
+import Header from './components/common/header'
 import './App.css'
+import Footer from './components/common/footer'
+import HomePage from './pages/user/homePage'
 
 function App() {
 
@@ -13,12 +15,20 @@ function App() {
       <nav style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
+
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+                <Route path="/sss" element={<Header />}/>
+                                <Route path="/ss" element={<Footer />}/>
+                               <Route path="/s" element={<HomePage />}/>
+
+
+
+
       </Routes>
-    </>
+H    </>
   )
 }
 
