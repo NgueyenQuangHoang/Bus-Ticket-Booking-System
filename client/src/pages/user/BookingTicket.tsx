@@ -1,7 +1,7 @@
 import FilterSidebar from "../../components/BookingTicket/FilterSidebar";
 import SortBar from "../../components/BookingTicket/SortBar";
 import TripCard from "../../components/BookingTicket/TripCards";
-import BusSearchWidget from "../../components/homepage/BusSearchWidget";
+// import BusSearchWidget from "../../components/homepage/BusSearchWidget";
 const BookingTicket = () => {
     return (
         <div className="
@@ -16,7 +16,7 @@ const BookingTicket = () => {
                 {/* search */}
                 <div className="mt-5 mb-10">
                     {/* cái này chờ minh đức sửa lại responsive nữa là oke nha bạn*/}
-                    <BusSearchWidget />
+                    {/* <BusSearchWidget /> */}
                 </div>
     
                 <div className="w-full flex justify-center px-5">
@@ -24,19 +24,19 @@ const BookingTicket = () => {
                 </div>
     
                 {/*  */}
-                <div className="xl:flex block w-full justify-around mt-10">
-                    <div className="w-1/3 xl:block hidden">
+                <div className="md:flex block w-full justify-between mt-10">
+                    <div className="w-1/3 md:block hidden px-3">
                         {/* filter */}
                         <FilterSidebar/>
                     </div>
-                    <div className="xl:w-2/3 px-5 w-full pb-4">
+                    <div className="md:w-2/3 px-3 w-full pb-4">
                         {/* trip card */}
                         <TripCard/>
                     </div>
                 </div>
 
 
-    <img src="../../../public/bannerBooking.png" alt="" className="w-full xl:mt-10 px-5 rounded-lg object-cover" />
+    <img src="../../../public/bannerBooking.png" alt="" className="w-full mt-10 px-5 rounded-lg object-cover" />
 </div>
         </div>
     );

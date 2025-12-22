@@ -107,7 +107,7 @@ export default function TripCard() {
                                                     setMode("detail");
                                                 }
                                             }}
-                                            className="text-blue-600 underline xl:block hidden"
+                                            className="text-blue-600 underline md:block hidden"
                                         >
                                             Thông tin chi tiết
                                         </button>

@@ -1,14 +1,13 @@
 const SortBar = () => {
     return (
-            <div className="w-full flex xl:items-center xl:justify-center justify-between gap-2">
+            <div className="w-full flex md:items-center md:justify-center justify-between gap-2">
                 {/* Label cố định bên trái */}
-                <div className="xl:block hidden px-3 py-2 border-blue-400 text-blue-500 text-sm font-medium bg-white whitespace-nowrap">
+                <div className="md:block hidden px-3 py-2 border-blue-400 text-blue-500 text-sm font-medium bg-white whitespace-nowrap">
                     Sắp xếp theo tuyến đường
                 </div>
-                <button className="font-bold xl:hidden">
+                <button className="font-bold md:hidden">
                     Bộ lọc
                 </button>
-    
                 {/* Select Giờ đi */}
                <div className="flex gap-3">
                     <div className="relative border border-gray-500 rounded">
