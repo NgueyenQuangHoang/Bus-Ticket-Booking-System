@@ -5,8 +5,10 @@ import AdminLayout from "../layouts/AdminLayout";
 // Components
 import ProtectedRoute from "./ProtectedRoute";
 // Pages
-import HomePage from "../pages/user/HomePage";
+import HomePage from "../pages/user/homePage";
 import DashboardPage from "../pages/admin/DashboardPage";
+import BusCompanyPage from "../pages/user/BusCompanyPage";
+import BusStationDetailPage from "../pages/user/BusStationDetailPage";
 
 export const router = createBrowserRouter([
     {
@@ -48,7 +50,8 @@ export const router = createBrowserRouter([
                     {
                         path: "dashboard",
                         element: <DashboardPage />
-                    }
+                    },
+
                 ]
             }
         ]
@@ -56,5 +59,13 @@ export const router = createBrowserRouter([
     {
         path: "*",
         element: <Navigate to="/" replace />
+    },
+    {
+        path: "/BusStationDetail",
+        element: <BusStationDetailPage />
+    },
+    {
+        path: "/BusCompany",
+        element: <BusCompanyPage />
     }
 ]);

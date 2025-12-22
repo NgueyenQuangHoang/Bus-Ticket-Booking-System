@@ -15,7 +15,7 @@ export default function ConnectIcon() {
                 {/* CONTENT */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-                    \                    <div className="flex items-start gap-4">
+                                      <div className="flex items-start gap-4">
                         <span className="text-3xl">⭐</span>
                         <div>
                             <p className="font-semibold">

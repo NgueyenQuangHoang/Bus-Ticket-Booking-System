@@ -5,7 +5,7 @@ import PopularBus from "../../components/homepage/PopularBus";
 import PopularRoute from "../../components/homepage/PopularRoute";
 import Promotion from "../../components/homepage/Promotion";
 import TopReview from "../../components/homepage/TopReview";
-import VivuToday from "../../components/homepage/VivuToday1";
+import VivuToday from "../../components/homepage/VivuToday";
 
 export default function HomePage() {
     return (
