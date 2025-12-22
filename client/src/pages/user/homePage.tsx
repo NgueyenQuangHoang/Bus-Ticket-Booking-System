@@ -8,38 +8,31 @@ import TopReview from "../../components/homepage/TopReview";
 import VivuToday from "../../components/homepage/VivuToday";
 
 export default function HomePage() {
-    return (
-        <main className="bg-white">
+  return (
+    <main className="bg-white">
+      {/* ================= BANNER ================= */}
+      <Banner />
 
-            {/* ================= BANNER ================= */}
-            <Banner />
+      {/* ================= TUYẾN ĐƯỜNG PHỔ BIẾN ================= */}
+      <PopularRoute />
 
-            {/* ================= TUYẾN ĐƯỜNG PHỔ BIẾN ================= */}
-            <PopularRoute />
+      {/* ================= ƯU ĐÃI NỔI BẬT ================= */}
+      <Promotion />
 
+      {/* ================= NHÀ XE PHỔ BIẾN ================= */}
+      <PopularBus />
 
-            {/* ================= ƯU ĐÃI NỔI BẬT ================= */}
-            <Promotion />
+      {/* ================= TOP REVIEWS ================= */}
+      <TopReview />
 
+      {/* ================= BẾN XE PHỔ BIẾN ================= */}
+      <BusStation />
 
+      {/* ================= NỀN TẢNG KẾT NỐI ================= */}
+      <ConnectIcon />
 
-            {/* ================= NHÀ XE PHỔ BIẾN ================= */}
-            <PopularBus />
-
-            {/* ================= TOP REVIEWS ================= */}
-            <TopReview />
-
-
-
-            {/* ================= BẾN XE PHỔ BIẾN ================= */}
-            <BusStation />
-
-            {/* ================= NỀN TẢNG KẾT NỐI ================= */}
-            <ConnectIcon />
-
-            {/* ================= VIVUTODAY ĐƯỢC NHẮC TÊN ================= */}
-            <VivuToday />
-
-        </main>
-    );
+      {/* ================= VIVUTODAY ĐƯỢC NHẮC TÊN ================= */}
+      <VivuToday />
+    </main>
+  );
 }

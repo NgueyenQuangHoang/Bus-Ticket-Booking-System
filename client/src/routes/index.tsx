@@ -18,11 +18,7 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <HomePage />,
-            }, {
-                path: 'bookingTicket',
-                element: <BookingTicket />
             },
-
         ],
     },
     {
@@ -32,45 +28,45 @@ export const router = createBrowserRouter([
             {
                 element: <CustomerLayout />,
                 children: [
-                    {
-                        path: "profile",
-                        element: <div>Customer Profile Placeholder</div>,
-                    },
-                ],
-            },
+          {
+            path: "profile",
+            element: <div>Customer Profile Placeholder</div>,
+          },
         ],
-    },
-    {
-        path: "/admin",
-        element: <ProtectedRoute requiredRole="ADMIN" />,
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <ProtectedRoute requiredRole="ADMIN" />,
+    children: [
+      {
+        element: <AdminLayout />,
         children: [
-            {
-                element: <AdminLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Navigate to="dashboard" replace />,
-                    },
-                    {
-                        path: "dashboard",
-                        element: <DashboardPage />,
-                    },
-                ],
-            },
+          {
+            index: true,
+            element: <Navigate to="dashboard" replace />,
+          },
+          {
+            path: "dashboard",
+            element: <DashboardPage />,
+          },
         ],
-    },
-    {
-        path: "/about-page",
-        element: <CustomerLayout />,
-        children: [
-            {
-                index: true,
-                element: <AboutPage />,
-            },
-        ],
-    },
-    {
-        path: "*",
-        element: <Navigate to="/" replace />,
-    },
+      },
+    ],
+  },
+  {
+    path: "/about-page",
+    element: <CustomerLayout />,
+    children: [
+      {
+        index: true,
+        element: <AboutPage />,
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
+  },
 ]);
