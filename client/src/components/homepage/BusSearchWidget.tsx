@@ -89,7 +89,7 @@ const CustomSelect = ({
   return (
     <div
       ref={containerRef}
-      className={`relative xl:w-[330px] w-full h-[90px] border rounded-[6px] bg-white/60 flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors select-none
+      className={`relative xl:w-[330px] w-full h-[90px] border rounded-[6px] bg-white/90 flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors select-none
         ${
           isOpen
             ? "border-black bg-white"
@@ -176,7 +176,7 @@ export default function BusSearchWidget() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[400px] bg-gray-200 p-4 font-['Segoe_UI']">
+    <div className="font-['Segoe_UI'] w-full flex justify-center">
       <div
         className="w-[1200px] max-w-full min-h-[209px] rounded-[10px] p-[15px] pb-[32px] pt-[30px] flex flex-col gap-[20px] backdrop-blur-sm shadow-sm"
         style={{ backgroundColor: "rgba(255, 255, 255, 0.4)" }}

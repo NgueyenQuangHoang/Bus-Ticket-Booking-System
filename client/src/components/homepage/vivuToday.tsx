@@ -1,4 +1,4 @@
-import React from 'react'
+
 import logo from "../../assets/Link.png";
 
 export default function VivuToday() {
