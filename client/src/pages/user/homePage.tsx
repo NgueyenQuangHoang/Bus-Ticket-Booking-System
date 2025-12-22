@@ -19,12 +19,12 @@ export default function HomePage() {
 
 
             {/* ================= ƯU ĐÃI NỔI BẬT ================= */}
-           <Promotion />
+            <Promotion />
 
 
 
             {/* ================= NHÀ XE PHỔ BIẾN ================= */}
-           <PopularBus />
+            <PopularBus />
 
             {/* ================= TOP REVIEWS ================= */}
             <TopReview />
@@ -32,10 +32,10 @@ export default function HomePage() {
 
 
             {/* ================= BẾN XE PHỔ BIẾN ================= */}
-           <BusStation />
+            <BusStation />
 
             {/* ================= NỀN TẢNG KẾT NỐI ================= */}
-              <ConnectIcon />
+            <ConnectIcon />
 
             {/* ================= VIVUTODAY ĐƯỢC NHẮC TÊN ================= */}
             <VivuToday />
