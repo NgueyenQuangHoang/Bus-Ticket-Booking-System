@@ -1,25 +1,31 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+
 // Layouts
 import CustomerLayout from "../layouts/CustomerLayout";
 import AdminLayout from "../layouts/AdminLayout";
+
 // Components
 import ProtectedRoute from "./ProtectedRoute";
+
 // Pages
-import HomePage from "../pages/user/homePage";
+// import HomePage from "../pages/user/HomePage";
+import BookingTicket from "../pages/user/BookingTicket";
+import AboutPage from "../pages/user/AboutPage";
 import DashboardPage from "../pages/admin/DashboardPage";
+import HomePage from "../pages/user/HomePage";
 import BusCompanyPage from "../pages/user/BusCompanyPage";
-import BusStationDetailPage from "../pages/user/BusStationDetailPage";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <CustomerLayout />,
         children: [
-            {
-                index: true,
-                element: <HomePage />
-            }
-        ]
+            { index: true, element: <HomePage /> },
+            { path: "bookingTicket", element: <BookingTicket /> },
+            { path: "about-page", element: <AboutPage /> },
+            { path: "busCompany", element: <BusCompanyPage /> },
+
+        ],
     },
     {
         path: "/customer",
@@ -28,13 +34,10 @@ export const router = createBrowserRouter([
             {
                 element: <CustomerLayout />,
                 children: [
-                    {
-                        path: "profile",
-                        element: <div>Customer Profile Placeholder</div>
-                    }
-                ]
-            }
-        ]
+                    { path: "profile", element: <div>Customer Profile Placeholder</div> },
+                ],
+            },
+        ],
     },
     {
         path: "/admin",
@@ -43,29 +46,12 @@ export const router = createBrowserRouter([
             {
                 element: <AdminLayout />,
                 children: [
-                    {
-                        index: true,
-                        element: <Navigate to="dashboard" replace />
-                    },
-                    {
-                        path: "dashboard",
-                        element: <DashboardPage />
-                    },
+                    { index: true, element: <Navigate to="dashboard" replace /> },
+                    { path: "dashboard", element: <DashboardPage /> },
+                ],
+            },
+        ],
+    },
 
-                ]
-            }
-        ]
-    },
-    {
-        path: "*",
-        element: <Navigate to="/" replace />
-    },
-    {
-        path: "/BusStationDetail",
-        element: <BusStationDetailPage />
-    },
-    {
-        path: "/BusCompany",
-        element: <BusCompanyPage />
-    }
+    { path: "*", element: <Navigate to="/" replace /> },
 ]);
