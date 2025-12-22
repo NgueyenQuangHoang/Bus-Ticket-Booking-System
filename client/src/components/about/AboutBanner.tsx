@@ -5,54 +5,47 @@ import zalo from "../../assets/image/zalo-icon.svg";
 
 export default function AboutBanner() {
   return (
-    <section className="relative w-full pt-[30px] pb-[30px] bg-[#D6FAFF] min-h-[400px] lg:min-h-[640px] flex items-center">
-      {/* 1. LỚP NỀN */}
+    <section className="relative w-full bg-[#D6FAFF] ">
+      {/* Nền banner */}
       <div
-        className="absolute inset-0 w-full h-full bg-no-repeat bg-cover bg-center lg:bg-right-bottom z-0"
+        className="absolute inset-0 w-full h-full bg-no-repeat bg-center lg:bg-bottom-right bg-[length:90%] md:bg-[length:80%] lg:bg-cover"
         style={{ backgroundImage: `url(${bgBanner})` }}
       />
 
-      {/* 2. LỚP CONTENT */}
-      <div className="container mx-auto px-4 lg:px-[100px] relative z-10">
-        <div className="w-full">
-          {/* TEXT CONTENT */}
-          <div className="mb-4">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[170px] pt-[93px] pb-10 lg:pt-[90px] lg:pb-[40px]">
+        <div className="flex flex-col justify-center min-h-[280px] sm:min-h-[340px] lg:min-h-[640px]">
+          {/* Tiêu đề chính */}
+          <div className="mb-6 sm:mb-8">
             <p className="font-['Segoe_UI'] font-bold leading-tight">
-              {/* Giảm size chữ mobile xuống text-[32px] để không bị to quá */}
-              <span className="text-[#FF8D00] text-[32px] sm:text-[50px] lg:text-[80px] block">
+              <span className="block text-[#FF8D00] text-[32px] sm:text-[48px] lg:text-[80px] leading-[40px] sm:leading-[56px] lg:leading-[92px] max-w-[190px] sm:max-w-[220px] lg:max-w-none">
                 Tiện lợi,
                 <br />
                 tận tâm,
               </span>
-              <span className="text-[#0094DE] text-[32px] sm:text-[50px] lg:text-[80px] block">
+              <span className="block text-[#0094DE] text-[32px] sm:text-[48px] lg:text-[80px] leading-[40px] sm:leading-[56px] lg:leading-[92px] max-w-[190px] sm:max-w-[220px] lg:max-w-none">
                 an toàn.
               </span>
             </p>
           </div>
 
-          {/* SOCIAL TEXT */}
-          <p className="text-black font-bold text-[16px] sm:text-[18px] lg:text-[20px] mb-3">
+          {/* Social text */}
+          <p className="text-black font-bold text-[14px] sm:text-[16px] lg:text-[20px] mb-3 sm:mb-4">
             Theo dõi chúng tôi tại:
           </p>
 
-          {/* SOCIAL ICONS */}
-          <ul className="flex items-center gap-3 sm:gap-4 list-none p-0 m-0">
+          {/* Social icons */}
+          <ul className="flex items-center gap-4 sm:gap-5">
             <li>
               <a
                 href="http://vivutoday.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block hover:opacity-80"
+                className="block hover:opacity-80 transition-opacity"
               >
-                {/* FIX LOGIC SIZE:
-                   - Mặc định (Mobile nhỏ): h-[30px]
-                   - Tablet (sm): h-[40px]
-                   - Desktop (lg): h-[50px]
-                */}
                 <img
                   src={vivutoday}
                   alt="vivutoday"
-                  className="h-[30px] sm:h-[40px] lg:h-[50px] w-auto"
+                  className="h-[37px] sm:h-[49px] lg:h-[71px] w-auto"
                 />
               </a>
             </li>
@@ -63,15 +56,10 @@ export default function AboutBanner() {
                 rel="noopener noreferrer"
                 className="block hover:scale-110 transition-transform"
               >
-                {/* FIX LOGIC SIZE:
-                   - Mặc định: 35px
-                   - Tablet: 50px
-                   - Desktop: 60px
-                */}
                 <img
                   src={facebook}
                   alt="fb"
-                  className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] lg:w-[60px] lg:h-[60px]"
+                  className="w-[37px] h-[37px] sm:w-[49px] sm:h-[49px] lg:w-[71px] lg:h-[71px]"
                 />
               </a>
             </li>
@@ -85,7 +73,7 @@ export default function AboutBanner() {
                 <img
                   src={zalo}
                   alt="zalo"
-                  className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] lg:w-[60px] lg:h-[60px]"
+                  className="w-[37px] h-[37px] sm:w-[49px] sm:h-[49px] lg:w-[71px] lg:h-[71px]"
                 />
               </a>
             </li>
