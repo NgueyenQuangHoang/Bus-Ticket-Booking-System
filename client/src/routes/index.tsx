@@ -5,56 +5,67 @@ import AdminLayout from "../layouts/AdminLayout";
 // Components
 import ProtectedRoute from "./ProtectedRoute";
 // Pages
-import HomePage from "../pages/user/HomePage";
+import HomePage from "../pages/user/homePage";
 import DashboardPage from "../pages/admin/DashboardPage";
+import AboutPage from "../pages/user/AboutPage";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
+  {
+    path: "/",
+    element: <CustomerLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+    ],
+  },
+  {
+    path: "/customer",
+    element: <ProtectedRoute requiredRole="CUSTOMER" />,
+    children: [
+      {
         element: <CustomerLayout />,
         children: [
-            {
-                index: true,
-                element: <HomePage />
-            }
-        ]
-    },
-    {
-        path: "/customer",
-        element: <ProtectedRoute requiredRole="CUSTOMER" />,
+          {
+            path: "profile",
+            element: <div>Customer Profile Placeholder</div>,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <ProtectedRoute requiredRole="ADMIN" />,
+    children: [
+      {
+        element: <AdminLayout />,
         children: [
-            {
-                element: <CustomerLayout />,
-                children: [
-                    {
-                        path: "profile",
-                        element: <div>Customer Profile Placeholder</div>
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        path: "/admin",
-        element: <ProtectedRoute requiredRole="ADMIN" />,
-        children: [
-            {
-                element: <AdminLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Navigate to="dashboard" replace />
-                    },
-                    {
-                        path: "dashboard",
-                        element: <DashboardPage />
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        path: "*",
-        element: <Navigate to="/" replace />
-    }
+          {
+            index: true,
+            element: <Navigate to="dashboard" replace />,
+          },
+          {
+            path: "dashboard",
+            element: <DashboardPage />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/about-page",
+    element: <CustomerLayout />,
+    children: [
+      {
+        index: true,
+        element: <AboutPage />,
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
+  },
 ]);
