@@ -1,11 +1,11 @@
 import Banner from "../../components/homepage/BannerA";
 import BusStation from "../../components/homepage/BusStation";
-import ConnectIcon from "../../components/homepage/ConnectIcon";
-import PopularBus from "../../components/homepage/PopularBus";
-import PopularRoute from "../../components/homepage/PopularRoute";
-import Promotion from "../../components/homepage/Promotion";
-import TopReview from "../../components/homepage/TopReview";
-import VivuToday from "../../components/homepage/VivuToday";
+import ConnectIcon from "../../components/homepage/ConnectIcon1";
+import PopularBus from "../../components/homepage/PopularBus1";
+import PopularRoute from "../../components/homepage/PopularRoute1";
+import Promotion from "../../components/homepage/Promotion1";
+import TopReview from "../../components/homepage/TopReview1";
+import VivuToday from "../../components/homepage/VivuToday1";
 
 export default function HomePage() {
     return (
