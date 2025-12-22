@@ -1,15 +1,12 @@
-import bgBanner from "../../assets/image/Introduction_page_banner_image.png";
-import vivutoday from "../../assets/image/vivutoday-icon.png";
-import facebook from "../../assets/image/fb-icon.svg";
-import zalo from "../../assets/image/zalo-icon.svg";
-
 export default function AboutBanner() {
   return (
     <section className="relative w-full bg-[#D6FAFF] ">
       {/* Nền banner */}
       <div
         className="absolute inset-0 w-full h-full bg-no-repeat bg-center lg:bg-bottom-right bg-[length:90%] md:bg-[length:80%] lg:bg-cover"
-        style={{ backgroundImage: `url(${bgBanner})` }}
+        style={{
+          backgroundImage: `url(https://res.cloudinary.com/domyfnxuk/image/upload/v1766396918/Introduction_page_banner_image_oqj1lb.png)`,
+        }}
       />
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[170px] pt-[93px] pb-10 lg:pt-[90px] lg:pb-[40px]">
@@ -43,7 +40,7 @@ export default function AboutBanner() {
                 className="block hover:opacity-80 transition-opacity"
               >
                 <img
-                  src={vivutoday}
+                  src="https://res.cloudinary.com/domyfnxuk/image/upload/v1766396917/vivutoday-icon_e9lrcs.png"
                   alt="vivutoday"
                   className="h-[37px] sm:h-[49px] lg:h-[71px] w-auto"
                 />
@@ -57,7 +54,7 @@ export default function AboutBanner() {
                 className="block hover:scale-110 transition-transform"
               >
                 <img
-                  src={facebook}
+                  src="https://res.cloudinary.com/domyfnxuk/image/upload/v1766396917/fb-icon_zy7vle.svg"
                   alt="fb"
                   className="w-[37px] h-[37px] sm:w-[49px] sm:h-[49px] lg:w-[71px] lg:h-[71px]"
                 />
@@ -71,7 +68,7 @@ export default function AboutBanner() {
                 className="block hover:scale-110 transition-transform"
               >
                 <img
-                  src={zalo}
+                  src="https://res.cloudinary.com/domyfnxuk/image/upload/v1766396917/zalo-icon_d8yrxp.svg"
                   alt="zalo"
                   className="w-[37px] h-[37px] sm:w-[49px] sm:h-[49px] lg:w-[71px] lg:h-[71px]"
                 />
