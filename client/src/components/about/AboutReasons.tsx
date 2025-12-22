@@ -1,6 +1,3 @@
-import mascotImg from "../../assets/image/mascot.png";
-import Link from "../../assets/image/Link.png";
-
 export default function AboutReasons() {
   return (
     <section className="w-full bg-white font-['Segoe_UI'] py-8 sm:py-10 lg:py-16">
@@ -71,14 +68,14 @@ export default function AboutReasons() {
           <div className="order-3 lg:order-2 min-[391px]:col-span-2 lg:col-span-1 flex flex-col justify-center items-center py-4 sm:py-6 lg:py-0 gap-4">
             {/* Mascot Image */}
             <img
-              src={mascotImg}
+              src="https://res.cloudinary.com/domyfnxuk/image/upload/v1766396918/mascot_fipog9.png"
               alt="VivuToday Mascot"
               className="object-contain w-[215px] h-[295px] lg:w-[354px] lg:h-[450px]"
             />
 
             {/* Link Image */}
             <img
-              src={Link}
+              src="https://res.cloudinary.com/domyfnxuk/image/upload/v1766396917/Link_niutln.png"
               alt="Link"
               className="object-contain block lg:hidden w-[232px] h-[67px]"
             />
