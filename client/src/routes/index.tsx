@@ -8,10 +8,11 @@ import AdminLayout from "../layouts/AdminLayout";
 import ProtectedRoute from "./ProtectedRoute";
 
 // Pages
-import HomePage from "../pages/user/homePage";
+// import HomePage from "../pages/user/HomePage";
 import BookingTicket from "../pages/user/BookingTicket";
 import AboutPage from "../pages/user/AboutPage";
 import DashboardPage from "../pages/admin/DashboardPage";
+import HomePage from "../pages/user/HomePage";
 
 export const router = createBrowserRouter([
   {
@@ -20,15 +21,9 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "bookingTicket", element: <BookingTicket /> },
+      { path: "about-page", element: <AboutPage /> },
     ],
   },
-
-  {
-    path: "/about-page",
-    element: <CustomerLayout />,
-    children: [{ index: true, element: <AboutPage /> }],
-  },
-
   {
     path: "/customer",
     element: <ProtectedRoute requiredRole="CUSTOMER" />,
@@ -41,7 +36,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: "/admin",
     element: <ProtectedRoute requiredRole="ADMIN" />,
