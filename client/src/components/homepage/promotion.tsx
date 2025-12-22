@@ -1,4 +1,4 @@
-
+// đức viết components ko ghi hoa
 
 export default function Promotion() {
   return (
