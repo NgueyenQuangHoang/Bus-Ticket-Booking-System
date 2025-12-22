@@ -1,9 +1,9 @@
-// đức milo
+// đức đ
 
 export default function TopReview() {
-  return (
-    <div>
-      <section className="max-w-7xl mx-auto px-6 py-12">
+    return (
+        <div>
+            <section className="max-w-7xl mx-auto px-6 py-12">
 
                 {/* TITLE */}
                 <div className="flex items-center gap-2 mb-6 ml-12">
@@ -81,6 +81,6 @@ export default function TopReview() {
 
                 </div>
             </section>
-    </div>
-  )
+        </div>
+    )
 }

@@ -1,9 +1,9 @@
-// đức viết components ko ghi hoa
+// đức đ
 
 export default function Promotion() {
-  return (
-    <div>
-       <section className="max-w-7xl mx-auto px-6 pb-12">
+    return (
+        <div>
+            <section className="max-w-7xl mx-auto px-6 pb-12">
                 <div className="flex items-center gap-2 mb-6 ml-12">
                     <span className="w-1 h-6 bg-orange-500 rounded"></span>
                     <h2 className="text-xl font-semibold">
@@ -36,6 +36,6 @@ export default function Promotion() {
 
                 </div>
             </section>
-    </div>
-  )
+        </div>
+    )
 }

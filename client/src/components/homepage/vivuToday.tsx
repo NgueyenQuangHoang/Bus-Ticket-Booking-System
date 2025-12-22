@@ -1,4 +1,4 @@
-// đức biên hòa
+// đức đ
 import logo from "../../assets/Link.png";
 
 export default function VivuToday() {

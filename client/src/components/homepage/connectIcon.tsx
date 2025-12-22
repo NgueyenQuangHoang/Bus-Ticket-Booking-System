@@ -1,9 +1,8 @@
-// đức ngoo
-
+// d
 export default function ConnectIcon() {
-  return (
-    <div>
-       <section className="max-w-7xl mx-auto px-6 py-12 bg-white">
+    return (
+        <div>
+            <section className="max-w-7xl mx-auto px-6 py-12 bg-white">
 
                 {/* TITLE */}
                 <div className="flex items-center gap-2 mb-8 ml-12">
@@ -16,7 +15,7 @@ export default function ConnectIcon() {
                 {/* CONTENT */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-\                    <div className="flex items-start gap-4">
+                    \                    <div className="flex items-start gap-4">
                         <span className="text-3xl">⭐</span>
                         <div>
                             <p className="font-semibold">
@@ -66,6 +65,6 @@ export default function ConnectIcon() {
 
                 </div>
             </section>
-    </div>
-  )
+        </div>
+    )
 }

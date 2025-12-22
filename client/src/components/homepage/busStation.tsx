@@ -1,9 +1,8 @@
-
-
+//a
 export default function BusStation() {
-  return (
-    <div>
-         <section className="max-w-7xl mx-auto px-6 py-12">
+    return (
+        <div>
+            <section className="max-w-7xl mx-auto px-6 py-12">
 
                 {/* TITLE */}
                 <div className="flex items-center gap-2 mb-6 ml-12">
@@ -130,6 +129,6 @@ export default function BusStation() {
 
                 </div>
             </section>
-    </div>
-  )
+        </div>
+    )
 }
