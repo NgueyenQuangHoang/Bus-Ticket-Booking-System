@@ -1,0 +1,80 @@
+import mascotImg from "../../assets/image/mascot.png";
+
+export default function AboutReasons() {
+  return (
+    <section className="w-full py-10 lg:py-16 bg-white font-['Segoe_UI']">
+      <div className="container mx-auto px-4 lg:px-[100px]">
+        <div className="mb-10 text-center lg:text-left">
+          <h2 className="text-[28px] lg:text-[36px] font-bold text-black">
+            Lý do bạn nên đặt vé tại{" "}
+            <span className="text-[#FF8D00]">Vivutoday.com</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+          <div className="flex flex-col gap-8 lg:gap-[60px] order-1">
+            {/* ITEM */}
+            <div className="flex flex-col gap-2">
+              <h3 className="text-[#FF8D00] font-bold text-[18px] leading-[32px]">
+                Tìm Kiếm Thông Tin Một Cách Dễ Dàng
+              </h3>
+              <p className="text-[#333333] text-[16px] leading-[24px]">
+                Giao diện của VivuToday.com được thiết kế để giúp bạn tìm kiếm
+                thông tin nhà xe, giờ khởi hành, điểm xuất phát và đích một cách
+                nhanh chóng và dễ dàng. Thông qua việc nhập các thông tin cơ
+                bản, bạn có thể tìm kiếm lịch trình phù hợp chỉ trong vài giây.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <h3 className="text-[#FF8D00] font-bold text-[18px] leading-[32px]">
+                Tùy Chỉnh Theo Tài Chính Của Bạn
+              </h3>
+              <p className="text-[#333333] text-[16px] leading-[24px]">
+                Chúng tôi hiểu rằng mỗi hành trình có một ngân sách riêng. Với
+                giao diện của chúng tôi, bạn có thể tùy chỉnh lựa chọn những nhà
+                xe nằm trong khoảng giá tiền mà bạn mong muốn. Điều này giúp bạn
+                tiết kiệm thời gian và tìm được các lựa chọn phù hợp với túi
+                tiền.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-center items-center py-6 lg:py-0 order-3 lg:order-2">
+            <img
+              src={mascotImg}
+              alt="VivuToday Mascot"
+              className="w-full max-w-[354px] h-auto object-contain"
+            />
+          </div>
+          <div className="flex flex-col gap-8 lg:gap-[60px] order-2 lg:order-3">
+            <div className="flex flex-col gap-2">
+              <h3 className="text-[#FF8D00] font-bold text-[18px] leading-[32px]">
+                Lựa Chọn Nhà Xe Có Đánh Giá Cao
+              </h3>
+              <p className="text-[#333333] text-[16px] leading-[24px]">
+                Chất lượng là một yếu tố quan trọng. Trên giao diện của
+                VivuToday.com, bạn có thể chọn lựa những nhà xe được đánh giá
+                cao với mục đánh giá 5 sao. Điều này đảm bảo rằng bạn đang chọn
+                một dịch vụ uy tín và chất lượng cho hành trình của mình.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <h3 className="text-[#FF8D00] font-bold text-[18px] leading-[32px]">
+                Thanh Toán An Toàn
+              </h3>
+              <p className="text-[#333333] text-[16px] leading-[24px]">
+                Việc thanh toán không còn là vấn đề khiến bạn lo lắng. Chúng tôi
+                cung cấp các phương thức thanh toán đa dạng bao gồm thanh toán
+                trực tuyến, qua ngân hàng và epays. Đảm bảo bạn có sự linh hoạt
+                trong việc chọn phương thức phù hợp với bạn và đảm bảo tính an
+                toàn cho giao dịch.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
