@@ -5,8 +5,9 @@ import AdminLayout from "../layouts/AdminLayout";
 // Components
 import ProtectedRoute from "./ProtectedRoute";
 // Pages
-import HomePage from "../pages/user/HomePage";
 import DashboardPage from "../pages/admin/DashboardPage";
+import HomePage from "../pages/user/homePage";
+import BookingTicket from "../pages/user/BookingTicket";
 
 export const router = createBrowserRouter([
     {
@@ -16,7 +17,11 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <HomePage />
-            }
+            },
+            {
+                path: 'bookingTicket',
+                element: <BookingTicket />
+            },
         ]
     },
     {
@@ -53,6 +58,7 @@ export const router = createBrowserRouter([
             }
         ]
     },
+    
     {
         path: "*",
         element: <Navigate to="/" replace />
