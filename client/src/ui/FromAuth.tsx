@@ -119,28 +119,54 @@ export default function FormAuth() {
                     placeholder="Số điện thoại"
                     className="border-gray-300 border rounded-md p-2.5 focus:outline-none focus:border-[#1190D4] focus:ring-1 focus:ring-[#1190D4]"
                   />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Địa chỉ Email"
+                    className="border-gray-300 border rounded-md p-2.5 focus:outline-none focus:border-[#1190D4] focus:ring-1 focus:ring-[#1190D4]"
+                  />
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Mật khẩu"
+                    className="border-gray-300 border rounded-md p-2.5 focus:outline-none focus:border-[#1190D4] focus:ring-1 focus:ring-[#1190D4]"
+                  />
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Xác nhận mật khẩu"
+                    className="border-gray-300 border rounded-md p-2.5 focus:outline-none focus:border-[#1190D4] focus:ring-1 focus:ring-[#1190D4]"
+                  />
                 </>
               )}
 
               {/* === CÁC TRƯỜNG CHUNG (Email & Password) === */}
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder={
-                  isLogin ? "Email hoặc số điện thoại" : "Địa chỉ Email"
-                }
-                className="border-gray-300 border rounded-md p-2.5 focus:outline-none focus:border-[#1190D4] focus:ring-1 focus:ring-[#1190D4]"
-              />
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Mật khẩu"
-                className="border-gray-300 border rounded-md p-2.5 focus:outline-none focus:border-[#1190D4] focus:ring-1 focus:ring-[#1190D4]"
-              />
+              {isLogin && (
+                <>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Email hoặc số điện thoại"
+                    className="border-gray-300 border rounded-md p-2.5 focus:outline-none focus:border-[#1190D4] focus:ring-1 focus:ring-[#1190D4]"
+                  />
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Mật khẩu"
+                    className="border-gray-300 border rounded-md p-2.5 focus:outline-none focus:border-[#1190D4] focus:ring-1 focus:ring-[#1190D4]"
+                  />
+                </>
+              )}
             </div>
 
             {/* Footer */}

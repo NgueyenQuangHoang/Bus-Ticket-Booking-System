@@ -1,24 +1,23 @@
-import BannerA from "../../components/homepage/BannerA";
-import Banner from "../../components/homepage/Banner";
+import Banner from "../../components/homepage/BannerA";
 import BusStation from "../../components/homepage/BusStation";
 import ConnectIcon from "../../components/homepage/ConnectIcon";
 import PopularBus from "../../components/homepage/PopularBus";
 import PopularRoute from "../../components/homepage/PopularRoute";
+import Promotion from "../../components/homepage/Promotion";
 import TopReview from "../../components/homepage/TopReview";
 import VivuToday from "../../components/homepage/VivuToday";
-
 
 export default function HomePage() {
   return (
     <main className="bg-white">
       {/* ================= BANNER ================= */}
-      <BannerA />
+      <Banner />
 
       {/* ================= TUYẾN ĐƯỜNG PHỔ BIẾN ================= */}
       <PopularRoute />
 
       {/* ================= ƯU ĐÃI NỔI BẬT ================= */}
-      <Banner />
+      <Promotion />
 
       {/* ================= NHÀ XE PHỔ BIẾN ================= */}
       <PopularBus />
