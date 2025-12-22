@@ -8,25 +8,26 @@ import ProtectedRoute from "./ProtectedRoute";
 import HomePage from "../pages/user/homePage";
 import DashboardPage from "../pages/admin/DashboardPage";
 import AboutPage from "../pages/user/AboutPage";
+import BookingTicket from "../pages/user/BookingTicket";
 
 export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <CustomerLayout />,
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-    ],
-  },
-  {
-    path: "/customer",
-    element: <ProtectedRoute requiredRole="CUSTOMER" />,
-    children: [
-      {
+    {
+        path: "/",
         element: <CustomerLayout />,
         children: [
+            {
+                index: true,
+                element: <HomePage />,
+            },
+        ],
+    },
+    {
+        path: "/customer",
+        element: <ProtectedRoute requiredRole="CUSTOMER" />,
+        children: [
+            {
+                element: <CustomerLayout />,
+                children: [
           {
             path: "profile",
             element: <div>Customer Profile Placeholder</div>,
