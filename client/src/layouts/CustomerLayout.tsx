@@ -1,9 +1,16 @@
-
 import { Outlet } from 'react-router-dom';
+import Header from '../components/common/header';
+import Footer from '../components/common/footer';
 
 const CustomerLayout = () => {
   return (
-    <Outlet />
+    <>
+      <Header />
+      <main className="min-h-screen">
+        <Outlet />
+      </main>
+      <Footer />
+    </>
   );
 };
 
