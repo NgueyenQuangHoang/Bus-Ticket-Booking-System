@@ -2,7 +2,7 @@
 import bannerImage from '../../assets/Image.png' 
 import BusSearchWidget from './BusSearchWidget'
 
-export default function Banner() {
+export default function BannerA() {
     return (
         <div className="relative w-full">
             <div className="w-full">

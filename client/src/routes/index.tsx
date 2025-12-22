@@ -5,7 +5,7 @@ import AdminLayout from "../layouts/AdminLayout";
 // Components
 import ProtectedRoute from "./ProtectedRoute";
 // Pages
-import HomePage from "../pages/user/HomePage";
+import HomePage from "../pages/user/homePage";
 import DashboardPage from "../pages/admin/DashboardPage";
 
 export const router = createBrowserRouter([

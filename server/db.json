@@ -1,108 +1,340 @@
 {
-    "banners": [
+  "users": [
     {
-      "banner_id": 1,
-      "banner_url": "https://viettat.vn/banner-khuyen-mai-1.jpg",
-      "position": "Trang chủ",
-      "start_date": "2024-01-01T00:00:00Z",
-      "end_date": "2025-12-31T23:59:59Z",
-      "link_to": ""
+      "user_id": 1,
+      "first_name": "Đại",
+      "last_name": "Phát",
+      "email": "phat@gmail.com",
+      "phone": "0909123456",
+      "password": "$2a$10$hash",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
     },
     {
-      "banner_id": 2,
-      "banner_url": "https://viettat.vn/banner-tet.jpg",
-      "position": "Trang chủ",
-      "start_date": "2025-01-20T00:00:00Z",
-      "end_date": "2025-02-10T23:59:59Z",
-      "link_to": ""
+      "user_id": 2,
+      "first_name": "Admin",
+      "last_name": "System",
+      "email": "admin@gmail.com",
+      "phone": "0909000000",
+      "password": "$2a$10$hash",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    }
+  ],
+  "roles": [
+    {
+      "role_id": 1,
+      "role_name": "USER"
+    },
+    {
+      "role_id": 2,
+      "role_name": "ADMIN"
+    },
+    {
+      "role_id": 3,
+      "role_name": "BUS_COMPANY"
+    }
+  ],
+  "user_role": [
+    {
+      "user_id": 1,
+      "role_id": 1
+    },
+    {
+      "user_id": 2,
+      "role_id": 2
+    }
+  ],
+  "cities": [
+    {
+      "city_id": 1,
+      "city_name": "Sài Gòn",
+      "region": "Nam",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "city_id": 2,
+      "city_name": "Kon Tum",
+      "region": "Trung",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
     }
   ],
   "stations": [
     {
-      "stations_id": 1,
-      "stations_name": "Bến xe Mỹ Đình",
-      "image": "https://example.com/mydinh.jpg",
-      "location": "Hà Nội",
-      "created_at": "2024-01-01T00:00:00Z"
+      "station_id": 1,
+      "station_name": "Bến xe Miền Đông",
+      "city_id": 1,
+      "image": "",
+      "wallpaper": "",
+      "description": "Bến xe lớn tại TP.HCM",
+      "location": "292 Đinh Bộ Lĩnh",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
     },
     {
-      "stations_id": 2,
-      "stations_name": "Bến xe Miền Tây",
-      "image": "https://example.com/mientay.jpg",
-      "location": "Hồ Chí Minh",
-      "created_at": "2024-01-01T00:00:00Z"
-    },
-    {
-      "stations_id": 3,
-      "stations_name": "Bến xe Đà Nẵng",
-      "image": "https://example.com/danang.jpg",
-      "location": "Đà Nẵng",
-      "created_at": "2024-01-01T00:00:00Z"
-    },
-    {
-      "stations_id": 4,
-      "stations_name": "Bến xe Niệm Nghĩa",
-      "image": "https://example.com/niemnghia.jpg",
-      "location": "Hải Phòng",
-      "created_at": "2024-01-01T00:00:00Z"
-    }
-  ],
-  "bus_companies": [
-     {
-        "bus_companies_id": 1,
-        "company_name": "Phương Trang",
-        "image": "https://vexere.com/images/carrier/phuong-trang.jpg",
-        "descriptions": "Chất lượng là danh dự",
-        "rating": 4.8,
-        "created_at": "2024-01-01T00:00:00Z"
-    },
-    {
-        "bus_companies_id": 2,
-        "company_name": "Thành Bưởi",
-        "image": "https://vexere.com/images/carrier/thanh-buoi.jpg",
-        "descriptions": "Phục vụ từ trái tim",
-        "rating": 4.5,
-        "created_at": "2024-01-01T00:00:00Z"
-    },
-    {
-        "bus_companies_id": 3,
-        "company_name": "Kumho Samco",
-        "image": "https://vexere.com/images/carrier/kumho-samco.jpg",
-        "descriptions": "An toàn trên mọi nẻo đường",
-        "rating": 4.6,
-        "created_at": "2024-01-01T00:00:00Z"
+      "station_id": 2,
+      "station_name": "Bến xe Kon Tum",
+      "city_id": 2,
+      "image": "",
+      "wallpaper": "",
+      "description": "Bến xe trung tâm Kon Tum",
+      "location": "281 Phan Đình Phùng",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
     }
   ],
   "routes": [
     {
-        "routes_id": 1,
-        "departure_station_id": 1,
-        "arrival_station_id": 4,
-        "price": 120000,
-        "duration": 120,
-        "distance": 105,
-        "total_bookings": 1500,
-        "created_at": "2024-01-01T00:00:00Z"
+      "route_id": 1,
+      "departure_station_id": 1,
+      "arrival_station_id": 2,
+      "distance": 550,
+      "duration": 780,
+      "base_price": 530000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    }
+  ],
+  "bus_companies": [
+    {
+      "bus_company_id": 1,
+      "company_name": "Tây Nguyên",
+      "image": "",
+      "description": "Nhà xe chất lượng cao",
+      "license_number": "GX123",
+      "contact_phone": "0909333444",
+      "contact_email": "taynguyen@gmail.com",
+      "address": "Kon Tum",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    }
+  ],
+  "buses": [
+    {
+      "bus_id": 1,
+      "bus_company_id": 1,
+      "name": "Limousine 34 giường",
+      "license_plate": "51B-12345",
+      "capacity": 34,
+      "amenities": "Wifi, Nước, Chăn",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    }
+  ],
+  "bus_images": [
+    {
+      "bus_image_id": 1,
+      "bus_id": 1,
+      "image_url": "https://example.com/bus1.jpg"
+    }
+  ],
+  "bus_layouts": [
+    {
+      "layout_id": 1,
+      "bus_id": 1,
+      "layout_name": "Giường nằm 2 tầng",
+      "total_rows": 6,
+      "total_columns": 3,
+      "floor_count": 2,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    }
+  ],
+  "seat_types": [
+    {
+      "seat_type_id": 1,
+      "type_name": "Giường đơn",
+      "icon_url": "",
+      "color_code": "#FFA500",
+      "price_multiplier": 1.0
     },
     {
-        "routes_id": 2,
-        "departure_station_id": 2,
-        "arrival_station_id": 3,
-        "price": 650000,
-        "duration": 960,
-        "distance": 850,
-        "total_bookings": 800,
-        "created_at": "2024-01-01T00:00:00Z"
+      "seat_type_id": 2,
+      "type_name": "Giường đôi",
+      "icon_url": "",
+      "color_code": "#7C4DFF",
+      "price_multiplier": 1.5
+    }
+  ],
+  "seats": [
+    {
+      "seat_id": 1,
+      "bus_id": 1,
+      "seat_number": "A1",
+      "seat_label": "A1",
+      "seat_type_id": 2,
+      "price_extra": 270000,
+      "is_available_for_booking": true
     },
     {
-        "routes_id": 3,
-        "departure_station_id": 1,
-        "arrival_station_id": 3,
-        "price": 450000,
-        "duration": 780,
-        "distance": 760,
-        "total_bookings": 1200,
-        "created_at": "2024-01-01T00:00:00Z"
+      "seat_id": 2,
+      "bus_id": 1,
+      "seat_number": "A2",
+      "seat_label": "A2",
+      "seat_type_id": 2,
+      "price_extra": 270000,
+      "is_available_for_booking": true
+    },
+    {
+      "seat_id": 3,
+      "bus_id": 1,
+      "seat_number": "B1",
+      "seat_label": "B1",
+      "seat_type_id": 1,
+      "price_extra": 0,
+      "is_available_for_booking": true
+    }
+  ],
+  "seat_positions": [
+    {
+      "position_id": 1,
+      "seat_id": 1,
+      "layout_id": 1,
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "rotation": 0
+    },
+    {
+      "position_id": 2,
+      "seat_id": 2,
+      "layout_id": 1,
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "rotation": 0
+    },
+    {
+      "position_id": 3,
+      "seat_id": 3,
+      "layout_id": 1,
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "rotation": 0
+    }
+  ],
+  "schedules": [
+    {
+      "schedule_id": 1,
+      "route_id": 1,
+      "bus_id": 1,
+      "departure_time": "2025-01-20T20:00",
+      "arrival_time": "2025-01-21T09:15",
+      "total_seats": 34,
+      "available_seats": 20,
+      "status": "AVAILABLE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    }
+  ],
+  "seat_schedule": [
+    {
+      "seat_id": 1,
+      "schedule_id": 1,
+      "status": "BOOKED",
+      "hold_expired_at": null
+    },
+    {
+      "seat_id": 2,
+      "schedule_id": 1,
+      "status": "AVAILABLE",
+      "hold_expired_at": null
+    },
+    {
+      "seat_id": 3,
+      "schedule_id": 1,
+      "status": "AVAILABLE",
+      "hold_expired_at": null
+    }
+  ],
+  "tickets": [
+    {
+      "ticket_id": 1,
+      "user_id": 1,
+      "schedule_id": 1,
+      "seat_id": 1,
+      "seat_type": "Giường đôi",
+      "price": 800000,
+      "status": "BOOKED",
+      "created_at": "2025-01-10",
+      "updated_at": "2025-01-10"
+    }
+  ],
+  "passengers": [
+    {
+      "passenger_id": 1,
+      "ticket_id": 1,
+      "full_name": "Nguyễn Đại Phát",
+      "phone": "0909123456",
+      "identity_number": "079201234567"
+    }
+  ],
+  "payment_providers": [
+    {
+      "payment_provider_id": 1,
+      "provider_name": "VNPay",
+      "provider_type": "QR_CODE",
+      "api_endpoint": "https://vnpay.vn/api"
+    }
+  ],
+  "payments": [
+    {
+      "payment_id": 1,
+      "ticket_id": 1,
+      "user_id": 1,
+      "payment_provider_id": 1,
+      "payment_method": "ONLINE",
+      "amount": 800000,
+      "transaction_code": "VNPAY001",
+      "status": "COMPLETED",
+      "paid_at": "2025-01-10T10:30",
+      "created_at": "2025-01-10",
+      "updated_at": "2025-01-10"
+    }
+  ],
+  "cancellation_policies": [
+    {
+      "policy_id": 1,
+      "route_id": 1,
+      "cancellation_time_limit": 360,
+      "refund_percentage": 80,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    }
+  ],
+  "bus_reviews": [
+    {
+      "review_id": 1,
+      "user_id": 1,
+      "bus_id": 1,
+      "rating": 5,
+      "review": "Xe sạch, chạy êm",
+      "status": "VISIBLE",
+      "created_at": "2025-01-05",
+      "updated_at": "2025-01-05"
+    }
+  ],
+  "banners": [
+    {
+      "banner_id": 1,
+      "image_url": "https://example.com/banner.jpg",
+      "position": 1,
+      "target_type": "ROUTE",
+      "target_id": 1,
+      "start_date": "2025-01-01",
+      "end_date": "2025-02-01"
     }
   ]
 }
