@@ -20,7 +20,8 @@ type Trip = {
     description: string;
     seats: number;
     type: string;
-    numberReview: number
+    numberReview: number,
+    duration: string
 };
 
 type ListVehicleImage = {
@@ -42,7 +43,22 @@ export default function TripCard() {
             description: "day la chuyen di tu ha noi den do son",
             seats: 10,
             type: "Limozin 9cho",
-            numberReview: 21
+            numberReview: 21,
+            duration: '4h50'
+        },
+        {
+            id: 2,
+            name: "Tây Nguyên",
+            departTime: "10.00",
+            endTime: "11.00",
+            price: 250000,
+            from: "Ha noi",
+            to: "Do son",
+            description: "day la chuyen di tu ha noi den do son",
+            seats: 10,
+            type: "Limozin 9cho",
+            numberReview: 21,
+            duration: '4h40'
         },
     ];
 
@@ -53,6 +69,10 @@ export default function TripCard() {
         },
         {
             trip_id: 1,
+            image: '../../../public/bookingticket.jpg'
+        },
+        {
+            trip_id: 2,
             image: '../../../public/bookingticket.jpg'
         }
     ]
@@ -68,13 +88,10 @@ export default function TripCard() {
         <div className="w-full mx-auto space-y-6">
             {trips.map((trip) => {
                 const isActive = activeTripId === trip.id;
-                // Nếu true → card này được phép mở
-                // Nếu false → card này BỊ CẤM mở
-
                 return (
                     <div
                         key={trip.id}
-                        className="border rounded-lg"
+                        className="border border-gray-400 rounded-lg mb-4"
                     >
                         {/* ===== SUMMARY ===== */}
                         <div className="flex xl:flex-row flex-col justify-between">
@@ -82,12 +99,24 @@ export default function TripCard() {
                                 <img src="../../../public/bookingticket.jpg" className="xl:w-25 xl:h-25 md:w-40 md:h-40 w-30 h-30 object-cover p-2" alt="" />
                                 <div className="flex flex-col xl:gap-2 md:gap-5 xl:w-125 md:flex-1 p-3">
                                     <h3 className="font-semibold text-lg">
-                                        {trip.name} ⭐ 4.8 <span className="text-[10px] text-gray-400">{trip.numberReview} Đánh giá</span>
+                                        {trip.name} ⭐ 4.8 <span className="text-sm text-gray-400">{trip.numberReview} Đánh giá</span>
                                         <p className="text-sm text-gray-400">{trip.type}</p>
                                     </h3>
                                     <div className="text-xl font-bold text-gray-500 flex justify-between">
                                         <p>{trip.departTime}</p>
-                                        <span>===&gt;</span>
+                                        <div className={`flex flex-col items-center justify-center min-w-20 `}>
+                                            <span className="text-sm italic text-gray-500 mb-1.5 font-medium">
+                                                {trip.duration}
+                                            </span>
+                                            <div className="relative w-full flex items-center">
+                                                <div className="h-1 w-full bg-gray-300 rounded-l-full"></div>
+                                                <div
+                                                    className="absolute -right-1 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent 
+                                                            border-l-12 border-l-gray-300"
+                                                />
+                                            </div>
+                                        </div>
+
                                         <p>{trip.endTime}</p>
                                     </div>
                                     <div className="flex justify-between">
@@ -107,7 +136,7 @@ export default function TripCard() {
                                                     setMode("detail");
                                                 }
                                             }}
-                                            className="text-blue-600 underline md:block hidden"
+                                            className="text-blue-600 md:block hidden"
                                         >
                                             Thông tin chi tiết
                                         </button>
@@ -117,7 +146,7 @@ export default function TripCard() {
 
                             <div className="flex xl:flex-col flex-row gap-3 p-3 xl:item-ends justify-between">
 
-                                <div className="flex xl:flex-row flex-col">
+                                <div className="flex flex-col xl:mt-8">
                                     <h3 className="text-xl text-gray-600">Từ <b>{trip.price}</b>đ</h3>
                                     <h4 className="text-lg">{trip.seats} Còn trống</h4>
                                 </div>
