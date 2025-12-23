@@ -14,6 +14,10 @@ import AboutPage from "../pages/user/AboutPage";
 import DashboardPage from "../pages/admin/DashboardPage";
 import HomePage from "../pages/user/HomePage";
 import BusCompanyPage from "../pages/user/BusCompanyPage";
+import BusStationPage from "../pages/user/BusStationPage";
+import RoutesPage from "../pages/user/RoutesPage";
+import BusCompanyDetailPage from "../pages/user/BusCompanyDetailPage";
+import RouteDetailPage from "../pages/user/RouteDetailPage";
 
 export const router = createBrowserRouter([
     {
@@ -24,6 +28,12 @@ export const router = createBrowserRouter([
             { path: "bookingTicket", element: <BookingTicket /> },
             { path: "about-page", element: <AboutPage /> },
             { path: "busCompany", element: <BusCompanyPage /> },
+            { path: "busStation", element: <BusStationPage /> },
+            { path: "routes", element: <RoutesPage /> },
+            { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
+            { path: "detailRoute", element: <RouteDetailPage /> }
+
+
 
         ],
     },

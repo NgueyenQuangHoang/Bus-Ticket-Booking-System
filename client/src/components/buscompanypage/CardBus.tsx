@@ -21,7 +21,7 @@ export default function CardBus() {
     group bg-white rounded-xl shadow
     transition-all duration-300
     hover:-translate-y-1 hover:shadow-xl
-    overflow-hidden
+    overflow-hidden cursor-pointer
   "
 >
   <img
@@ -58,7 +58,7 @@ export default function CardBus() {
     group bg-white rounded-xl shadow
     transition-all duration-300
     hover:-translate-y-1 hover:shadow-xl
-    overflow-hidden
+    overflow-hidden cursor-pointer
   "
 >
   <img
@@ -95,7 +95,7 @@ export default function CardBus() {
     group bg-white rounded-xl shadow
     transition-all duration-300
     hover:-translate-y-1 hover:shadow-xl
-    overflow-hidden
+    overflow-hidden cursor-pointer
   "
 >
   <img
@@ -132,7 +132,7 @@ export default function CardBus() {
     group bg-white rounded-xl shadow
     transition-all duration-300
     hover:-translate-y-1 hover:shadow-xl
-    overflow-hidden
+    overflow-hidden cursor-pointer
   "
 >
   <img
@@ -169,7 +169,7 @@ export default function CardBus() {
     group bg-white rounded-xl shadow
     transition-all duration-300
     hover:-translate-y-1 hover:shadow-xl
-    overflow-hidden
+    overflow-hidden cursor-pointer
   "
 >
   <img
@@ -206,7 +206,7 @@ export default function CardBus() {
     group bg-white rounded-xl shadow
     transition-all duration-300
     hover:-translate-y-1 hover:shadow-xl
-    overflow-hidden
+    overflow-hidden cursor-pointer
   "
 >
   <img
@@ -243,7 +243,7 @@ export default function CardBus() {
     group bg-white rounded-xl shadow
     transition-all duration-300
     hover:-translate-y-1 hover:shadow-xl
-    overflow-hidden
+    overflow-hidden cursor-pointer
   "
 >
   <img
@@ -280,7 +280,7 @@ export default function CardBus() {
     group bg-white rounded-xl shadow
     transition-all duration-300
     hover:-translate-y-1 hover:shadow-xl
-    overflow-hidden
+    overflow-hidden cursor-pointer
   "
 >
   <img
