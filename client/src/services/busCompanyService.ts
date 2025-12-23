@@ -4,8 +4,8 @@ import type { BusCompany } from "../types/index";
 export const busCompanyService = {
     getAllBusCompanies: async (): Promise<BusCompany[]> => {
         try {
-            const response = await api.get('/bus-companies');
-            return response.data;
+            const response = await api.get('/bus_companies');
+            return response as unknown as BusCompany[];
         } catch (error) {
             console.error('Error fetching bus companies:', error);
             throw error;
@@ -14,7 +14,7 @@ export const busCompanyService = {
     getPopularBusCompanies: async (limit: number = 5): Promise<BusCompany[]> => {
         try {
             const response = await api.get(`/bus_companies?_sort=rating&_order=desc&_limit=${limit}`);
-            return response.data;
+            return response as unknown as BusCompany[];
         } catch (error) {
             console.error('Error fetching popular bus companies:', error);
             throw error;

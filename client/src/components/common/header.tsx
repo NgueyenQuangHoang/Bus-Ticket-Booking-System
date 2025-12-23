@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <header className="w-full font-['Segoe_UI']">
       {/* Top Bar */}
-      <div className="bg-[#1295db] text-white h-[30px] flex items-center justify-between px-[170px] text-[12px]">
+      <div className="bg-[#1295db] text-white h-[30px] flex items-center justify-center lg:justify-between px-4 lg:px-[170px] text-[12px]">
         <div className="flex items-center gap-1">
           <span>🚌</span>
           <span className="font-normal">Hệ thống Đặt Vé Xe Toàn Quốc</span>
@@ -27,7 +27,7 @@ export default function Header() {
       </div>
 
       {/* Main Header */}
-      <div className="bg-white shadow-sm relative z-20 h-[60px] flex items-center px-[170px] gap-[90px]">
+      <div className="bg-white shadow-sm relative z-20 h-[60px] flex items-center justify-center lg:justify-start px-4 lg:px-[170px] gap-4 lg:gap-[90px]">
         {/* Mobile: Hamburger Button (Left) - Hidden on desktop */}
         <div className="lg:hidden absolute left-4">
           <button

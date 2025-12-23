@@ -6,7 +6,7 @@ export const bannerService = {
   getAllBanners: async (): Promise<Banner[]> => {
     try {
       const response = await api.get<Banner[]>('/banners');
-      return response.data;
+      return response as unknown as Banner[];
     } catch (error) {
       console.error('Error fetching banners:', error);
       throw error;

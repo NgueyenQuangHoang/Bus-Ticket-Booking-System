@@ -2,9 +2,10 @@ import type { Timestamp } from './common';
 
 export interface Banner {
   banner_id: number;
-  banner_url?: string;
-  start_date?: Timestamp;
-  end_date?: Timestamp;
-  position?: string;
-  link_to?: string;
+  image_url: string;
+  position: number;
+  target_type: string;
+  target_id: number;
+  start_date: Timestamp;
+  end_date: Timestamp;
 }

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -5,36 +6,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-// Sample Bus Station Data
-const busStations = [
-  {
-    id: 1,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-    name: "Bến xe Miền Đông Mới",
-  },
-  {
-    id: 2,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg",
-    name: "Bến xe Miền Tây",
-  },
-  {
-    id: 3,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410846/bxBG_dzhqh5.jpg",
-    name: "Bến xe Giáp Bát",
-  },
-  {
-    id: 4,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg",
-    name: "Bến xe Mỹ Đình",
-  },
-  {
-    id: 5,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg", // Added sample image
-    name: "Bến xe Nước Ngầm",
-  }
-];
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { fetchPopularStations } from "../../slices/stationSlice";
 
 export default function BusStation() {
+  const dispatch = useAppDispatch();
+  const { popularStations } = useAppSelector((state) => state.station);
+
+  useEffect(() => {
+    dispatch(fetchPopularStations(10)); // Fetch top 10 popular stations
+  }, [dispatch]);
+
+  // Optionally handle loading state
+  if (!popularStations || popularStations.length === 0) {
+      return null;
+  }
+
   return (
     <section className="max-w-7xl mx-auto px-6 py-8">
       <div className="flex items-center gap-2 mb-6 ml-15">
@@ -56,30 +43,38 @@ export default function BusStation() {
                 prevEl: ".bus-station-prev",
             }}
             spaceBetween={20}
-            slidesPerView={1.2}
+            slidesPerView={1}
             breakpoints={{
-              640: { slidesPerView: 2.2 },
+              768: { slidesPerView: 3 },
               1024: { slidesPerView: 4 },
             }}
             className="mySwiper"
           >
-            {busStations.map((station) => (
-              <SwiperSlide key={station.id}>
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 hover:shadow-md transition duration-300">
-                  <div className="relative">
-                    <img
-                      src={station.image}
-                      alt={station.name}
-                      className="w-full h-40 object-cover rounded-lg"
-                    />
-                     <span className="absolute bottom-2 left-2 bg-orange-500 text-white text-[10px] px-2 py-0.5 rounded-full font-medium uppercase shadow-sm">
-                        HỆ THỐNG ĐẶT VÉ XE TOÀN QUỐC
-                    </span>
-                  </div>
-
-                  <div className="mt-3">
-                    <h3 className="font-bold text-gray-800 text-[15px] truncate">
-                      {station.name}
+            {popularStations.map((station) => (
+              <SwiperSlide key={station.station_id}>
+                <div 
+                  className="flex flex-col items-start p-4 gap-3 h-[250px] rounded-[10px] hover:shadow-md transition duration-300"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.002)',
+                    border: '1px solid #ECEEEB',
+                    boxShadow: '0px 5px 5px rgba(76, 76, 76, 0.1)',
+                  }}
+                >
+                  <img
+                    src={station.image}
+                    alt={station.station_name}
+                    className="w-full flex-1 object-cover rounded-[10px]"
+                    style={{ minHeight: '159px' }}
+                  />
+                  <div className="flex flex-col items-start gap-1 w-full rounded-[10px]">
+                    <h3 
+                      className="w-full h-6 font-bold text-lg leading-6 flex items-center truncate"
+                      style={{ 
+                        fontFamily: 'Segoe UI, sans-serif',
+                        color: '#00613D' 
+                      }}
+                    >
+                      {station.station_name}
                     </h3>
                   </div>
                 </div>

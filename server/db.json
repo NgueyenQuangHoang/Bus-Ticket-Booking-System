@@ -51,6 +51,7 @@
     {
       "city_id": 1,
       "city_name": "Sài Gòn",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450901/53bbd8a2e90b0a4a2eaf5ed482cf893561fe8c79_crg541.png",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -58,6 +59,63 @@
     {
       "city_id": 2,
       "city_name": "Kon Tum",
+      "image_city": "",
+      "region": "Trung",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "city_id": 3,
+      "city_name": "Vũng Tàu",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/4269c72b5a06b8cf26f8f058d41c868ec5ff3f54_mfuk81.png",
+      "region": "Nam",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "city_id": 4,
+      "city_name": "Nha Trang",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/924d54b9d9dca45ff676616cf5e0007fe28b6001_lsb5ua.png",
+      "region": "Trung",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "city_id": 5,
+      "city_name": "Đà Lạt",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/202a875aa331df0e80f37ef79ff442a61a21b919_qzv5uz.png",
+      "region": "Trung",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "city_id": 6,
+      "city_name": "Phan Thiết",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/5113199f887a0c349f2185e27fc156a46829b277_ssgeo2.png",
+      "region": "Nam",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "city_id": 7,
+      "city_name": "Hà Nội",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/ba4a04c93cf156bdf8bd5af1dc075bc88a6f373b_hzepz3.png",
+      "region": "Bắc",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "city_id": 8,
+      "city_name": "Quy Nhơn",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/0057fe4d5f8307211f13f5806bbbbb29ef9b8fb0_xxoh4t.png",
+      "region": "Trung",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "city_id": 9,
+      "city_name": "Đà Nẵng",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -68,7 +126,7 @@
       "station_id": 1,
       "station_name": "Bến xe Miền Đông",
       "city_id": 1,
-      "image": "",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
       "wallpaper": "",
       "description": "Bến xe lớn tại TP.HCM",
       "location": "292 Đinh Bộ Lĩnh",
@@ -79,10 +137,54 @@
       "station_id": 2,
       "station_name": "Bến xe Kon Tum",
       "city_id": 2,
-      "image": "",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg",
       "wallpaper": "",
       "description": "Bến xe trung tâm Kon Tum",
       "location": "281 Phan Đình Phùng",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "station_id": 3,
+      "station_name": "Bến xe Vũng Tàu",
+      "city_id": 3,
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410846/bxBG_dzhqh5.jpg",
+      "wallpaper": "",
+      "description": "Bến xe Vũng Tàu",
+      "location": "Nam Kỳ Khởi Nghĩa",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "station_id": 4,
+      "station_name": "Bến xe Nha Trang",
+      "city_id": 4,
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg",
+      "wallpaper": "",
+      "description": "Bến xe Nha Trang",
+      "location": "Đường 23/10",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "station_id": 5,
+      "station_name": "Bến xe Đà Lạt",
+      "city_id": 5,
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg",
+      "wallpaper": "",
+      "description": "Bến xe Đà Lạt",
+      "location": "Đồi Robin",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "station_id": 6,
+      "station_name": "Bến xe Mũi Né",
+      "city_id": 6,
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
+      "wallpaper": "",
+      "description": "Bến xe Mũi Né",
+      "location": "Huỳnh Thúc Kháng",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
     }
@@ -97,18 +199,125 @@
       "base_price": 530000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "route_id": 2,
+      "departure_station_id": 1,
+      "arrival_station_id": 3,
+      "distance": 95,
+      "duration": 120,
+      "base_price": 150000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "route_id": 3,
+      "departure_station_id": 1,
+      "arrival_station_id": 6,
+      "distance": 220,
+      "duration": 300,
+      "base_price": 180000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "route_id": 4,
+      "departure_station_id": 1,
+      "arrival_station_id": 4,
+      "distance": 430,
+      "duration": 480,
+      "base_price": 240000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "route_id": 5,
+      "departure_station_id": 4,
+      "arrival_station_id": 5,
+      "distance": 135,
+      "duration": 240,
+      "base_price": 200000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "route_id": 6,
+      "departure_station_id": 1,
+      "arrival_station_id": 5,
+      "distance": 300,
+      "duration": 360,
+      "base_price": 220000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
     }
   ],
   "bus_companies": [
     {
       "bus_company_id": 1,
-      "company_name": "Tây Nguyên",
-      "image": "",
+      "company_name": "Nhà xe An Hòa Hiệp",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
       "description": "Nhà xe chất lượng cao",
+      "rating": 4.8,
       "license_number": "GX123",
       "contact_phone": "0909333444",
-      "contact_email": "taynguyen@gmail.com",
-      "address": "Kon Tum",
+      "contact_email": "anhoahiep@gmail.com",
+      "address": "TP.HCM",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "bus_company_id": 2,
+      "company_name": "Nhà xe Futa Hà Sơn",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
+      "description": "Chuyên tuyến Hà Nội - Lào Cai",
+      "rating": 4.9,
+      "license_number": "GX124",
+      "contact_phone": "0909444555",
+      "contact_email": "futahason@gmail.com",
+      "address": "Hà Nội",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "bus_company_id": 3,
+      "company_name": "Nhà xe Vũ Linh",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
+      "description": "Dịch vụ 5 sao",
+      "rating": 4.7,
+      "license_number": "GX125",
+      "contact_phone": "0909555666",
+      "contact_email": "vulinh@gmail.com",
+      "address": "Cần Thơ",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "bus_company_id": 4,
+      "company_name": "Nhà xe Toàn Thắng",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
+      "description": "An toàn, tiện lợi",
+      "rating": 4.6,
+      "license_number": "GX126",
+      "contact_phone": "0909666777",
+      "contact_email": "toanthang@gmail.com",
+      "address": "Vũng Tàu",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "bus_company_id": 5,
+      "company_name": "Nhà xe Phương Trang",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
+      "description": "Chất lượng là danh dự",
+      "rating": 4.9,
+      "license_number": "GX127",
+      "contact_phone": "0909777888",
+      "contact_email": "phuongtrang@gmail.com",
+      "address": "TP.HCM",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -329,12 +538,53 @@
   "banners": [
     {
       "banner_id": 1,
-      "image_url": "https://example.com/banner.jpg",
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766454384/20251222-090812_j3qisq.jpg",
       "position": 1,
       "target_type": "ROUTE",
       "target_id": 1,
       "start_date": "2025-01-01",
       "end_date": "2025-02-01"
+    },
+    {
+      "banner_id": 2,
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766454382/20251222-090730_abj2kq.jpg",
+      "position": 2,
+      "target_type": "ROUTE",
+      "target_id": 2,
+      "start_date": "2025-01-01",
+      "end_date": "2025-02-01"
+    }
+  ],
+  "popular_routes": [
+    {
+      "popular_route_id": 1,
+      "route_id": 2,
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-vt_bcgm29.png",
+      "priority": 1
+    },
+    {
+      "popular_route_id": 2,
+      "route_id": 3,
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410530/sg-mn_zz0prg.png",
+      "priority": 2
+    },
+    {
+      "popular_route_id": 3,
+      "route_id": 4,
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-nt_ffltel.png",
+      "priority": 3
+    },
+    {
+      "popular_route_id": 4,
+      "route_id": 5,
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
+      "priority": 4
+    },
+    {
+      "popular_route_id": 5,
+      "route_id": 6,
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
+      "priority": 5
     }
   ]
 }

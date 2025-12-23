@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -5,41 +6,17 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-// Sample Popular Route Data
-const popularRoutes = [
-  {
-    id: 1,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-vt_bcgm29.png",
-    title: "Sài Gòn - Vũng Tàu",
-    price: "150.000đ",
-  },
-  {
-    id: 2,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410530/sg-mn_zz0prg.png",
-    title: "Sài Gòn - Mũi Né",
-    price: "180.000đ",
-  },
-  {
-    id: 3,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-nt_ffltel.png",
-    title: "Sài Gòn - Nha Trang",
-    price: "240.000đ",
-  },
-  {
-    id: 4,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
-    title: "Nha Trang - Đà Lạt",
-    price: "200.000đ",
-  },
-  {
-    id: 5,
-    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
-    title: "Sài Gòn - Đà Lạt",
-    price: "220.000đ",
-  },
-];
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { fetchPopularRoutes } from "../../slices/popularRouteSlice";
 
 export default function PopularRoute() {
+  const dispatch = useAppDispatch();
+  const { items: popularRoutes } = useAppSelector((state) => state.popularRoutes);
+
+  useEffect(() => {
+    dispatch(fetchPopularRoutes());
+  }, [dispatch]);
+
   return (
     <section className="max-w-7xl mx-auto px-6 py-8">
       <div className="flex items-center gap-2 mb-6 ml-15">
@@ -62,28 +39,46 @@ export default function PopularRoute() {
                 prevEl: ".popular-route-prev",
             }}
             spaceBetween={20}
-            slidesPerView={1.2}
+            slidesPerView={1}
             breakpoints={{
-              640: { slidesPerView: 2.2 },
+              768: { slidesPerView: 3 },
               1024: { slidesPerView: 4 },
             }}
             className="mySwiper"
           >
             {popularRoutes.map((route) => (
               <SwiperSlide key={route.id}>
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 hover:shadow-md transition duration-300">
-                  <div className="relative">
-                    <img
-                      src={route.image}
-                      alt={route.title}
-                      className="w-full h-40 object-cover rounded-lg"
-                    />
-                  </div>
-                  <div className="mt-3">
-                    <h3 className="font-bold text-gray-800 text-[15px] truncate">
+                <div 
+                  className="flex flex-col items-start p-4 gap-3 h-[250px] rounded-[10px] hover:shadow-md transition duration-300"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.002)',
+                    border: '1px solid #ECEEEB',
+                    boxShadow: '0px 5px 5px rgba(76, 76, 76, 0.1)',
+                  }}
+                >
+                  <img
+                    src={route.image}
+                    alt={route.title}
+                    className="w-full flex-1 object-cover rounded-[10px]"
+                    style={{ minHeight: '159px' }}
+                  />
+                  <div className="flex flex-col items-start gap-1 w-full rounded-[10px]">
+                    <h3 
+                      className="w-full h-6 font-bold text-lg leading-6 flex items-center truncate"
+                      style={{ 
+                        fontFamily: 'Segoe UI, sans-serif',
+                        color: '#00613D' 
+                      }}
+                    >
                       {route.title}
                     </h3>
-                    <p className="text-sm font-semibold text-gray-500 mt-1">
+                    <p 
+                      className="w-full text-sm leading-[19px] flex items-center"
+                      style={{ 
+                        fontFamily: 'Segoe UI, sans-serif',
+                        color: '#3D54A5' 
+                      }}
+                    >
                       {route.price}
                     </p>
                   </div>
