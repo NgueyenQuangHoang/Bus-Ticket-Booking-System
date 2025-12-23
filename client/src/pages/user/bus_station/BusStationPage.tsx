@@ -1,6 +1,7 @@
 import React from 'react'
-import CardBusStation from '../../components/busstationpage/CardBusStation';
-import PaginationStation from '../../components/busstationpage/PaginationStation';
+import CardBusStation from '../../../components/bus_station/busstationpage/CardBusStation';
+import PaginationStation from '../../../components/bus_station/busstationpage/PaginationStation';
+
 
 export default function BusStationPage() {
   return (

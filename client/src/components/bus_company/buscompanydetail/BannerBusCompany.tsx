@@ -1,6 +1,6 @@
-import banner from "../../assets/benxe2.png";
+import banner from "../../../assets/benxe1.png";
 
-export default function BannerRoute() {
+export default function BannerBusCompany() {
     return (
         <div
             className=" w-full relative
@@ -16,12 +16,12 @@ export default function BannerRoute() {
                 <h2
                     className=" text-white text-xs font-semibold tracking-widest mb-2 uppercase "
                 >
-                    Tuyến Đường
+                    Nhà Xe
                 </h2>
                 <h1
                     className="text-white font-semibold text-center
       max-w-3xl text-base min-[391px]:text-lg min-[769px]:text-xl ">
-                    Tuyến Đường – thông tin địa điểm, giá vé 16 hãng xe đi từ bến
+                    Nhà Xe – thông tin địa điểm, giá vé 16 hãng xe đi từ bến
                 </h1>
             </div>
 

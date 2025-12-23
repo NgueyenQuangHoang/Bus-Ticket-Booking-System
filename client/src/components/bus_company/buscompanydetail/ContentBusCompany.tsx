@@ -1,8 +1,8 @@
-import img1 from "../../assets/td1.png";
-import img2 from "../../assets/td2.png";
-import img3 from "../../assets/benxe3.png";
+import img1 from "../../../assets/td1.png";
+import img2 from "../../../assets/td2.png";
+import img3 from "../../../assets/benxe3.png";
 
-export default function ContentRouteDetail() {
+export default function ContentBusCompany() {
   return (
     <div
       className="

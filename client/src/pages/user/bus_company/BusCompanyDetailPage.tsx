@@ -1,6 +1,6 @@
 
-import BannerBusCompany from "../../components/buscompanydetail/BannerBusCompany";
-import ContentBusCompany from "../../components/buscompanydetail/ContentBusCompany";
+import BannerBusCompany from "../../../components/bus_company/buscompanydetail/BannerBusCompany";
+import ContentBusCompany from "../../../components/bus_company/buscompanydetail/ContentBusCompany";
 
 export default function BusCompanyDetailPage() {
     return (

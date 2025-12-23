@@ -1,5 +1,5 @@
-import logo from "../../assets/OIP.png";
-import logo1 from "../../assets/Symbol.png";
+import logo from "../../../assets/OIP.png";
+import logo1 from "../../../assets/Symbol.png";
 
 export default function CardBus() {
   return (

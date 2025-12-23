@@ -12,12 +12,12 @@ import ProtectedRoute from "./ProtectedRoute";
 import BookingTicket from "../pages/user/BookingTicket";
 import AboutPage from "../pages/user/AboutPage";
 import DashboardPage from "../pages/admin/DashboardPage";
-import HomePage from "../pages/user/HomePage";
-import BusCompanyPage from "../pages/user/BusCompanyPage";
-import BusStationPage from "../pages/user/BusStationPage";
-import RoutesPage from "../pages/user/RoutesPage";
-import BusCompanyDetailPage from "../pages/user/BusCompanyDetailPage";
-import RouteDetailPage from "../pages/user/RouteDetailPage";
+import BusCompanyPage from "../pages/user/bus_company/BusCompanyPage";
+import BusCompanyDetailPage from "../pages/user/bus_company/BusCompanyDetailPage";
+import HomePage from "../pages/user/homePage";
+import BusStationPage from "../pages/user/bus_station/BusStationPage";
+import RoutesPage from "../pages/user/route/RoutesPage";
+import RouteDetailPage from "../pages/user/route/RouteDetailPage";
 
 export const router = createBrowserRouter([
     {

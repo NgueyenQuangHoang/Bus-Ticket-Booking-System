@@ -1,8 +1,6 @@
-import React from 'react'
-import CardBusStation from '../../components/busstationpage/CardBusStation';
-import PaginationStation from '../../components/busstationpage/PaginationStation';
-import CardRoutes from '../../components/routepage/CardRoutes';
-import PaginationRoutes from '../../components/routepage/PaginationRoutes';
+import CardRoutes from "../../../components/route/routepage/CardRoutes";
+import PaginationRoutes from "../../../components/route/routepage/PaginationRoutes";
+
 
 export default function RoutesPage() {
   return (

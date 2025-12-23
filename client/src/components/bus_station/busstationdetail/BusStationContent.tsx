@@ -1,6 +1,6 @@
-import img1 from "../../assets/bus.png";
-import img2 from "../../assets/bus.png";
-import img3 from "../../assets/bus.png";
+import img1 from "../../../assets/bus.png";
+import img2 from "../../../assets/bus.png";
+import img3 from "../../../assets/bus.png";
 
 export default function BusStationContent() {
   return (
