@@ -18,50 +18,49 @@ import HomePage from "../pages/user/homePage";
 import BusStationPage from "../pages/user/bus_station/BusStationPage";
 import RoutesPage from "../pages/user/route/RoutesPage";
 import RouteDetailPage from "../pages/user/route/RouteDetailPage";
+import BookingConfirmation from "../components/bookingConfirmation/BookingConfirmation";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
+  {
+    path: "/",
+    element: <CustomerLayout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "bookingTicket", element: <BookingTicket /> },
+      { path: "about-page", element: <AboutPage /> },
+      { path: "busCompany", element: <BusCompanyPage /> },
+      { path: "busStation", element: <BusStationPage /> },
+      { path: "routes", element: <RoutesPage /> },
+      { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
+      { path: "detailRoute", element: <RouteDetailPage /> },
+      { path: "bookingConfirmation", element: <BookingConfirmation /> },
+    ],
+  },
+  {
+    path: "/customer",
+    element: <ProtectedRoute requiredRole="CUSTOMER" />,
+    children: [
+      {
         element: <CustomerLayout />,
         children: [
-            { index: true, element: <HomePage /> },
-            { path: "bookingTicket", element: <BookingTicket /> },
-            { path: "about-page", element: <AboutPage /> },
-            { path: "busCompany", element: <BusCompanyPage /> },
-            { path: "busStation", element: <BusStationPage /> },
-            { path: "routes", element: <RoutesPage /> },
-            { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
-            { path: "detailRoute", element: <RouteDetailPage /> }
-
-
-
+          { path: "profile", element: <div>Customer Profile Placeholder</div> },
         ],
-    },
-    {
-        path: "/customer",
-        element: <ProtectedRoute requiredRole="CUSTOMER" />,
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <ProtectedRoute requiredRole="ADMIN" />,
+    children: [
+      {
+        element: <AdminLayout />,
         children: [
-            {
-                element: <CustomerLayout />,
-                children: [
-                    { path: "profile", element: <div>Customer Profile Placeholder</div> },
-                ],
-            },
+          { index: true, element: <Navigate to="dashboard" replace /> },
+          { path: "dashboard", element: <DashboardPage /> },
         ],
-    },
-    {
-        path: "/admin",
-        element: <ProtectedRoute requiredRole="ADMIN" />,
-        children: [
-            {
-                element: <AdminLayout />,
-                children: [
-                    { index: true, element: <Navigate to="dashboard" replace /> },
-                    { path: "dashboard", element: <DashboardPage /> },
-                ],
-            },
-        ],
-    },
+      },
+    ],
+  },
 
-    { path: "*", element: <Navigate to="/" replace /> },
+  { path: "*", element: <Navigate to="/" replace /> },
 ]);
