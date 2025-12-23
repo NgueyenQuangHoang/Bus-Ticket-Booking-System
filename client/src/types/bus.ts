@@ -1,10 +1,10 @@
 import type { Timestamp } from './common';
 
 export interface BusCompany {
-  bus_companies_id: number;
+  bus_company_id: number;
   company_name: string;
   image?: string;
-  descriptions?: string;
+  description?: string;
   rating?: number;
   created_at?: Timestamp;
   updated_at?: Timestamp;
