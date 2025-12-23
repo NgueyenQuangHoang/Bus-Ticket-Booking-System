@@ -1,5 +1,5 @@
 {
-    "banners": [
+  "banners": [
     {
       "banner_id": 1,
       "banner_url": "https://viettat.vn/banner-khuyen-mai-1.jpg",
@@ -48,61 +48,130 @@
     }
   ],
   "bus_companies": [
-     {
-        "bus_companies_id": 1,
-        "company_name": "Phương Trang",
-        "image": "https://vexere.com/images/carrier/phuong-trang.jpg",
-        "descriptions": "Chất lượng là danh dự",
-        "rating": 4.8,
-        "created_at": "2024-01-01T00:00:00Z"
+    {
+      "bus_companies_id": 1,
+      "company_name": "Phương Trang",
+      "image": "https://vexere.com/images/carrier/phuong-trang.jpg",
+      "descriptions": "Chất lượng là danh dự",
+      "rating": 4.8,
+      "created_at": "2024-01-01T00:00:00Z"
     },
     {
-        "bus_companies_id": 2,
-        "company_name": "Thành Bưởi",
-        "image": "https://vexere.com/images/carrier/thanh-buoi.jpg",
-        "descriptions": "Phục vụ từ trái tim",
-        "rating": 4.5,
-        "created_at": "2024-01-01T00:00:00Z"
+      "bus_companies_id": 2,
+      "company_name": "Thành Bưởi",
+      "image": "https://vexere.com/images/carrier/thanh-buoi.jpg",
+      "descriptions": "Phục vụ từ trái tim",
+      "rating": 4.5,
+      "created_at": "2024-01-01T00:00:00Z"
     },
     {
-        "bus_companies_id": 3,
-        "company_name": "Kumho Samco",
-        "image": "https://vexere.com/images/carrier/kumho-samco.jpg",
-        "descriptions": "An toàn trên mọi nẻo đường",
-        "rating": 4.6,
-        "created_at": "2024-01-01T00:00:00Z"
+      "bus_companies_id": 3,
+      "company_name": "Kumho Samco",
+      "image": "https://vexere.com/images/carrier/kumho-samco.jpg",
+      "descriptions": "An toàn trên mọi nẻo đường",
+      "rating": 4.6,
+      "created_at": "2024-01-01T00:00:00Z"
     }
   ],
   "routes": [
     {
-        "routes_id": 1,
-        "departure_station_id": 1,
-        "arrival_station_id": 4,
-        "price": 120000,
-        "duration": 120,
-        "distance": 105,
-        "total_bookings": 1500,
-        "created_at": "2024-01-01T00:00:00Z"
+      "routes_id": 1,
+      "departure_station_id": 1,
+      "arrival_station_id": 4,
+      "price": 120000,
+      "duration": 120,
+      "distance": 105,
+      "total_bookings": 1500,
+      "created_at": "2024-01-01T00:00:00Z"
     },
     {
-        "routes_id": 2,
-        "departure_station_id": 2,
-        "arrival_station_id": 3,
-        "price": 650000,
-        "duration": 960,
-        "distance": 850,
-        "total_bookings": 800,
-        "created_at": "2024-01-01T00:00:00Z"
+      "routes_id": 2,
+      "departure_station_id": 2,
+      "arrival_station_id": 3,
+      "price": 650000,
+      "duration": 960,
+      "distance": 850,
+      "total_bookings": 800,
+      "created_at": "2024-01-01T00:00:00Z"
     },
     {
-        "routes_id": 3,
-        "departure_station_id": 1,
-        "arrival_station_id": 3,
-        "price": 450000,
-        "duration": 780,
-        "distance": 760,
-        "total_bookings": 1200,
-        "created_at": "2024-01-01T00:00:00Z"
+      "routes_id": 3,
+      "departure_station_id": 1,
+      "arrival_station_id": 3,
+      "price": 450000,
+      "duration": 780,
+      "distance": 760,
+      "total_bookings": 1200,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "roles": [
+    {
+      "role_id": 1,
+      "role_name": "ADMIN"
+    },
+    {
+      "role_id": 2,
+      "role_name": "USER"
+    }
+  ],
+  "users": [
+    {
+      "user_id": 2,
+      "first_name": "Nguyen",
+      "last_name": "Van A",
+      "email": "nguyendaiphat@gmail.com",
+      "password": "123123",
+      "phone": "081231231",
+      "status": "ACTIVE",
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "daf9",
+      "first_name": "tho",
+      "last_name": "123123",
+      "email": "nguyentatho14106@gmail.com",
+      "password": "123123",
+      "phone": "123123",
+      "created_at": "2025-12-23T02:20:18.623Z",
+      "updated_at": "2025-12-23T02:20:18.623Z",
+      "status": "ACTIVE",
+      "user_id": 3
+    },
+    {
+      "id": "aa67",
+      "first_name": "nguyen",
+      "last_name": "tho",
+      "email": "nguyen@gmail.com",
+      "password": "123123",
+      "phone": "1231232",
+      "created_at": "2025-12-23T09:12:01.762Z",
+      "updated_at": "2025-12-23T09:12:01.792Z",
+      "status": "ACTIVE",
+      "user_id": 4
+    },
+    {
+      "id": "5586",
+      "first_name": "áljdf",
+      "last_name": "1231233",
+      "email": "nguyeva@gmail.com",
+      "password": "123123",
+      "phone": "1231232",
+      "created_at": "2025-12-23T09:42:44.881Z",
+      "updated_at": "2025-12-23T09:42:44.881Z",
+      "status": "ACTIVE",
+      "user_id": 5
+    }
+  ],
+  "user_role": [
+    {
+      "user_id": 1,
+      "role_id": 1
+    },
+    {
+      "user_id": 2,
+      "role_id": 1
     }
   ]
 }
