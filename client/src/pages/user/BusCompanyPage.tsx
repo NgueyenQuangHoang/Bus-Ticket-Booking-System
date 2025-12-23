@@ -9,10 +9,9 @@ const BusCompanyPage = () => {
     >
       {/* Title */}
       <div className="flex items-center justify-center gap-3 mb-6">
-        <span className="w-1 h-6 bg-yellow-400"></span>
+        <span className="w-1 h-12 bg-yellow-400"></span>
         <h2
-          className="font-bold text-xl[@media(min-width:391px)]:text-2xl
-          "
+           className="font-bold text-2xl  min-[391px]:text-4xl"
         >
           NHÀ XE
         </h2>
