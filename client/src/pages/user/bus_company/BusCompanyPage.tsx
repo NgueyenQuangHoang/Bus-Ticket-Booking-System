@@ -1,5 +1,5 @@
-import CardBus from "../../components/buscompanypage/CardBus";
-import Pagination from "../../components/buscompanypage/Pagination";
+import CardBus from "../../../components/bus_company/buscompanypage/CardBus";
+import Pagination from "../../../components/bus_company/buscompanypage/Pagination";
 
 const BusCompanyPage = () => {
   return (
@@ -11,7 +11,7 @@ const BusCompanyPage = () => {
       <div className="flex items-center justify-center gap-3 mb-6">
         <span className="w-1 h-12 bg-yellow-400"></span>
         <h2
-           className="font-bold text-2xl  min-[391px]:text-4xl"
+          className="font-bold text-2xl  min-[391px]:text-4xl"
         >
           NHÀ XE
         </h2>

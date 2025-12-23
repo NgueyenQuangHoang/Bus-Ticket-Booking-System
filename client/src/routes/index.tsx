@@ -12,8 +12,12 @@ import ProtectedRoute from "./ProtectedRoute";
 import BookingTicket from "../pages/user/BookingTicket";
 import AboutPage from "../pages/user/AboutPage";
 import DashboardPage from "../pages/admin/DashboardPage";
-import HomePage from "../pages/user/HomePage";
-import BusCompanyPage from "../pages/user/BusCompanyPage";
+import BusCompanyPage from "../pages/user/bus_company/BusCompanyPage";
+import BusCompanyDetailPage from "../pages/user/bus_company/BusCompanyDetailPage";
+import HomePage from "../pages/user/homePage";
+import BusStationPage from "../pages/user/bus_station/BusStationPage";
+import RoutesPage from "../pages/user/route/RoutesPage";
+import RouteDetailPage from "../pages/user/route/RouteDetailPage";
 
 export const router = createBrowserRouter([
     {
@@ -24,6 +28,12 @@ export const router = createBrowserRouter([
             { path: "bookingTicket", element: <BookingTicket /> },
             { path: "about-page", element: <AboutPage /> },
             { path: "busCompany", element: <BusCompanyPage /> },
+            { path: "busStation", element: <BusStationPage /> },
+            { path: "routes", element: <RoutesPage /> },
+            { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
+            { path: "detailRoute", element: <RouteDetailPage /> }
+
+
 
         ],
     },

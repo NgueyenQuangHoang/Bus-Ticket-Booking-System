@@ -1,6 +1,6 @@
+import BannerBusStationDetails from "../../../components/bus_station/busstationdetail/Banner";
+import BusStationContent from "../../../components/bus_station/busstationdetail/BusStationContent";
 
-import BannerBusStationDetails from "../../components/busstationdetail/Banner";
-import BusStationContent from "../../components/busstationdetail/BusStationContent";
 
 export default function BusStationDetailPage() {
     return (
