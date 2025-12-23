@@ -1,132 +1,112 @@
-// đức đ
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import "swiper/css";
+import "swiper/css/navigation";
+
+// Sample Popular Route Data
+const popularRoutes = [
+  {
+    id: 1,
+    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-vt_bcgm29.png",
+    title: "Sài Gòn - Vũng Tàu",
+    price: "150.000đ",
+  },
+  {
+    id: 2,
+    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410530/sg-mn_zz0prg.png",
+    title: "Sài Gòn - Mũi Né",
+    price: "180.000đ",
+  },
+  {
+    id: 3,
+    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-nt_ffltel.png",
+    title: "Sài Gòn - Nha Trang",
+    price: "240.000đ",
+  },
+  {
+    id: 4,
+    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
+    title: "Nha Trang - Đà Lạt",
+    price: "200.000đ",
+  },
+  {
+    id: 5,
+    image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
+    title: "Sài Gòn - Đà Lạt",
+    price: "220.000đ",
+  },
+];
 
 export default function PopularRoute() {
-    return (
-        <div>
-            <section className="max-w-7xl mx-auto px-6 py-12">
+  return (
+    <section className="max-w-7xl mx-auto px-6 py-8">
+      <div className="flex items-center gap-2 mb-6 ml-15">
+        <span className="w-1 h-6 bg-orange-500 rounded"></span>
+        <h2 className="text-xl font-semibold">Tuyến Đường Phổ Biến</h2>
+      </div>
 
-                <div className="flex items-center gap-2 mb-6 ml-12">
-                    <span className="w-1 h-6 bg-orange-500 rounded"></span>
-                    <h2 className="text-xl font-semibold">
-                        Tuyến Đường Phổ Biến
-                    </h2>
+      <div className="flex items-center gap-4 relative group">
+        
+        {/* Helper Navigation Buttons (External to Swiper to match Banner style) */}
+         <button className="popular-route-prev hidden lg:flex w-10 h-10 rounded-full bg-orange-500 text-white items-center justify-center shadow-lg hover:bg-orange-600 transition shrink-0 cursor-pointer z-10">
+          <ChevronLeft size={24} />
+        </button>
+
+        <div className="flex-1 overflow-hidden">
+          <Swiper
+            modules={[Navigation]}
+            navigation={{
+                nextEl: ".popular-route-next",
+                prevEl: ".popular-route-prev",
+            }}
+            spaceBetween={20}
+            slidesPerView={1.2}
+            breakpoints={{
+              640: { slidesPerView: 2.2 },
+              1024: { slidesPerView: 4 },
+            }}
+            className="mySwiper"
+          >
+            {popularRoutes.map((route) => (
+              <SwiperSlide key={route.id}>
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 hover:shadow-md transition duration-300">
+                  <div className="relative">
+                    <img
+                      src={route.image}
+                      alt={route.title}
+                      className="w-full h-40 object-cover rounded-lg"
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <h3 className="font-bold text-gray-800 text-[15px] truncate">
+                      {route.title}
+                    </h3>
+                    <p className="text-sm font-semibold text-gray-500 mt-1">
+                      {route.price}
+                    </p>
+                  </div>
                 </div>
-
-                <div className="flex flex-col lg:flex-row items-center gap-4">
-
-                    <button
-                        className="hidden lg:flex w-8 h-8 rounded-full bg-orange-500 text-white
-                 items-center justify-center shadow text-sm shrink-0"
-                        aria-hidden
-                    >
-                        ‹
-                    </button>
-
-                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 flex-1">
-
-                        <div className="bg-white rounded-xl shadow hover:shadow-md transition">
-                            <div className="p-2">
-                                <img
-                                    src="https://images.unsplash.com/photo-1506973035872-a4f23ef8f7c4"
-                                    alt=""
-                                    className="rounded-lg h-36 w-full object-cover"
-                                />
-                            </div>
-
-                            <div className="px-3">
-                                <span className="inline-block bg-orange-500 text-white text-xs px-2 py-1 rounded">
-                                    VIVUTODAY
-                                </span>
-                            </div>
-
-                            <div className="p-3">
-                                <p className="font-semibold">Sài Gòn – Vũng Tàu</p>
-                                <p className="text-sm text-gray-500">150.000đ</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-white rounded-xl shadow hover:shadow-md transition">
-                            <div className="p-2">
-                                <img
-                                    src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
-                                    className="rounded-lg h-36 w-full object-cover"
-                                />
-                            </div>
-
-                            <div className="px-3">
-                                <span className="inline-block bg-orange-500 text-white text-xs px-2 py-1 rounded">
-                                    VIVUTODAY
-                                </span>
-                            </div>
-
-                            <div className="p-3">
-                                <p className="font-semibold">Sài Gòn – Mũi Né</p>
-                                <p className="text-sm text-gray-500">180.000đ</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-white rounded-xl shadow hover:shadow-md transition">
-                            <div className="p-2">
-                                <img
-                                    src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"
-                                    className="rounded-lg h-36 w-full object-cover"
-                                />
-                            </div>
-
-                            <div className="px-3">
-                                <span className="inline-block bg-orange-500 text-white text-xs px-2 py-1 rounded">
-                                    VIVUTODAY
-                                </span>
-                            </div>
-
-                            <div className="p-3">
-                                <p className="font-semibold">Sài Gòn – Nha Trang</p>
-                                <p className="text-sm text-gray-500">240.000đ</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-white rounded-xl shadow hover:shadow-md transition">
-                            <div className="p-2">
-                                <img
-                                    src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429"
-                                    className="rounded-lg h-36 w-full object-cover"
-                                />
-                            </div>
-
-                            <div className="px-3">
-                                <span className="inline-block bg-orange-500 text-white text-xs px-2 py-1 rounded">
-                                    VIVUTODAY
-                                </span>
-                            </div>
-
-                            <div className="p-3">
-                                <p className="font-semibold">Nha Trang – Đà Lạt</p>
-                                <p className="text-sm text-gray-500">200.000đ</p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <button
-                        className="hidden lg:flex w-8 h-8 rounded-full bg-orange-500 text-white
-                 items-center justify-center shadow text-sm shrink-0"
-                        aria-hidden
-                    >
-                        ›
-                    </button>
-
-                    <div className="flex gap-3 mt-4 lg:hidden justify-center">
-                        <button className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center shadow">
-                            ‹
-                        </button>
-                        <button className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center shadow">
-                            ›
-                        </button>
-                    </div>
-
-                </div>
-            </section>
-
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
-    )
+
+        <button className="popular-route-next hidden lg:flex w-10 h-10 rounded-full bg-orange-500 text-white items-center justify-center shadow-lg hover:bg-orange-600 transition shrink-0 cursor-pointer z-10">
+          <ChevronRight size={24} />
+        </button>
+      </div>
+
+       {/* Mobile Navigation */}
+        <div className="flex gap-4 mt-4 lg:hidden justify-center">
+            <button className="popular-route-prev w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center shadow hover:bg-orange-600 transition cursor-pointer">
+                 <ChevronLeft size={20} />
+            </button>
+            <button className="popular-route-next w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center shadow hover:bg-orange-600 transition cursor-pointer">
+                 <ChevronRight size={20} />
+             </button>
+        </div>
+    </section>
+  );
 }
