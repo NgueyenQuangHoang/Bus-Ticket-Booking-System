@@ -1,4 +1,4 @@
-import banner from "../../assets/bus.png";
+import banner from "../../../assets/bus.png";
 
 export default function BannerBusStationDetails() {
   return (
