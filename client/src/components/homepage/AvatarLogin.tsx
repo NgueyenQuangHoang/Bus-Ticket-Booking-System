@@ -5,9 +5,10 @@ import { authService } from "../../services/authService";
 interface UserDropdownProps {
     user?: User;
     onLogout: (check: boolean) => void;
+    notify: (alert: string, status: boolean) => void
 }
 
-export default function AvatarLogin({ user, onLogout }: UserDropdownProps) {
+export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProps) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -66,6 +67,7 @@ export default function AvatarLogin({ user, onLogout }: UserDropdownProps) {
                                 console.log('log out');
                                 
                                 onLogout(false);
+                                notify("Đăng xuất thành công", true)
                                 authService.logout()
                                 setIsOpen(false);
                             }}

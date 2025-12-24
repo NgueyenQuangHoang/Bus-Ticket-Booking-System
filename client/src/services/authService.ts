@@ -1,5 +1,7 @@
 import api from "../api/api";
 import type { User } from "../types";
+import { v4 as uuidv4 } from "uuid";
+
 
 export interface LoginResponse {
     user: User;
@@ -37,14 +39,16 @@ export const authService = {
                 alert('Da ton tai email')
                 return undefined
             }
-            const user_id = getUser[getUser.length-1].user_id+1
+            const user_id = uuidv4()
             const response: User = await api.post('users', {
                 ...userData,
                 created_at: new Date(),
                 updated_at: new Date(),
                 status: "ACTIVE",
-                user_id
+                user_id,
             })
+            const newId = uuidv4()
+            await api.post('user_role', {user_id, role_id: 1, id: newId})
             localStorage.setItem('user', JSON.stringify(response))
             localStorage.setItem('isLogin', JSON.stringify(true))
             return response

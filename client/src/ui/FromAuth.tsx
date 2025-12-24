@@ -13,13 +13,14 @@ interface FormErrors {
 }
 
 export default function FormAuth({
-    changeLoginState, setUser
+    changeLoginState, setUser, notify
 }: {
-        changeLoginState: (login: boolean) => void, setUser: (user: User) => void
+        changeLoginState: (login: boolean) => void, setUser: (user: User) => void, notify: (notifycation:string, status: boolean) => void
 }) {
     const [open, setOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
-
+    
+    
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
@@ -76,9 +77,15 @@ export default function FormAuth({
             newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
         }
 
+        if (!confirmPassword) {
+            newErrors.confirmPassword = "Xác nhận MK không được để trống"
+        }
+
         if (password !== confirmPassword) {
             newErrors.confirmPassword = "Mật khẩu xác nhận không khớp";
         }
+
+        
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -97,11 +104,13 @@ export default function FormAuth({
                     if (res !== undefined) {
                         changeLoginState(true)
                         setUser(res)
+                        notify("Đăng nhập thành công", true)
                         return
                     }
-                    alert('sai tai khoan mat khau')
+                    notify("Đăng nhập không thành công", false)
+
                 }).catch(() => {
-                    alert('loi server')
+                    notify("Lỗi Server", false)
                 })
             }
         } else {
@@ -112,13 +121,13 @@ export default function FormAuth({
                         if (res) {
                             changeLoginState(true)
                             setUser(res)
-                            alert('dang ky thanh cong')
+                            notify("Đăng ký thành công" , true)
                             return
                         }
-                        alert('dang ky khong thanh cong')
+                        notify('Đăng ký không thành công', false)
                     }
                 ).catch(() => {
-                    alert('loi server')
+                    notify('Lỗi server rồi', false)
                 }
                 )
             }
