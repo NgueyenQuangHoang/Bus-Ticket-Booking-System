@@ -13,23 +13,22 @@ interface FormErrors {
 }
 
 export default function FormAuth({
-  changeLoginState,
-  setUser,
+    changeLoginState, setUser, notify
 }: {
-  changeLoginState: (login: boolean) => void;
-  setUser: (user: User) => void;
+        changeLoginState: (login: boolean) => void, setUser: (user: User) => void, notify: (notifycation:string, status: boolean) => void
 }) {
-  const [open, setOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
-
-  const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    phone: "",
-  });
-  const [confirmPassword, setConfirmPassword] = useState("");
+    const [open, setOpen] = useState(false);
+    const [isLogin, setIsLogin] = useState(true);
+    
+    
+    const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        phone: "",
+    });
+    const [confirmPassword, setConfirmPassword] = useState("");
 
   // Thay thế mảng boolean bằng object chứa message lỗi
   const [errors, setErrors] = useState<FormErrors>({});
@@ -89,15 +88,21 @@ export default function FormAuth({
       newErrors.email = "Email không hợp lệ";
     }
 
-    if (!password) {
-      newErrors.password = "Mật khẩu không được để trống";
-    } else if (password.length < 6) {
-      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
-    }
+        if (!password) {
+            newErrors.password = "Mật khẩu không được để trống";
+        } else if (password.length < 6) {
+            newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+        }
 
-    if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Mật khẩu xác nhận không khớp";
-    }
+        if (!confirmPassword) {
+            newErrors.confirmPassword = "Xác nhận MK không được để trống"
+        }
+
+        if (password !== confirmPassword) {
+            newErrors.confirmPassword = "Mật khẩu xác nhận không khớp";
+        }
+
+        
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -106,44 +111,45 @@ export default function FormAuth({
   const handleSubmit = () => {
     // Reset lỗi trước khi validate (logic này đã nằm trong hàm validate ở trên vì nó tạo object mới)
 
-    if (isLogin) {
-      if (validateLogin()) {
-        const response = authService.login({
-          email: formData.email,
-          password: formData.password,
-        });
-        response
-          .then((res) => {
-            if (res !== undefined) {
-              changeLoginState(true);
-              setUser(res);
-              return;
+        if (isLogin) {
+            if (validateLogin()) {
+                const response = authService.login({
+                    email: formData.email,
+                    password: formData.password,
+                });
+                response.then((res) => {
+                    if (res !== undefined) {
+                        changeLoginState(true)
+                        setUser(res)
+                        notify("Đăng nhập thành công", true)
+                        return
+                    }
+                    notify("Đăng nhập không thành công", false)
+
+                }).catch(() => {
+                    notify("Lỗi Server", false)
+                })
             }
-            alert("sai tai khoan mat khau");
-          })
-          .catch(() => {
-            alert("loi server");
-          });
-      }
-    } else {
-      if (validateRegister()) {
-        const response = authService.register(formData);
-        response
-          .then((res) => {
-            if (res) {
-              changeLoginState(true);
-              setUser(res);
-              alert("dang ky thanh cong");
-              return;
+        } else {
+            if (validateRegister()) {
+                const response = authService.register(formData);
+                response.then(
+                    (res) => {
+                        if (res) {
+                            changeLoginState(true)
+                            setUser(res)
+                            notify("Đăng ký thành công" , true)
+                            return
+                        }
+                        notify('Đăng ký không thành công', false)
+                    }
+                ).catch(() => {
+                    notify('Lỗi server rồi', false)
+                }
+                )
             }
-            alert("dang ky khong thanh cong");
-          })
-          .catch(() => {
-            alert("loi server");
-          });
-      }
-    }
-  };
+        }
+    };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

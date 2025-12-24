@@ -16,7 +16,7 @@ export default function ContactLoginBanner() {
       >
         Đăng nhập
       </button> */}
-      <FormAuth changeLoginState={() => {}} setUser={() => {}} />
+      <FormAuth />
     </div>
   );
 }

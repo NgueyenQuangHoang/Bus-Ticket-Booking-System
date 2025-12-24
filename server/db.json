@@ -9,7 +9,8 @@
       "password": "123456",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "8b0b"
     },
     {
       "user_id": 2,
@@ -20,31 +21,88 @@
       "password": "Admin123",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "33aa"
+    },
+    {
+      "id": "6222",
+      "first_name": "áljdf",
+      "last_name": "alsddf",
+      "email": "nguyentatho14106@gmail.com",
+      "password": "123123",
+      "phone": "0812719014",
+      "created_at": "2025-12-24T00:48:36.167Z",
+      "updated_at": "2025-12-24T00:48:36.167Z",
+      "status": "ACTIVE",
+      "user_id": "c01d4d2b-6be4-4b16-9a7e-4657a59dc080"
+    },
+    {
+      "id": "af89",
+      "first_name": "áljdf",
+      "last_name": "laf",
+      "email": "nguyendaiphat@gmail.com",
+      "password": "123123",
+      "phone": "183012983012",
+      "created_at": "2025-12-24T00:57:26.812Z",
+      "updated_at": "2025-12-24T00:57:26.812Z",
+      "status": "ACTIVE",
+      "user_id": "825f2046-0cc6-417e-9bbd-261482c2a75a"
+    },
+    {
+      "id": "1808",
+      "first_name": "tho",
+      "last_name": "ákđ",
+      "email": "nguyentatho141106@gmail.com",
+      "password": "123123",
+      "phone": "0812719014",
+      "created_at": "2025-12-24T01:18:52.031Z",
+      "updated_at": "2025-12-24T01:18:52.031Z",
+      "status": "ACTIVE",
+      "user_id": "2902b580-3abe-43f5-b4d6-82bb51d8b6e3"
     }
   ],
   "roles": [
     {
       "role_id": 1,
-      "role_name": "USER"
+      "role_name": "USER",
+      "id": "d91b"
     },
     {
       "role_id": 2,
-      "role_name": "ADMIN"
+      "role_name": "ADMIN",
+      "id": "73a0"
     },
     {
       "role_id": 3,
-      "role_name": "BUS_COMPANY"
+      "role_name": "BUS_COMPANY",
+      "id": "1072"
     }
   ],
   "user_role": [
     {
       "user_id": 1,
-      "role_id": 1
+      "role_id": 1,
+      "id": "5995"
     },
     {
       "user_id": 2,
-      "role_id": 2
+      "role_id": 2,
+      "id": "a9f5"
+    },
+    {
+      "id": "316a",
+      "user_id": "c01d4d2b-6be4-4b16-9a7e-4657a59dc080",
+      "role_id": 1
+    },
+    {
+      "id": "26d5",
+      "user_id": "825f2046-0cc6-417e-9bbd-261482c2a75a",
+      "role_id": 1
+    },
+    {
+      "id": "f53d6e1e-7157-44f9-a21d-bbb29f64010d",
+      "user_id": "2902b580-3abe-43f5-b4d6-82bb51d8b6e3",
+      "role_id": 1
     }
   ],
   "cities": [
@@ -54,7 +112,8 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450901/53bbd8a2e90b0a4a2eaf5ed482cf893561fe8c79_crg541.png",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "afa9"
     },
     {
       "city_id": 2,
@@ -62,7 +121,8 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "971d"
     },
     {
       "city_id": 3,
@@ -70,7 +130,8 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/4269c72b5a06b8cf26f8f058d41c868ec5ff3f54_mfuk81.png",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "dc5d"
     },
     {
       "city_id": 4,
@@ -78,7 +139,8 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/924d54b9d9dca45ff676616cf5e0007fe28b6001_lsb5ua.png",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "2c6e"
     },
     {
       "city_id": 5,
@@ -86,7 +148,8 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/202a875aa331df0e80f37ef79ff442a61a21b919_qzv5uz.png",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "112f"
     },
     {
       "city_id": 6,
@@ -94,7 +157,8 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/5113199f887a0c349f2185e27fc156a46829b277_ssgeo2.png",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "5db7"
     },
     {
       "city_id": 7,
@@ -102,7 +166,8 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/ba4a04c93cf156bdf8bd5af1dc075bc88a6f373b_hzepz3.png",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "b5a5"
     },
     {
       "city_id": 8,
@@ -110,7 +175,8 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/0057fe4d5f8307211f13f5806bbbbb29ef9b8fb0_xxoh4t.png",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "8f48"
     },
     {
       "city_id": 9,
@@ -118,7 +184,8 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "5800"
     }
   ],
   "stations": [
@@ -131,7 +198,8 @@
       "description": "Bến xe lớn tại TP.HCM",
       "location": "292 Đinh Bộ Lĩnh",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "0a6c"
     },
     {
       "station_id": 2,
@@ -142,7 +210,8 @@
       "description": "Bến xe trung tâm Kon Tum",
       "location": "281 Phan Đình Phùng",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "676f"
     },
     {
       "station_id": 3,
@@ -153,7 +222,8 @@
       "description": "Bến xe Vũng Tàu",
       "location": "Nam Kỳ Khởi Nghĩa",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "41b3"
     },
     {
       "station_id": 4,
@@ -164,7 +234,8 @@
       "description": "Bến xe Nha Trang",
       "location": "Đường 23/10",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "8e2c"
     },
     {
       "station_id": 5,
@@ -175,7 +246,8 @@
       "description": "Bến xe Đà Lạt",
       "location": "Đồi Robin",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "2c4e"
     },
     {
       "station_id": 6,
@@ -186,7 +258,8 @@
       "description": "Bến xe Mũi Né",
       "location": "Huỳnh Thúc Kháng",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "c45c"
     }
   ],
   "routes": [
@@ -198,7 +271,8 @@
       "duration": 780,
       "base_price": 530000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "a42a"
     },
     {
       "route_id": 2,
@@ -208,7 +282,8 @@
       "duration": 120,
       "base_price": 150000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "3671"
     },
     {
       "route_id": 3,
@@ -218,7 +293,8 @@
       "duration": 300,
       "base_price": 180000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "3bed"
     },
     {
       "route_id": 4,
@@ -228,7 +304,8 @@
       "duration": 480,
       "base_price": 240000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "a9a9"
     },
     {
       "route_id": 5,
@@ -238,7 +315,8 @@
       "duration": 240,
       "base_price": 200000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "b58d"
     },
     {
       "route_id": 6,
@@ -248,7 +326,8 @@
       "duration": 360,
       "base_price": 220000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "21ae"
     }
   ],
   "bus_companies": [
@@ -264,7 +343,8 @@
       "address": "TP.HCM",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "9cfc"
     },
     {
       "bus_company_id": 2,
@@ -278,7 +358,8 @@
       "address": "Hà Nội",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "4a30"
     },
     {
       "bus_company_id": 3,
@@ -292,7 +373,8 @@
       "address": "Cần Thơ",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "fcb0"
     },
     {
       "bus_company_id": 4,
@@ -306,7 +388,8 @@
       "address": "Vũng Tàu",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "6f43"
     },
     {
       "bus_company_id": 5,
@@ -320,7 +403,8 @@
       "address": "TP.HCM",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "328f"
     }
   ],
   "buses": [
@@ -332,14 +416,16 @@
       "capacity": 34,
       "amenities": "Wifi, Nước, Chăn",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "f554"
     }
   ],
   "bus_images": [
     {
       "bus_image_id": 1,
       "bus_id": 1,
-      "image_url": "https://example.com/bus1.jpg"
+      "image_url": "https://example.com/bus1.jpg",
+      "id": "2df5"
     }
   ],
   "bus_layouts": [
@@ -351,7 +437,8 @@
       "total_columns": 3,
       "floor_count": 2,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "5e69"
     }
   ],
   "seat_types": [
@@ -360,14 +447,16 @@
       "type_name": "Giường đơn",
       "icon_url": "",
       "color_code": "#FFA500",
-      "price_multiplier": 1
+      "price_multiplier": 1,
+      "id": "0364"
     },
     {
       "seat_type_id": 2,
       "type_name": "Giường đôi",
       "icon_url": "",
       "color_code": "#7C4DFF",
-      "price_multiplier": 1.5
+      "price_multiplier": 1.5,
+      "id": "b271"
     }
   ],
   "seats": [
@@ -378,7 +467,8 @@
       "seat_label": "A1",
       "seat_type_id": 2,
       "price_extra": 270000,
-      "is_available_for_booking": true
+      "is_available_for_booking": true,
+      "id": "32f5"
     },
     {
       "seat_id": 2,
@@ -387,7 +477,8 @@
       "seat_label": "A2",
       "seat_type_id": 2,
       "price_extra": 270000,
-      "is_available_for_booking": true
+      "is_available_for_booking": true,
+      "id": "a669"
     },
     {
       "seat_id": 3,
@@ -396,7 +487,8 @@
       "seat_label": "B1",
       "seat_type_id": 1,
       "price_extra": 0,
-      "is_available_for_booking": true
+      "is_available_for_booking": true,
+      "id": "cdee"
     }
   ],
   "seat_positions": [
@@ -409,7 +501,8 @@
       "column_index": 1,
       "is_driver_seat": false,
       "is_door": false,
-      "rotation": 0
+      "rotation": 0,
+      "id": "1a13"
     },
     {
       "position_id": 2,
@@ -420,7 +513,8 @@
       "column_index": 2,
       "is_driver_seat": false,
       "is_door": false,
-      "rotation": 0
+      "rotation": 0,
+      "id": "13e2"
     },
     {
       "position_id": 3,
@@ -431,7 +525,8 @@
       "column_index": 1,
       "is_driver_seat": false,
       "is_door": false,
-      "rotation": 0
+      "rotation": 0,
+      "id": "c32f"
     }
   ],
   "schedules": [
@@ -445,7 +540,8 @@
       "available_seats": 20,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "f7b0"
     }
   ],
   "seat_schedule": [
@@ -453,19 +549,22 @@
       "seat_id": 1,
       "schedule_id": 1,
       "status": "BOOKED",
-      "hold_expired_at": null
+      "hold_expired_at": null,
+      "id": "a87a"
     },
     {
       "seat_id": 2,
       "schedule_id": 1,
       "status": "AVAILABLE",
-      "hold_expired_at": null
+      "hold_expired_at": null,
+      "id": "1a5d"
     },
     {
       "seat_id": 3,
       "schedule_id": 1,
       "status": "AVAILABLE",
-      "hold_expired_at": null
+      "hold_expired_at": null,
+      "id": "fe67"
     }
   ],
   "tickets": [
@@ -478,7 +577,8 @@
       "price": 800000,
       "status": "BOOKED",
       "created_at": "2025-01-10",
-      "updated_at": "2025-01-10"
+      "updated_at": "2025-01-10",
+      "id": "7179"
     }
   ],
   "passengers": [
@@ -487,7 +587,8 @@
       "ticket_id": 1,
       "full_name": "Nguyễn Đại Phát",
       "phone": "0909123456",
-      "identity_number": "079201234567"
+      "identity_number": "079201234567",
+      "id": "5c2c"
     }
   ],
   "payment_providers": [
@@ -495,7 +596,8 @@
       "payment_provider_id": 1,
       "provider_name": "VNPay",
       "provider_type": "QR_CODE",
-      "api_endpoint": "https://vnpay.vn/api"
+      "api_endpoint": "https://vnpay.vn/api",
+      "id": "dd6a"
     }
   ],
   "payments": [
@@ -510,7 +612,8 @@
       "status": "COMPLETED",
       "paid_at": "2025-01-10T10:30",
       "created_at": "2025-01-10",
-      "updated_at": "2025-01-10"
+      "updated_at": "2025-01-10",
+      "id": "3ec1"
     }
   ],
   "cancellation_policies": [
@@ -520,7 +623,8 @@
       "cancellation_time_limit": 360,
       "refund_percentage": 80,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "89f5"
     }
   ],
   "bus_reviews": [
@@ -532,7 +636,8 @@
       "review": "Xe sạch, chạy êm",
       "status": "VISIBLE",
       "created_at": "2025-01-05",
-      "updated_at": "2025-01-05"
+      "updated_at": "2025-01-05",
+      "id": "7a44"
     }
   ],
   "banners": [
@@ -543,7 +648,8 @@
       "target_type": "ROUTE",
       "target_id": 1,
       "start_date": "2025-01-01",
-      "end_date": "2025-02-01"
+      "end_date": "2025-02-01",
+      "id": "9cb4"
     },
     {
       "banner_id": 2,
@@ -552,7 +658,8 @@
       "target_type": "ROUTE",
       "target_id": 2,
       "start_date": "2025-01-01",
-      "end_date": "2025-02-01"
+      "end_date": "2025-02-01",
+      "id": "c9b5"
     }
   ],
   "popular_routes": [
@@ -560,31 +667,36 @@
       "popular_route_id": 1,
       "route_id": 2,
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-vt_bcgm29.png",
-      "priority": 1
+      "priority": 1,
+      "id": "315a"
     },
     {
       "popular_route_id": 2,
       "route_id": 3,
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410530/sg-mn_zz0prg.png",
-      "priority": 2
+      "priority": 2,
+      "id": "fd6f"
     },
     {
       "popular_route_id": 3,
       "route_id": 4,
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-nt_ffltel.png",
-      "priority": 3
+      "priority": 3,
+      "id": "a16a"
     },
     {
       "popular_route_id": 4,
       "route_id": 5,
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
-      "priority": 4
+      "priority": 4,
+      "id": "6eed"
     },
     {
       "popular_route_id": 5,
       "route_id": 6,
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
-      "priority": 5
+      "priority": 5,
+      "id": "d023"
     }
   ]
 }
