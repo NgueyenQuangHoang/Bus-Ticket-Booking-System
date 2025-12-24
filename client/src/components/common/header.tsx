@@ -5,7 +5,6 @@ import FormAuth from "../../ui/FromAuth";
 import AvatarLogin from "../homepage/AvatarLogin";
 import type { User } from "../../types";
 import toast, { Toaster } from "react-hot-toast";
-import type { JSX } from "react/jsx-runtime";
 
 export default function Header() {
   const notify = (notifycation: string, status: boolean) => {
