@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -6,21 +6,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-// Sample banner data
-const banners = [
-  {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    alt: "Banner 1",
-  },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-    alt: "Banner 2",
-  },
-];
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { fetchBanners } from "../../slices/bannerSlice";
 
 const Banner: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { banners } = useAppSelector((state) => state.banner);
+
+  useEffect(() => {
+    dispatch(fetchBanners());
+  }, [dispatch]);
+
+  // If no banners, render nothing or a default/loading state (optional)
+  if (!banners || banners.length === 0) {
+    return null; 
+  }
+
   return (
     <section className="max-w-7xl mx-auto px-6 pb-12">
       <div className="flex items-center gap-2 mb-4 ml-15">
@@ -51,11 +52,11 @@ const Banner: React.FC = () => {
             className="mySwiper w-full"
           >
             {banners.map((banner) => (
-              <SwiperSlide key={banner.id}>
-                <div className="w-full h-[200px] md:h-[250px] relative">
+              <SwiperSlide key={banner.banner_id}>
+                <div className="w-full aspect-[16/5] relative">
                   <img
-                    src={banner.image}
-                    alt={banner.alt}
+                    src={banner.image_url}
+                    alt="Banner" 
                     className="w-full h-full object-cover rounded-xl"
                   />
                 </div>

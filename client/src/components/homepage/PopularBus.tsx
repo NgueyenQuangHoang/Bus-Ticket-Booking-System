@@ -56,25 +56,37 @@ export default function PopularBus() {
                 prevEl: ".popular-bus-prev",
             }}
             spaceBetween={20}
-            slidesPerView={1.2}
+            slidesPerView={1}
             breakpoints={{
-              640: { slidesPerView: 2.2 },
+              768: { slidesPerView: 3 },
               1024: { slidesPerView: 4 },
             }}
             className="mySwiper"
           >
             {popularBuses.map((bus) => (
               <SwiperSlide key={bus.id}>
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-3 hover:shadow-md transition duration-300">
-                  <div className="relative">
-                    <img
-                      src={bus.image}
-                      alt={bus.name}
-                      className="w-full h-40 object-cover rounded-lg"
-                    />
-                  </div>
-                  <div className="mt-3">
-                    <h3 className="font-bold text-gray-800 text-[15px] truncate">
+                <div 
+                  className="flex flex-col items-start p-4 gap-3 h-[250px] rounded-[10px] hover:shadow-md transition duration-300"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.002)',
+                    border: '1px solid #ECEEEB',
+                    boxShadow: '0px 5px 5px rgba(76, 76, 76, 0.1)',
+                  }}
+                >
+                  <img
+                    src={bus.image}
+                    alt={bus.name}
+                    className="w-full flex-1 object-cover rounded-[10px]"
+                    style={{ minHeight: '159px' }}
+                  />
+                  <div className="flex flex-col items-start gap-1 w-full rounded-[10px]">
+                    <h3 
+                      className="w-full h-6 font-bold text-lg leading-6 flex items-center truncate"
+                      style={{ 
+                        fontFamily: 'Segoe UI, sans-serif',
+                        color: '#00613D' 
+                      }}
+                    >
                       {bus.name}
                     </h3>
                   </div>
