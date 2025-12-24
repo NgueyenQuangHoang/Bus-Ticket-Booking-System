@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
@@ -10,55 +12,19 @@ import {
 } from "lucide-react";
 import "react-day-picker/dist/style.css";
 
-// --- DATA ---
-const VIETNAM_PROVINCES: string[] = [
-  "Hà Nội",
-  "Hồ Chí Minh",
-  "Đà Nẵng",
-  "Hải Phòng",
-  "Cần Thơ",
-  "An Giang",
-  "Bà Rịa - Vũng Tàu",
-  "Bắc Giang",
-  "Bắc Ninh",
-  "Bình Dương",
-  "Bình Định",
-  "Bình Thuận",
-  "Cà Mau",
-  "Đắk Lắk",
-  "Đồng Nai",
-  "Đồng Tháp",
-  "Gia Lai",
-  "Hà Giang",
-  "Hải Dương",
-  "Khánh Hòa",
-  "Kiên Giang",
-  "Lâm Đồng",
-  "Lào Cai",
-  "Long An",
-  "Nam Định",
-  "Nghệ An",
-  "Ninh Bình",
-  "Phú Thọ",
-  "Quảng Bình",
-  "Quảng Nam",
-  "Quảng Ngãi",
-  "Quảng Ninh",
-  "Sóc Trăng",
-  "Thanh Hóa",
-  "Thừa Thiên Huế",
-  "Tiền Giang",
-  "Vĩnh Phúc",
-  "Yên Bái",
-].sort();
+import type { RootState, AppDispatch } from "../../store";
+import { fetchCities } from "../../slices/citySlice";
+import type { City } from "../../types";
 
 // --- TYPE ---
 interface CustomSelectProps {
   label: string;
   value: string;
   onChange: (val: string) => void;
-  options: string[];
+  options: City[];
   placeholder?: string;
+  loading?: boolean;
+  excludeCity?: string; // City name to exclude from options
 }
 
 // --- COMPONENT CON: CUSTOM SELECT ---
@@ -68,9 +34,28 @@ const CustomSelect = ({
   onChange,
   options,
   placeholder = "Chọn...",
+  loading = false,
+  excludeCity = "",
 }: CustomSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Tìm city name từ value (city_id hoặc city_name)
+  const selectedCity = options.find(city => city.city_name === value);
+  const displayValue = selectedCity?.city_name || value;
+
+  // Filter options: loại bỏ thành phố đã chọn ở dropdown khác và filter theo search term
+  const filteredOptions = options.filter(city => {
+    // Loại bỏ thành phố đã chọn ở dropdown khác
+    if (excludeCity && city.city_name === excludeCity) return false;
+    // Filter theo search term (tìm tương đối - chứa ký tự, không phân biệt hoa thường)
+    if (searchTerm) {
+      return city.city_name.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+    return true;
+  });
 
   // Click outside để đóng dropdown
   useEffect(() => {
@@ -80,11 +65,19 @@ const CustomSelect = ({
         !containerRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
+        setSearchTerm(""); // Reset search khi đóng
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Focus vào input khi mở dropdown
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
 
   return (
     <div
@@ -96,7 +89,7 @@ const CustomSelect = ({
             : "border-[#9E9E9E] hover:border-gray-600 hover:bg-gray-100"
         }
       `}
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={() => !loading && setIsOpen(!isOpen)}
     >
       {/* Label */}
       <label className="font-bold text-[14px] leading-[19px] text-[#565656] text-center cursor-pointer">
@@ -105,13 +98,19 @@ const CustomSelect = ({
 
       {/* Value hiển thị */}
       <div className="flex items-center gap-2">
-        <span
-          className={`text-[14.6px] leading-[19px] ${
-            value ? "text-black font-medium" : "text-[#757575]"
-          }`}
-        >
-          {value || placeholder}
-        </span>
+        {loading ? (
+          <span className="text-[14.6px] leading-[19px] text-[#757575]">
+            Đang tải...
+          </span>
+        ) : (
+          <span
+            className={`text-[14.6px] leading-[19px] ${
+              displayValue ? "text-black font-medium" : "text-[#757575]"
+            }`}
+          >
+            {displayValue || placeholder}
+          </span>
+        )}
         {/* Mũi tên dropdown */}
         <ChevronDown
           className={`w-4 h-4 text-gray-400 transition-transform ${
@@ -121,28 +120,57 @@ const CustomSelect = ({
       </div>
 
       {/* --- PHẦN DANH SÁCH XỔ XUỐNG --- */}
-      {isOpen && (
-        <div className="absolute top-[105%] left-0 w-full max-h-[300px] overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl z-50 animate-in fade-in zoom-in duration-200">
-          {options.map((option) => (
-            <div
-              key={option}
-              className={`px-4 py-3 text-sm cursor-pointer flex justify-between items-center transition-colors
-                ${
-                  option === value
-                    ? "bg-orange-50 text-[#FFA901] font-bold" // Đã chọn
-                    : "text-gray-700 hover:bg-orange-100 hover:text-[#FFA901]" // Hover
-                }
-              `}
-              onClick={(e) => {
-                e.stopPropagation(); // Ngăn sự kiện nổi bọt lên cha
-                onChange(option);
-                setIsOpen(false);
-              }}
-            >
-              {option}
-              {option === value && <Check className="w-4 h-4" />}
+      {isOpen && !loading && (
+        <div 
+          className="absolute top-[105%] left-0 w-full max-h-[350px] bg-white border border-gray-200 rounded-lg shadow-xl z-50 animate-in fade-in zoom-in duration-200"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Ô tìm kiếm */}
+          <div className="p-2 border-b border-gray-200 sticky top-0 bg-white">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                ref={inputRef}
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Gõ để tìm nhanh..."
+                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:border-orange-400"
+                onClick={(e) => e.stopPropagation()}
+              />
             </div>
-          ))}
+          </div>
+
+          {/* Danh sách options */}
+          <div className="max-h-[280px] overflow-y-auto">
+            {filteredOptions.length === 0 ? (
+              <div className="px-4 py-3 text-sm text-gray-500 text-center">
+                {searchTerm ? `Không tìm thấy "${searchTerm}"` : "Không có dữ liệu"}
+              </div>
+            ) : (
+              filteredOptions.map((city) => (
+                <div
+                  key={city.city_id}
+                  className={`px-4 py-3 text-sm cursor-pointer flex justify-between items-center transition-colors
+                    ${
+                      city.city_name === value
+                        ? "bg-orange-50 text-[#FFA901] font-bold" // Đã chọn
+                        : "text-gray-700 hover:bg-orange-100 hover:text-[#FFA901]" // Hover
+                    }
+                  `}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange(city.city_name);
+                    setIsOpen(false);
+                    setSearchTerm("");
+                  }}
+                >
+                  {city.city_name}
+                  {city.city_name === value && <Check className="w-4 h-4" />}
+                </div>
+              ))
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -151,10 +179,19 @@ const CustomSelect = ({
 
 // --- COMPONENT CHÍNH ---
 export default function BusSearchWidget() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { cities, loading } = useSelector((state: RootState) => state.city);
+
   const [departure, setDeparture] = useState<string>("");
   const [destination, setDestination] = useState<string>("");
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+
+  // Fetch cities khi component mount
+  useEffect(() => {
+    dispatch(fetchCities());
+  }, [dispatch]);
 
   // Ref click outside cho Calendar
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -172,8 +209,28 @@ export default function BusSearchWidget() {
   }, []);
 
   const handleSearch = () => {
-    console.log({ from: departure, to: destination, date });
+    // Kiểm tra đã chọn đủ thông tin chưa
+    if (!departure || !destination) {
+      alert("Vui lòng chọn điểm khởi hành và điểm đến!");
+      return;
+    }
+
+    // Tạo query params
+    const params = new URLSearchParams();
+    params.set("from", departure);
+    params.set("to", destination);
+    if (date) {
+      params.set("date", format(date, "yyyy-MM-dd"));
+    }
+
+    // Navigate đến trang BookingTicket với query params
+    navigate(`/bookingTicket?${params.toString()}`);
   };
+
+  // Sắp xếp cities theo tên
+  const sortedCities = [...cities].sort((a, b) => 
+    a.city_name.localeCompare(b.city_name, 'vi')
+  );
 
   return (
     <div className="font-['Segoe_UI'] w-full flex justify-center">
@@ -195,8 +252,10 @@ export default function BusSearchWidget() {
             label="Điểm Khởi Hành"
             value={departure}
             onChange={setDeparture}
-            options={VIETNAM_PROVINCES}
+            options={sortedCities}
             placeholder="Chọn điểm khởi hành"
+            loading={loading}
+            excludeCity={destination}
           />
 
           {/* 2. ĐIỂM ĐẾN (Dùng Custom Select) */}
@@ -204,8 +263,10 @@ export default function BusSearchWidget() {
             label="Điểm Đến"
             value={destination}
             onChange={setDestination}
-            options={VIETNAM_PROVINCES}
+            options={sortedCities}
             placeholder="Chọn điểm đến"
+            loading={loading}
+            excludeCity={departure}
           />
 
           {/* 3. NGÀY KHỞI HÀNH */}
