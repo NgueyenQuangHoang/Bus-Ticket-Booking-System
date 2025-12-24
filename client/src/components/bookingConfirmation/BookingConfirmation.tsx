@@ -30,15 +30,15 @@ export default function BookingConfirmation() {
 
         {/* 3. Layout Chính: Grid 2 cột */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-8 space-y-6">
+          <div className="lg:col-span-7 space-y-6">
             {/* Component 1: Thông tin liên hệ */}
             <section>
               <ContactInfo onValidationChange={setIsContactValid} />
             </section>
           </div>
 
-          {/* Cột Phải: Tóm tắt đơn hàng (Chiếm 4 phần) */}
-          <div className="lg:col-span-4 relative">
+          {/* Cột Phải: Tóm tắt đơn hàng (Chiếm 5 phần) */}
+          <div className="lg:col-span-5 relative">
             <TripDetails />
           </div>
         </div>

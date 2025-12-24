@@ -28,24 +28,30 @@ export default function PriceSummary() {
         </div>
       </div>
 
-      {/* Nội dung xổ xuống */}
-      {isPriceExpanded && (
-        <div className="px-4 pb-4 animate-in slide-in-from-top-2 duration-200">
-          <div className="pt-2 border-t border-dashed border-gray-200">
-            <div className="flex justify-between items-start mt-3">
-              <span className="text-sm text-gray-600">Giá vé</span>
-              <div className="text-right">
-                <span className="block text-sm font-bold text-gray-900">
-                  300.000đ x 1
-                </span>
-                <span className="block text-xs text-gray-500 mt-0.5">
-                  Mã ghế/giường: A1-2
-                </span>
+      {/* Nội dung xổ xuống with CSS Grid Animation */}
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          isPriceExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="overflow-hidden bg-white">
+          <div className="px-4 pb-4">
+            <div className="pt-2 border-t border-dashed border-gray-200">
+              <div className="flex justify-between items-start mt-3">
+                <span className="text-sm text-gray-600">Giá vé</span>
+                <div className="text-right">
+                  <span className="block text-sm font-bold text-gray-900">
+                    300.000đ x 1
+                  </span>
+                  <span className="block text-xs text-gray-500 mt-0.5">
+                    Mã ghế/giường: A1-2
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
-};
+}

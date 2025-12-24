@@ -202,76 +202,76 @@ function TripCard({ trip, onDetailClick }: TripCardProps) {
         </div>
 
         {/* 3. Timeline */}
-        <div className="relative pl-2">
-          {/* Line Connector */}
-          <div className="absolute top-[22px] left-[73px] bottom-8 w-[1px] bg-gray-300 pointer-events-none"></div>
+        {/* 3. Timeline - CSS Grid Layout */}
+        <div className="grid grid-cols-[40px_24px_1fr] gap-x-4 pl-2">
+          {/* Col 1: Start Time */}
+          <div className="flex flex-col items-center text-center">
+            <span className="text-lg font-bold text-gray-900 leading-none">
+              {trip.departure.time}
+            </span>
+            <span className="text-[10px] text-gray-500 font-medium mt-1">
+              {trip.departure.date}
+            </span>
+          </div>
 
-          {/* Start Point */}
-          <div className="relative z-10 flex items-start gap-4 mb-6">
-            <div className="flex flex-col items-center w-10 text-center flex-shrink-0">
-              <span className="text-lg font-bold text-gray-900 leading-none">
-                {trip.departure.time}
-              </span>
-              <span className="text-[10px] text-gray-500 font-medium mt-1">
-                {trip.departure.date}
-              </span>
-            </div>
-
-            {/* Icon Wrapper: 24px wide, centered */}
-            <div className="mt-1.5 flex-shrink-0 w-6 flex justify-center">
+          {/* Col 2: Visuals (Icons + Line) - Spans 2 rows */}
+          <div className="row-span-2 flex flex-col items-center relative gap-1">
+            {/* Start Icon Wrapper (matches mt-1.5) */}
+            <div className="mt-1.5 flex-shrink-0 w-6 flex justify-center z-10 bg-white">
               <FiberManualRecordIcon
                 style={{ fontSize: 14 }}
                 className="text-blue-500"
               />
             </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex justify-between items-start">
-                <div className="pr-2">
-                  <p className="text-sm font-bold text-gray-900">
-                    {trip.departure.name}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-                    {trip.departure.address}
-                  </p>
-                </div>
-                <button className="text-xs text-blue-600 font-medium whitespace-nowrap hover:underline hover:cursor-pointer">
-                  Thay đổi
-                </button>
-              </div>
+            {/* Line - Flex grow to fill space */}
+            <div className="w-[1px] bg-gray-300 flex-1"></div>
+            {/* End Icon Wrapper (matches mt-1) */}
+            <div className="mt-1 flex-shrink-0 w-6 flex justify-center z-10 bg-white">
+              <PlaceIcon style={{ fontSize: 18 }} className="text-red-500" />
             </div>
           </div>
 
-          {/* End Point */}
-          <div className="relative z-10 flex items-start gap-4">
-            <div className="flex flex-col items-center w-10 text-center flex-shrink-0">
-              <span className="text-lg font-bold text-gray-500 leading-none">
-                {trip.arrival.time}
-              </span>
-              <span className="text-[10px] text-gray-500 font-medium mt-1">
-                {trip.arrival.date}
-              </span>
-            </div>
-
-            {/* Icon Wrapper: 24px wide, centered */}
-            <div className="mt-1 flex-shrink-0 w-6 flex justify-center">
-              <PlaceIcon style={{ fontSize: 18 }} className="text-red-500" />
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex justify-between items-start">
-                <div className="pr-2">
-                  <p className="text-sm font-bold text-gray-900">
-                    {trip.arrival.name}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-                    {trip.arrival.address}
-                  </p>
-                </div>
-                <button className="text-xs text-blue-600 font-medium whitespace-nowrap hover:underline hover:cursor-pointer">
-                  Thay đổi
-                </button>
+          {/* Col 3: Start Content */}
+          <div className="pb-6">
+            <div className="flex justify-between items-start">
+              <div className="pr-2">
+                <p className="text-sm font-bold text-gray-900 pt-1">
+                  {trip.departure.name}
+                </p>
+                <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                  {trip.departure.address}
+                </p>
               </div>
+              <button className="text-xs text-blue-600 font-medium whitespace-nowrap hover:underline hover:cursor-pointer pt-1">
+                Thay đổi
+              </button>
+            </div>
+          </div>
+
+          {/* Col 1: End Time - Row 2 */}
+          <div className="flex flex-col items-center text-center">
+            <span className="text-lg font-bold text-gray-500 leading-none">
+              {trip.arrival.time}
+            </span>
+            <span className="text-[10px] text-gray-500 font-medium mt-1">
+              {trip.arrival.date}
+            </span>
+          </div>
+
+          {/* Col 3: End Content - Row 2 */}
+          <div>
+            <div className="flex justify-between items-start">
+              <div className="pr-2">
+                <p className="text-sm font-bold text-gray-900">
+                  {trip.arrival.name}
+                </p>
+                <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                  {trip.arrival.address}
+                </p>
+              </div>
+              <button className="text-xs text-blue-600 font-medium whitespace-nowrap hover:underline hover:cursor-pointer">
+                Thay đổi
+              </button>
             </div>
           </div>
         </div>
@@ -295,13 +295,20 @@ function TripCard({ trip, onDetailClick }: TripCardProps) {
 // --- MAIN Component ---
 export default function TripInfo() {
   const [selectedTrip, setSelectedTrip] = useState<TripData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleDetailClick = (trip: TripData) => {
     setSelectedTrip(trip);
+    // Slight delay to allow render before triggering animation
+    setTimeout(() => setIsModalOpen(true), 10);
   };
 
   const handleCloseModal = () => {
-    setSelectedTrip(null);
+    setIsModalOpen(false);
+    // Wait for animation (300ms) before unmounting
+    setTimeout(() => {
+      setSelectedTrip(null);
+    }, 300);
   };
 
   return (
@@ -324,7 +331,7 @@ export default function TripInfo() {
       {/* Detail Modal */}
       {selectedTrip && (
         <TripDetailModal
-          isOpen={!!selectedTrip}
+          isOpen={isModalOpen}
           onClose={handleCloseModal}
           trip={selectedTrip}
         />
