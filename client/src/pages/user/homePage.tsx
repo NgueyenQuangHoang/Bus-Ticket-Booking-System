@@ -1,6 +1,6 @@
 import BannerA from "../../components/homepage/BannerA";
 import Banner from "../../components/homepage/Banner";
-import BusStation from "../../components/homepage/BusStation";
+import BusStation from "../../components/homepage/PopularBusStation";
 import ConnectIcon from "../../components/homepage/ConnectIcon";
 import PopularBus from "../../components/homepage/PopularBus";
 import PopularRoute from "../../components/homepage/PopularRoute";

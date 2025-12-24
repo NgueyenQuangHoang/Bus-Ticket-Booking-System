@@ -1,65 +1,126 @@
-// Data definition - purely content, no style info
-const locations = [
-    { name: "Sài Gòn", posts: "287 bài viết", img: "https://images.unsplash.com/photo-1506973035872-a4f23ef8f7c4" },
-    { name: "Vũng Tàu", posts: "98 bài viết", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e" },
-    { name: "Đà Lạt", posts: "87 bài viết", img: "https://images.unsplash.com/photo-1501785888041-af3ef285b470" },
-    { name: "Hà Nội", posts: "612 bài viết", img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da" },
-    { name: "Quy Nhơn", posts: "81 bài viết", img: "https://images.unsplash.com/photo-1559827260-dc66d52bef19" },
-    { name: "Nha Trang", posts: "557 bài viết", img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429" },
-    { name: "Đà Nẵng", posts: "570 bài viết", img: "https://images.unsplash.com/photo-1583417319070-4a69db38a482" },
-    { name: "Phan Thiết", posts: "276 bài viết", img: "https://images.unsplash.com/photo-1552751118-cfe73e1cf72c" }
+import { useEffect, useState } from "react";
+import { cityService } from "../../services/cityService";
+import type { City } from "../../types";
+
+// Layout configuration using aspect ratios instead of fixed heights
+// Grid uses 3 columns with percentage-based widths
+const LAYOUT_CONFIG = [
+    // Slot 0: Large (2 cols, 2 rows) - aspect ratio ~2.05:1
+    { className: "col-span-2 row-span-2", aspectRatio: "2.05 / 1" },
+    // Slot 1: Tall (1 col, 2 rows) - aspect ratio ~0.89:1
+    { className: "col-span-1 row-span-2", aspectRatio: "0.89 / 1" },
+    // Slot 2: Small (1 col, 1 row) - aspect ratio ~1.83:1
+    { className: "col-span-1 row-span-1", aspectRatio: "1.83 / 1" },
+    // Slot 3: Large (2 cols, 2 rows)
+    { className: "col-span-2 row-span-2", aspectRatio: "2.05 / 1" },
+    // Slot 4: Small (1 col, 1 row)
+    { className: "col-span-1 row-span-1", aspectRatio: "1.83 / 1" },
+    // Slot 5: Large (2 cols, 2 rows)
+    { className: "col-span-2 row-span-2", aspectRatio: "2.05 / 1" },
+    // Slot 6: Small (1 col, 1 row)
+    { className: "col-span-1 row-span-1", aspectRatio: "1.83 / 1" },
+    // Slot 7: Small (1 col, 1 row)
+    { className: "col-span-1 row-span-1", aspectRatio: "1.83 / 1" },
 ];
 
-// Layout configuration - defines the "slots" in the grid 0-7
-const LAYOUT_CONFIG = [
-    // 0: Sài Gòn slot (Large, Top-Left)
-    { className: "col-span-2 row-span-2 h-[360px]", textTop: "274px" },
-    // 1: Vũng Tàu slot (Tall, Top-Right)
-    { className: "col-span-1 row-span-2 h-[360px]", textTop: "274px" },
-    // 2: Đà Lạt slot (Small, Middle-Left)
-    { className: "col-span-1 row-span-1 h-[175px]", textTop: "89px" },
-    // 3: Hà Nội slot (Large, Middle-Right)
-    { className: "col-span-2 row-span-2 h-[360px]", textTop: "274px" },
-    // 4: Quy Nhơn slot (Small, Middle-Left-Bottom)
-    { className: "col-span-1 row-span-1 h-[175px]", textTop: "89px" }, // Standardized to 89px
-    // 5: Nha Trang slot (Large, Bottom-Left)
-    { className: "col-span-2 row-span-2 h-[360px]", textTop: "274px" },
-    // 6: Đà Nẵng slot (Small, Bottom-Right-Top)
-    { className: "col-span-1 row-span-1 h-[175px]", textTop: "89px" },
-    // 7: Phan Thiết slot (Small, Bottom-Right-Bottom)
-    { className: "col-span-1 row-span-1 h-[175px]", textTop: "89px" },
-];
+const MAX_ITEMS = LAYOUT_CONFIG.length;
+
+const buildPostsLabel = (cityName: string, seed: number) => {
+    const normalizedName = cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const hash = normalizedName.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const count = 80 + ((hash + seed * 31) % 600);
+    return `${count} bài viết`;
+};
 
 export default function TopReview() {
+    const [cities, setCities] = useState<City[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let active = true;
+
+        const loadCities = async () => {
+            try {
+                const data = await cityService.getAllCities();
+                if (!active) return;
+                const withImages = (data ?? []).filter((city): city is City & { image_city: string } => Boolean(city.image_city));
+                const sorted = [...withImages].sort((a, b) => a.city_name.localeCompare(b.city_name, "vi", { sensitivity: "base" }));
+                setCities(sorted.slice(0, MAX_ITEMS));
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (error) {
+                if (!active) return;
+                setCities([]);
+            } finally {
+                if (active) {
+                    setIsLoading(false);
+                }
+            }
+        };
+
+        loadCities();
+
+        return () => {
+            active = false;
+        };
+    }, []);
+
+    const preparedLocations = cities
+        .map((city, index) => ({
+            key: city.city_id,
+            name: city.city_name,
+            posts: buildPostsLabel(city.city_name, city.city_id),
+            img: city.image_city,
+            layout: LAYOUT_CONFIG[index],
+        }))
+        .filter((item) => item.layout);
+
+    if (!isLoading && preparedLocations.length === 0) {
+        return null;
+    }
+
     return (
         <div>
-            <section className="max-w-7xl mx-auto px-6 py-12">
-                <div className="flex items-center gap-2 mb-6 ml-12">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+                <div className="flex items-center gap-2 mb-4 sm:mb-6 ml-2 sm:ml-16.5">
                     <span className="w-1 h-6 bg-orange-500 rounded"></span>
-                    <h2 className="text-xl font-semibold">Top Reviews</h2>
+                    <h2 className="text-lg sm:text-xl font-semibold">Top Reviews</h2>
                 </div>
 
-                {/* Flexible Grid Layout */}
-                <div className="grid grid-cols-[320px_440px_320px] gap-[10px] justify-center auto-rows-[175px]">
-                    {locations.map((loc, index) => {
-                        // Apply layout config cyclically or just for first 8
-                        const layout = LAYOUT_CONFIG[index];
-                        if (!layout) return null; // Safety check if data exceeds config
+                {/* Responsive Grid Layout - scales proportionally */}
+                <div 
+                    className="w-full max-w-[1100px] mx-auto grid gap-[2%] sm:gap-[1%]"
+                    style={{ 
+                        gridTemplateColumns: '29.6% 40.8% 29.6%',
+                    }}
+                >
+                    {isLoading && (
+                        <div className="col-span-3 text-center text-gray-500 py-12">Đang tải địa điểm...</div>
+                    )}
 
-                        return (
-                            <div key={index} className={`relative rounded-xl overflow-hidden ${layout.className}`}>
-                                <img src={loc.img} alt={loc.name} className="w-full h-full object-cover" />
-                                <div className="absolute left-[20px]" style={{ top: layout.textTop }}>
-                                    <h3 className="text-white font-bold text-[32px] leading-[43px]" style={{ fontFamily: 'Segoe UI' }}>
-                                        {loc.name}
-                                    </h3>
-                                    <p className="text-white font-normal text-[20px] leading-[27px]" style={{ fontFamily: 'Segoe UI' }}>
-                                        {loc.posts}
-                                    </p>
-                                </div>
+                    {!isLoading && preparedLocations.map((loc) => (
+                        <div 
+                            key={loc.key} 
+                            className={`relative rounded-lg sm:rounded-xl overflow-hidden ${loc.layout?.className}`}
+                            style={{ aspectRatio: loc.layout?.aspectRatio }}
+                        >
+                            <img src={loc.img} alt={loc.name} className="w-full h-full object-cover" />
+                            {/* Text overlay positioned at bottom with responsive sizing */}
+                            <div className="absolute left-[5%] bottom-[8%]">
+                                <h3 
+                                    className="text-white font-bold text-base sm:text-xl md:text-2xl lg:text-[32px] leading-tight"
+                                    style={{ fontFamily: 'Segoe UI' }}
+                                >
+                                    {loc.name}
+                                </h3>
+                                <p 
+                                    className="text-white font-normal text-xs sm:text-sm md:text-base lg:text-[20px] leading-tight"
+                                    style={{ fontFamily: 'Segoe UI' }}
+                                >
+                                    {loc.posts}
+                                </p>
                             </div>
-                        );
-                    })}
+                        </div>
+                    ))}
                 </div>
             </section>
         </div>

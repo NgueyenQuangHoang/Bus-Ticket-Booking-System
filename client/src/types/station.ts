@@ -1,11 +1,12 @@
 import type { Timestamp } from './common';
 
 export interface Station {
-  stations_id: number;
-  stations_name: string;
+  station_id: number;
+  station_name: string;
+  city_id: number;
   image?: string;
   wallpaper?: string;
-  descriptions?: string;
+  description?: string;
   location?: string;
   created_at?: Timestamp;
   updated_at?: Timestamp;
