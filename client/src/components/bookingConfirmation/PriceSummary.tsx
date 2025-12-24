@@ -1,12 +1,18 @@
 /**
  * Component: PriceSummary
- * Mục đích: Hiển thị chi tiết giá vé.
- * Ghi chú: Trước đây dùng trong TripDetails, hiện tại có thể dùng ở chỗ khác hoặc là legacy.
+ * Mục đích: Hiển thị chi tiết giá vé (Accordion).
+ * Tính năng: Hiển thị tổng tiền, chi tiết vé (số lượng, mã ghế).
  */
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-export default function PriceSummary() {
+interface PriceSummaryProps {
+  totalPrice: number;
+  seatCount: number;
+  seatIds: string;
+}
+
+export default function PriceSummary({ totalPrice, seatCount, seatIds }: PriceSummaryProps) {
   const [isPriceExpanded, setIsPriceExpanded] = useState(true);
 
   return (
@@ -18,7 +24,9 @@ export default function PriceSummary() {
       >
         <span className="text-lg font-bold text-gray-900">Tạm tính</span>
         <div className="flex items-center gap-1">
-          <span className="text-lg font-bold text-gray-900 ">300.000đ</span>
+          <span className="text-lg font-bold text-gray-900 ">
+            {totalPrice.toLocaleString("vi-VN")}đ
+          </span>
           <ChevronDown
             size={16}
             className={`text-gray-500 transition-transform duration-200 ${
@@ -41,10 +49,10 @@ export default function PriceSummary() {
                 <span className="text-sm text-gray-600">Giá vé</span>
                 <div className="text-right">
                   <span className="block text-sm font-bold text-gray-900">
-                    300.000đ x 1
+                    {totalPrice.toLocaleString("vi-VN")}đ x {seatCount}
                   </span>
                   <span className="block text-xs text-gray-500 mt-0.5">
-                    Mã ghế/giường: A1-2
+                    Mã ghế/giường: {seatIds}
                   </span>
                 </div>
               </div>

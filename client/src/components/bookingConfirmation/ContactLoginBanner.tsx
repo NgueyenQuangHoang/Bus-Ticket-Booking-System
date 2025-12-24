@@ -4,7 +4,15 @@ import FormAuth from "../../ui/FromAuth";
  * Component: ContactLoginBanner
  * Mục đích: Banner nhắc nhở người dùng đăng nhập để tự động điền thông tin.
  */
-export default function ContactLoginBanner() {
+import type { User } from "../../types";
+
+interface ContactLoginBannerProps {
+  changeLoginState: (login: boolean) => void;
+  setUser: (user: User) => void;
+  notify: (notifycation: string, status: boolean) => void;
+}
+
+export default function ContactLoginBanner({ changeLoginState, setUser, notify }: ContactLoginBannerProps) {
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between border border-blue-900 rounded-lg p-4 mb-6 gap-4 bg-[#f8faff]">
       <p className="text-sm font-medium text-gray-800 text-center sm:text-left">
@@ -16,7 +24,7 @@ export default function ContactLoginBanner() {
       >
         Đăng nhập
       </button> */}
-      <FormAuth />
+      <FormAuth changeLoginState={changeLoginState} setUser={setUser} notify={notify} />
     </div>
   );
 }
