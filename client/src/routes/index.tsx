@@ -18,6 +18,7 @@ import HomePage from "../pages/user/homePage";
 import BusStationPage from "../pages/user/bus_station/BusStationPage";
 import RoutesPage from "../pages/user/route/RoutesPage";
 import RouteDetailPage from "../pages/user/route/RouteDetailPage";
+import CheckTicket from "../pages/user/CheckTicket";
 
 export const router = createBrowserRouter([
     {
@@ -31,7 +32,9 @@ export const router = createBrowserRouter([
             { path: "busStation", element: <BusStationPage /> },
             { path: "routes", element: <RoutesPage /> },
             { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
-            { path: "detailRoute", element: <RouteDetailPage /> }
+            { path: "detailRoute", element: <RouteDetailPage /> },
+                        { path: "check-ticket", element: <CheckTicket /> }
+
 
 
 
