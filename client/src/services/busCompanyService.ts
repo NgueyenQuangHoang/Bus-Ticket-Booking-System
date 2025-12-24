@@ -2,10 +2,10 @@ import api from "../api/api";
 import type { BusCompany } from "../types/index";
 
 export const busCompanyService = {
-    getAllBusCompanies: async (): Promise<BusCompany[]> => {
+    getAllBusCompanies: async (): Promise<BusCompany[] | undefined> => {
         try {
-            const response = await api.get('/bus_companies');
-            return response as unknown as BusCompany[];
+            const response : BusCompany[] = await api.get('/bus_companies');
+            return response ? response : undefined
         } catch (error) {
             console.error('Error fetching bus companies:', error);
             throw error;

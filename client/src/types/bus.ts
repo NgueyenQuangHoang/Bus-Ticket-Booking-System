@@ -8,6 +8,12 @@ export interface BusCompany {
   rating?: number;
   created_at?: Timestamp;
   updated_at?: Timestamp;
+  
+  license_number: string;
+  contact_phone: string;
+  contact_email: string;
+  address: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'PENDING';
 }
 
 export interface Bus {

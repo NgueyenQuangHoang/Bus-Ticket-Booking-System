@@ -837,7 +837,8 @@
       "base_price": 350000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "a42a"
+      "id": "a42a",
+      "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
     },
     {
       "route_id": 2,
@@ -848,7 +849,8 @@
       "base_price": 350000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "3671"
+      "id": "3671",
+      "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
     },
     {
       "route_id": 3,
@@ -859,7 +861,8 @@
       "base_price": 120000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "3bed"
+      "id": "3bed",
+      "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
     },
     {
       "route_id": 4,
