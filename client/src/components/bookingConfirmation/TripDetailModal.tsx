@@ -6,7 +6,7 @@
  *  - Nội dung: Nhà xe, Lộ trình, Lịch trình, Điểm đón/trả.
  *  - Thao tác: Đóng, Đổi chuyến.
  */
-import { useState } from "react";
+
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AdjustIcon from "@mui/icons-material/Adjust"; // For Pickup
@@ -24,14 +24,6 @@ export default function TripDetailModal({
   onClose,
   trip,
 }: TripDetailModalProps) {
-  const [shouldRender, setShouldRender] = useState(true);
-
-  const handleAnimationEnd = () => {
-    if (!isOpen) setShouldRender(false);
-  };
-
-  if (!shouldRender) return null;
-
   const isDeparture = trip.type === "departure";
   const badgeText = isDeparture
     ? "CHIỀU ĐI"
@@ -41,19 +33,23 @@ export default function TripDetailModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[60] flex justify-end transition-opacity duration-300 ${
-        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      className={`fixed inset-0 z-[60] flex justify-end transition-colors duration-300 ${
+        isOpen ? "pointer-events-auto" : "pointer-events-none"
       }`}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div
+        className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={onClose}
+      />
 
       {/* Drawer Container */}
       <div
-        className={`relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300 ease-out ${
+        className={`relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
-        onTransitionEnd={handleAnimationEnd}
       >
         {/* Header */}
         <div className="bg-[#2474E5] text-white p-4 flex items-center gap-4 shrink-0">

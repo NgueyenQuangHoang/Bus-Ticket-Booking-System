@@ -1,3 +1,5 @@
+import FormAuth from "../../ui/FromAuth";
+
 /**
  * Component: ContactLoginBanner
  * Mục đích: Banner nhắc nhở người dùng đăng nhập để tự động điền thông tin.
@@ -8,14 +10,13 @@ export default function ContactLoginBanner() {
       <p className="text-sm font-medium text-gray-800 text-center sm:text-left">
         Đăng nhập để tự điền thông tin và nhận điểm khi đặt vé
       </p>
-      <button
+      {/* <button
         type="button"
         className="bg-[#002559] hover:bg-[#003b8e] text-white text-sm font-semibold py-2 px-6 rounded transition-colors whitespace-nowrap shadow-md active:scale-95 hover:cursor-pointer"
       >
         Đăng nhập
-      </button>
+      </button> */}
+      <FormAuth changeLoginState={() => {}} setUser={() => {}} />
     </div>
   );
-};
-
-;
+}
