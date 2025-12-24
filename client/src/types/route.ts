@@ -10,6 +10,7 @@ export interface Route {
   total_bookings?: number;
   created_at?: Timestamp;
   updated_at?: Timestamp;
+  description: string
 }
 
 export interface PopularRoute {

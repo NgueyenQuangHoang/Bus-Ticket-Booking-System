@@ -1,7 +1,33 @@
+import { useState } from "react";
 import CardBus from "../../../components/bus_company/buscompanypage/CardBus";
 import Pagination from "../../../components/bus_company/buscompanypage/Pagination";
+import { busCompanyService } from "../../../services/busCompanyService";
+import type { BusCompany } from "../../../types";
 
 const BusCompanyPage = () => {
+  const responseGetAllBusCompany = busCompanyService.getAllBusCompanies()
+  const [listBusCompanies, setListBusCompanies] = useState<BusCompany[]>([])
+  const itemPerPage = 4
+  const totalPage = Math.ceil(listBusCompanies.length / itemPerPage)
+  const [currentPage, setCurrentPage] = useState(1)
+  const nextPage = () => {
+    if (currentPage < totalPage) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+  const clickPage = (page: number) => {
+    setCurrentPage(page)
+  }
+  responseGetAllBusCompany.then((res) => {
+    if (res){
+      setListBusCompanies(res)
+    }
+  })
   return (
     <section
       className=" max-w-7xl mx-auto py-8 px-3 [@media(min-width:391px)]:px-4 [@media(min-width:769px)]:px-0
@@ -17,8 +43,14 @@ const BusCompanyPage = () => {
         </h2>
       </div>
 
-      <CardBus />
-      <Pagination />
+      {listBusCompanies ? <CardBus  busCompanies={listBusCompanies} itemPerPage={itemPerPage} currentPage={currentPage}/> : <></>}
+      <Pagination 
+      clickPage={clickPage} 
+      currentPage={currentPage}
+      nextPage={nextPage}
+      prevPage={prevPage}
+      totalPage={totalPage}
+      />
 
       <p
         className="
