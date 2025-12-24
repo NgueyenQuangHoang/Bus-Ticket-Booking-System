@@ -4,8 +4,19 @@ import logoMain from "../../assets/loginmain.png";
 import FormAuth from "../../ui/FromAuth";
 import AvatarLogin from "../homepage/AvatarLogin";
 import type { User } from "../../types";
+import toast, { Toaster } from "react-hot-toast";
+import type { JSX } from "react/jsx-runtime";
 
 export default function Header() {
+  const notify = (notifycation: string, status: boolean) => {
+    if(status){
+      toast.success(notifycation);
+    }
+    else{
+      toast.error(notifycation)
+    }
+  }
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(
     localStorage.getItem('isLogin') ? JSON.parse(localStorage.getItem('isLogin') as string) : false
@@ -135,7 +146,7 @@ export default function Header() {
             </button>
 
             <div className="hidden lg:flex items-center">
-              {!isLogin ? <FormAuth changeLoginState={setIsLogin} setUser={setUser} /> : <AvatarLogin user={user} onLogout={setIsLogin} />}
+              {!isLogin ? <FormAuth notify={notify} changeLoginState={setIsLogin} setUser={setUser} /> : <AvatarLogin notify={notify} user={user} onLogout={setIsLogin} />}
             </div>
           </div>
         </div>
@@ -205,12 +216,17 @@ export default function Header() {
             {/* Login */}
             <div className="p-4 mt-auto">
               <button className="w-full h-[40px] bg-white text-[#1295db] font-semibold rounded-md">
-                {!isLogin && <FormAuth setUser={setUser} changeLoginState={setIsLogin} />}
+                {!isLogin && <FormAuth notify={notify} setUser={setUser} changeLoginState={setIsLogin} />}
               </button>
             </div>
           </aside>
         </div>
       )}
+      <Toaster
+        position="top-right"
+
+        reverseOrder={false}
+      />
     </header>
   );
 }

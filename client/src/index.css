@@ -12,3 +12,35 @@
 .animate-slide-in-left {
   animation: slide-in-left 0.3s ease-out forwards;
 }
+
+@keyframes dropdown-expand {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.animate-dropdown-expand {
+  transform-origin: top;
+  animation: dropdown-expand 0.15s ease-out forwards;
+}
+
+@keyframes dropdown-collapse {
+  from {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+.animate-dropdown-collapse {
+  transform-origin: top;
+  animation: dropdown-collapse 0.1s ease-out forwards;
+}
