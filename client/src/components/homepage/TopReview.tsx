@@ -81,7 +81,7 @@ export default function TopReview() {
     return (
         <div>
             <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-                <div className="flex items-center gap-2 mb-4 sm:mb-6 ml-2 sm:ml-12">
+                <div className="flex items-center gap-2 mb-4 sm:mb-6 ml-2 sm:ml-16.5">
                     <span className="w-1 h-6 bg-orange-500 rounded"></span>
                     <h2 className="text-lg sm:text-xl font-semibold">Top Reviews</h2>
                 </div>
