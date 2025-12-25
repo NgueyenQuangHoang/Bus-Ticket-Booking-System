@@ -20,17 +20,10 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ isOpen }: SidebarProps) => {
-  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
-    'users': true, // Default open for demo, matching image slightly
-    'locations': false,
-    'bus': false,
-    'seats': false,
-    'tickets': false,
-    'payment': false
-  });
+  const [openMenu, setOpenMenu] = useState<string | null>('users');
 
   const toggleMenu = (key: string) => {
-    setOpenMenus(prev => ({ ...prev, [key]: !prev[key] }));
+    setOpenMenu(prev => (prev === key ? null : key));
   };
 
   return (
@@ -57,7 +50,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
         <SidebarItem
           icon={People}
           label="Người dùng"
-          isOpen={openMenus['users']}
+          isOpen={openMenu === 'users'}
           onToggle={() => toggleMenu('users')}
           subItems={[
             { label: 'Danh sách người dùng', to: '/admin/users' },
@@ -69,7 +62,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
         <SidebarItem
           icon={LocationOn}
           label="Địa điểm & Tuyến"
-          isOpen={openMenus['locations']}
+          isOpen={openMenu === 'locations'}
           onToggle={() => toggleMenu('locations')}
           subItems={[
             { label: 'Thành phố', to: '/admin/cities' },
@@ -81,7 +74,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
         <SidebarItem
           icon={DirectionsBus}
           label="Quản lý xe"
-          isOpen={openMenus['bus']}
+          isOpen={openMenu === 'bus'}
           onToggle={() => toggleMenu('bus')}
           subItems={[
             { label: 'Nhà xe', to: '/admin/bus-companies' },
@@ -93,7 +86,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
          <SidebarItem
           icon={EventSeat}
           label="Quản lý ghế"
-          isOpen={openMenus['seats']}
+          isOpen={openMenu === 'seats'}
           onToggle={() => toggleMenu('seats')}
           subItems={[
             { label: 'Loại ghế', to: '/admin/seat-types' },
@@ -111,7 +104,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
         <SidebarItem
             icon={CreditCard}
             label="Thanh toán"
-            isOpen={openMenus['payment']}
+            isOpen={openMenu === 'payment'}
             onToggle={() => toggleMenu('payment')}
             subItems={[
                 { label: 'Cổng thanh toán', to: '/admin/payment-gateways' },
