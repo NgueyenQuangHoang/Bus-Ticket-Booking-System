@@ -20,6 +20,7 @@ import RoutesPage from "../pages/user/route/RoutesPage";
 import RouteDetailPage from "../pages/user/route/RouteDetailPage";
 import CheckTicket from "../pages/user/CheckTicket";
 import BookingConfirmation from "../components/bookingConfirmation/BookingConfirmation";
+import AccountProfile from "../pages/user/AccountProfile";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
       { path: "detailRoute", element: <RouteDetailPage /> },
       { path: "bookingConfirmation", element: <BookingConfirmation /> },
+            { path: "check-ticket", element: <CheckTicket /> },
+
+            { path: "accountProfile", element: <AccountProfile /> },
+
     ],
   },
   {
