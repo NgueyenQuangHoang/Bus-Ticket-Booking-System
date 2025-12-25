@@ -21,6 +21,7 @@ import RouteDetailPage from "../pages/user/routes/[slug]/RouteDetailPage";
 import CheckTicket from "../pages/user/check_ticket/CheckTicket";
 import BookingConfirmation from "../pages/user/booking/[tripId]/BookingConfirmation";
 import AccountProfile from "../pages/user/profile/AccountProfile";
+import { AuthPage } from "../pages/admin/auth/AdminLoginPage";
 
 export const router = createBrowserRouter([
   {
@@ -78,6 +79,10 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/admin/auth",
+    element: <AuthPage />,
   },
 
   { path: "*", element: <Navigate to="/" replace /> },
