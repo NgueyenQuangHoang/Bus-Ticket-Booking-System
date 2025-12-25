@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 
+// MUI ICONS
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import RateReviewIcon from "@mui/icons-material/RateReview";
+import HelpIcon from "@mui/icons-material/Help";
+import LogoutIcon from "@mui/icons-material/Logout";
+
 type Gender = "nam" | "nu" | "khac";
 
 export default function AccountProfile() {
@@ -57,22 +64,39 @@ export default function AccountProfile() {
           {/* SIDEBAR */}
           <aside className="bg-white rounded p-4">
             <ul className="space-y-3 text-sm">
-              <li className="font-semibold text-[#1295DB]">
+              <li className="flex items-center gap-2 font-semibold text-[#1295DB]">
+                <AccountCircleIcon sx={{ fontSize: 20 }} />
                 Thông tin tài khoản
               </li>
-              <li>Đơn hàng của tôi</li>
-              <li>Đánh giá nhà xe</li>
-              <li>
-                Trung tâm hỗ trợ{" "}
+
+              <li className="flex items-center gap-2 text-gray-700 cursor-pointer">
+                <AddShoppingCartIcon sx={{ fontSize: 18 }} />
+                Đơn hàng của tôi
+              </li>
+
+              <li className="flex items-center gap-2 text-gray-700 cursor-pointer">
+                <RateReviewIcon sx={{ fontSize: 18 }} />
+                Đánh giá nhà xe
+              </li>
+
+              <li className="flex items-center gap-2 text-gray-700 cursor-pointer">
+                <HelpIcon sx={{ fontSize: 18 }} />
+                Trung tâm hỗ trợ
                 <span className="text-xs text-red-500 ml-1">Mới</span>
               </li>
-              <li className="text-red-500">Đăng xuất</li>
+
+              <li className="flex items-center gap-2 text-red-500 cursor-pointer">
+                <LogoutIcon sx={{ fontSize: 18 }} />
+                Đăng xuất
+              </li>
             </ul>
           </aside>
 
           {/* CONTENT */}
           <div className="bg-white rounded p-6">
-            <h2 className="font-semibold text-base mb-4">
+            {/* TITLE WITH ICON */}
+            <h2 className="flex items-center gap-2 font-semibold text-base mb-4 text-[#1295DB]">
+              <AccountCircleIcon sx={{ fontSize: 22 }} />
               Thông tin tài khoản
             </h2>
 
