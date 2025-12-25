@@ -1,4 +1,13 @@
-const SortBar = () => {
+import type { TimeSort, PriceSort } from "../../pages/user/BookingTicket";
+
+interface SortBarProps {
+    timeSort: TimeSort;
+    setTimeSort: (value: TimeSort) => void;
+    priceSort: PriceSort;
+    setPriceSort: (value: PriceSort) => void;
+}
+
+const SortBar = ({ timeSort, setTimeSort, priceSort, setPriceSort }: SortBarProps) => {
     return (
             <div className="w-full flex md:items-center md:justify-center justify-between gap-2">
                 {/* Label cố định bên trái */}
@@ -13,9 +22,10 @@ const SortBar = () => {
                     <div className="relative border border-gray-500 rounded">
                         <select
                             className="appearance-none bg-transparent pl-4 pr-8 py-2 text-sm text-gray-700 cursor-pointer focus:outline-none hover:bg-gray-50 transition-colors"
-                            defaultValue=""
+                            value={timeSort}
+                            onChange={(e) => setTimeSort(e.target.value as TimeSort)}
                         >
-                            <option value="" disabled hidden>Giờ đi</option>
+                            <option value="">Giờ đi</option>
                             <option value="som-nhat">Sớm nhất</option>
                             <option value="muon-nhat">Muộn nhất</option>
                         </select>
@@ -29,9 +39,10 @@ const SortBar = () => {
                     <div className="relative border border-gray-500 rounded">
                         <select
                             className="appearance-none bg-transparent pl-4 pr-8 py-2 text-sm text-gray-700 cursor-pointer focus:outline-none hover:bg-gray-50 transition-colors"
-                            defaultValue=""
+                            value={priceSort}
+                            onChange={(e) => setPriceSort(e.target.value as PriceSort)}
                         >
-                            <option value="" disabled hidden>Mức giá</option>
+                            <option value="">Mức giá</option>
                             <option value="thap-den-cao">Giá thấp đến cao</option>
                             <option value="cao-den-thap">Giá cao đến thấp</option>
                         </select>

@@ -6,6 +6,15 @@ import type { Route } from "../types/route"
 
 
 export const routesService = {
+    getAllRoutes: async (): Promise<Route[]> => {
+        try {
+            const response = await api.get<Route[]>('/routes');
+            return response as unknown as Route[];
+        } catch (error) {
+            console.error('Error fetching all routes:', error);
+            throw error;
+        }
+    },
     getInformationRoutes: async (): Promise<routesInfomation[] | undefined> => {
         try {
             const responseGetRoutes: Route[] = await api.get('/routes');
