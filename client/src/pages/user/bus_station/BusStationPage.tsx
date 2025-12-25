@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import CardBusStation from '../../../components/bus_station/busstationpage/CardBusStation';
-import PaginationStation from '../../../components/bus_station/busstationpage/PaginationStation';
+import CardBusStation from './components/CardBusStation';
+import PaginationStation from './components/PaginationStation';
 import { stationService } from '../../../services/stationService';
 import type { Station } from '../../../types';
 
@@ -45,13 +45,13 @@ export default function BusStationPage() {
                 </h2>
             </div>
 
-            {dataStations ? <CardBusStation stations={dataStations} itemPerPage={itemPerPage} currentPage={currentPage}/> : <></>}
-            <PaginationStation 
-            clickPage={clickPage} 
-            currentPage={currentPage}
-            nextPage={nextPage}
-            prevPage={prevPage}
-            totalPage={totalPage}
+            {dataStations ? <CardBusStation stations={dataStations} itemPerPage={itemPerPage} currentPage={currentPage} /> : <></>}
+            <PaginationStation
+                clickPage={clickPage}
+                currentPage={currentPage}
+                nextPage={nextPage}
+                prevPage={prevPage}
+                totalPage={totalPage}
             />
 
             <p

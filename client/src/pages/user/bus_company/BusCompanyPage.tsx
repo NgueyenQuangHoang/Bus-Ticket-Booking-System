@@ -1,6 +1,6 @@
 import { useState } from "react";
-import CardBus from "../../../components/bus_company/buscompanypage/CardBus";
-import Pagination from "../../../components/bus_company/buscompanypage/Pagination";
+import CardBus from "./components/CardBus";
+import Pagination from "./components/Pagination";
 import { busCompanyService } from "../../../services/busCompanyService";
 import type { BusCompany } from "../../../types";
 
@@ -24,7 +24,7 @@ const BusCompanyPage = () => {
     setCurrentPage(page)
   }
   responseGetAllBusCompany.then((res) => {
-    if (res){
+    if (res) {
       setListBusCompanies(res)
     }
   })
@@ -43,13 +43,13 @@ const BusCompanyPage = () => {
         </h2>
       </div>
 
-      {listBusCompanies ? <CardBus  busCompanies={listBusCompanies} itemPerPage={itemPerPage} currentPage={currentPage}/> : <></>}
-      <Pagination 
-      clickPage={clickPage} 
-      currentPage={currentPage}
-      nextPage={nextPage}
-      prevPage={prevPage}
-      totalPage={totalPage}
+      {listBusCompanies ? <CardBus busCompanies={listBusCompanies} itemPerPage={itemPerPage} currentPage={currentPage} /> : <></>}
+      <Pagination
+        clickPage={clickPage}
+        currentPage={currentPage}
+        nextPage={nextPage}
+        prevPage={prevPage}
+        totalPage={totalPage}
       />
 
       <p

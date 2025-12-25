@@ -9,18 +9,18 @@ import ProtectedRoute from "./ProtectedRoute";
 
 // Pages
 // import HomePage from "../pages/user/HomePage";
-import BookingTicket from "../pages/user/BookingTicket";
-import AboutPage from "../pages/user/AboutPage";
-import DashboardPage from "../pages/admin/DashboardPage";
+import BookingTicket from "../pages/user/booking/BookingTicket";
+import AboutPage from "../pages/user/about/AboutPage";
+import DashboardPage from "../pages/admin/dashboard/DashboardPage";
 import BusCompanyPage from "../pages/user/bus_company/BusCompanyPage";
-import BusCompanyDetailPage from "../pages/user/bus_company/BusCompanyDetailPage";
-import HomePage from "../pages/user/homePage";
+import BusCompanyDetailPage from "../pages/user/bus_company/[slug]/BusCompanyDetailPage";
+import HomePage from "../pages/user/home/HomePage";
 import BusStationPage from "../pages/user/bus_station/BusStationPage";
-import RoutesPage from "../pages/user/route/RoutesPage";
-import RouteDetailPage from "../pages/user/route/RouteDetailPage";
-import CheckTicket from "../pages/user/CheckTicket";
-import BookingConfirmation from "../components/bookingConfirmation/BookingConfirmation";
-import AccountProfile from "../pages/user/AccountProfile";
+import RoutesPage from "../pages/user/routes/RoutesPage";
+import RouteDetailPage from "../pages/user/routes/[slug]/RouteDetailPage";
+import CheckTicket from "../pages/user/check_ticket/CheckTicket";
+import BookingConfirmation from "../pages/user/booking/[tripId]/BookingConfirmation";
+import AccountProfile from "../pages/user/profile/AccountProfile";
 
 export const router = createBrowserRouter([
   {
@@ -36,9 +36,9 @@ export const router = createBrowserRouter([
       { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
       { path: "detailRoute", element: <RouteDetailPage /> },
       { path: "bookingConfirmation", element: <BookingConfirmation /> },
-            { path: "check-ticket", element: <CheckTicket /> },
+      { path: "check-ticket", element: <CheckTicket /> },
 
-            { path: "accountProfile", element: <AccountProfile /> },
+      { path: "accountProfile", element: <AccountProfile /> },
 
     ],
   },
