@@ -6,17 +6,22 @@
  *  - Hiển thị banner đăng nhập.
  *  - Bố cục responsive.
  */
-import { useContactForm } from "./useContactForm";
+import { useContactForm, type ContactFormData } from "./useContactForm";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import { green } from "@mui/material/colors";
 import AreaCodeSelect from "./AreaCodeSelect";
 import ContactLoginBanner from "./ContactLoginBanner";
+import type { User } from "../../../types";
 
 interface ContactInfoProps {
   onValidationChange?: (isValid: boolean) => void;
+  onDataChange?: (data: ContactFormData) => void;
+  changeLoginState: (login: boolean) => void;
+  setUser: (user: User) => void;
+  notify: (notifycation: string, status: boolean) => void;
 }
 
-export default function ContactInfo({ onValidationChange }: ContactInfoProps) {
+export default function ContactInfo({ onValidationChange, onDataChange, changeLoginState, setUser, notify }: ContactInfoProps) {
   const {
     formData,
     errors,
@@ -25,7 +30,7 @@ export default function ContactInfo({ onValidationChange }: ContactInfoProps) {
     handleBlur,
     handleCountryCodeChange,
     validate,
-  } = useContactForm(onValidationChange);
+  } = useContactForm(onValidationChange, onDataChange);
 
   const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
@@ -37,7 +42,7 @@ export default function ContactInfo({ onValidationChange }: ContactInfoProps) {
   return (
     <div className="w-full bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       {/* 1. Phần Đăng nhập */}
-      <ContactLoginBanner />
+      <ContactLoginBanner changeLoginState={changeLoginState} setUser={setUser} notify={notify} />
 
       {/* 2. Tiêu đề */}
       <h2 className="text-xl font-bold text-gray-900 mb-6">

@@ -8,11 +8,19 @@
  */
 interface FooterProps {
   disabled?: boolean;
+  onContinue?: () => void;
 }
 
 export default function FooterBookingConfirmation({
   disabled = false,
+  onContinue,
 }: FooterProps) {
+  const handleClick = () => {
+    if (!disabled && onContinue) {
+      onContinue();
+    }
+  };
+
   return (
     <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-10 ">
       <div className="flex flex-col p-3">
@@ -30,6 +38,7 @@ export default function FooterBookingConfirmation({
         <div className="flex flex-col lg:flex-row justify-center items-center gap-4 lg:gap-10">
           <button
             disabled={disabled}
+            onClick={handleClick}
             className={`w-full lg:w-[42rem] py-3 rounded-lg uppercase shadow-sm font-bold transition-all hover:cursor-pointer ${
               disabled
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"

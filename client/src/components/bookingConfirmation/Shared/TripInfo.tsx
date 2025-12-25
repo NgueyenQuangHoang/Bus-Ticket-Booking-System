@@ -17,106 +17,74 @@ import LaunchIcon from "@mui/icons-material/Launch";
 
 import TripDetailModal from "./TripDetailModal";
 
-// --- Types ---
-export type TripType = "departure" | "return" | "single";
-
 export interface TripData {
-  id: string;
-  type: TripType;
-  dateStr: string;
-  operator: {
-    name: string;
-    image: string;
-    vehicleType: string;
-    passengerCount: number;
-    seatIds: string;
-  };
-  departure: {
-    time: string;
-    date: string;
-    name: string;
-    address: string;
-  };
-  arrival: {
-    time: string;
-    date: string;
-    name: string;
-    address: string;
-  };
-  policy: {
-    text: string;
-    colorClass: string; // Tailwind text color class
-  };
-  price?: string;
-  route?: string;
+    id: string;
+    type: "departure" | "return" | "single";
+    dateStr: string;
+    operator: {
+        name: string;
+        image: string;
+        vehicleType: string;
+        passengerCount: number;
+        seatIds: string;
+    };
+    departure: {
+        time: string;
+        date: string;
+        name: string;
+        address: string;
+    };
+    arrival: {
+        time: string;
+        date: string;
+        name: string;
+        address: string;
+    };
+    policy: {
+        text: string;
+        colorClass: string;
+    };
+    totalPrice: number;
+    ticketCode?: string;
+    priceDisplay?: string; // "300.000đ"
+    route?: string;
+    price?: string;
 }
 
-// --- Mock Data ---
-const TRIPS: TripData[] = [
-  {
-    id: "trip-1",
+export const SHARED_TRIP: TripData = {
+    id: "trip-4",
     type: "departure",
-    dateStr: "T4, 31/12/2025",
+    dateStr: "T5, 25/12/2025",
     operator: {
-      name: "Trà Lan Viên",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQATVw9KUU2-gePmreEfOPr1S4g4fOKKPlwBA&s", // Placeholder or real generic URL
-      vehicleType: "Limousine 30 Phòng Đơn (WC)",
-      passengerCount: 1,
-      seatIds: "B7",
+        name: "Nhà xe An Hòa Hiệp",
+        image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
+        vehicleType: "Limousine 34 giường",
+        passengerCount: 1,
+        seatIds: "A01",
     },
     departure: {
-      time: "21:10",
-      date: "(31/12)",
-      name: "388 Mai Chí Thọ",
-      address: "388 Mai Chí Thọ, Phường Bình Khánh, Quận 2, Hồ Chí Minh",
+        time: "19:00",
+        date: "(25/12)",
+        name: "Bến xe Miền Đông",
+        address: "292 Đinh Bộ Lĩnh, Bình Thạnh, TP.HCM",
     },
     arrival: {
-      time: "04:20",
-      date: "(01/01)",
-      name: "VP Hà Quang 2",
-      address: "Đường số 4, Nha Trang, Khánh Hòa",
+        time: "05:00",
+        date: "(26/12)",
+        name: "Bến xe Mỹ Đình",
+        address: "20 Phạm Hùng, Mỹ Đình, Hà Nội",
     },
     policy: {
-      text: "Không hoàn tiền sau khi thanh toán",
-      colorClass: "text-red-500",
+        // Mock policy date matching 24h before
+        text: "Phí hủy 10% trước 19:00 - 24/12/2025",
+        colorClass: "text-orange-500",
     },
-    price: "300.000đ",
-    route: "Sài Gòn - Nha Trang",
-  },
-  {
-    id: "trip-2",
-    type: "return",
-    dateStr: "T5, 08/01/2026",
-    operator: {
-      name: "Đà Lạt Ơi",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQATVw9KUU2-gePmreEfOPr1S4g4fOKKPlwBA&s",
-      vehicleType: "Limousine 24 Phòng ĐÔI",
-      passengerCount: 1,
-      seatIds: "9D",
-    },
-    departure: {
-      time: "21:30",
-      date: "(08/01)",
-      name: "Trạm Nha Trang",
-      address: "Đường số 4, Phường Phước Hải, Nha Trang, Khánh Hòa",
-    },
-    arrival: {
-      time: "04:00",
-      date: "(09/01)",
-      name: "Trạm Quận 1",
-      address:
-        "Số 111 Đ. Phạm Ngũ Lão, Phường Phạm Ngũ Lão, Quận 1, Hồ Chí Minh",
-    },
-    policy: {
-      text: "Phí hủy 10% trước 13:30 • T5, 08/01/2026",
-      colorClass: "text-orange-500",
-    },
-    price: "320.000đ",
-    route: "Nha Trang - Sài Gòn",
-  },
-];
+    totalPrice: 350000,
+    ticketCode: "VÉ987654321",
+    priceDisplay: "350.000đ",
+    route: "Hồ Chí Minh - Hà Nội",
+    price: "350.000đ"
+};
 
 // --- Sub-Component: TripCard ---
 interface TripCardProps {
@@ -293,7 +261,11 @@ function TripCard({ trip, onDetailClick }: TripCardProps) {
 }
 
 // --- MAIN Component ---
-export default function TripInfo() {
+interface TripInfoProps {
+    trips: TripData[];
+}
+
+export default function TripInfo({ trips }: TripInfoProps) {
   const [selectedTrip, setSelectedTrip] = useState<TripData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -319,7 +291,7 @@ export default function TripInfo() {
 
       {/* List of Trip Cards */}
       <div className="flex flex-col gap-4">
-        {TRIPS.map((trip) => (
+        {trips.map((trip) => (
           <TripCard
             key={trip.id}
             trip={trip}

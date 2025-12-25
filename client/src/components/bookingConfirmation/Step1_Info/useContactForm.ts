@@ -27,7 +27,10 @@ export interface ContactFormTouched {
     email: boolean;
 }
 
-export function useContactForm(onValidationChange?: (isValid: boolean) => void) {
+export function useContactForm(
+    onValidationChange?: (isValid: boolean) => void,
+    onDataChange?: (data: ContactFormData) => void
+) {
     const [formData, setFormData] = useState<ContactFormData>({
         fullName: "",
         phone: "",
@@ -67,7 +70,10 @@ export function useContactForm(onValidationChange?: (isValid: boolean) => void) 
         if (onValidationChange) {
             onValidationChange(checkFormValidity());
         }
-    }, [formData, onValidationChange]);
+        if (onDataChange) {
+            onDataChange(formData);
+        }
+    }, [formData, onValidationChange, onDataChange]);
 
     const validate = () => {
         const newErrors = {
