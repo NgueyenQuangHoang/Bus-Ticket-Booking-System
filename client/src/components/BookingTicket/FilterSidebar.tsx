@@ -2,13 +2,13 @@ import React, { useState, useEffect, type ChangeEvent } from 'react';
 import { Search, RotateCcw, Clock, Tag, Bus } from 'lucide-react';
 
 // Định nghĩa Interface cho các khoảng Range (Giá, Thời gian)
-interface RangeValue {
+export interface RangeValue {
     min: number;
     max: number;
 }
 
 // Định nghĩa Interface cho trạng thái Filters
-interface FiltersState {
+export interface FiltersState {
     popular: string[];
     price: RangeValue;
     time: RangeValue;
@@ -16,7 +16,13 @@ interface FiltersState {
     selectedCompanies: string[];
 }
 
-const FilterSidebar: React.FC = () => {
+// Props interface cho FilterSidebar
+interface FilterSidebarProps {
+    onFilterChange?: (filters: FiltersState) => void;
+    busCompanies?: string[];
+}
+
+const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange, busCompanies: externalBusCompanies }) => {
     // Khởi tạo trạng thái mặc định với kiểu dữ liệu FiltersState
     const initialFilters: FiltersState = {
         popular: [],
@@ -28,19 +34,12 @@ const FilterSidebar: React.FC = () => {
 
     const [filters, setFilters] = useState<FiltersState>(initialFilters);
 
-    const busCompanies: string[] = [
-        "Anh Huy (Hải Phòng)",
-        "Anh Huy Đất Cảng",
-        "Anh Huy Travel",
-        "Bằng Phấn",
-        "Cát Bà Express",
-        "Cát Bà Go Easy Limousine",
-        "Hải Âu",
-        "Hoàng Long"
-    ];
+    // Danh sách nhà xe từ props (chỉ những nhà xe có chuyến trong kết quả tìm kiếm)
+    const busCompanies = externalBusCompanies || [];
 
-    // Theo dõi và log kết quả mỗi khi filters thay đổi
+    // Gọi callback khi filters thay đổi
     useEffect(() => {
+        // Log dữ liệu để debug
         const logData = {
             thoi_gian: `${filters.time.min}:00 đến ${filters.time.max}:00`,
             gia_ve: `${filters.price.min.toLocaleString('vi-VN')}đ - ${filters.price.max.toLocaleString('vi-VN')}đ`,
@@ -49,7 +48,12 @@ const FilterSidebar: React.FC = () => {
             tu_khoa_tim_kiem: filters.busCompanySearch
         };
         console.log("Dữ liệu lọc hiện tại (TS):", logData);
-    }, [filters]);
+
+        // Gọi callback để truyền dữ liệu lên parent
+        if (onFilterChange) {
+            onFilterChange(filters);
+        }
+    }, [filters, onFilterChange]);
 
     const handleReset = (): void => {
         setFilters(initialFilters);
@@ -229,39 +233,55 @@ const FilterSidebar: React.FC = () => {
                     <h3 className="flex items-center gap-2 text-slate-900 font-bold mb-5 text-xs uppercase tracking-widest">
                         <Bus size={14} className="text-blue-500" />
                         Nhà xe
+                        {busCompanies.length > 0 && (
+                            <span className="text-[10px] font-medium text-slate-400 normal-case">
+                                ({busCompanies.length} nhà xe)
+                            </span>
+                        )}
                     </h3>
-                    <div className="relative mb-5 group">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={16} />
-                        <input
-                            type="text"
-                            placeholder="Tìm tên nhà xe..."
-                            value={filters.busCompanySearch}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setFilters(p => ({ ...p, busCompanySearch: e.target.value }))}
-                            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-100 focus:bg-white focus:border-blue-400 transition-all"
-                        />
-                    </div>
-                    <div className="space-y-1 max-h-52 overflow-y-auto pr-2 custom-scrollbar">
-                        {busCompanies
-                            .filter(c => c.toLowerCase().includes(filters.busCompanySearch.toLowerCase()))
-                            .map((company) => (
-                                <label
-                                    key={company}
-                                    className={`flex items-center gap-3 p-3 rounded-2xl cursor-pointer transition-all ${filters.selectedCompanies.includes(company) ? 'bg-blue-50' : 'hover:bg-slate-50'
-                                        }`}
-                                >
-                                    <input
-                                        type="checkbox"
-                                        checked={filters.selectedCompanies.includes(company)}
-                                        onChange={() => toggleCompany(company)}
-                                        className="w-5 h-5 rounded-lg border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-                                    />
-                                    <span className={`text-sm ${filters.selectedCompanies.includes(company) ? 'text-blue-700 font-bold' : 'text-slate-600'
-                                        }`}>
-                                        {company}
-                                    </span>
-                                </label>
-                            ))}
-                    </div>
+                    
+                    {busCompanies.length === 0 ? (
+                        <div className="text-center py-6 text-slate-400">
+                            <Bus size={32} className="mx-auto mb-2 opacity-50" />
+                            <p className="text-sm">Chưa có nhà xe nào</p>
+                            <p className="text-xs mt-1">Vui lòng tìm kiếm chuyến xe trước</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="relative mb-5 group">
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={16} />
+                                <input
+                                    type="text"
+                                    placeholder="Tìm tên nhà xe..."
+                                    value={filters.busCompanySearch}
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setFilters(p => ({ ...p, busCompanySearch: e.target.value }))}
+                                    className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-100 focus:bg-white focus:border-blue-400 transition-all"
+                                />
+                            </div>
+                            <div className="space-y-1 max-h-52 overflow-y-auto pr-2 custom-scrollbar">
+                                {busCompanies
+                                    .filter(c => c.toLowerCase().includes(filters.busCompanySearch.toLowerCase()))
+                                    .map((company) => (
+                                        <label
+                                            key={company}
+                                            className={`flex items-center gap-3 p-3 rounded-2xl cursor-pointer transition-all ${filters.selectedCompanies.includes(company) ? 'bg-blue-50' : 'hover:bg-slate-50'
+                                                }`}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={filters.selectedCompanies.includes(company)}
+                                                onChange={() => toggleCompany(company)}
+                                                className="w-5 h-5 rounded-lg border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                            />
+                                            <span className={`text-sm ${filters.selectedCompanies.includes(company) ? 'text-blue-700 font-bold' : 'text-slate-600'
+                                                }`}>
+                                                {company}
+                                            </span>
+                                        </label>
+                                    ))}
+                            </div>
+                        </>
+                    )}
                 </section>
 
                 <style dangerouslySetInnerHTML={{
