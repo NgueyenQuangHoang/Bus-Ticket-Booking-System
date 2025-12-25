@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store";
 import { searchTrips } from "../../slices/tripSearchSlice";
 import type { TripSearchResult } from "../../services/tripSearchService";
+import type { TimeSort, PriceSort } from "../../pages/user/BookingTicket";
 
 type Mode = "idle" | "detail" | "booking";
 type DetailTab = "info" | "cancel";
@@ -15,15 +16,40 @@ interface SearchParams {
 
 interface TripCardProps {
   searchParams?: SearchParams;
+  timeSort?: TimeSort;
+  priceSort?: PriceSort;
 }
 
-export default function TripCard({ searchParams }: TripCardProps) {
+export default function TripCard({ searchParams, timeSort = "", priceSort = "" }: TripCardProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { trips, loading, error } = useSelector((state: RootState) => state.tripSearch);
 
   const [activeTripId, setActiveTripId] = useState<number | null>(null);
   const [mode, setMode] = useState<Mode>("idle");
   const [detailTab, setDetailTab] = useState<DetailTab>("info");
+
+  // Sort trips based on timeSort and priceSort
+  const sortedTrips = useMemo(() => {
+    if (!trips || trips.length === 0) return trips;
+    
+    const sorted = [...trips];
+    
+    // Sort by departure time
+    if (timeSort === "som-nhat") {
+      sorted.sort((a, b) => new Date(a.departure_time).getTime() - new Date(b.departure_time).getTime());
+    } else if (timeSort === "muon-nhat") {
+      sorted.sort((a, b) => new Date(b.departure_time).getTime() - new Date(a.departure_time).getTime());
+    }
+    
+    // Sort by price (secondary sort if time is also selected)
+    if (priceSort === "thap-den-cao") {
+      sorted.sort((a, b) => a.price - b.price);
+    } else if (priceSort === "cao-den-thap") {
+      sorted.sort((a, b) => b.price - a.price);
+    }
+    
+    return sorted;
+  }, [trips, timeSort, priceSort]);
 
   // Fetch trips khi searchParams thay đổi
   useEffect(() => {
@@ -101,9 +127,9 @@ export default function TripCard({ searchParams }: TripCardProps) {
 
   return (
     <div className="w-full mx-auto space-y-6">
-      <p className="text-sm text-gray-500 mb-4">Tìm thấy {trips.length} chuyến xe</p>
+      <p className="text-sm text-gray-500 mb-4">Tìm thấy {sortedTrips.length} chuyến xe</p>
       
-      {trips.map((trip: TripSearchResult) => {
+      {sortedTrips.map((trip: TripSearchResult) => {
         const isActive = activeTripId === trip.schedule_id;
         return (
           <div
