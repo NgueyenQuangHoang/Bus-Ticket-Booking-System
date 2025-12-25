@@ -10,8 +10,8 @@ import { useState, useEffect } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import PlaceIcon from "@mui/icons-material/Place";
-import type { TripData } from "./TripInfo";
-import BookingTripSummary from "./BookingTripSummary";
+import type { TripData } from "../Shared/TripInfo";
+import BookingTripSummary from "../Shared/BookingTripSummary";
 
 interface QRPaymentPageProps {
   onBack?: () => void;
@@ -77,31 +77,24 @@ export default function QRPaymentPage({ onBack, onSuccess, tripData }: QRPayment
               </p>
 
               {/* QR Code Section */}
-              <div className="flex flex-col lg:flex-row gap-8 items-start">
+              <div className="flex flex-col md:flex-row gap-8 items-start">
                 {/* QR Code */}
-                <div className="flex flex-col items-center">
-                  {/* ZaloPay Logo */}
-                  <div className="mb-4">
-                    <div className="text-2xl font-bold text-blue-600">
-                      Zalo<span className="text-green-500">Pay</span>
-                    </div>
-                  </div>
-
-                  {/* QR Code Image */}
-                  <div className="w-48 h-48 bg-gray-100 border border-gray-200 rounded-lg flex items-center justify-center mb-2 p-2">
+                <div className="flex flex-col items-center w-full md:w-auto">
+                  {/* VietQR Image */}
+                  <div className="w-64 md:w-56 h-auto bg-white border border-gray-200 rounded-lg flex items-center justify-center mb-2 p-2 shadow-sm">
                     <img
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${tripData.ticketCode || "VE1234567890"}`}
                       alt="QR Code"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <span className="text-sm text-gray-500">6349</span>
+                  <span className="text-sm text-gray-500 font-medium">Ngân hàng MB Bank</span>
                 </div>
 
                 {/* Payment Info */}
-                <div className="flex-1 space-y-4">
+                <div className="flex-1 space-y-4 w-full">
                   {/* Amount */}
-                  <div className="text-center lg:text-left">
+                  <div className="text-center md:text-left">
                     <p className="text-gray-600 text-sm">Cần thanh toán</p>
                     <p className="text-3xl font-bold text-blue-600">
                       {tripData.totalPrice.toLocaleString("vi-VN")}đ
@@ -109,7 +102,7 @@ export default function QRPaymentPage({ onBack, onSuccess, tripData }: QRPayment
                   </div>
 
                   {/* Timer */}
-                  <div className="text-center lg:text-left">
+                  <div className="text-center md:text-left">
                     <p className="text-red-500 text-sm font-medium">
                       Mã QR hết hạn sau {formatTime(timeLeft)}
                     </p>
@@ -126,7 +119,7 @@ export default function QRPaymentPage({ onBack, onSuccess, tripData }: QRPayment
                       </span>
                       <button
                         onClick={handleCopyCode}
-                        className="p-1 hover:bg-blue-100 rounded transition-colors"
+                        className="p-1 hover:bg-blue-100 rounded transition-colors hover:cursor-pointer"
                         title="Sao chép"
                       >
                         <ContentCopyIcon

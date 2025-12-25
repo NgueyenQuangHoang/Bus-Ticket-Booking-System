@@ -2,17 +2,13 @@ import api from '../api/api';
 import type { Station } from '../types/index';
 
 export const stationService = {
-  getAllStations: async (): Promise<Station[] | undefined> => {
+  getAllStations: async (): Promise<Station[]> => {
     try {
-      const response : Station[] = await api.get('/stations');
-      if(response){
-        return response
-      }
-      return undefined
+      const response: Station[] = await api.get('/stations');
+      return response ?? [];
     } catch (error) {
       console.error('Error fetching stations:', error);
-      return undefined
-      throw error;
+      return [];
     }
   },
   getPopularStations: async (limit: number = 5): Promise<Station[]> => {

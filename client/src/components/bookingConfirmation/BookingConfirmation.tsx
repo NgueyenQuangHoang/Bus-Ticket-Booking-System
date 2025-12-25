@@ -10,15 +10,15 @@
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { Stepper, Step, StepLabel } from "@mui/material";
-import ContactInfo from "./ContactInfo";
-import FooterBookingConfirmation from "./FooterBookingConfirmation";
-import TripDetails from "./TripDetails";
-import QRPaymentPage from "./QRPaymentPage";
-import PaymentSuccessPage from "./PaymentSuccessPage";
+import ContactInfo from "./Step1_Info/ContactInfo";
+import TripDetails from "./Step1_Info/TripDetails";
+import type { ContactFormData } from "./Step1_Info/useContactForm";
+import QRPaymentPage from "./Step2_Payment/QRPaymentPage";
+import PaymentSuccessPage from "./Step3_Success/PaymentSuccessPage";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import type { ContactFormData } from "./useContactForm";
 import { useNavigate } from "react-router-dom";
-import { SHARED_TRIP } from "./TripInfo";
+import { SHARED_TRIP } from "./Shared/TripInfo";
+import FooterBookingConfirmation from "./Shared/FooterBookingConfirmation";
 
 // Steps definition
 const STEPS = ["Thông tin liên hệ", "Thanh toán", "Hoàn tất"];
@@ -150,8 +150,8 @@ export default function BookingConfirmation() {
   return (
     <div className="min-h-screen bg-[#f2f4f7]">
         {/* Timeline (Stepper) */}
-        <div className="bg-white shadow-sm py-4 sticky top-0 z-10">
-            <div className="max-w-4xl mx-auto px-4">
+        <div className="bg-white shadow-sm py-4 sticky top-0 z-10 ">
+            <div className="max-w-4xl mx-auto py-2">
                 <Stepper activeStep={activeStep} alternativeLabel>
                     {STEPS.map((label) => (
                         <Step key={label}>

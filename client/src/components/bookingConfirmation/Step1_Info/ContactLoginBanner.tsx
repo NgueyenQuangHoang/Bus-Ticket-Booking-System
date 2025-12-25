@@ -1,10 +1,10 @@
-import FormAuth from "../../ui/FromAuth";
+import FormAuth from "../../../ui/FromAuth";
 
 /**
  * Component: ContactLoginBanner
  * Mục đích: Banner nhắc nhở người dùng đăng nhập để tự động điền thông tin.
  */
-import type { User } from "../../types";
+import type { User } from "../../../types";
 
 interface ContactLoginBannerProps {
   changeLoginState: (login: boolean) => void;

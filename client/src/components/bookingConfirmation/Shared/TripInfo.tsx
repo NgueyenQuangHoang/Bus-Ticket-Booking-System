@@ -52,37 +52,38 @@ export interface TripData {
 }
 
 export const SHARED_TRIP: TripData = {
-    id: "trip-1",
+    id: "trip-4",
     type: "departure",
-    dateStr: "T7, 10/01/2026",
+    dateStr: "T5, 25/12/2025",
     operator: {
-        name: "Minh Quốc",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQATVw9KUU2-gePmreEfOPr1S4g4fOKKPlwBA&s",
-        vehicleType: "Limousine 24 Giường Đơn",
+        name: "Nhà xe An Hòa Hiệp",
+        image: "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
+        vehicleType: "Limousine 34 giường",
         passengerCount: 1,
-        seatIds: "B1, B5, B6",
+        seatIds: "A01",
     },
     departure: {
-        time: "18:30",
-        date: "(10/01)",
-        name: "Bến xe Miền Đông - Quầy vé",
-        address: "Số 79, 19 Đinh Bộ Lĩnh, phường 26, Bình Thạnh, HCM",
+        time: "19:00",
+        date: "(25/12)",
+        name: "Bến xe Miền Đông",
+        address: "292 Đinh Bộ Lĩnh, Bình Thạnh, TP.HCM",
     },
     arrival: {
-        time: "06:00",
-        date: "(11/01)",
-        name: "Vp. Kon Tum",
-        address: "37 Đào Duy Từ, P.Trường Quang Trọng, Kon Tum",
+        time: "05:00",
+        date: "(26/12)",
+        name: "Bến xe Mỹ Đình",
+        address: "20 Phạm Hùng, Mỹ Đình, Hà Nội",
     },
     policy: {
-        text: "Phí hủy 10% trước 16:30 - T7, 10/01/2026",
+        // Mock policy date matching 24h before
+        text: "Phí hủy 10% trước 19:00 - 24/12/2025",
         colorClass: "text-orange-500",
     },
-    totalPrice: 520000,
-    ticketCode: "VÉ123456789",
-    priceDisplay: "520.000đ",
-    route: "Sài Gòn - Nha Trang",
-    price: "520.000đ"
+    totalPrice: 350000,
+    ticketCode: "VÉ987654321",
+    priceDisplay: "350.000đ",
+    route: "Hồ Chí Minh - Hà Nội",
+    price: "350.000đ"
 };
 
 // --- Sub-Component: TripCard ---

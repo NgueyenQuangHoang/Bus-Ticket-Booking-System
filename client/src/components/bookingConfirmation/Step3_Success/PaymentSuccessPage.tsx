@@ -12,15 +12,19 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import type { ContactFormData } from "./useContactForm";
-import type { TripData } from "./TripInfo";
-import BookingTripSummary from "./BookingTripSummary";
+import type { ContactFormData } from "../Step1_Info/useContactForm";
+import type { TripData } from "../Shared/TripInfo";
+import BookingTripSummary from "../Shared/BookingTripSummary";
 
 interface PaymentSuccessPageProps {
   passengerInfo: ContactFormData;
   tripData: TripData;
   onHome?: () => void;
 }
+
+const dangphattrien = () => {
+  alert("Đang phát triển");
+};
 
 export default function PaymentSuccessPage({
   passengerInfo,
@@ -151,20 +155,20 @@ export default function PaymentSuccessPage({
 
             {/* ACTION BUTTONS */}
             <div className="space-y-3">
-                <button className="w-full py-3 bg-[#0d63bd] hover:bg-[#0b54a0] text-white rounded-lg font-bold transition-all shadow-sm">
+                <button className="w-full py-3 bg-[#0d63bd] hover:bg-[#0b54a0] text-white rounded-lg font-bold transition-all shadow-sm hover:cursor-pointer" onClick={dangphattrien}>
                     Xem vé của tôi
                 </button>
                 <div className="grid grid-cols-2 gap-3">
-                    <button className="w-full py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-bold transition-all shadow-sm">
+                    <button className="w-full py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-bold transition-all shadow-sm hover:cursor-pointer" onClick={dangphattrien}>
                         Tải vé PDF
                     </button>
-                    <button className="w-full py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-bold transition-all shadow-sm">
+                    <button className="w-full py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-bold transition-all shadow-sm hover:cursor-pointer" onClick={dangphattrien}>
                         Gửi Email
                     </button>
                 </div>
                  <button 
                     onClick={onHome}
-                    className="w-full py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-bold transition-all shadow-sm"
+                    className="w-full py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-bold transition-all shadow-sm hover:cursor-pointer"
                  >
                     Về trang chủ
                 </button>

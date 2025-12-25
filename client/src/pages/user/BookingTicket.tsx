@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import FilterSidebar from "../../components/BookingTicket/FilterSidebar";
 import SortBar from "../../components/BookingTicket/SortBar";
 import TripCard from "../../components/BookingTicket/TripCards";
 import BusSearchWidget from "../../components/homepage/BusSearchWidget";
+
+export type TimeSort = "" | "som-nhat" | "muon-nhat";
+export type PriceSort = "" | "thap-den-cao" | "cao-den-thap";
 
 const BookingTicket = () => {
     // Đọc query params từ URL
@@ -10,6 +14,10 @@ const BookingTicket = () => {
     const from = searchParams.get("from") || "";
     const to = searchParams.get("to") || "";
     const date = searchParams.get("date") || "";
+
+    // Sort options state
+    const [timeSort, setTimeSort] = useState<TimeSort>("");
+    const [priceSort, setPriceSort] = useState<PriceSort>("");
 
     // Format ngày hiển thị
     const formatDate = (dateStr: string) => {
@@ -42,7 +50,12 @@ const BookingTicket = () => {
                 </div>
 
                 <div className="w-full flex justify-center px-5">
-                    <SortBar />
+                    <SortBar 
+                        timeSort={timeSort}
+                        setTimeSort={setTimeSort}
+                        priceSort={priceSort}
+                        setPriceSort={setPriceSort}
+                    />
                 </div>
 
                 {/* Main Content */}
@@ -52,8 +65,12 @@ const BookingTicket = () => {
                         <FilterSidebar />
                     </div>
                     <div className="md:w-2/3 px-3 w-full pb-4">
-                        {/* Trip Cards - truyền search params */}
-                        <TripCard searchParams={{ from, to, date }} />
+                        {/* Trip Cards - truyền search params và sort options */}
+                        <TripCard 
+                            searchParams={{ from, to, date }} 
+                            timeSort={timeSort}
+                            priceSort={priceSort}
+                        />
                     </div>
                 </div>
 

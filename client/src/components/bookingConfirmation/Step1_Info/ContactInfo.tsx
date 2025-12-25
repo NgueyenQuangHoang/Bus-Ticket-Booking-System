@@ -11,8 +11,7 @@ import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import { green } from "@mui/material/colors";
 import AreaCodeSelect from "./AreaCodeSelect";
 import ContactLoginBanner from "./ContactLoginBanner";
-
-import type { User } from "../../types";
+import type { User } from "../../../types";
 
 interface ContactInfoProps {
   onValidationChange?: (isValid: boolean) => void;

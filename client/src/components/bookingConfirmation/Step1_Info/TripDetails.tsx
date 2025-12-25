@@ -5,9 +5,9 @@
  *  - Kết hợp `PriceSummary` và `TripInfo`.
  *  - Tính toán tổng tiền và thông tin vé để truyền vào `PriceSummary`.
  */
-import PriceSummary from "./PriceSummary";
-import TripInfo from "./TripInfo";
-import type { TripData } from "./TripInfo";
+import PriceSummary from "../Step2_Payment/PriceSummary";
+import TripInfo from "../Shared/TripInfo";
+import type { TripData } from "../Shared/TripInfo";
 
 interface TripDetailsProps {
     trips: TripData[];

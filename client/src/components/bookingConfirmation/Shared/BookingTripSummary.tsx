@@ -20,7 +20,7 @@ interface BookingTripSummaryProps {
 
 export default function BookingTripSummary({ trip, actionNode }: BookingTripSummaryProps) {
   return (
-    <div className="bg-white p-6 border border-gray-200 rounded-xl shadow-sm sticky top-4">
+    <div className="bg-white p-6 border border-gray-200 rounded-xl shadow-sm  top-4">
       <h3 className="text-xl font-bold text-gray-900 mb-4">
         Thông tin chuyến đi
       </h3>
