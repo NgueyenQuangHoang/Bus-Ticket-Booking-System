@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import FilterSidebar from "../../components/BookingTicket/FilterSidebar";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../store";
+import FilterSidebar, { type FiltersState } from "../../components/BookingTicket/FilterSidebar";
 import SortBar from "../../components/BookingTicket/SortBar";
 import TripCard from "../../components/BookingTicket/TripCards";
 import BusSearchWidget from "../../components/homepage/BusSearchWidget";
@@ -15,9 +17,27 @@ const BookingTicket = () => {
     const to = searchParams.get("to") || "";
     const date = searchParams.get("date") || "";
 
+    // Lấy trips từ Redux store
+    const { trips } = useSelector((state: RootState) => state.tripSearch);
+
     // Sort options state
     const [timeSort, setTimeSort] = useState<TimeSort>("");
     const [priceSort, setPriceSort] = useState<PriceSort>("");
+
+    // Filter state
+    const [filters, setFilters] = useState<FiltersState | null>(null);
+
+    // Lấy danh sách nhà xe duy nhất từ trips hiện tại
+    const availableBusCompanies = useMemo(() => {
+        if (!trips || trips.length === 0) return [];
+        const companies = trips.map(trip => trip.company_name);
+        return [...new Set(companies)].sort(); // Loại bỏ trùng lặp và sắp xếp A-Z
+    }, [trips]);
+
+    // Handler khi filter thay đổi
+    const handleFilterChange = useCallback((newFilters: FiltersState) => {
+        setFilters(newFilters);
+    }, []);
 
     // Format ngày hiển thị
     const formatDate = (dateStr: string) => {
@@ -44,8 +64,8 @@ const BookingTicket = () => {
                     </p>
                 )}
 
-                {/* Widget tìm kiếm - cho phép tìm lại */}
-                <div className="mt-5 mb-10">
+                {/* Widget tìm kiếm - z-index cao để dropdown không bị đè */}
+                <div className="mt-5 mb-10 relative z-50">
                     <BusSearchWidget />
                 </div>
 
@@ -61,15 +81,19 @@ const BookingTicket = () => {
                 {/* Main Content */}
                 <div className="md:flex block w-full justify-between mt-10">
                     <div className="w-1/3 md:block hidden px-3">
-                        {/* Filter Sidebar */}
-                        <FilterSidebar />
+                        {/* Filter Sidebar - truyền danh sách nhà xe có chuyến */}
+                        <FilterSidebar 
+                            onFilterChange={handleFilterChange} 
+                            busCompanies={availableBusCompanies}
+                        />
                     </div>
                     <div className="md:w-2/3 px-3 w-full pb-4">
-                        {/* Trip Cards - truyền search params và sort options */}
+                        {/* Trip Cards - truyền search params, sort options và filters */}
                         <TripCard 
                             searchParams={{ from, to, date }} 
                             timeSort={timeSort}
                             priceSort={priceSort}
+                            filters={filters}
                         />
                     </div>
                 </div>

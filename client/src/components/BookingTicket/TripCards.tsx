@@ -4,6 +4,7 @@ import type { RootState, AppDispatch } from "../../store";
 import { searchTrips } from "../../slices/tripSearchSlice";
 import type { TripSearchResult } from "../../services/tripSearchService";
 import type { TimeSort, PriceSort } from "../../pages/user/BookingTicket";
+import type { FiltersState } from "../../components/BookingTicket/FilterSidebar";
 
 type Mode = "idle" | "detail" | "booking";
 type DetailTab = "info" | "cancel";
@@ -18,9 +19,10 @@ interface TripCardProps {
   searchParams?: SearchParams;
   timeSort?: TimeSort;
   priceSort?: PriceSort;
+  filters?: FiltersState | null;
 }
 
-export default function TripCard({ searchParams, timeSort = "", priceSort = "" }: TripCardProps) {
+export default function TripCard({ searchParams, timeSort = "", priceSort = "", filters }: TripCardProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { trips, loading, error } = useSelector((state: RootState) => state.tripSearch);
 
@@ -28,28 +30,71 @@ export default function TripCard({ searchParams, timeSort = "", priceSort = "" }
   const [mode, setMode] = useState<Mode>("idle");
   const [detailTab, setDetailTab] = useState<DetailTab>("info");
 
-  // Sort trips based on timeSort and priceSort
+  // Filter và Sort trips
   const sortedTrips = useMemo(() => {
     if (!trips || trips.length === 0) return trips;
     
-    const sorted = [...trips];
+    let filtered = [...trips];
     
+    // ===== APPLY FILTERS =====
+    if (filters) {
+      // 1. Filter theo giờ đi (departure time) - dựa vào hour trong ngày
+      filtered = filtered.filter(trip => {
+        const departureHour = new Date(trip.departure_time).getHours();
+        return departureHour >= filters.time.min && departureHour <= filters.time.max;
+      });
+
+      // 2. Filter theo giá vé
+      filtered = filtered.filter(trip => {
+        return trip.price >= filters.price.min && trip.price <= filters.price.max;
+      });
+
+      // 3. Filter theo nhà xe được chọn
+      if (filters.selectedCompanies.length > 0) {
+        filtered = filtered.filter(trip => 
+          filters.selectedCompanies.includes(trip.company_name)
+        );
+      }
+
+      // 4. Filter theo tiêu chí phổ biến
+      if (filters.popular.length > 0) {
+        filtered = filtered.filter(trip => {
+          // "Xe VIP Limousine" - kiểm tra tên xe hoặc tiện ích có chứa VIP/Limousine
+          if (filters.popular.includes('Xe VIP Limousine')) {
+            const busNameLower = trip.bus_name.toLowerCase();
+            const amenitiesLower = (trip.bus_amenities || '').toLowerCase();
+            const hasVIP = busNameLower.includes('vip') || 
+                          busNameLower.includes('limousine') ||
+                          amenitiesLower.includes('vip') ||
+                          amenitiesLower.includes('limousine');
+            if (!hasVIP) return false;
+          }
+          
+          // "Chuyến giảm giá" - có thể thêm logic sau nếu có field discount
+          // Hiện tại bỏ qua vì chưa có data
+          
+          return true;
+        });
+      }
+    }
+    
+    // ===== APPLY SORTING =====
     // Sort by departure time
     if (timeSort === "som-nhat") {
-      sorted.sort((a, b) => new Date(a.departure_time).getTime() - new Date(b.departure_time).getTime());
+      filtered.sort((a, b) => new Date(a.departure_time).getTime() - new Date(b.departure_time).getTime());
     } else if (timeSort === "muon-nhat") {
-      sorted.sort((a, b) => new Date(b.departure_time).getTime() - new Date(a.departure_time).getTime());
+      filtered.sort((a, b) => new Date(b.departure_time).getTime() - new Date(a.departure_time).getTime());
     }
     
     // Sort by price (secondary sort if time is also selected)
     if (priceSort === "thap-den-cao") {
-      sorted.sort((a, b) => a.price - b.price);
+      filtered.sort((a, b) => a.price - b.price);
     } else if (priceSort === "cao-den-thap") {
-      sorted.sort((a, b) => b.price - a.price);
+      filtered.sort((a, b) => b.price - a.price);
     }
     
-    return sorted;
-  }, [trips, timeSort, priceSort]);
+    return filtered;
+  }, [trips, timeSort, priceSort, filters]);
 
   // Fetch trips khi searchParams thay đổi
   useEffect(() => {
@@ -127,7 +172,21 @@ export default function TripCard({ searchParams, timeSort = "", priceSort = "" }
 
   return (
     <div className="w-full mx-auto space-y-6">
-      <p className="text-sm text-gray-500 mb-4">Tìm thấy {sortedTrips.length} chuyến xe</p>
+      <p className="text-sm text-gray-500 mb-4">
+        Tìm thấy {sortedTrips.length} chuyến xe
+        {trips.length !== sortedTrips.length && (
+          <span className="text-blue-500"> (đã lọc từ {trips.length} kết quả)</span>
+        )}
+      </p>
+      
+      {/* Thông báo khi không có kết quả sau khi filter */}
+      {sortedTrips.length === 0 && trips.length > 0 && (
+        <div className="w-full text-center py-10 bg-white rounded-lg shadow">
+          <div className="text-4xl mb-3">🔍</div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">Không có chuyến xe phù hợp</h3>
+          <p className="text-gray-500">Vui lòng điều chỉnh bộ lọc để xem thêm kết quả</p>
+        </div>
+      )}
       
       {sortedTrips.map((trip: TripSearchResult) => {
         const isActive = activeTripId === trip.schedule_id;
