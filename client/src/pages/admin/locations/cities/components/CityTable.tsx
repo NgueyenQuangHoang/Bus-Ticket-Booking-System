@@ -1,0 +1,46 @@
+import {
+    Table, TableBody, TableCell, TableContainer,
+    TableHead, TableRow, Chip   
+} from '@mui/material';
+import type { City } from '../../../../../types';
+import CityAction from './CityAction';
+
+export default function CityTable({cities}: {cities: City[]}) {
+    return (
+                
+                    <TableContainer>
+                        <Table sx={{ minWidth: 650 }}>
+                            <TableHead className="bg-gray-50">
+                                <TableRow>
+                                    <TableCell className="font-bold text-gray-400">ID</TableCell>
+                                    <TableCell className="font-bold text-gray-400">TÊN THÀNH PHỐ</TableCell>
+                                    <TableCell className="font-bold text-gray-400">VÙNG MIỀN</TableCell>
+                                    <TableCell align="right" className="font-bold text-gray-400">THAO TÁC</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {cities.map((city) => (
+                                    <TableRow key={city.city_id} hover className="transition-colors">
+                                        <TableCell className="text-gray-600">{city.city_id}</TableCell>
+                                        <TableCell className="font-medium">{city.city_name}</TableCell>
+                                        <TableCell>
+                                            <Chip
+                                                label={city.region}
+                                                size="small"
+                                                className={`${city.region === 'Nam' ? 'bg-blue-50 text-blue-600' :
+                                                    city.region === 'Bắc' ? 'bg-blue-50 text-blue-600' :
+                                                        'bg-blue-50 text-blue-600'
+                                                    } font-medium px-2`}
+                                            />
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <CityAction/>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    
+    )
+}

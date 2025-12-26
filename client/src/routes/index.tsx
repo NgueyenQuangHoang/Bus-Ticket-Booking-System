@@ -21,6 +21,9 @@ import RouteDetailPage from "../pages/user/routes/[slug]/RouteDetailPage";
 import CheckTicket from "../pages/user/check_ticket/CheckTicket";
 import BookingConfirmation from "../pages/user/booking/[tripId]/BookingConfirmation";
 import AccountProfile from "../pages/user/profile/AccountProfile";
+import CitiesPage from "../pages/admin/locations/cities/CitiesPage";
+import RouteAdminPage from "../pages/admin/locations/routes/RoutesPage";
+import StationAdminPage from "../pages/admin/locations/stations/StationsPage";
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +40,6 @@ export const router = createBrowserRouter([
       { path: "detailRoute", element: <RouteDetailPage /> },
       { path: "bookingConfirmation", element: <BookingConfirmation /> },
       { path: "check-ticket", element: <CheckTicket /> },
-
       { path: "accountProfile", element: <AccountProfile /> },
 
     ],
@@ -58,10 +60,6 @@ export const router = createBrowserRouter([
           { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
           { path: "detailRoute", element: <RouteDetailPage /> },
           { path: "check-ticket", element: <CheckTicket /> }
-
-
-
-
         ],
       },
     ],
@@ -75,6 +73,9 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="dashboard" replace /> },
           { path: "dashboard", element: <DashboardPage /> },
+          { path: "cities", element: <CitiesPage /> },
+          { path: "routes", element: <RouteAdminPage /> },
+          { path: "stations", element: <StationAdminPage/> },
         ],
       },
     ],
