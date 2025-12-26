@@ -21,6 +21,7 @@ import RouteDetailPage from "../pages/user/routes/[slug]/RouteDetailPage";
 import CheckTicket from "../pages/user/check_ticket/CheckTicket";
 import BookingConfirmation from "../pages/user/booking/[tripId]/BookingConfirmation";
 import AccountProfile from "../pages/user/profile/AccountProfile";
+import { AuthPage } from "../pages/admin/auth/AdminLoginPage";
 // import admin from "pages/admin"
 import UsersPage from "../pages/admin/users/UsersPage";
 import RolesPage from "../pages/admin/users/roles/RolesPage";
@@ -112,6 +113,10 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/admin/auth",
+    element: <AuthPage />,
   },
 
   { path: "*", element: <Navigate to="/" replace /> },
