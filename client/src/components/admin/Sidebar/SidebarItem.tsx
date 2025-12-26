@@ -9,9 +9,10 @@ interface SidebarItemProps {
   subItems?: { label: string; to: string }[];
   isOpen?: boolean;
   onToggle?: () => void;
+  onClick?: () => void;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, to, subItems, isOpen, onToggle }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, to, subItems, isOpen, onToggle, onClick }) => {
   const location = useLocation();
   const hasSubItems = subItems && subItems.length > 0;
   
@@ -26,7 +27,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, to, subIte
           onClick={onToggle}
           className={`
             flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors
-            ${isActive || isOpen ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}
+            ${isActive ? 'bg-blue-600 text-white' : isOpen ? 'text-white bg-slate-800/50' : 'text-slate-400 hover:text-white hover:bg-slate-800'}
           `}
         >
           <div className="flex items-center gap-3">
@@ -38,6 +39,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon: Icon, label, to, subIte
       ) : (
         <NavLink
           to={to!}
+          onClick={onClick}
           className={({ isActive }) => `
             flex items-center gap-3 p-3 rounded-lg transition-colors
             ${isActive ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}

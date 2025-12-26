@@ -21,9 +21,27 @@ import RouteDetailPage from "../pages/user/routes/[slug]/RouteDetailPage";
 import CheckTicket from "../pages/user/check_ticket/CheckTicket";
 import BookingConfirmation from "../pages/user/booking/[tripId]/BookingConfirmation";
 import AccountProfile from "../pages/user/profile/AccountProfile";
+import { AuthPage } from "../pages/admin/auth/AdminLoginPage";
+// import admin from "pages/admin"
+import UsersPage from "../pages/admin/users/UsersPage";
+import RolesPage from "../pages/admin/users/roles/RolesPage";
+import UserPermissionsPage from "../pages/admin/users/permissions/UserPermissionsPage";
+import SchedulesPage from "../pages/admin/schedules/SchedulesPage";
 import CitiesPage from "../pages/admin/locations/cities/CitiesPage";
-import RouteAdminPage from "../pages/admin/locations/routes/RoutesPage";
-import StationAdminPage from "../pages/admin/locations/stations/StationsPage";
+import StationsPage from "../pages/admin/locations/stations/StationsPage";
+import AdminRoutesPage from "../pages/admin/locations/routes/RoutesPage";
+import BusCompaniesPage from "../pages/admin/vehicles/companies/BusCompaniesPage";
+import BusesPage from "../pages/admin/vehicles/buses/BusesPage";
+import BusImagesPage from "../pages/admin/vehicles/images/BusImagesPage";
+import SeatTypesPage from "../pages/admin/seats/types/SeatTypesPage";
+import SeatLayoutPage from "../pages/admin/seats/layouts/SeatLayoutPage";
+import SeatStatusPage from "../pages/admin/seats/status/SeatStatusPage";
+import TicketsPage from "../pages/admin/tickets/TicketsPage";
+import PaymentGatewaysPage from "../pages/admin/payments/PaymentGatewaysPage";
+import TransactionsPage from "../pages/admin/payments/TransactionsPage";
+import CancellationPoliciesPage from "../pages/admin/policies/CancellationPoliciesPage";
+import ReviewsPage from "../pages/admin/reviews/ReviewsPage";
+import BannersPage from "../pages/admin/banners/BannersPage";
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +59,6 @@ export const router = createBrowserRouter([
       { path: "bookingConfirmation", element: <BookingConfirmation /> },
       { path: "check-ticket", element: <CheckTicket /> },
       { path: "accountProfile", element: <AccountProfile /> },
-
     ],
   },
   {
@@ -59,7 +76,7 @@ export const router = createBrowserRouter([
           { path: "routes", element: <RoutesPage /> },
           { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
           { path: "detailRoute", element: <RouteDetailPage /> },
-          { path: "check-ticket", element: <CheckTicket /> }
+          { path: "check-ticket", element: <CheckTicket /> },
         ],
       },
     ],
@@ -73,9 +90,25 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="dashboard" replace /> },
           { path: "dashboard", element: <DashboardPage /> },
+          { path: "users", element: <UsersPage /> },
+          { path: "roles", element: <RolesPage /> },
+          { path: "permissions", element: <UserPermissionsPage /> },
+          { path: "schedules", element: <SchedulesPage /> },
           { path: "cities", element: <CitiesPage /> },
-          { path: "routes", element: <RouteAdminPage /> },
-          { path: "stations", element: <StationAdminPage/> },
+          { path: "stations", element: <StationsPage /> },
+          { path: "routes", element: <AdminRoutesPage /> },
+          { path: "bus-companies", element: <BusCompaniesPage /> },
+          { path: "buses", element: <BusesPage /> },
+          { path: "bus-images", element: <BusImagesPage /> },
+          { path: "seat-types", element: <SeatTypesPage /> },
+          { path: "seat-maps", element: <SeatLayoutPage /> },
+          { path: "seat-status", element: <SeatStatusPage /> },
+          { path: "tickets", element: <TicketsPage /> },
+          { path: "payment-gateways", element: <PaymentGatewaysPage /> },
+          { path: "transactions", element: <TransactionsPage /> },
+          { path: "cancellation-policies", element: <CancellationPoliciesPage /> },
+          { path: "reviews", element: <ReviewsPage /> },
+          { path: "banners", element: <BannersPage /> },
         ],
       },
     ],
