@@ -58,7 +58,6 @@ export const router = createBrowserRouter([
       { path: "detailRoute", element: <RouteDetailPage /> },
       { path: "bookingConfirmation", element: <BookingConfirmation /> },
       { path: "check-ticket", element: <CheckTicket /> },
-
       { path: "accountProfile", element: <AccountProfile /> },
     ],
   },
