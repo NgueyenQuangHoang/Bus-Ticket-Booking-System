@@ -80,6 +80,10 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/admin/auth",
+    element: <AuthPage />,
+  },
 
   { path: "*", element: <Navigate to="/" replace /> },
 ]);
