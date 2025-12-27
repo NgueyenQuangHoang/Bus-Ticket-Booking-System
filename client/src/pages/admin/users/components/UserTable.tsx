@@ -1,16 +1,17 @@
 import { Lock, LockOpen, Visibility, Edit, Delete } from '@mui/icons-material';
-import type { User } from '../UsersPage';
 import UserStatusBadge from './UserStatusBadge';
+import type { User } from '../../../../types';
 
 interface UserTableProps {
   users: User[];
-  onToggleStatus: (id: string) => void;
+  onToggleStatus: (id: string | number, status: string) => void;
   onView: (user: User) => void;
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
+  roles: {[x:string]:string}
 }
 
-export default function UserTable({ users, onToggleStatus, onView, onEdit, onDelete }: UserTableProps) {
+export default function UserTable({ users, onToggleStatus, onView, onEdit, onDelete, roles }: UserTableProps) {
   return (
     <div className='bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden'>
       <div className='overflow-x-auto'>
@@ -22,25 +23,33 @@ export default function UserTable({ users, onToggleStatus, onView, onEdit, onDel
               <th className='px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider'>Email</th>
               <th className='px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider'>Điện thoại</th>
               <th className='px-6 py-4 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider'>Trạng thái</th>
+              <th className='px-6 py-4 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider'>Vai Trò</th>
               <th className='px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider'>Thao tác</th>
             </tr>
           </thead>
           <tbody className='divide-y divide-slate-200'>
-            {users.map((user) => (
-              <tr key={user.id} className='hover:bg-slate-50 transition-colors'>
-                <td className='px-6 py-4 text-sm text-slate-600 font-medium'>#{user.user_id}</td>
+            {users.map((user, index) => (
+              <tr key={index} className='hover:bg-slate-50 transition-colors'>
+                <td className='px-6 py-4 text-sm text-slate-600 font-medium'>#{index+1}</td>
                 <td className='px-6 py-4'>
                   <div className='text-sm font-medium text-slate-900'>{user.first_name} {user.last_name}</div>
                 </td>
                 <td className='px-6 py-4 text-sm text-slate-600'>{user.email}</td>
                 <td className='px-6 py-4 text-sm text-slate-600'>{user.phone}</td>
                 <td className='px-6 py-4 text-center'>
-                  <UserStatusBadge status={user.status} />
+                  <UserStatusBadge status={user.status ? user.status : 'ACTIVE'} />
                 </td>
+                <td className='px-6 py-4 text-sm text-slate-600 text-center'>{roles[user.user_id]}</td>
                 <td className='px-6 py-4'>
                   <div className='flex items-center justify-end gap-2'>
                       <button 
-                          onClick={() => onToggleStatus(user.id)}
+                          onClick={() => {
+                            if (user.status === 'ACTIVE'){
+                              onToggleStatus(user.id ? user.id : "", 'LOCKED')
+                            }else{
+                              onToggleStatus(user.id ? user.id : "", 'ACTIVE')
+                            }
+                          }}
                           className={`p-2 rounded-lg transition-colors hover:cursor-pointer ${
                               user.status === 'ACTIVE' 
                               ? 'text-red-500 hover:bg-red-50' 

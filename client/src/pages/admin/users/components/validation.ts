@@ -13,17 +13,22 @@ export const validateRequired = (value: string): boolean => {
 };
 
 export interface UserFormData {
-    fullName: string;
+    last_name: string;
+    first_name: string;
     email: string;
     phone: string;
-    password?: string;
+    password: string;
 }
 
-export const validateUserForm = (data: UserFormData) => {
+export const validateUserForm = (data: UserFormData,isUpdate:boolean) => {
     const errors: Partial<Record<keyof UserFormData, string>> = {};
 
-    if (!validateRequired(data.fullName)) {
-        errors.fullName = 'Họ tên không được để trống';
+    if (!validateRequired(data.last_name)) {
+        errors.last_name = 'Họ tên không được để trống';
+    }
+
+    if (!validateRequired(data.first_name)) {
+        errors.first_name = 'Họ tên không được để trống';
     }
 
     if (!validateRequired(data.email)) {
@@ -38,7 +43,7 @@ export const validateUserForm = (data: UserFormData) => {
         errors.phone = 'Số điện thoại không đúng định dạng (VD: 0901234567)';
     }
 
-    if (data.password !== undefined) {
+    if (!isUpdate && data.password !== undefined) {
         if (!validateRequired(data.password)) {
             errors.password = 'Mật khẩu không được để trống';
         } else if (data.password.length < 6) {

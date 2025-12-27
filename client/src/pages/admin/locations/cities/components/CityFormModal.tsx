@@ -9,36 +9,46 @@ import {
     Map,
     Image as ImageIcon,
     Save,
-    RestartAlt
+    RestartAlt,
+    Description
 } from '@mui/icons-material';
 import type { City } from '../../../../../types';
 
-// Style cho Modal để căn giữa màn hình
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
+import { cityService } from '../../../../../services/cityService';
+import { uuidv4 } from 'zod';
+
+// Style cho Modal
 const modalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: { xs: '90%', sm: 600 }, // Mobile rộng 90%, Desktop 600px
+    width: { xs: '90%', sm: 700 },
+    maxHeight: '90vh',
+    overflowY: 'auto',
     bgcolor: 'background.paper',
     boxShadow: 24,
-    borderRadius: 4, // Bo góc 16px
+    borderRadius: 4,
     p: 4,
     outline: 'none'
 };
 
-export default function CityFormModal() {
+export default function CityFormModal({ numberCities, updateCitiesOnAdd }: { numberCities: number, updateCitiesOnAdd : (city: City) => void}) {
     const [open, setOpen] = useState(false)
     const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)
 
-    // Khởi tạo state khớp với Interface City
+    // Khởi tạo state
     const [formData, setFormData] = useState<City>({
         city_id: 0,
         city_name: '',
         region: '',
         image_city: '',
+        description: ''
     });
+    // Lưu ý: Sửa lỗi chính tả tên biến desciption -> description cho chuẩn
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -46,20 +56,46 @@ export default function CityFormModal() {
     };
 
     const handleReset = () => {
-        setFormData({ city_id: 0, city_name: '', region: '', image_city: '' });
+        setFormData({
+            city_id: uuidv4()+"",
+            city_name: '',
+            region: '',
+            image_city: '',
+            description: ''
+        });
     };
 
     const handleSubmit = () => {
+        // Gộp description vào formData khi gửi đi
+        updateCitiesOnAdd(formData);
+        cityService.createCity(formData)
         console.log("Dữ liệu gửi đi:", formData);
-        // Xử lý logic API ở đây
         handleClose();
     };
 
+    // --- CẤU HÌNH TOOLBAR ---
+    const modules = {
+        toolbar: [
+            ['bold', 'italic', 'underline'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['image'], // <--- Thêm nút Image vào đây
+            ['clean']
+        ],
+    };
+
+    // --- CẤU HÌNH FORMATS (Để editor hiểu thẻ img) ---
+    const formats = [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image', 'video' // <--- Cho phép định dạng image
+    ];
+    
     return (
         <div className="flex justify-between items-center mb-6">
             <div>
                 <h1 className="text-2xl font-bold text-gray-800">Quản lý thành phố</h1>
-                <p className="text-gray-500 text-sm">5 thành phố</p>
+                <p className="text-gray-500 text-sm">{numberCities} thành phố</p>
             </div>
             <Button
                 variant="contained"
@@ -76,7 +112,6 @@ export default function CityFormModal() {
                 aria-labelledby="modal-title"
             >
                 <Box sx={modalStyle}>
-                    {/* Header Modal */}
                     <div className="flex justify-between items-center mb-4">
                         <Typography id="modal-title" variant="h6" className="font-bold text-gray-800">
                             Thêm Thành Phố Mới
@@ -151,10 +186,31 @@ export default function CityFormModal() {
                                 }}
                             />
                         </div>
+
+                        {/* Description - React Quill New */}
+                        <div className="col-span-2 space-y-1.5">
+                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                                <Description fontSize="small" className="text-blue-500" />
+                                Mô tả chi tiết
+                            </label>
+                            <div className="bg-white rounded-md overflow-hidden">
+                                <ReactQuill
+                                    theme="snow"
+                                    value={formData.description}
+                                    onChange={(e) => {
+                                        setFormData(prev => ({ ...prev, description: e }));
+                                    }} // Đã sửa gọn lại
+                                    placeholder="Nhập mô tả về thành phố..."
+                                    style={{ height: '200px', marginBottom: '50px' }} // Tăng chiều cao chút để dễ nhìn ảnh
+                                    modules={modules} // Sử dụng biến modules đã khai báo
+                                    formats={formats} // Sử dụng biến formats đã khai báo
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     {/* Preview Area */}
-                    <Box
+                    {/* <Box
                         className="w-full h-32 border-2 border-dashed border-gray-100 rounded-xl bg-gray-50 flex items-center justify-center overflow-hidden mb-6 transition-all"
                     >
                         {formData.image_city ? (
@@ -172,11 +228,10 @@ export default function CityFormModal() {
                                 </Typography>
                             </div>
                         )}
-                    </Box>
+                    </Box> */}
 
                     <Divider className="mb-4" />
 
-                    {/* Actions */}
                     <div className="flex justify-end items-center gap-3">
                         <Button
                             variant="text"

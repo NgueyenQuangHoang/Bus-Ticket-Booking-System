@@ -1,42 +1,48 @@
 import { useState, useEffect } from 'react';
 import { Close } from '@mui/icons-material';
 import { validateUserForm, type UserFormData } from './validation';
-import type { User } from '../UsersPage';
+import type { User } from '../../../../types';
 
 interface AddUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (user: Partial<User>) => void;
-  user?: User | null; // If provided, we are in Edit mode
+  onAdd: (user: Omit<User, 'user_id' | 'status' | 'created_at' | 'updated_at'>, role: string) => void;
+  Edit: (id:string | number, user: User, role: string) => void;
+  user?: User | null;
+  statusForm: 'edit' | 'add'
 }
 
-export default function AddUserModal({ isOpen, onClose, onAdd, user }: AddUserModalProps) {
+export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm, Edit}: AddUserModalProps) {
   const [formData, setFormData] = useState<UserFormData & { status: string }>({
-    fullName: '',
+    last_name: '',
+    first_name: '',
     email: '',
     phone: '',
     password: '',
     status: 'ACTIVE'
   });
   const [errors, setErrors] = useState<Partial<Record<keyof UserFormData, string>>>({});
-
+  const [role, setRole] = useState<string>('USER')
   useEffect(() => {
     if (user) {
-        setFormData({
-            fullName: user.first_name + ' ' + user.last_name, 
-            email: user.email,
-            phone: user.phone || '',
-            password: '', 
-            status: user.status || 'ACTIVE'
-        });
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone: user.phone || '',
+        password: '',
+        status: user.status || 'ACTIVE'
+      });
     } else {
-        setFormData({
-            fullName: '',
-            email: '',
-            phone: '',
-            password: '',
-            status: 'ACTIVE'
-        });
+      setFormData({
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone: '',
+        password: '',
+        status: 'ACTIVE'
+      });
     }
     setErrors({});
   }, [user, isOpen]);
@@ -45,50 +51,60 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user }: AddUserMo
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(user);
     
     // Validate
     // If editing, password is optional
     const dataToValidate = { ...formData };
-    if (user && !dataToValidate.password) {
-        delete dataToValidate.password;
-    }
-
-    const { isValid, errors: validationErrors } = validateUserForm(dataToValidate);
-    
+    // if (user && !dataToValidate.password) {
+    //   delete dataToValidate.password;
+    // }
+    const { isValid, errors: validationErrors } = validateUserForm(dataToValidate, user?true:false);
     if (!isValid) {
       setErrors(validationErrors);
       return;
     }
 
     // Split fullName to first/last
-    const names = formData.fullName.trim().split(' ');
-    const lastName = names.length > 1 ? names.pop() || '' : '';
-    const firstName = names.join(' ');
+    const lastName = formData.last_name
+    const firstName = formData.first_name
 
-    const finalData: Partial<User> = {
-        id: user ? user.id : undefined, // Keep ID if editing
-        first_name: firstName,
-        last_name: lastName,
-        email: formData.email,
-        phone: formData.phone,
-        status: formData.status,
+    const finalData: Omit<User, 'user_id' | 'status' | 'created_at' | 'updated_at'> = {
+      id: user ? user.id : undefined, // Keep ID if editing
+      first_name: firstName,
+      last_name: lastName,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password,
     };
 
-    if (formData.password) {
-        finalData.password = formData.password;
-    } else if (user) {
-        finalData.password = user.password;
+    if (user) {
+      finalData.password = user.password;
     }
 
-    onAdd(finalData);
+    if (statusForm == 'add') {
+      onAdd(finalData, role);
+    } else if (user) {
+      const newUser: User = {
+        ...user,
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        phone: formData.phone || '',
+        password: formData.password ? formData.password : user.password,
+        updated_at: (new Date()).toString()
+      }
+      
+      Edit(user.id ? user.id : '',newUser, role)
+    }
     onClose();
   };
 
   const handleChange = (field: keyof UserFormData, value: string) => {
-      setFormData((prev: UserFormData & { status: string }) => ({ ...prev, [field]: value }));
-      if (errors[field]) {
-          setErrors(prev => ({ ...prev, [field]: undefined }));
-      }
+    setFormData((prev: UserFormData & { status: string }) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
   };
 
   return (
@@ -96,78 +112,109 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user }: AddUserMo
       <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl overflow-hidden animate-modal-in">
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <h2 className="text-xl font-bold text-slate-800">
-              {user ? 'Cập nhật người dùng' : 'Thêm người dùng mới'}
+            {user ? 'Cập nhật người dùng' : 'Thêm người dùng mới'}
           </h2>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors hover:cursor-pointer">
             <Close />
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Họ và tên</label>
-            <input
-              type="text"
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${
-                  errors.fullName 
-                  ? 'border-red-500 focus:ring-red-200 focus:border-red-500' 
+          <div className='flex justify-between gap-3'>
+            <div className='w-full'>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Nhập họ</label>
+              <input
+                type="text"
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${errors.first_name
+                  ? 'border-red-500 focus:ring-red-200 focus:border-red-500'
                   : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
-              }`}
-              value={formData.fullName}
-              onChange={e => handleChange('fullName', e.target.value)}
-              placeholder="Nhập họ tên..."
-            />
-            {errors.fullName && <p className="mt-1 text-xs text-red-500">{errors.fullName}</p>}
+                  }`}
+                value={formData.first_name}
+                onChange={e => handleChange('first_name', e.target.value)}
+                placeholder="EX: Nguyễn Văn..."
+              />
+              {errors.first_name && <p className="mt-1 text-xs text-red-500">{errors.first_name}</p>}
+            </div>
+            <div className='w-full'>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Nhập tên</label>
+              <input
+                type="text"
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${errors.last_name
+                  ? 'border-red-500 focus:ring-red-200 focus:border-red-500'
+                  : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
+                  }`}
+                value={formData.last_name}
+                onChange={e => handleChange('last_name', e.target.value)}
+                placeholder="EX: ...A"
+              />
+              {errors.last_name && <p className="mt-1 text-xs text-red-500">{errors.last_name}</p>}
+            </div>
+
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
             <input
               type="text"
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${
-                  errors.email 
-                  ? 'border-red-500 focus:ring-red-200 focus:border-red-500' 
-                  : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
-              }`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${errors.email
+                ? 'border-red-500 focus:ring-red-200 focus:border-red-500'
+                : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
+                }`}
               value={formData.email}
               onChange={e => handleChange('email', e.target.value)}
               placeholder="example@email.com"
             />
-             {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
+            {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Số điện thoại</label>
             <input
               type="tel"
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${
-                  errors.phone 
-                  ? 'border-red-500 focus:ring-red-200 focus:border-red-500' 
-                  : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
-              }`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${errors.phone
+                ? 'border-red-500 focus:ring-red-200 focus:border-red-500'
+                : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
+                }`}
               value={formData.phone}
               onChange={e => handleChange('phone', e.target.value)}
               placeholder="0901234567"
             />
-             {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
+            {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
           </div>
 
-           <div>
+          <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
-                Mật khẩu {user && <span className="text-slate-400 font-normal">(Để trống nếu không đổi)</span>}
+              Mật khẩu {user && <span className="text-slate-400 font-normal">(Để trống nếu không đổi)</span>}
             </label>
             <input
               type="password"
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${
-                  errors.password 
-                  ? 'border-red-500 focus:ring-red-200 focus:border-red-500' 
-                  : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
-              }`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${errors.password
+                ? 'border-red-500 focus:ring-red-200 focus:border-red-500'
+                : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
+                }`}
               value={formData.password}
               onChange={e => handleChange('password', e.target.value)}
               placeholder="********"
             />
-             {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password}</p>}
+            {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              Chọn vai trò
+            </label>
+            <select name="role" id=""
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all 
+                border-slate-300 focus:ring-blue-500 focus:border-blue-500
+
+                }`}
+              value={role}
+              onChange={(e) => { setRole(e.target.value) }}>
+              <option value="USER">USER</option>
+              <option value="BUS_COMPANY">BUS_COMPANY</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+
           </div>
 
           <div className="flex items-center gap-3 pt-4">

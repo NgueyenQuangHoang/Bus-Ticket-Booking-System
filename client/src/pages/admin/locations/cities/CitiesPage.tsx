@@ -13,7 +13,6 @@ export default function CitiesPage() {
             setCities(data || null)
         })
     }, [])
-    console.log(cities);
     const [searchCity, setSearchCity] = useState<string>('')
     const itemsPerPage = 10
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -21,6 +20,25 @@ export default function CitiesPage() {
         console.log(event);
         setCurrentPage(value);
     }
+
+    const updateCitiesOnDelete = ((id: string | number) => {
+        if (cities) {
+            const updatedCities = cities.filter((city) => city.id !== id)
+            setCities(updatedCities)
+        }
+    })
+
+    const updateCitiesOnFix = ((city: City) => {
+        if (cities){
+            setCities(cities.map((c) => (c.id === city.id ? city : c)))
+        }
+    })
+
+    const updateCitiesOnAdd = ((city: City) => {
+        if (cities){
+            setCities([...cities, city])
+        }
+    })
 
     const cityRender = cities ? cities
         .filter((city) => {
@@ -32,12 +50,15 @@ export default function CitiesPage() {
 
     return (
         <div className='py-5'>
-            <CityFormModal/>
+            <CityFormModal numberCities={cities ? cities.length : 0} updateCitiesOnAdd={updateCitiesOnAdd}/>
             <Paper className="shadow-sm rounded-xl overflow-hidden border border-gray-100">
             <CitySearch onChangeInputData={setSearchCity} inputData={searchCity} totalCities={cities? cities.length : 0}/>
             {cityRender && <CityTable cities={
                 cityRender
-                }/>}
+                }
+                updateCitiesOnDelete={updateCitiesOnDelete}
+                    updateCitiesOnFix={updateCitiesOnFix}
+                />}
             </Paper>
             <div className='mt-3 flex items-center justify-center'>
                 {cities && <Pagination count={
