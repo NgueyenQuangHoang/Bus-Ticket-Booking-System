@@ -32,14 +32,14 @@ export default function BusTable({
             border-b border-gray-200
           "
         >
-          <div className="p-3">ID</div>
+          <div className="p-3 text-center font-mono">ID</div>
           <div className="p-3">Tên xe</div>
           <div className="p-3">Biển số</div>
           <div className="p-3">Nhà xe</div>
           <div className="p-3">Loại xe</div>
           <div className="p-3">Layout ghế</div>
           <div className="p-3">Số ghế</div>
-          <div className="p-3">Trạng thái</div>
+          <div className="p-3 text-center">Trạng thái</div>
           <div className="p-3 text-center">Thao tác</div>
         </div>
 
@@ -54,7 +54,11 @@ export default function BusTable({
               hover:bg-gray-50
             "
           >
-            <div className="p-3">{bus.bus_id}</div>
+            {/* ID */}
+            <div className="p-3 text-center font-mono">
+              {bus.bus_id}
+            </div>
+
             <div className="p-3 font-medium">{bus.name}</div>
             <div className="p-3">{bus.license_plate}</div>
             <div className="p-3">{bus.company_name ?? "—"}</div>
@@ -63,7 +67,7 @@ export default function BusTable({
             <div className="p-3">{bus.capacity ?? "—"}</div>
 
             {/* STATUS */}
-            <div className="p-3 flex items-center">
+            <div className="p-3 flex justify-center">
               <span
                 className={`
                   px-2 py-1 rounded-full text-xs font-medium

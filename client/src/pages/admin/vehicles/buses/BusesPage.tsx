@@ -40,16 +40,16 @@ const DATA: BusUI[] = [
     status: "ACTIVE",
   },
   {
-    bus_id: 3,
-    company_id: 2,
-    name: "HL-GHE-01",
-    license_plate: "29B-22222",
-    company_name: "Hoàng Long",
-    bus_type: "Ghế ngồi",
-    seat_layout: "45 ghế (1 tầng)",
-    capacity: 45,
-    status: "MAINTENANCE",
-  },
+    bus_id: 2,
+    company_id: 1,
+    name: "FUTA-GN-01",
+    license_plate: "51B-67890",
+    company_name: "Phương Trang FUTA",
+    bus_type: "Giường nằm",
+    seat_layout: "40 giường (2 tầng)",
+    capacity: 40,
+    status: "INACTIVE",
+  }
 ];
 
 export default function BusesPage() {
