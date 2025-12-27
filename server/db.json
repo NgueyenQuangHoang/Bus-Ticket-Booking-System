@@ -1,18 +1,6 @@
 {
   "users": [
     {
-      "user_id": 1,
-      "first_name": "Nguyễn",
-      "last_name": "Phát",
-      "email": "phat@gmail.com",
-      "phone": "0909123456",
-      "password": "123456",
-      "status": "ACTIVE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "8b0b"
-    },
-    {
       "user_id": 2,
       "first_name": "Admin",
       "last_name": "System",
@@ -21,44 +9,20 @@
       "password": "Admin123",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
+      "updated_at": "Sat Dec 27 2025 20:26:40 GMT+0700 (GMT+07:00)",
       "id": "33aa"
     },
     {
-      "id": "6222",
-      "first_name": "áljdf",
-      "last_name": "alsddf",
-      "email": "nguyentatho14106@gmail.com",
-      "password": "123123",
-      "phone": "0812719014",
-      "created_at": "2025-12-24T00:48:36.167Z",
-      "updated_at": "2025-12-24T00:48:36.167Z",
-      "status": "ACTIVE",
-      "user_id": "c01d4d2b-6be4-4b16-9a7e-4657a59dc080"
-    },
-    {
-      "id": "af89",
-      "first_name": "áljdf",
-      "last_name": "laf",
-      "email": "nguyendaiphat@gmail.com",
-      "password": "123123",
-      "phone": "183012983012",
-      "created_at": "2025-12-24T00:57:26.812Z",
-      "updated_at": "2025-12-24T00:57:26.812Z",
-      "status": "ACTIVE",
-      "user_id": "825f2046-0cc6-417e-9bbd-261482c2a75a"
-    },
-    {
-      "id": "1808",
-      "first_name": "tho",
-      "last_name": "ákđ",
-      "email": "nguyentatho141106@gmail.com",
-      "password": "123123",
-      "phone": "0812719014",
-      "created_at": "2025-12-24T01:18:52.031Z",
-      "updated_at": "2025-12-24T01:18:52.031Z",
-      "status": "ACTIVE",
-      "user_id": "2902b580-3abe-43f5-b4d6-82bb51d8b6e3"
+      "id": "083b",
+      "first_name": "ho va ten",
+      "last_name": "jkl,",
+      "email": "doi_thatday@gmail.com",
+      "phone": "0812912031",
+      "password": "1231223",
+      "user_id": "65c7ce3f-761a-4982-89d1-3a9b64eb1843",
+      "status": "LOCKED",
+      "created_at": "Sat Dec 27 2025 19:15:34 GMT+0700 (GMT+07:00)",
+      "updated_at": "Sat Dec 27 2025 20:42:42 GMT+0700 (GMT+07:00)"
     }
   ],
   "roles": [
@@ -80,65 +44,56 @@
   ],
   "user_role": [
     {
-      "user_id": 1,
-      "role_id": 1,
-      "id": "5995"
-    },
-    {
       "user_id": 2,
       "role_id": 2,
       "id": "a9f5"
     },
     {
-      "id": "316a",
-      "user_id": "c01d4d2b-6be4-4b16-9a7e-4657a59dc080",
-      "role_id": 1
-    },
-    {
-      "id": "26d5",
-      "user_id": "825f2046-0cc6-417e-9bbd-261482c2a75a",
-      "role_id": 1
-    },
-    {
-      "id": "f53d6e1e-7157-44f9-a21d-bbb29f64010d",
-      "user_id": "2902b580-3abe-43f5-b4d6-82bb51d8b6e3",
-      "role_id": 1
+      "user_id": "65c7ce3f-761a-4982-89d1-3a9b64eb1843",
+      "role_id": "2",
+      "id": "2bdc"
     }
   ],
   "cities": [
     {
       "city_id": 1,
       "city_name": "Hà Nội",
-      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/ba4a04c93cf156bdf8bd5af1dc075bc88a6f373b_hzepz3.png",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "971d",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 2,
       "city_name": "Hồ Chí Minh",
-      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450901/53bbd8a2e90b0a4a2eaf5ed482cf893561fe8c79_crg541.png",
-      "region": "Nam",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
+      "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "afa9"
+      "id": "971d",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 3,
       "city_name": "Đà Nẵng",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
-      "region": "Trung",
+      "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "971d"
+      "id": "971d",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 4,
       "city_name": "Hải Phòng",
-      "image_city": "",
+      "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "971d",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 5,
@@ -146,7 +101,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "6631",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 6,
@@ -154,7 +111,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "e483",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 7,
@@ -163,15 +122,8 @@
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "dc5d"
-    },
-    {
-      "city_id": 8,
-      "city_name": "Bắc Giang",
-      "image_city": "",
-      "region": "Bắc",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "id": "dc5d",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 9,
@@ -179,7 +131,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "2f44",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 10,
@@ -187,7 +141,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "6d10",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 11,
@@ -195,7 +151,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "4b1f",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 12,
@@ -203,7 +161,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "793c",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 13,
@@ -211,7 +171,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "decc",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 14,
@@ -219,7 +181,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "232e",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 15,
@@ -227,7 +191,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "214d",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 16,
@@ -235,7 +201,9 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/5113199f887a0c349f2185e27fc156a46829b277_ssgeo2.png",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "4d40",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 17,
@@ -243,7 +211,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "4349",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 18,
@@ -251,7 +221,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "a1af",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 19,
@@ -259,7 +231,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "36d8",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 20,
@@ -267,7 +241,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "f8dc",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 21,
@@ -275,7 +251,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "764c",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 22,
@@ -283,7 +261,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "b813",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 23,
@@ -291,7 +271,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "b4b6",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 24,
@@ -299,7 +281,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "38fc",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 25,
@@ -307,7 +291,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "ed94",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 26,
@@ -315,7 +301,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "5545",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 27,
@@ -323,7 +311,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "e32b",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 28,
@@ -331,7 +321,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "665b",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 29,
@@ -339,7 +331,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "43cf",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 30,
@@ -347,7 +341,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "3db5",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 31,
@@ -355,7 +351,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "f92f",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 32,
@@ -363,7 +361,9 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/924d54b9d9dca45ff676616cf5e0007fe28b6001_lsb5ua.png",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "6c15",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 33,
@@ -371,7 +371,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "ecbe",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 34,
@@ -379,7 +381,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "420a",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 35,
@@ -387,7 +391,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "c683",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 36,
@@ -395,7 +401,9 @@
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/202a875aa331df0e80f37ef79ff442a61a21b919_qzv5uz.png",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "8bd6",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 37,
@@ -403,7 +411,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "8d40",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 38,
@@ -411,7 +421,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "97e0",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 39,
@@ -419,7 +431,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "c161",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 40,
@@ -427,7 +441,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "9d61",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 41,
@@ -435,7 +451,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "35f7",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 42,
@@ -443,7 +461,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "9db5",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 43,
@@ -451,7 +471,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "e83d",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 44,
@@ -459,7 +481,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "e8a4",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 45,
@@ -467,7 +491,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "e124",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 46,
@@ -475,7 +501,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "dbba",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 47,
@@ -483,7 +511,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "f878",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 48,
@@ -491,7 +521,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "39de",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 49,
@@ -499,7 +531,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "ae8a",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 50,
@@ -507,7 +541,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "12d4",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 51,
@@ -515,7 +551,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "d2d3",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 52,
@@ -523,7 +561,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "568b",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 53,
@@ -531,7 +571,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "014a",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 54,
@@ -539,7 +581,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "d025",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 55,
@@ -547,7 +591,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "6b20",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 56,
@@ -555,7 +601,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "8d76",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 57,
@@ -563,7 +611,9 @@
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "f63e",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 58,
@@ -571,7 +621,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "6a65",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 59,
@@ -579,7 +631,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "26ac",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 60,
@@ -587,7 +641,9 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "e106",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 61,
@@ -595,7 +651,9 @@
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "e77b",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 62,
@@ -603,15 +661,19 @@
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "0c9d",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
       "city_id": 63,
       "city_name": "Yên Bái",
       "image_city": "",
-      "region": "Bắc",
+      "region": "Nam",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "d318",
+      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     }
   ],
   "stations": [
@@ -678,7 +740,8 @@
       "description": "Bến xe chính Hải Phòng",
       "location": "Trần Nguyên Hãn",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "597f"
     },
     {
       "station_id": 7,
@@ -688,7 +751,8 @@
       "description": "Bến xe trung tâm Cần Thơ",
       "location": "Nguyễn Trãi, Ninh Kiều",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "fbb0"
     }
   ],
   "routes": [
@@ -736,7 +800,8 @@
       "duration": 150,
       "base_price": 120000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "2484"
     },
     {
       "route_id": 5,
@@ -746,7 +811,8 @@
       "duration": 960,
       "base_price": 280000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "35a8"
     },
     {
       "route_id": 6,
@@ -756,7 +822,8 @@
       "duration": 960,
       "base_price": 280000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "53a6"
     },
     {
       "route_id": 7,
@@ -766,7 +833,8 @@
       "duration": 180,
       "base_price": 150000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "016b"
     },
     {
       "route_id": 8,
@@ -776,7 +844,8 @@
       "duration": 720,
       "base_price": 250000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "94e4"
     },
     {
       "route_id": 9,
@@ -786,7 +855,8 @@
       "duration": 720,
       "base_price": 250000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "f048"
     }
   ],
   "bus_companies": [
@@ -875,7 +945,8 @@
       "capacity": 34,
       "amenities": "Wifi, Nước, Chăn",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "9b3e"
     },
     {
       "bus_id": 2,
@@ -885,7 +956,8 @@
       "capacity": 40,
       "amenities": "Wifi, TV, Nước",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "5f70"
     },
     {
       "bus_id": 3,
@@ -895,7 +967,8 @@
       "capacity": 9,
       "amenities": "Wifi, Nước, Massage",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "faf4"
     },
     {
       "bus_id": 4,
@@ -905,7 +978,8 @@
       "capacity": 45,
       "amenities": "Điều hòa",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "a902"
     },
     {
       "bus_id": 5,
@@ -915,34 +989,40 @@
       "capacity": 34,
       "amenities": "Wifi, Nước, Chăn, TV",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "cc11"
     }
   ],
   "bus_images": [
     {
       "bus_image_id": 1,
       "bus_id": 1,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg"
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
+      "id": "eb7b"
     },
     {
       "bus_image_id": 2,
       "bus_id": 2,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg"
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
+      "id": "26ee"
     },
     {
       "bus_image_id": 3,
       "bus_id": 3,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png"
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
+      "id": "cb34"
     },
     {
       "bus_image_id": 4,
       "bus_id": 4,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg"
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
+      "id": "e2f5"
     },
     {
       "bus_image_id": 5,
       "bus_id": 5,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg"
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
+      "id": "978b"
     }
   ],
   "bus_layouts": [
@@ -984,7 +1064,8 @@
       "seat_label": "A1",
       "seat_type_id": 2,
       "price_extra": 50000,
-      "is_available_for_booking": true
+      "is_available_for_booking": true,
+      "id": "bb41"
     },
     {
       "seat_id": 2,
@@ -993,7 +1074,8 @@
       "seat_label": "A2",
       "seat_type_id": 2,
       "price_extra": 50000,
-      "is_available_for_booking": true
+      "is_available_for_booking": true,
+      "id": "37aa"
     },
     {
       "seat_id": 3,
@@ -1055,7 +1137,8 @@
       "available_seats": 20,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "a373"
     },
     {
       "schedule_id": 2,
@@ -1067,7 +1150,8 @@
       "available_seats": 35,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "0d7f"
     },
     {
       "schedule_id": 3,
@@ -1079,7 +1163,8 @@
       "available_seats": 30,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "7833"
     },
     {
       "schedule_id": 4,
@@ -1091,7 +1176,8 @@
       "available_seats": 15,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "1b16"
     },
     {
       "schedule_id": 5,
@@ -1103,7 +1189,8 @@
       "available_seats": 5,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "d38c"
     },
     {
       "schedule_id": 6,
@@ -1115,7 +1202,8 @@
       "available_seats": 40,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "3846"
     },
     {
       "schedule_id": 7,
@@ -1127,7 +1215,8 @@
       "available_seats": 7,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "ebc3"
     },
     {
       "schedule_id": 8,
@@ -1139,7 +1228,8 @@
       "available_seats": 25,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "70be"
     },
     {
       "schedule_id": 9,
@@ -1151,7 +1241,8 @@
       "available_seats": 38,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "10b5"
     },
     {
       "schedule_id": 10,
@@ -1163,7 +1254,8 @@
       "available_seats": 32,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "baab"
     },
     {
       "schedule_id": 11,
@@ -1175,7 +1267,8 @@
       "available_seats": 28,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "8edd"
     },
     {
       "schedule_id": 12,
@@ -1187,7 +1280,8 @@
       "available_seats": 38,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "3887"
     },
     {
       "schedule_id": 13,
@@ -1199,7 +1293,8 @@
       "available_seats": 8,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "4b4b"
     },
     {
       "schedule_id": 14,
@@ -1211,7 +1306,8 @@
       "available_seats": 42,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "22ee"
     },
     {
       "schedule_id": 15,
@@ -1223,7 +1319,8 @@
       "available_seats": 35,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "34a8"
     },
     {
       "schedule_id": 16,
@@ -1235,7 +1332,8 @@
       "available_seats": 30,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "a777"
     },
     {
       "schedule_id": 17,
@@ -1247,7 +1345,8 @@
       "available_seats": 25,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "e512"
     },
     {
       "schedule_id": 18,
@@ -1259,7 +1358,8 @@
       "available_seats": 6,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "id": "89e4"
     }
   ],
   "seat_schedule": [

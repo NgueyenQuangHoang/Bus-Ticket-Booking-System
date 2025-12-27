@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import type { User } from "../../../../types";
 import { authService } from "../../../../services/authService";
+import type { User } from "../../../../types/user";
+import { useNavigate } from "react-router-dom";
 
 interface UserDropdownProps {
     user?: User;
@@ -11,19 +12,40 @@ interface UserDropdownProps {
 export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProps) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate()
+    
+    const [checkRole, setCheckRole] = useState<string>('User')
     useEffect(() => {
+        if (user) {
+            authService.getRoleUser(user.user_id).then((res) => {
+                if(res){
+                    res.forEach((item) => {
+                        if(item.role_name === 'ADMIN'){
+                            setCheckRole('ADMIN')
+                            return
+                        }
+                        if(item.role_name == 'BUS_COMPANY'){
+                            setCheckRole('BUS_COMPANY')
+                            return
+                        }
+                    })
+                }
+                })
+        }
+
+
         function handleClickOutside(event: MouseEvent) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
         }
-
         document.addEventListener("mousedown", handleClickOutside);
-
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, []);
+    }, [user]);
+
+
 
     const name = user ? user?.first_name + user?.last_name : 'U'
     const initial = name.charAt(0).toUpperCase();
@@ -54,6 +76,22 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
                         >
                             Thông tin tài khoản
                         </span>
+                        {checkRole === 'ADMIN' && <span
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4]"
+                            onClick={() => {
+                                navigate('/admin/dashboard')
+                            }}
+                        >
+                            ADMIN
+                        </span>}
+                        {checkRole === 'BUS_COMPANY' && <span
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4]"
+                            onClick={() => {
+                                navigate('/admin/busCompany')
+                            }}
+                        >
+                            Quản lý nhà xe
+                        </span>}
                         <span
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4]"
                         >

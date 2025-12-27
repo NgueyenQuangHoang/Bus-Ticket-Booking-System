@@ -1,203 +1,232 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import UserHeader from "./components/UserHeader";
 import UserSearch from "./components/UserSearch";
 import UserTable from "./components/UserTable";
 import AddUserModal from "./components/AddUserModal";
 import ViewUserModal from "./components/ViewUserModal";
+import { authService } from "../../../services/authService";
+import type { User, UserRole } from "../../../types";
+import { v4 as uuidv4 } from "uuid";
 
 // Mock Data matching db.json structure
 // Ensure mock data strictly follows User interface
-export interface User {
-  id: string;
-  user_id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password?: string;
-  phone: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
+// export interface User {
+//   id: string;
+//   user_id: number;
+//   first_name: string;
+//   last_name: string;
+//   email: string;
+//   password?: string;
+//   phone: string;
+//   status: string;
+//   created_at: string;
+//   updated_at: string;
+// }
 
-const initialUsers: User[] = [
-  {
-    user_id: 1,
-    first_name: "Nguyễn",
-    last_name: "Phát",
-    email: "phat@gmail.com",
-    phone: "0909123456",
-    password: "123456",
-    status: "ACTIVE",
-    created_at: "2025-01-01",
-    updated_at: "2025-01-01",
-    id: "8b0b",
-  },
-  {
-    user_id: 2,
-    first_name: "Admin",
-    last_name: "System",
-    email: "admin@gmail.com",
-    phone: "0909000000",
-    password: "Admin123",
-    status: "ACTIVE",
-    created_at: "2025-01-01",
-    updated_at: "2025-01-01",
-    id: "33aa",
-  },
-  {
-    id: "6222",
-    first_name: "Hoàng",
-    last_name: "Hải",
-    email: "nguyentatho14106@gmail.com",
-    password: "123123",
-    phone: "0812719014",
-    created_at: "2025-12-24T00:48:36.167Z",
-    updated_at: "2025-12-24T00:48:36.167Z",
-    status: "ACTIVE",
-    user_id: 3,
-  },
-  {
-    id: "af89",
-    first_name: "Lê",
-    last_name: "Lợi",
-    email: "nguyendaiphat@gmail.com",
-    password: "123123",
-    phone: "0901298301",
-    created_at: "2025-12-24T00:57:26.812Z",
-    updated_at: "2025-12-24T00:57:26.812Z",
-    status: "ACTIVE",
-    user_id: 4,
-  },
-];
+const allUser: User[] = [];
 
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>(initialUsers);
-  const [searchTerm, setSearchTerm] = useState("");
+    const [users, setUsers] = useState<User[]>(allUser);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const [roles, setRoles] = useState<{ [x: string]: string }>({})
+    const [statusForm, setStatus] = useState<'edit' | 'add'>('add')
+    // {user_id: role_name}
+    
 
-  // Modal States
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const handleToggleStatus = (id: string | number, status: string) => {
+        console.log(id, status);
+        
+        setUsers(
+            users.map((user) => {
+                if (user.id === id) {
+                    authService.updateStatus(id, { ...user, status: status })
+                    return {
+                        ...user,
+                        status: status
+                    };
+                }
+                return user;
+            })
+        );
+        
+    };
 
-  const handleToggleStatus = (id: string) => {
-    setUsers(
-      users.map((user) => {
-        if (user.id === id) {
-          return {
-            ...user,
-            status: user.status === "ACTIVE" ? "LOCKED" : "ACTIVE",
-          };
-        }
-        return user;
-      })
-    );
-  };
-
-  const handleAddUser = (newUser: Partial<User>) => {
-    if (newUser.id && users.some((u) => u.id === newUser.id)) {
-      // Edit existing
-      setUsers(
-        users.map((u) =>
-          u.id === newUser.id
-            ? ({
-                ...u,
+    const handleAddUser = (newUser: Omit<User,'user_id' | 'status' | 'created_at' | 'updated_at'>, role: string) => {
+        if (newUser.id && users.some((u) => u.id === newUser.id)) {
+            setUsers(
+                users.map((u) =>
+                    u.id === newUser.id
+                        ? ({
+                            ...u,
+                            ...newUser,
+                            updated_at: new Date().toISOString(),
+                        } as User)
+                        : u
+                )
+            );
+        } else {
+            // Add new
+            const user_id = uuidv4()
+            const id = uuidv4()
+            const userToAdd: User = {
+                id,
                 ...newUser,
-                updated_at: new Date().toISOString(),
-              } as User)
-            : u
-        )
-      );
-    } else {
-      // Add new
-      const userToAdd: User = {
-        ...newUser,
-        user_id: users.length + 1,
-        id: Date.now().toString(), // Mock ID
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        // Ensure required fields are present (mocking default values if missing from form)
-        first_name: newUser.first_name || "",
-        last_name: newUser.last_name || "",
-        email: newUser.email || "",
-        phone: newUser.phone || "",
-        status: newUser.status || "ACTIVE",
-        password: newUser.password || "123456", // Default password for new usage
-      };
-      setUsers([userToAdd, ...users]);
+                user_id,
+                first_name: newUser.first_name || "",
+                last_name: newUser.last_name || "",
+                email: newUser.email || "",
+                phone: newUser.phone || "",
+                status: "ACTIVE",
+                password: newUser.password || "123456",
+                created_at: (new Date()).toString(),
+                updated_at: (new Date()).toString(),
+            };
+            setUsers([userToAdd, ...users]);
+            const newRole = roles
+            // eslint-disable-next-line react-hooks/immutability
+            newRole[user_id] = role
+            setRoles(newRole)
+
+            // api post
+            const userRole:UserRole = {user_id, role_id: role == 'ADMIN' ? 2 : role == 'BUS_COMPANY' ? 3 : 1}
+            authService.createUser(userToAdd, userRole)
+        }
+    };
+
+    const handleEditClick = (user: User) => {
+        setStatus('edit')
+        setSelectedUser(user);
+        setIsAddModalOpen(true);
+    };
+
+    const handleViewClick = (user: User) => {
+        setSelectedUser(user);
+        setIsViewModalOpen(true);
+    };
+
+    const handleEdit = (id: string| number, user: User, role: string) => {
+        authService.updateUser(id, user, role)
+        setUsers(users.map(item => 
+        {
+            if(item.user_id == user.user_id){
+                return user
+            }
+            return item
+        }
+        ))
+        const newRoles = roles
+        // eslint-disable-next-line react-hooks/immutability
+        newRoles[user.user_id] = role
+        setRoles(newRoles)
     }
-  };
 
-  const handleEditClick = (user: User) => {
-    setSelectedUser(user);
-    setIsAddModalOpen(true);
-  };
+    const handleDeleteClick = (user: User) => {
+        setSelectedUser(user)
+        Swal.fire({
+            title: "Xác nhận xóa?",
+            text: `Bạn có chắc chắn muốn xóa người dùng "${user.first_name} ${user.last_name}" không?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Xóa bỏ",
+            cancelButtonText: "Hủy",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // goi api xoa o day
+                setUsers(users.filter((u) => u.id !== user.id));
+                authService.deleteUser(user.id ? user.id : '', user.user_id)
+                Swal.fire("Đã xóa!", "Người dùng đã được xóa thành công.", "success");
+            }
+        });
+    };
 
-  const handleViewClick = (user: User) => {
-    setSelectedUser(user);
-    setIsViewModalOpen(true);
-  };
+    const filteredUsers = users.filter(
+        (user) =>
+            (user.first_name + " " + user.last_name)
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (user.phone && user.phone.includes(searchTerm))
+    );
 
-  const handleDeleteClick = (user: User) => {
-    Swal.fire({
-      title: "Xác nhận xóa?",
-      text: `Bạn có chắc chắn muốn xóa người dùng "${user.first_name} ${user.last_name}" không?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Xóa bỏ",
-      cancelButtonText: "Hủy",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setUsers(users.filter((u) => u.id !== user.id));
-        Swal.fire("Đã xóa!", "Người dùng đã được xóa thành công.", "success");
-      }
-    });
-  };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      (user.first_name + " " + user.last_name)
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.phone.includes(searchTerm)
-  );
 
-  return (
-    <div className="space-y-6">
-      <UserHeader
-        userCount={users.length}
-        onAddClick={() => {
-          setSelectedUser(null);
-          setIsAddModalOpen(true);
-        }}
-      />
+    useEffect(() => {
+        authService.getAllUsers().then((res) => {
+            setUsers(res)
 
-      <UserSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+            res.map((item) => {
 
-      <UserTable
-        users={filteredUsers}
-        onToggleStatus={handleToggleStatus}
-        onView={handleViewClick}
-        onEdit={handleEditClick}
-        onDelete={handleDeleteClick}
-      />
+                authService.getRoleUser(item.user_id).then((res) => {
+                    res?.forEach((role) => {
 
-      <AddUserModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onAdd={handleAddUser}
-        user={selectedUser}
-      />
+                        setRoles((prevRoles) => {
+                            if (prevRoles[item.user_id] == 'ADMIN') {
+                                return prevRoles
+                            }
+                            if (prevRoles[item.user_id] == 'BUS_COMPANY' && role.role_name == 'ADMIN') {
+                                return {
+                                    ...prevRoles,
+                                    [item.user_id]: role.role_name
+                                }
+                            }
+                            return {
+                                ...prevRoles,
+                                [item.user_id]: role.role_name
+                            }
+                        }
+                        )
+                    })
+                })
 
-      <ViewUserModal
-        isOpen={isViewModalOpen}
-        onClose={() => setIsViewModalOpen(false)}
-        user={selectedUser}
-      />
-    </div>
-  );
+            })
+
+        })
+
+    }, [])
+
+    
+    return (
+        <div className="space-y-6">
+            <UserHeader
+                userCount={users.length}
+                onAddClick={() => {
+                    setSelectedUser(null);
+                    setIsAddModalOpen(true);
+                    setStatus('add')
+                }}
+            />
+
+            <UserSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+
+            <UserTable
+                users={filteredUsers}
+                roles={roles}
+                onToggleStatus={handleToggleStatus}
+                onView={handleViewClick}
+                onEdit={handleEditClick}
+                onDelete={handleDeleteClick}
+            />
+
+            <AddUserModal
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
+                onAdd={handleAddUser}
+                user={selectedUser}
+                statusForm={statusForm}
+                Edit={handleEdit}
+            />
+
+            <ViewUserModal
+                isOpen={isViewModalOpen}
+                onClose={() => setIsViewModalOpen(false)}
+                user={selectedUser}
+            />
+        </div>
+    );
 }

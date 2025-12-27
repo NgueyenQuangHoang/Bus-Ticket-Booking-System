@@ -2,22 +2,24 @@ import { Delete, Edit, Close, Business, Public, Description, Save } from '@mui/i
 import { IconButton, Modal, Box, Typography, Divider, TextField, MenuItem, Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useState, type ChangeEvent } from 'react';
+import { cityService } from '../../../../../services/cityService';
+import type { City } from '../../../../../types';
+import ReactQuill from 'react-quill-new';
 
-// 1. Định nghĩa Interface City
-export interface City {
-    city_id: number;
-    city_name: string;
-    region: string;
-    description?: string;
-}
+// export interface City {
+//     city_id: number;
+//     city_name: string;
+//     region: string;
+//     description?: string;
+// }
 
 // 2. Tạo dữ liệu giả duy nhất để hiển thị khi bấm Sửa
-const mockCity: City = {
-    city_id: 1,
-    city_name: "TP. Hồ Chí Minh",
-    region: "Miền Nam",
-    description: "Trung tâm kinh tế, văn hóa và giáo dục lớn nhất Việt Nam."
-};
+// const mockCity: City = {
+//     city_id: 1,
+//     city_name: "TP. Hồ Chí Minh",
+//     region: "Miền Nam",
+//     description: "Trung tâm kinh tế, văn hóa và giáo dục lớn nhất Việt Nam."
+// };
 
 const modalStyle = {
     position: 'absolute',
@@ -32,9 +34,16 @@ const modalStyle = {
     outline: 'none',
 };
 
-export default function CityAction() {
+interface PropType {
+    city_id: number | string
+    updateCitiesOnDelete: (id: number | string) => void
+    updateCitiesOnFix: (city: City) => void
+    city: City
+}
+
+export default function CityAction({ city_id, updateCitiesOnDelete, updateCitiesOnFix , city }: PropType) {
     const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState<City>(mockCity);
+    const [formData, setFormData] = useState<City>(city);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -46,7 +55,7 @@ export default function CityAction() {
             [name]: value
         }));
     };
-
+    
     const handleDeleteClick = () => {
         Swal.fire({
             title: "Xác nhận xóa?",
@@ -59,6 +68,9 @@ export default function CityAction() {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
+                cityService.deleteCity(city_id)
+                updateCitiesOnDelete(city_id)
+
                 Swal.fire(
                     "Đã xóa!",
                     `Thành phố ${formData.city_name} đã được xóa.`,
@@ -69,7 +81,8 @@ export default function CityAction() {
     };
 
     const handleSave = () => {
-        console.log("Dữ liệu City cập nhật:", formData);
+        cityService.updateCity(city_id, formData);
+        updateCitiesOnFix(formData)
         Swal.fire({
             title: "Thành công",
             text: "Thông tin thành phố đã được cập nhật",
@@ -133,9 +146,9 @@ export default function CityAction() {
                                 select fullWidth size="small" name="region"
                                 value={formData.region} onChange={handleChange}
                             >
-                                <MenuItem value="Miền Bắc">Miền Bắc</MenuItem>
-                                <MenuItem value="Miền Trung">Miền Trung</MenuItem>
-                                <MenuItem value="Miền Nam">Miền Nam</MenuItem>
+                                <MenuItem value="Bắc">Miền Bắc</MenuItem>
+                                <MenuItem value="Trung">Miền Trung</MenuItem>
+                                <MenuItem value="Nam">Miền Nam</MenuItem>
                             </TextField>
                         </div>
 
@@ -144,11 +157,22 @@ export default function CityAction() {
                             <label className="text-xs font-bold text-gray-600 uppercase flex items-center gap-1">
                                 <Description className="text-[16px]" /> Mô tả thêm
                             </label>
-                            <TextField
-                                fullWidth multiline rows={3} name="description"
-                                value={formData.description} onChange={handleChange}
-                                placeholder="Thông tin tóm tắt về thành phố..."
-                            />
+                            <div className="bg-white rounded-md overflow-hidden">
+                                <ReactQuill
+                                    theme="snow"
+                                    value={formData.description}
+                                    onChange={(e) => {                                        
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            description: e
+                                        }));
+                                    }}
+                                    placeholder="Nhập mô tả về thành phố..."
+                                    style={{ height: '200px', marginBottom: '50px' }} // Tăng chiều cao chút để dễ nhìn ảnh
+                                    // modules={modules} // Sử dụng biến modules đã khai báo
+                                    // formats={formats} // Sử dụng biến formats đã khai báo
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -160,7 +184,7 @@ export default function CityAction() {
                             onClick={handleSave}
                             className="bg-blue-600 hover:bg-blue-700 shadow-none normal-case px-6 rounded-lg font-bold"
                         >
-                            Cập nhật 
+                            Cập nhật
                         </Button>
                     </div>
                 </Box>

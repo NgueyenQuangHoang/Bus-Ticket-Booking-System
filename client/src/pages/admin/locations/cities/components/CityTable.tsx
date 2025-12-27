@@ -5,7 +5,13 @@ import {
 import type { City } from '../../../../../types';
 import CityAction from './CityAction';
 
-export default function CityTable({cities}: {cities: City[]}) {
+interface PropType {
+    cities: City[],
+    updateCitiesOnDelete: (id: string | number) => void
+    updateCitiesOnFix: (city: City) => void
+}
+
+export default function CityTable({ cities, updateCitiesOnDelete, updateCitiesOnFix }: PropType) {
     return (
                 
                     <TableContainer>
@@ -19,9 +25,9 @@ export default function CityTable({cities}: {cities: City[]}) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {cities.map((city) => (
+                                {cities.map((city, index) => (
                                     <TableRow key={city.city_id} hover className="transition-colors">
-                                        <TableCell className="text-gray-600">{city.city_id}</TableCell>
+                                        <TableCell className="text-gray-600">{index+1}</TableCell>
                                         <TableCell className="font-medium">{city.city_name}</TableCell>
                                         <TableCell>
                                             <Chip
@@ -34,7 +40,12 @@ export default function CityTable({cities}: {cities: City[]}) {
                                             />
                                         </TableCell>
                                         <TableCell align="right">
-                                            <CityAction/>
+                                            <CityAction 
+                                            city_id={city.id ? city.id : ''} 
+                                            updateCitiesOnDelete={updateCitiesOnDelete }
+                                            updateCitiesOnFix={updateCitiesOnFix }
+                                            city={city}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))}
