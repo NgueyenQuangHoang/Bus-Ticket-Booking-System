@@ -36,7 +36,7 @@ export default function CheckTicket() {
                         <h2 className="font-bold text-[#0b6fb3] text-2xl mb-3">
                             Nhập thông tin vé xe
                         </h2>
-
+ {/* div */}
                         <div className="max-w-[334px] mx-auto w-full">
                             <div className="p-4 bg-white rounded">
                                 <input
