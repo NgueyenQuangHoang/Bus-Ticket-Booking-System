@@ -1,4 +1,3 @@
-import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import type { VehicleType } from "../../../../../services/vehicleTypeService";
@@ -10,7 +9,7 @@ type Props = {
   onDelete: (id: string) => void;
   page: number;
   totalPages: number;
-  onPageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  onPageChange: (value: number) => void;
 };
 
 export default function VehicleTypeTable({
@@ -78,7 +77,7 @@ export default function VehicleTypeTable({
            <Pagination 
                 count={totalPages} 
                 page={page} 
-                onChange={onPageChange} 
+                onChange={(_event, value) => onPageChange(value)} 
                 color="primary" 
                 shape="rounded"
             />

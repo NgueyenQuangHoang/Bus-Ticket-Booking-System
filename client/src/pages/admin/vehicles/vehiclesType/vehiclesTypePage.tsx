@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { vehicleTypeService, type VehicleType } from "../../../../services/vehicleTypeService";
 import VehicleTypeTable from "./components/VehicleTypeTable";
 import VehicleTypeModal from "./components/VehicleTypeModal";
@@ -54,7 +54,7 @@ export default function VehiclesTypePage() {
     page * ITEMS_PER_PAGE
   );
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (value: number) => {
     setPage(value);
   };
 
