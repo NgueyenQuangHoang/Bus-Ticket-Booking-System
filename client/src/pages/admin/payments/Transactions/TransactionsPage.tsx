@@ -107,7 +107,7 @@ const mockTransactions: Transaction[] = [
 ];
 
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions);
+  const [transactions] = useState<Transaction[]>(mockTransactions);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentFilter, setCurrentFilter] = useState("ALL");
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
