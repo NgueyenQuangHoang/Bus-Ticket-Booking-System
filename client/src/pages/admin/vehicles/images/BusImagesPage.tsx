@@ -1,38 +1,81 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
+import Swal from "sweetalert2";
 
+import type { Bus, BusImage } from "../../../../types";
 import BusSelect from "./components/BusSelect";
 import BusImageTable from "./components/BusImageTable";
 import BusImageUploadModal from "./components/BusImageUploadModal";
-
-const DATA = [
-  {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1549924231-f129b911e442",
-    bus: "FUTA-VIP01 - 51B-12345",
-  },
-  {
-    id: 21,
-    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c5",
-    bus: "FUTA-VIP02 - 51B-123222245",
-  }, 
-   {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1549924231-f129b911e442",
-    bus: "FUTA-VIP031 - 51B-345",
-  }, 
-   {
-    id: 12,
-    image: "https://images.unsplash.com/photo-1549924231-f129b911e442",
-    bus: "FUTA-VIP022 - 53A-12345",
-  }
-];
+import busService from "../../../../services/admin/busService";
+import { busImageService } from "../../../../services/admin/busImageService";
 
 export default function BusImagesPage() {
-  const [selectedBus, setSelectedBus] = useState(
-    "FUTA-VIP01 - 51B-12345"
-  );
+  const [buses, setBuses] = useState<Bus[]>([]);
+  const [selectedBusId, setSelectedBusId] = useState<string | number>("");
+  const [images, setImages] = useState<BusImage[]>([]);
+  const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
+  // Fetch Buses
+  useEffect(() => {
+    const fetchBuses = async () => {
+        try {
+            const data = await busService.getAllBuses();
+            setBuses(data || []);
+            if (data && data.length > 0) {
+                 // Optionally select first bus if needed, or leave empty
+                 // setSelectedBusId(data[0].id || data[0].bus_id); 
+            }
+        } catch (error) {
+            console.error("Failed to fetch buses", error);
+        }
+    };
+    fetchBuses();
+  }, []);
+
+  // Fetch Images when Bus Selected
+  const fetchImages = async (busId: string | number) => {
+      if (!busId) return;
+      try {
+          setLoading(true);
+          const data = await busImageService.getImagesByBusId(busId);
+          setImages(data || []);
+      } catch (error) {
+          console.error("Failed to fetch images", error);
+      } finally {
+          setLoading(false);
+      }
+  };
+
+  useEffect(() => {
+      if (selectedBusId) {
+          fetchImages(selectedBusId);
+      } else {
+          setImages([]);
+      }
+  }, [selectedBusId]);
+
+  const handleDelete = async (image: BusImage) => {
+       const result = await Swal.fire({
+          title: "Xác nhận xóa?",
+          text: "Bạn có chắc muốn xóa ảnh này?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Xóa",
+          cancelButtonText: "Hủy",
+      });
+
+      if (result.isConfirmed) {
+          try {
+              await busImageService.deleteBusImage(String(image.id || image.bus_image_id));
+              Swal.fire("Đã xóa!", "Ảnh đã được xóa.", "success");
+              if (selectedBusId) fetchImages(selectedBusId);
+          } catch (error) {
+              console.error("Failed to delete image", error);
+              Swal.fire("Lỗi", "Không thể xóa ảnh", "error");
+          }
+      }
+  };
 
   return (
     <section className="bg-gray-100 min-h-screen p-6">
@@ -46,13 +89,16 @@ export default function BusImagesPage() {
               Thư viện ảnh cho từng xe
             </p>
           </div>
-           <div>
-         
-            </div>
-
+           
           <button
-            onClick={() => setOpenModal(true)}
-            className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm"
+            onClick={() => {
+                if (!selectedBusId) {
+                    Swal.fire("Thông báo", "Vui lòng chọn xe trước khi tải ảnh", "info");
+                    return;
+                }
+                setOpenModal(true);
+            }}
+            className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm disabled:opacity-50"
           >
             <AddIcon sx={{ fontSize: 18 }} />
             Tải ảnh lên
@@ -61,20 +107,28 @@ export default function BusImagesPage() {
 
         {/* SELECT BUS */}
         <BusSelect 
-          value={selectedBus}
-          onChange={setSelectedBus}
+          value={selectedBusId}
+          onChange={setSelectedBusId}
+          buses={buses}
         />
 
         {/* TABLE */}
-        <BusImageTable
-          data={DATA.filter((i) => i.bus === selectedBus)}
-        />
+        {loading ? (
+             <div className="text-center py-10">Đang tải ảnh...</div>
+        ) : (
+            <BusImageTable
+            data={images}
+            onDelete={handleDelete}
+            />
+        )}
+       
 
         {/* MODAL */}
         <BusImageUploadModal
           open={openModal}
           onClose={() => setOpenModal(false)}
-          bus={selectedBus}
+          busId={selectedBusId}
+          onUploadSuccess={() => selectedBusId && fetchImages(selectedBusId)}
         />
       </div>
     </section>

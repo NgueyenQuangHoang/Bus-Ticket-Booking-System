@@ -1,9 +1,8 @@
-import React from "react";
 import type { BusCompany } from "../../../../../types/bus";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Bus } from "lucide-react";
 import BusCompanyAction from "./BusCompanyAction";
+
 
 type Props = {
   data: BusCompany[];
@@ -35,7 +34,7 @@ export default function BusCompanyTable({
             <tbody className="divide-y divide-gray-200">
               {data.map((item) => (
                 <tr
-                  key={item.bus_company_id}
+                  key={item.id || item.bus_company_id}
                   className="hover:bg-gray-50"
                 >
                   <td className="px-4 py-3">
@@ -86,7 +85,7 @@ export default function BusCompanyTable({
       <div className="space-y-4 sm:hidden mt-4">
         {data.map((item) => (
           <div
-            key={item.bus_company_id}
+            key={item.id || item.bus_company_id}
             className="bg-white rounded-xl border border-gray-200 p-4"
           >
             <div className="flex justify-between items-start">

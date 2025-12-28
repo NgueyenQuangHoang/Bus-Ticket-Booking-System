@@ -1,4 +1,34 @@
 {
+  "vehicle_types": [
+    {
+      "vehicle_type_id": 1,
+      "code": "SLEEPER",
+      "display_name": "Giường nằm",
+      "description": "Xe giường nằm, phù hợp cho chuyến đi đường dài",
+      "id": "1"
+    },
+    {
+      "vehicle_type_id": 2,
+      "code": "SEAT",
+      "display_name": "Ghế ngồi",
+      "description": "Xe ghế ngồi tiêu chuẩn, đi quãng đường ngắn",
+      "id": "2"
+    },
+    {
+      "vehicle_type_id": 3,
+      "code": "LIMOUSINE",
+      "display_name": "Limousine",
+      "description": "Xe limousine cao cấp, không gian rộng rãi",
+      "id": "3"
+    },
+    {
+      "vehicle_type_id": 4,
+      "code": "VIP",
+      "display_name": "VIP",
+      "description": "Xe VIP cao cấp nhất, dịch vụ đặc biệt",
+      "id": "4"
+    }
+  ],
   "users": [
     {
       "user_id": 2,
@@ -859,141 +889,6 @@
       "id": "f048"
     }
   ],
-  "bus_companies": [
-    {
-      "bus_company_id": 1,
-      "company_name": "Nhà xe An Hòa Hiệp",
-      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
-      "description": "Nhà xe chất lượng cao",
-      "rating": 4.8,
-      "license_number": "GX123",
-      "contact_phone": "0909333444",
-      "contact_email": "anhoahiep@gmail.com",
-      "address": "TP.HCM",
-      "status": "ACTIVE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "9cfc"
-    },
-    {
-      "bus_company_id": 2,
-      "company_name": "Nhà xe Futa Hà Sơn",
-      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
-      "description": "Chuyên tuyến Hà Nội - Lào Cai",
-      "rating": 4.9,
-      "license_number": "GX124",
-      "contact_phone": "0909444555",
-      "contact_email": "futahason@gmail.com",
-      "address": "Hà Nội",
-      "status": "ACTIVE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "4a30"
-    },
-    {
-      "bus_company_id": 3,
-      "company_name": "Nhà xe Vũ Linh",
-      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
-      "description": "Dịch vụ 5 sao",
-      "rating": 4.7,
-      "license_number": "GX125",
-      "contact_phone": "0909555666",
-      "contact_email": "vulinh@gmail.com",
-      "address": "Cần Thơ",
-      "status": "ACTIVE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "fcb0"
-    },
-    {
-      "bus_company_id": 4,
-      "company_name": "Nhà xe Toàn Thắng",
-      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
-      "description": "An toàn, tiện lợi",
-      "rating": 4.6,
-      "license_number": "GX126",
-      "contact_phone": "0909666777",
-      "contact_email": "toanthang@gmail.com",
-      "address": "Vũng Tàu",
-      "status": "ACTIVE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "6f43"
-    },
-    {
-      "bus_company_id": 5,
-      "company_name": "Nhà xe Phương Trang",
-      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
-      "description": "Chất lượng là danh dự",
-      "rating": 4.9,
-      "license_number": "GX127",
-      "contact_phone": "0909777888",
-      "contact_email": "phuongtrang@gmail.com",
-      "address": "TP.HCM",
-      "status": "ACTIVE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "328f"
-    }
-  ],
-  "buses": [
-    {
-      "bus_id": 1,
-      "bus_company_id": 1,
-      "layout_id": "6ace",
-      "name": "Limousine 34 giường",
-      "license_plate": "51B-12345",
-      "capacity": 34,
-      "amenities": "Wifi, Nước, Chăn",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "9b3e"
-    },
-    {
-      "bus_id": 2,
-      "bus_company_id": 2,
-      "name": "Giường nằm cao cấp",
-      "license_plate": "29B-54321",
-      "capacity": 40,
-      "amenities": "Wifi, TV, Nước",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "5f70"
-    },
-    {
-      "bus_id": 3,
-      "bus_company_id": 3,
-      "name": "VIP Limousine 9 chỗ",
-      "license_plate": "51C-99999",
-      "capacity": 9,
-      "amenities": "Wifi, Nước, Massage",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "faf4"
-    },
-    {
-      "bus_id": 4,
-      "bus_company_id": 4,
-      "name": "Ghế ngồi tiêu chuẩn",
-      "license_plate": "43B-11111",
-      "capacity": 45,
-      "amenities": "Điều hòa",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "a902"
-    },
-    {
-      "bus_id": 5,
-      "bus_company_id": 5,
-      "name": "Phương Trang Limousine",
-      "license_plate": "51B-88888",
-      "capacity": 34,
-      "amenities": "Wifi, Nước, Chăn, TV",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "cc11"
-    }
-  ],
   "bus_images": [
     {
       "bus_image_id": 1,
@@ -1024,67 +919,6 @@
       "bus_id": 5,
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
       "id": "978b"
-    }
-  ],
-  "bus_layouts": [
-    {
-      "layout_id": 1,
-      "layout_name": "Giường nằm 2 tầng",
-      "total_rows": 6,
-      "total_columns": 3,
-      "floor_count": 2,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "5e69"
-    },
-    {
-      "id": "1837",
-      "layout_name": "xe 45 người",
-      "total_rows": 6,
-      "total_columns": 4,
-      "floor_count": 1
-    },
-    {
-      "id": "c56d",
-      "layout_name": "xe 45 chỗ",
-      "total_rows": 6,
-      "total_columns": 3,
-      "floor_count": 2
-    },
-    {
-      "id": "4027",
-      "layout_name": "xe 45 chỗ",
-      "total_rows": 5,
-      "total_columns": 2,
-      "floor_count": 1
-    },
-    {
-      "id": "f349",
-      "layout_name": "xe 24 chỗ",
-      "total_rows": 6,
-      "total_columns": 2,
-      "floor_count": 2
-    },
-    {
-      "id": "203d",
-      "layout_name": "Xe 24 giường",
-      "total_rows": 6,
-      "total_columns": 2,
-      "floor_count": 2
-    },
-    {
-      "id": "dd82",
-      "layout_name": "xe 34 giường",
-      "total_rows": 12,
-      "total_columns": 2,
-      "floor_count": 2
-    },
-    {
-      "id": "6ace",
-      "layout_name": "xe 34 chỗ",
-      "total_rows": 12,
-      "total_columns": 2,
-      "floor_count": 2
     }
   ],
   "seat_types": [
@@ -1691,6 +1525,210 @@
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
       "priority": 5,
       "id": "d023"
+    }
+  ],
+  "bus_companies": [
+    {
+      "bus_company_id": 1,
+      "company_name": "An Hòa Hiệp",
+      "status": "ACTIVE",
+      "address": "TP.HCM",
+      "contact_phone": "0909123456",
+      "contact_email": "anhoahiep@gmail.com",
+      "license_number": "DOC123",
+      "id": "1"
+    },
+    {
+      "bus_company_id": 2,
+      "company_name": "Futa Hà Sơn",
+      "status": "ACTIVE",
+      "address": "Hà Nội",
+      "contact_phone": "0909123456",
+      "contact_email": "futahason@gmail.com",
+      "license_number": "DOC124",
+      "id": "2"
+    },
+    {
+      "bus_company_id": 3,
+      "company_name": "Vũ Linh",
+      "status": "ACTIVE",
+      "address": "Cần Thơ",
+      "contact_phone": "0909123456",
+      "contact_email": "vulinh@gmail.com",
+      "license_number": "DOC125",
+      "id": "3"
+    },
+    {
+      "bus_company_id": 4,
+      "company_name": "Toàn Thắng",
+      "status": "ACTIVE",
+      "address": "Vũng Tàu",
+      "contact_phone": "0909123456",
+      "contact_email": "toanthang@gmail.com",
+      "license_number": "DOC126",
+      "id": "4"
+    },
+    {
+      "bus_company_id": 5,
+      "company_name": "Phương Trang",
+      "status": "ACTIVE",
+      "address": "TP.HCM",
+      "contact_phone": "19006067",
+      "contact_email": "phuongtrang@gmail.com",
+      "license_number": "DOC127",
+      "id": "5"
+    }
+  ],
+  "bus_layouts": [
+    {
+      "layout_id": 101,
+      "layout_name": "Giường nằm 40 chỗ – 2 tầng",
+      "total_rows": 10,
+      "total_columns": 4,
+      "floor_count": 2,
+      "created_at": "2025-01-10T08:00:00",
+      "updated_at": "2025-01-10T08:00:00",
+      "id": "101"
+    },
+    {
+      "layout_id": 102,
+      "layout_name": "Giường nằm 34 chỗ – Limousine",
+      "total_rows": 12,
+      "total_columns": 2,
+      "floor_count": 2,
+      "created_at": "2025-01-11T08:00:00",
+      "updated_at": "2025-01-11T08:00:00",
+      "id": "102"
+    },
+    {
+      "layout_id": 103,
+      "layout_name": "Ghế ngồi 45 chỗ",
+      "total_rows": 9,
+      "total_columns": 5,
+      "floor_count": 1,
+      "created_at": "2025-01-12T08:00:00",
+      "updated_at": "2025-01-12T08:00:00",
+      "id": "103"
+    },
+    {
+      "layout_id": 104,
+      "layout_name": "Limousine 9 chỗ VIP",
+      "total_rows": 3,
+      "total_columns": 3,
+      "floor_count": 1,
+      "created_at": "2025-01-13T08:00:00",
+      "updated_at": "2025-01-13T08:00:00",
+      "id": "104"
+    },
+    {
+      "layout_id": 105,
+      "layout_name": "Ghế ngồi 29 chỗ",
+      "total_rows": 7,
+      "total_columns": 4,
+      "floor_count": 1,
+      "created_at": "2025-01-14T08:00:00",
+      "updated_at": "2025-01-14T08:00:00",
+      "id": "105"
+    }
+  ],
+  "buses": [
+    {
+      "bus_id": 1,
+      "bus_company_id": 1,
+      "vehicle_type_id": "1",
+      "layout_id": 101,
+      "name": "An Hòa Hiệp – Giường nằm 40 chỗ",
+      "license_plate": "51B-12345",
+      "capacity": 40,
+      "amenities": "Wifi, Nước, Chăn, Điều hòa",
+      "status": "ACTIVE",
+      "created_at": "2025-01-15T08:00:00",
+      "updated_at": "2025-01-15T08:00:00",
+      "id": "1"
+    },
+    {
+      "bus_id": 2,
+      "bus_company_id": 2,
+      "vehicle_type_id": "1",
+      "layout_id": 102,
+      "name": "Futa Hà Sơn – Limousine 34 giường",
+      "license_plate": "29B-54321",
+      "capacity": 34,
+      "amenities": "Wifi, TV, Nước, Chăn",
+      "status": "ACTIVE",
+      "created_at": "2025-01-16T08:00:00",
+      "updated_at": "2025-01-16T08:00:00",
+      "id": "2"
+    },
+    {
+      "bus_id": 3,
+      "bus_company_id": 3,
+      "vehicle_type_id": "3",
+      "layout_id": 104,
+      "name": "Vũ Linh – Limousine 9 chỗ VIP",
+      "license_plate": "51C-99999",
+      "capacity": 9,
+      "amenities": "Massage, Wifi, Nước, Cổng sạc",
+      "status": "ACTIVE",
+      "created_at": "2025-01-17T08:00:00",
+      "updated_at": "2025-01-17T08:00:00",
+      "id": "3"
+    },
+    {
+      "bus_id": 4,
+      "bus_company_id": 4,
+      "vehicle_type_id": "2",
+      "layout_id": 103,
+      "name": "Toàn Thắng – Ghế ngồi 45 chỗ",
+      "license_plate": "43B-11111",
+      "capacity": 45,
+      "amenities": "Điều hòa",
+      "status": "ACTIVE",
+      "created_at": "2025-01-18T08:00:00",
+      "updated_at": "2025-01-18T08:00:00",
+      "id": "4"
+    },
+    {
+      "bus_id": 5,
+      "bus_company_id": 5,
+      "vehicle_type_id": "4",
+      "layout_id": 102,
+      "name": "Phương Trang – VIP 34 giường",
+      "license_plate": "51B-88888",
+      "capacity": 34,
+      "amenities": "Wifi, TV, Massage, Chăn cao cấp, Điều hòa",
+      "status": "ACTIVE",
+      "created_at": "2025-01-19T08:00:00",
+      "updated_at": "2025-01-19T08:00:00",
+      "id": "5"
+    },
+    {
+      "bus_id": 6,
+      "bus_company_id": 2,
+      "vehicle_type_id": "2",
+      "layout_id": 105,
+      "name": "Futa Hà Sơn – Ghế ngồi 29 chỗ",
+      "license_plate": "29B-77777",
+      "capacity": 29,
+      "amenities": "Điều hòa, Nước",
+      "status": "ACTIVE",
+      "created_at": "2025-01-20T08:00:00",
+      "updated_at": "2025-01-20T08:00:00",
+      "id": "6"
+    },
+    {
+      "bus_id": 7,
+      "bus_company_id": 1,
+      "vehicle_type_id": "1",
+      "layout_id": 101,
+      "name": "An Hòa Hiệp – Giường nằm 40 chỗ (Xe tăng cường)",
+      "license_plate": "51B-22222",
+      "capacity": 40,
+      "amenities": "Wifi, Nước, Chăn, Điều hòa",
+      "status": "ACTIVE",
+      "created_at": "2025-01-21T08:00:00",
+      "updated_at": "2025-01-21T08:00:00",
+      "id": "7"
     }
   ]
 }

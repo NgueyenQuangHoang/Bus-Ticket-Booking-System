@@ -82,6 +82,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           isOpen={openMenu === "bus"}
           onToggle={() => toggleMenu("bus")}
           subItems={[
+            { label: "Loại xe", to: "/admin/vehicles-types" },
             { label: "Nhà xe", to: "/admin/bus-companies" },
             { label: "Danh sách xe", to: "/admin/buses" },
             { label: "Hình ảnh xe", to: "/admin/bus-images" },

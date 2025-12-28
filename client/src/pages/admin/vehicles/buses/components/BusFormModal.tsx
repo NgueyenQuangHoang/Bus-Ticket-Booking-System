@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import type { Bus, BusCompany } from "../../../../../types";
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  onSubmit: (data: Partial<Bus>) => void;
+  initialData?: Bus | null;
+  busCompanies: BusCompany[];
 };
 
-export default function BusFormModal({ open, onClose }: Props) {
+export default function BusFormModal({ open, onClose, onSubmit, initialData, busCompanies }: Props) {
   if (!open) return null;
 
   /* ===== STATE ===== */
@@ -16,9 +20,29 @@ export default function BusFormModal({ open, onClose }: Props) {
     status: "ACTIVE",
     type: "",
     layout: "",
-    note: "",
-    utilities: [] as string[],
   });
+
+  useEffect(() => {
+    if (initialData) {
+        setForm({
+            name: initialData.name || "",
+            plate: initialData.license_plate || "",
+            company: initialData.company_id ? String(initialData.company_id) : "",
+            status: "ACTIVE", // Default or fetch if available in future
+            type: "", // Mapped or stored?
+            layout: initialData.layout_id ? String(initialData.layout_id) : "",
+        });
+    } else {
+        setForm({
+            name: "",
+            plate: "",
+            company: "",
+            status: "ACTIVE",
+            type: "",
+            layout: "",
+        });
+    }
+  }, [initialData, open]);
 
   const [errors, setErrors] = useState({
     name: "",
@@ -37,14 +61,6 @@ export default function BusFormModal({ open, onClose }: Props) {
     setErrors({ ...errors, [key]: "" });
   };
 
-  const toggleUtility = (item: string) => {
-    setForm((prev) => ({
-      ...prev,
-      utilities: prev.utilities.includes(item)
-        ? prev.utilities.filter((u) => u !== item)
-        : [...prev.utilities, item],
-    }));
-  };
 
   const handleSubmit = () => {
     const newErrors = {
@@ -71,12 +87,19 @@ export default function BusFormModal({ open, onClose }: Props) {
       newErrors.layout = "Vui lòng chọn layout ghế";
 
     setErrors(newErrors);
+    const hasError = Object.values(newErrors).some(Boolean);
 
-    if (Object.values(newErrors).some(Boolean)) return;
-
-    console.log("SUBMIT:", form);
-    alert("Lưu xe thành công!");
-    onClose();
+    if (!hasError) {
+      onSubmit({
+        name: form.name,
+        license_plate: form.plate,
+        company_id: Number(form.company),
+        layout_id: form.layout, // Keep as string or number depending on usage
+        ...(initialData?.id ? { id: initialData.id } : {}),
+        ...(initialData?.bus_id ? { bus_id: initialData.bus_id } : {})
+      });
+      onClose();
+    }
   };
 
   return (
@@ -138,11 +161,7 @@ export default function BusFormModal({ open, onClose }: Props) {
                 label="Nhà xe"
                 value={form.company}
                 error={errors.company}
-                options={[
-                  "",
-                  "Phương Trang FUTA",
-                  "Hoàng Long",
-                ]}
+                options={busCompanies.map(c => ({ value: String(c.bus_company_id), label: c.company_name }))}
                 onChange={(v) =>
                   handleChange("company", v)
                 }
@@ -195,47 +214,7 @@ export default function BusFormModal({ open, onClose }: Props) {
             </div>
           </div>
 
-          {/* ===== TIỆN ÍCH ===== */}
-          <div>
-            <SectionTitle text="Tiện ích" />
-            <div className="flex flex-wrap gap-4">
-              {["Wifi", "Nước", "TV", "Chăn"].map(
-                (item) => (
-                  <label
-                    key={item}
-                    className="flex items-center gap-2"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={form.utilities.includes(
-                        item
-                      )}
-                      onChange={() =>
-                        toggleUtility(item)
-                      }
-                    />
-                    {item}
-                  </label>
-                )
-              )}
-            </div>
-          </div>
 
-          {/* ===== GHI CHÚ ===== */}
-          <div>
-            <label className="block mb-1 text-gray-600">
-              Ghi chú
-            </label>
-            <textarea
-              rows={3}
-              value={form.note}
-              onChange={(e) =>
-                handleChange("note", e.target.value)
-              }
-              placeholder="Ghi chú thêm cho xe"
-              className="w-full border border-gray-300 rounded px-3 py-2 resize-none"
-            />
-          </div>
         </div>
 
         {/* ===== FOOTER ===== */}
@@ -312,19 +291,21 @@ function Input({
   );
 }
 
+type SelectProps = {
+  label: string;
+  value?: string;
+  options: { value: string; label: string }[] | string[];
+  onChange: (v: string) => void;
+  error?: string;
+};
+
 function Select({
   label,
   value,
   options,
   onChange,
   error,
-}: {
-  label: string;
-  value?: string;
-  options: string[];
-  onChange: (v: string) => void;
-  error?: string;
-}) {
+}: SelectProps) {
   return (
     <div>
       <label className="block mb-1 text-gray-600">
@@ -342,11 +323,20 @@ function Select({
               : "border-gray-300"
           }`}
       >
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt || "-- Chọn --"}
-          </option>
-        ))}
+        {options.map((opt) => {
+            if (typeof opt === 'string') {
+                return (
+                    <option key={opt} value={opt}>
+                        {opt || "-- Chọn --"}
+                    </option>
+                );
+            }
+            return (
+                <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                </option>
+            );
+        })}
       </select>
       {error && (
         <p className="text-xs text-red-500 mt-1">

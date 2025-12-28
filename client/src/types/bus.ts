@@ -2,13 +2,14 @@ import type { Timestamp } from './common';
 
 export interface BusCompany {
   bus_company_id: number;
+  id?: string;
   company_name: string;
   image?: string;
   description?: string;
   rating?: number;
   created_at?: Timestamp;
   updated_at?: Timestamp;
-  
+
   license_number: string;
   contact_phone: string;
   contact_email: string;
@@ -19,6 +20,7 @@ export interface BusCompany {
 export interface Bus {
   bus_id: number;
   company_id: number;
+  bus_company_id?: number;
   name?: string;
   descriptions?: string;
   license_plate?: string;
@@ -27,6 +29,7 @@ export interface Bus {
   created_at?: Timestamp;
   updated_at?: Timestamp;
   id?: string | number;
+  vehicle_type_id?: string | number;
 }
 
 export interface BusStation {
@@ -36,6 +39,7 @@ export interface BusStation {
 
 export interface BusImage {
   bus_image_id: number;
+  id?: string;
   image_url?: string;
   bus_id: number;
 }
@@ -48,4 +52,15 @@ export interface BusReview {
   review?: string;
   created_at?: Timestamp;
   updated_at?: Timestamp;
+}
+
+export interface BusLayout {
+  layout_id: number;
+  layout_name: string;
+  total_rows: number;
+  total_columns: number;
+  floor_count: number;
+  created_at?: Timestamp;
+  updated_at?: Timestamp;
+  id?: string;
 }

@@ -45,7 +45,7 @@ export default function BusTable({
 
         {data.map((bus) => (
           <div
-            key={bus.bus_id}
+            key={bus.id || bus.bus_id}
             className="
               grid grid-cols-[60px_2fr_2fr_2fr_1.5fr_2fr_1fr_1fr_100px]
               items-center
@@ -100,7 +100,7 @@ export default function BusTable({
       <div className="space-y-4 [@media(min-width:391px)]:hidden">
         {data.map((bus) => (
           <div
-            key={bus.bus_id}
+            key={bus.id || bus.bus_id}
             className="bg-white border border-gray-200 rounded-xl p-4 space-y-2"
           >
             <div className="flex justify-between items-center">

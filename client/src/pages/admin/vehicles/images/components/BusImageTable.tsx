@@ -1,17 +1,14 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-type Item = {
-    id: number;
-    image: string;
-    bus: string;
-};
+import type { BusImage } from "../../../../../types";
 
 type Props = {
-    data: Item[];
+    data: BusImage[];
+    onDelete?: (image: BusImage) => Promise<void> | void;
 };
 
-export default function BusImageTable({ data }: Props) {
+export default function BusImageTable({ data, onDelete }: Props) {
     return (
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
             {/* ===== SEARCH BAR (UI ONLY) ===== */}
@@ -59,7 +56,7 @@ export default function BusImageTable({ data }: Props) {
                 <tbody className="divide-y divide-gray-100 text-gray-700">
                     {data.map((item) => (
                         <tr
-                            key={item.id}
+                            key={item.id || item.bus_image_id}
                             className="
                 hover:bg-gray-50 transition
                 block
@@ -69,7 +66,7 @@ export default function BusImageTable({ data }: Props) {
                             {/* ID – CHỈ DESKTOP */}
                             <td
                                 className="  px-4 py-2 hidden [@media(min-width:769px)]:table-cell  "   >
-                                {item.id}
+                                {item.id || item.bus_image_id}
                             </td>
 
                             {/* IMAGE */}
@@ -81,7 +78,7 @@ export default function BusImageTable({ data }: Props) {
                 "
                             >
                                 <img
-                                    src={item.image}
+                                    src={item.image_url}
                                     alt=""
                                     className="
                     w-full h-44 object-cover rounded-lg border border-gray-200
@@ -105,7 +102,7 @@ export default function BusImageTable({ data }: Props) {
                                 >
                                     Xe
                                 </span>
-                                {item.bus}
+                                {item.bus_id}
                             </td>
 
                             {/* ACTION */}
@@ -125,7 +122,10 @@ export default function BusImageTable({ data }: Props) {
                   "
                                 >
                                     <EditIcon className="text-gray-400 hover:text-green-600 cursor-pointer transition" />
-                                    <DeleteIcon className="text-gray-400 hover:text-red-500 cursor-pointer transition" />
+                                    <DeleteIcon 
+                                        className="text-gray-400 hover:text-red-500 cursor-pointer transition" 
+                                        onClick={() => onDelete?.(item)}
+                                    />
                                 </div>
                             </td>
                         </tr>
