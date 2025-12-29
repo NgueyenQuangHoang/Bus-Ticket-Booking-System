@@ -111,6 +111,7 @@ export const router = createBrowserRouter([
           { path: "cancellation-policies", element: <CancellationPoliciesPage /> },
           { path: "reviews", element: <ReviewsPage /> },
           { path: "banners", element: <BannersPage /> },
+
         ],
       },
     ],
