@@ -32,6 +32,7 @@ import StationsPage from "../pages/admin/locations/stations/StationsPage";
 import AdminRoutesPage from "../pages/admin/locations/routes/RoutesPage";
 import BusCompaniesPage from "../pages/admin/vehicles/companies/BusCompaniesPage";
 import BusesPage from "../pages/admin/vehicles/buses/BusesPage";
+import VehiclesTypePage from "../pages/admin/vehicles/vehiclesType/vehiclesTypePage";
 import BusImagesPage from "../pages/admin/vehicles/images/BusImagesPage";
 import SeatTypesPage from "../pages/admin/seats/layouts/components/SeatTypesPage";
 import SeatLayoutPage from "../pages/admin/seats/layouts/components/SeatLayoutPage";
@@ -100,6 +101,7 @@ export const router = createBrowserRouter([
           { path: "routes", element: <AdminRoutesPage /> },
           { path: "bus-companies", element: <BusCompaniesPage /> },
           { path: "buses", element: <BusesPage /> },
+          { path: "vehicles-types", element: <VehiclesTypePage /> },
           { path: "bus-images", element: <BusImagesPage /> },
           { path: "seat-types", element: <SeatTypesPage /> },
           { path: "seat-maps", element: <SeatLayoutPage /> },

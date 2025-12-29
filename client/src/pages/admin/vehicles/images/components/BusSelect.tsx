@@ -1,9 +1,12 @@
+import type { Bus } from "../../../../../types";
+
 type Props = {
-  value: string;
-  onChange: (bus: string) => void;
+  value: string | number;
+  onChange: (busId: string) => void;
+  buses: Bus[];
 };
 
-export default function BusSelect({ value, onChange }: Props) {
+export default function BusSelect({ value, onChange, buses }: Props) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4">
       <label className="block text-sm font-medium mb-2">
@@ -15,8 +18,12 @@ export default function BusSelect({ value, onChange }: Props) {
         onChange={(e) => onChange(e.target.value)}
         className="w-full max-w-sm border border-gray-300 rounded-lg px-3 py-2 text-sm"
       >
-        <option>FUTA-VIP01 - 51B-12345</option>
-        <option>FUTA-VIP02 - 51B-12346</option>
+        <option value="">-- Chọn xe --</option>
+        {buses.map((bus) => (
+            <option key={bus.id || bus.bus_id} value={bus.id || bus.bus_id}>
+                {bus.name} - {bus.license_plate}
+            </option>
+        ))}
       </select>
     </div>
   );

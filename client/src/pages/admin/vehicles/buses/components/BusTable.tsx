@@ -26,7 +26,7 @@ export default function BusTable({
         {/* HEADER */}
         <div
           className="
-            grid grid-cols-[60px_2fr_2fr_2fr_1.5fr_2fr_1fr_1fr_100px]
+            grid grid-cols-[100px_2fr_2fr_2fr_1.5fr_2fr_1fr_1fr_100px]
             bg-gray-50
             text-sm text-gray-500
             border-b border-gray-200
@@ -45,9 +45,9 @@ export default function BusTable({
 
         {data.map((bus) => (
           <div
-            key={bus.bus_id}
+            key={bus.id || bus.bus_id}
             className="
-              grid grid-cols-[60px_2fr_2fr_2fr_1.5fr_2fr_1fr_1fr_100px]
+              grid grid-cols-[100px_2fr_2fr_2fr_1.5fr_2fr_1fr_1fr_100px]
               items-center
               border-t border-gray-200
               text-sm text-gray-700
@@ -55,8 +55,11 @@ export default function BusTable({
             "
           >
             {/* ID */}
-            <div className="p-3 text-center font-mono">
-              {bus.bus_id}
+            <div className="p-3 text-center font-mono" title={String(bus.id || bus.bus_id)}>
+              {(() => {
+                  const id = String(bus.id || bus.bus_id);
+                  return id.length > 8 ? id.substring(0, 8) + '...' : id;
+              })()}
             </div>
 
             <div className="p-3 font-medium">{bus.name}</div>
@@ -100,7 +103,7 @@ export default function BusTable({
       <div className="space-y-4 [@media(min-width:391px)]:hidden">
         {data.map((bus) => (
           <div
-            key={bus.bus_id}
+            key={bus.id || bus.bus_id}
             className="bg-white border border-gray-200 rounded-xl p-4 space-y-2"
           >
             <div className="flex justify-between items-center">

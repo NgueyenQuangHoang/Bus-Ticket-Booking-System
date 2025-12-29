@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import type { BusCompany } from "../../../../../types/bus";
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  onSubmit: (data: Partial<BusCompany>) => void;
+  initialData?: BusCompany | null;
 };
 
 type Errors = {
@@ -15,9 +19,7 @@ type Errors = {
   description: string;
 };
 
-export default function BusCompanyFormModal({ open, onClose }: Props) {
-  if (!open) return null;
-
+export default function BusCompanyFormModal({ open, onClose, onSubmit, initialData }: Props) {
   const [form, setForm] = useState({
     name: "",
     license: "",
@@ -27,6 +29,30 @@ export default function BusCompanyFormModal({ open, onClose }: Props) {
     status: "",
     description: "",
   });
+
+  useEffect(() => {
+    if (initialData) {
+        setForm({
+            name: initialData.company_name || "",
+            license: initialData.license_number || "",
+            phone: initialData.contact_phone || "",
+            email: initialData.contact_email || "",
+            address: initialData.address || "",
+            status: initialData.status || "",
+            description: initialData.description || "",
+        });
+    } else {
+        setForm({
+            name: "",
+            license: "",
+            phone: "",
+            email: "",
+            address: "",
+            status: "",
+            description: "",
+        });
+    }
+  }, [initialData, open]);
 
   const [errors, setErrors] = useState<Errors>({
     name: "",
@@ -87,11 +113,22 @@ export default function BusCompanyFormModal({ open, onClose }: Props) {
     );
 
     if (!hasError) {
-      console.log("SUBMIT:", form);
-      alert("Lưu nhà xe thành công!");
+      onSubmit({
+        company_name: form.name,
+        license_number: form.license,
+        contact_phone: form.phone,
+        contact_email: form.email,
+        address: form.address,
+        status: form.status as any,
+        description: form.description,
+        ...(initialData?.id ? { id: initialData.id } : { id: uuidv4() }),
+        ...(initialData?.bus_company_id ? { bus_company_id: initialData.bus_company_id } : {})
+      });
       onClose();
     }
   };
+
+  if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -220,14 +257,13 @@ export default function BusCompanyFormModal({ open, onClose }: Props) {
         <div className="flex justify-end gap-2 px-4 py-3 border-t border-gray-200">
           <button
             onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded text-sm"
+            className="px-4 py-2 border border-gray-300 rounded text-sm hover:cursor-pointer"
           >
             Hủy
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white rounded text-sm"
-          >
+            className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:cursor-pointer">
             Lưu
           </button>
         </div>
