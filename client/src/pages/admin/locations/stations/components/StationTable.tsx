@@ -1,16 +1,37 @@
 import {
-    Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Chip
+  Table, TableBody, TableCell, TableContainer,
+  TableHead, TableRow, Chip
 } from '@mui/material';
 import StationAction from './StationAction';
+import type { City, Station } from '../../../../../types';
+import { useEffect, useState } from 'react';
+import { cityService } from '../../../../../services/cityService';
+// import StationAction, { type Station } from './StationAction';
 
-export default function StationTable() {
+interface PropType {
+  stations: (Station & { city_name?: string })[]
+  onDelete: (id: string) => void
+  onEdit: (station: Station) => void
+}
+
+export default function StationTable({ stations, onDelete, onEdit }: PropType) {
+  const [cities, setCities] = useState<City[]>([])
+  useEffect(() => {
+    cityService.getAllCities().then((res) => setCities(res))
+  }, [])
+
+  const cityMapping: Record<string, string> = cities.reduce((acc, city) => {
+    return {
+      ...acc,
+      [city.id]: city.city_name
+    };
+  }, {});
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }}>
         <TableHead className="bg-gray-50">
           <TableRow>
-            <TableCell className="font-bold text-gray-400">ID</TableCell>
+            <TableCell className="font-bold text-gray-400">#</TableCell>
             <TableCell className="font-bold text-gray-400">Tên</TableCell>
             <TableCell className="font-bold text-gray-400">Thành phố</TableCell>
             <TableCell className="font-bold text-gray-400">Địa chỉ</TableCell>
@@ -19,7 +40,30 @@ export default function StationTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow hover className="transition-colors">
+          {
+            stations.map((station, index) => (
+              <TableRow key={index} hover className="transition-colors">
+                <TableCell className="text-gray-600">{index}</TableCell>
+                <TableCell className="font-medium">{station.station_name}</TableCell>
+                <TableCell className="font-medium">{cityMapping[station.city_id]}</TableCell>
+
+                <TableCell>
+                  <Chip
+                    label={station.location}
+                    size="small"
+                    className={` 'bg-blue-50 text-blue-600' :
+                                    city.region === 'Bắc' ? 'bg-blue-50 text-blue-600' :
+                                        'bg-blue-50 text-blue-600'
+                                    } font-medium px-2`}
+                  />
+                </TableCell>
+                <TableCell align="right">
+                  <StationAction onDelete={onDelete} onEdit={onEdit} station={station} cities={cities}/>
+                </TableCell>
+              </TableRow>
+            ))
+          }
+          {/* {<TableRow hover className="transition-colors">
             <TableCell className="text-gray-600">kasjdlfkjsf</TableCell>
             <TableCell className="font-medium">alkskdjflasjd</TableCell>
             <TableCell className="font-medium">alkskdjflasjd</TableCell>
@@ -37,7 +81,7 @@ export default function StationTable() {
             <TableCell align="right">
               <StationAction />
             </TableCell>
-          </TableRow>
+          </TableRow>} */}
         </TableBody>
       </Table>
     </TableContainer>

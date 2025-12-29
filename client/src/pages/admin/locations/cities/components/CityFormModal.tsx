@@ -17,7 +17,7 @@ import type { City } from '../../../../../types';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import { cityService } from '../../../../../services/cityService';
-import { uuidv4 } from 'zod';
+import { v4 as uuidv4 } from "uuid";
 
 // Style cho Modal
 const modalStyle = {
@@ -42,7 +42,7 @@ export default function CityFormModal({ numberCities, updateCitiesOnAdd }: { num
 
     // Khởi tạo state
     const [formData, setFormData] = useState<City>({
-        city_id: 0,
+        id: uuidv4(),
         city_name: '',
         region: '',
         image_city: '',
@@ -57,7 +57,7 @@ export default function CityFormModal({ numberCities, updateCitiesOnAdd }: { num
 
     const handleReset = () => {
         setFormData({
-            city_id: uuidv4()+"",
+            id: formData.id,
             city_name: '',
             region: '',
             image_city: '',

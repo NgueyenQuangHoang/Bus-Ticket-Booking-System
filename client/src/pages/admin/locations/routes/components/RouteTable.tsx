@@ -4,9 +4,14 @@ import {
     TableHead, TableRow, Chip
 } from '@mui/material';
 import RouteAction from './RouteAction';
+import type { Route } from '../../../../../types';
 
+interface PropType {
+    routes: Route[],
+    stationMapping: {[key: string]: string}
+}
 
-export default function RouteTable() {
+export default function RouteTable({routes, stationMapping: stations} : PropType) {
 
     return (
 
@@ -24,26 +29,30 @@ export default function RouteTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow hover className="transition-colors">
-                        <TableCell className="text-gray-600">kasjdlfkjsf</TableCell>
-                        <TableCell className="font-medium">alkskdjflasjd</TableCell>
-                        <TableCell className="font-medium">alkskdjflasjd</TableCell>
-                        <TableCell className="font-medium">alkskdjflasjd</TableCell>
-                        <TableCell className="font-medium">alkskdjflasjd</TableCell>
-                        <TableCell>
-                            <Chip
-                                label="{city.region}"
-                                size="small"
-                                className={` 'bg-blue-50 text-blue-600' :
+                    {routes.map((item, index) => {
+                        return (
+                            <TableRow key={index} hover className="transition-colors">
+                                <TableCell className="text-gray-600">{index+1}</TableCell>
+                                <TableCell className="font-medium">{stations[item.departure_station_id]}</TableCell>
+                                <TableCell className="font-medium">{stations[item.arrival_station_id]}</TableCell>
+                                <TableCell className="font-medium">{item.distance} km</TableCell>
+                                <TableCell className="font-medium">{item.duration} phút</TableCell>
+                                <TableCell>
+                                    <Chip
+                                        label={item.base_price}
+                                        size="small"
+                                        className={` 'bg-blue-50 text-blue-600' :
                                     city.region === 'Bắc' ? 'bg-blue-50 text-blue-600' :
                                         'bg-blue-50 text-blue-600'
                                     } font-medium px-2`}
-                            />
-                        </TableCell>
-                        <TableCell align="right">
-                            <RouteAction />
-                        </TableCell>
-                    </TableRow>
+                                    />
+                                </TableCell>
+                                <TableCell align="right">
+                                    <RouteAction id={item.id} route={item} stations={stations}/>
+                                </TableCell>
+                            </TableRow>
+                        )
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>

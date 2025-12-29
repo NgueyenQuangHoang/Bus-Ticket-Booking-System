@@ -1,7 +1,6 @@
 {
   "users": [
     {
-      "user_id": 2,
       "first_name": "Admin",
       "last_name": "System",
       "email": "admin@gmail.com",
@@ -11,18 +10,6 @@
       "created_at": "2025-01-01",
       "updated_at": "Sat Dec 27 2025 20:26:40 GMT+0700 (GMT+07:00)",
       "id": "33aa"
-    },
-    {
-      "id": "083b",
-      "first_name": "ho va ten",
-      "last_name": "jkl,",
-      "email": "doi_thatday@gmail.com",
-      "phone": "0812912031",
-      "password": "1231223",
-      "user_id": "65c7ce3f-761a-4982-89d1-3a9b64eb1843",
-      "status": "LOCKED",
-      "created_at": "Sat Dec 27 2025 19:15:34 GMT+0700 (GMT+07:00)",
-      "updated_at": "Sat Dec 27 2025 20:42:42 GMT+0700 (GMT+07:00)"
     }
   ],
   "roles": [
@@ -44,14 +31,9 @@
   ],
   "user_role": [
     {
-      "user_id": 2,
+      "user_id": "33aa",
       "role_id": 2,
       "id": "a9f5"
-    },
-    {
-      "user_id": "65c7ce3f-761a-4982-89d1-3a9b64eb1843",
-      "role_id": "2",
-      "id": "2bdc"
     }
   ],
   "cities": [
@@ -59,7 +41,7 @@
       "city_id": 1,
       "city_name": "Hà Nội",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
-      "region": "Bắc",
+      "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
       "id": "971d",
@@ -664,56 +646,34 @@
       "updated_at": "2025-01-01",
       "id": "0c9d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
-    },
-    {
-      "city_id": 63,
-      "city_name": "Yên Bái",
-      "image_city": "",
-      "region": "Nam",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "d318",
-      "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     }
   ],
   "stations": [
     {
-      "station_id": 1,
-      "station_name": "Bến xe Mỹ Đình",
-      "city_id": 1,
-      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-      "description": "Bến xe lớn phía Tây Hà Nội",
-      "location": "20 Phạm Hùng, Mỹ Đình",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "0a6c"
-    },
-    {
-      "station_id": 2,
       "station_name": "Bến xe Giáp Bát",
-      "city_id": 1,
+      "city_id": "4b1f",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg",
-      "description": "Bến xe phía Nam Hà Nội",
+      "description": "<p>Bến&nbsp;xe&nbsp;phía&nbsp;Nam&nbsp;Hà&nbsp;Nội</p>",
       "location": "Giải Phóng, Hoàng Mai",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "676f"
+      "id": "676f",
+      "city_name": "Bà Rịa - Vũng Tàu"
     },
     {
-      "station_id": 3,
       "station_name": "Bến xe Miền Đông",
-      "city_id": 2,
+      "city_id": "36d8",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-      "description": "Bến xe lớn tại TP.HCM",
+      "description": "<p>Bến&nbsp;xe&nbsp;lớn&nbsp;tại&nbsp;TP.HCM</p>",
       "location": "292 Đinh Bộ Lĩnh, Bình Thạnh",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "41b3"
+      "id": "41b3",
+      "city_name": "Bình Thuận"
     },
     {
-      "station_id": 4,
       "station_name": "Bến xe Miền Tây",
-      "city_id": 2,
+      "city_id": "4349",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410846/bxBG_dzhqh5.jpg",
       "description": "Bến xe đi miền Tây",
       "location": "395 Kinh Dương Vương, Q6",
@@ -722,9 +682,8 @@
       "id": "8e2c"
     },
     {
-      "station_id": 5,
       "station_name": "Bến xe Đà Nẵng",
-      "city_id": 3,
+      "city_id": "4349",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg",
       "description": "Bến xe trung tâm Đà Nẵng",
       "location": "Tôn Đức Thắng, Liên Chiểu",
@@ -733,130 +692,51 @@
       "id": "2c4e"
     },
     {
-      "station_id": 6,
       "station_name": "Bến xe Niệm Nghĩa",
-      "city_id": 4,
+      "city_id": "36d8",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-      "description": "Bến xe chính Hải Phòng",
+      "description": "<p>Bến&nbsp;xe&nbsp;chính&nbsp;Hải&nbsp;Phòng&nbsp;miền&nbsp;Bắc&nbsp;nước&nbsp;việt&nbsp;nam&nbsp;ấy</p>",
       "location": "Trần Nguyên Hãn",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "597f"
+      "id": "597f",
+      "city_name": "Đắk Lắk"
     },
     {
-      "station_id": 7,
-      "station_name": "Bến xe Cần Thơ",
-      "city_id": 5,
+      "id": "7ad6c97a-e06b-4886-8f32-98eec5ce4b56",
+      "station_name": "Bến xe Miền Đông",
+      "city_id": "2f44",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-      "description": "Bến xe trung tâm Cần Thơ",
-      "location": "Nguyễn Trãi, Ninh Kiều",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "fbb0"
+      "wallpaper": "1l2k3j",
+      "description": "<p>l1lj2k3</p>",
+      "location": "Trần Nguyên Hãn",
+      "created_at": "2025-12-29T02:54:45.852Z",
+      "updated_at": "2025-12-29T02:54:45.852Z"
     }
   ],
   "routes": [
     {
-      "route_id": 1,
-      "departure_station_id": 1,
-      "arrival_station_id": 3,
-      "distance": 1700,
-      "duration": 1800,
-      "base_price": 350000,
+      "id": "string",
+      "departure_station_id": "597f",
+      "arrival_station_id": "41b3",
+      "base_price": 100000,
+      "duration": 1801,
+      "distance": 1200,
+      "total_bookings": 20,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "a42a",
-      "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
+      "description": "<p>ai&nbsp;bieest&nbsp;gi&nbsp;dau</p>"
     },
     {
-      "route_id": 2,
-      "departure_station_id": 3,
-      "arrival_station_id": 1,
-      "distance": 1700,
-      "duration": 1800,
-      "base_price": 350000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "3671",
-      "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
-    },
-    {
-      "route_id": 3,
-      "departure_station_id": 1,
-      "arrival_station_id": 6,
-      "distance": 120,
-      "duration": 150,
-      "base_price": 120000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "3bed",
-      "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
-    },
-    {
-      "route_id": 4,
-      "departure_station_id": 6,
-      "arrival_station_id": 1,
-      "distance": 120,
-      "duration": 150,
-      "base_price": 120000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "2484"
-    },
-    {
-      "route_id": 5,
-      "departure_station_id": 3,
-      "arrival_station_id": 5,
-      "distance": 960,
-      "duration": 960,
-      "base_price": 280000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "35a8"
-    },
-    {
-      "route_id": 6,
-      "departure_station_id": 5,
-      "arrival_station_id": 3,
-      "distance": 960,
-      "duration": 960,
-      "base_price": 280000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "53a6"
-    },
-    {
-      "route_id": 7,
-      "departure_station_id": 4,
-      "arrival_station_id": 7,
+      "id": "bb9d4530-e68d-4223-aad6-607467f8c1e8",
+      "departure_station_id": "41b3",
+      "arrival_station_id": "676f",
+      "base_price": 100,
+      "duration": 120,
       "distance": 200,
-      "duration": 180,
-      "base_price": 150000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "016b"
-    },
-    {
-      "route_id": 8,
-      "departure_station_id": 1,
-      "arrival_station_id": 5,
-      "distance": 800,
-      "duration": 720,
-      "base_price": 250000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "94e4"
-    },
-    {
-      "route_id": 9,
-      "departure_station_id": 5,
-      "arrival_station_id": 1,
-      "distance": 800,
-      "duration": 720,
-      "base_price": 250000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "f048"
+      "description": "<p>khong&nbsp;co&nbsp;thong&nbsp;tin&nbsp;gi&nbsp;o&nbsp;day</p>",
+      "created_at": "Mon Dec 29 2025 21:08:15 GMT+0700 (GMT+07:00)",
+      "updated_at": "Mon Dec 29 2025 21:08:15 GMT+0700 (GMT+07:00)"
     }
   ],
   "bus_companies": [

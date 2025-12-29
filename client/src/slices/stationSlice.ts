@@ -78,6 +78,9 @@ const stationSlice = createSlice({
         state.error = action.payload as string;
       });
   },
+
+  
+
 });
 
 export default stationSlice.reducer;

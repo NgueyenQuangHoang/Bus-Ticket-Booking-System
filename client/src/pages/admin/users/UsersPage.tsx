@@ -9,20 +9,6 @@ import { authService } from "../../../services/authService";
 import type { User, UserRole } from "../../../types";
 import { v4 as uuidv4 } from "uuid";
 
-// Mock Data matching db.json structure
-// Ensure mock data strictly follows User interface
-// export interface User {
-//   id: string;
-//   user_id: number;
-//   first_name: string;
-//   last_name: string;
-//   email: string;
-//   password?: string;
-//   phone: string;
-//   status: string;
-//   created_at: string;
-//   updated_at: string;
-// }
 
 const allUser: User[] = [];
 
@@ -34,7 +20,6 @@ export default function UsersPage() {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [roles, setRoles] = useState<{ [x: string]: string }>({})
     const [statusForm, setStatus] = useState<'edit' | 'add'>('add')
-    // {user_id: role_name}
     
 
     const handleToggleStatus = (id: string | number, status: string) => {
@@ -55,7 +40,7 @@ export default function UsersPage() {
         
     };
 
-    const handleAddUser = (newUser: Omit<User,'user_id' | 'status' | 'created_at' | 'updated_at'>, role: string) => {
+    const handleAddUser = (newUser: Omit<User,'status' | 'created_at' | 'updated_at'>, role: string) => {
         if (newUser.id && users.some((u) => u.id === newUser.id)) {
             setUsers(
                 users.map((u) =>
@@ -70,12 +55,11 @@ export default function UsersPage() {
             );
         } else {
             // Add new
-            const user_id = uuidv4()
             const id = uuidv4()
+            const user_role_id = uuidv4()
             const userToAdd: User = {
-                id,
                 ...newUser,
-                user_id,
+                id,
                 first_name: newUser.first_name || "",
                 last_name: newUser.last_name || "",
                 email: newUser.email || "",
@@ -88,11 +72,11 @@ export default function UsersPage() {
             setUsers([userToAdd, ...users]);
             const newRole = roles
             // eslint-disable-next-line react-hooks/immutability
-            newRole[user_id] = role
+            newRole[id] = role
             setRoles(newRole)
 
             // api post
-            const userRole:UserRole = {user_id, role_id: role == 'ADMIN' ? 2 : role == 'BUS_COMPANY' ? 3 : 1}
+            const userRole: UserRole = { id: user_role_id, user_id: id, role_id: role == 'ADMIN' ? 2 : role == 'BUS_COMPANY' ? 3 : 1}
             authService.createUser(userToAdd, userRole)
         }
     };
@@ -112,7 +96,7 @@ export default function UsersPage() {
         authService.updateUser(id, user, role)
         setUsers(users.map(item => 
         {
-            if(item.user_id == user.user_id){
+            if(item.id == user.id){
                 return user
             }
             return item
@@ -120,7 +104,7 @@ export default function UsersPage() {
         ))
         const newRoles = roles
         // eslint-disable-next-line react-hooks/immutability
-        newRoles[user.user_id] = role
+        newRoles[user.id] = role
         setRoles(newRoles)
     }
 
@@ -139,7 +123,7 @@ export default function UsersPage() {
             if (result.isConfirmed) {
                 // goi api xoa o day
                 setUsers(users.filter((u) => u.id !== user.id));
-                authService.deleteUser(user.id ? user.id : '', user.user_id)
+                authService.deleteUser(user.id ? user.id : '', user.id)
                 Swal.fire("Đã xóa!", "Người dùng đã được xóa thành công.", "success");
             }
         });
@@ -162,22 +146,22 @@ export default function UsersPage() {
 
             res.map((item) => {
 
-                authService.getRoleUser(item.user_id).then((res) => {
+                authService.getRoleUser(item.id).then((res) => {
                     res?.forEach((role) => {
 
                         setRoles((prevRoles) => {
-                            if (prevRoles[item.user_id] == 'ADMIN') {
+                            if (prevRoles[item.id] == 'ADMIN') {
                                 return prevRoles
                             }
-                            if (prevRoles[item.user_id] == 'BUS_COMPANY' && role.role_name == 'ADMIN') {
+                            if (prevRoles[item.id] == 'BUS_COMPANY' && role.role_name == 'ADMIN') {
                                 return {
                                     ...prevRoles,
-                                    [item.user_id]: role.role_name
+                                    [item.id]: role.role_name
                                 }
                             }
                             return {
                                 ...prevRoles,
-                                [item.user_id]: role.role_name
+                                [item.id]: role.role_name
                             }
                         }
                         )

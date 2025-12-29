@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Close } from '@mui/icons-material';
 import { validateUserForm, type UserFormData } from './validation';
 import type { User } from '../../../../types';
+import { v4 as uuidv4 } from "uuid";
 
 interface AddUserModalProps {
   isOpen: boolean;
@@ -70,7 +71,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
     const firstName = formData.first_name
 
     const finalData: Omit<User, 'user_id' | 'status' | 'created_at' | 'updated_at'> = {
-      id: user ? user.id : undefined, // Keep ID if editing
+      id: uuidv4(),
       first_name: firstName,
       last_name: lastName,
       email: formData.email,

@@ -1,9 +1,9 @@
 import type { Timestamp, Decimal } from './common';
 
 export interface Route {
-  route_id: number;
-  departure_station_id: number;
-  arrival_station_id: number;
+  id: string;
+  departure_station_id: string;
+  arrival_station_id: string;
   base_price?: Decimal;
   duration?: number; // minutes
   distance?: number; // km
