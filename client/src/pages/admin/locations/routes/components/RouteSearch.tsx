@@ -1,7 +1,10 @@
 import { Search } from '@mui/icons-material'
 import { InputAdornment, TextField } from '@mui/material'
+interface PropType {
+    onChangeInput: (s : string) => void
+}
 
-export default function RouteSearch() {
+export default function RouteSearch({ onChangeInput }: PropType) {
     return (
         <div className="p-4 flex justify-between items-center bg-white border-b border-gray-100">
             <TextField
@@ -9,6 +12,7 @@ export default function RouteSearch() {
                 placeholder="Tìm kiếm..."
                 variant="outlined"
                 className="w-1/3"
+                onChange={(e) => {onChangeInput(e.target.value)}}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">

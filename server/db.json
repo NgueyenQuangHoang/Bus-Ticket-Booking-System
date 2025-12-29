@@ -54,7 +54,7 @@
       "id": "1",
       "city_name": "Hà Nội",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
-      "region": "Bắc",
+      "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
@@ -625,7 +625,7 @@
       "station_name": "Bến xe Giáp Bát",
       "city_id": "1",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg",
-      "description": "Bến xe phía Nam Hà Nội",
+      "description": "<p>Bến&nbsp;xe&nbsp;phía&nbsp;Nam&nbsp;Hà&nbsp;Nội</p>",
       "location": "Giải Phóng, Hoàng Mai",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -635,7 +635,7 @@
       "station_name": "Bến xe Miền Đông",
       "city_id": "2",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-      "description": "Bến xe lớn tại TP.HCM",
+      "description": "<p>Bến&nbsp;xe&nbsp;lớn&nbsp;tại&nbsp;TP.HCM</p>",
       "location": "292 Đinh Bộ Lĩnh, Bình Thạnh",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -665,7 +665,7 @@
       "station_name": "Bến xe Niệm Nghĩa",
       "city_id": "4",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-      "description": "Bến xe chính Hải Phòng",
+      "description": "<p>Bến&nbsp;xe&nbsp;chính&nbsp;Hải&nbsp;Phòng&nbsp;miền&nbsp;Bắc&nbsp;nước&nbsp;việt&nbsp;nam&nbsp;ấy</p>",
       "location": "Trần Nguyên Hãn",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"

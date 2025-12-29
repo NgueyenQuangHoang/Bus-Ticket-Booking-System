@@ -35,13 +35,13 @@ const modalStyle = {
 };
 
 interface PropType {
-    city_id: number | string
+    id: number | string
     updateCitiesOnDelete: (id: number | string) => void
     updateCitiesOnFix: (city: City) => void
     city: City
 }
 
-export default function CityAction({ city_id, updateCitiesOnDelete, updateCitiesOnFix , city }: PropType) {
+export default function CityAction({ id, updateCitiesOnDelete, updateCitiesOnFix , city }: PropType) {
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState<City>(city);
 
@@ -68,8 +68,8 @@ export default function CityAction({ city_id, updateCitiesOnDelete, updateCities
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                cityService.deleteCity(city_id)
-                updateCitiesOnDelete(city_id)
+                cityService.deleteCity(id)
+                updateCitiesOnDelete(id)
 
                 Swal.fire(
                     "Đã xóa!",
@@ -81,7 +81,7 @@ export default function CityAction({ city_id, updateCitiesOnDelete, updateCities
     };
 
     const handleSave = () => {
-        cityService.updateCity(city_id, formData);
+        cityService.updateCity(id, formData);
         updateCitiesOnFix(formData)
         Swal.fire({
             title: "Thành công",

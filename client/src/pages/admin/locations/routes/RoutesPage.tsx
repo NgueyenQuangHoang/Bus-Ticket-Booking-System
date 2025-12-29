@@ -2,18 +2,47 @@ import { Pagination, Paper } from "@mui/material";
 import RouteFormModal from "./components/RouteFormModal";
 import RouteSearch from "./components/RouteSearch";
 import RouteTable from "./components/RouteTable";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { useEffect, useState } from "react";
+import { fetchRoutes } from "../../../../slices/routesSlice";
+import { fetchStations } from "../../../../slices/stationSlice";
 
 
 export default function RouteAdminPage() {
+    const {stations} = useAppSelector(state => state.station)
+    const {routes} = useAppSelector((state) => state.routes)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(fetchRoutes())
+        dispatch(fetchStations())
+    }, [dispatch])
+    console.log(routes, stations);
+    const stationMap: Record<string, string> = Object.fromEntries(
+        stations.map((s) => [s.id, s.station_name])
+    );
+    const [inputData, setInputData] = useState<string>('')
+    const [currentPage, serCurrentPage] = useState(1)
+
+    const routesRender = routes && stationMap && routes.filter(item => 
+        stationMap[item.departure_station_id] && stationMap[item.arrival_station_id] && 
+        (stationMap[item.departure_station_id].toLowerCase().includes(inputData.toLowerCase()) || 
+        stationMap[item.arrival_station_id].toLowerCase().includes(inputData.toLowerCase())
+    )).slice((currentPage-1)*10, currentPage*10)
     return (
         <div className='py-5'>
             <div className='py-5'>
-                        <RouteFormModal/>
+                        <RouteFormModal stationMapping={stationMap}/>
                         <Paper className="shadow-sm rounded-xl overflow-hidden border border-gray-100">
-                        <RouteSearch/>
-                            <RouteTable/>
+                        <RouteSearch onChangeInput={setInputData}/>
+                            <RouteTable stationMapping={
+                                stationMap
+                                } routes={
+                                    routesRender
+                                    }/>
                         </Paper>
-                        <div className="py-4 flex justify-center"><Pagination count={10}/></div>
+                        <div className="py-4 flex justify-center"><Pagination 
+                        onChange={() => serCurrentPage}
+                        count={Math.ceil(routesRender.length/10)}/></div>
                     </div>
         </div>
     )

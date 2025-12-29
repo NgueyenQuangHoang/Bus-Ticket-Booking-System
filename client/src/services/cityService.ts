@@ -37,5 +37,14 @@ export const cityService = {
       console.error('Error creating city:', error);
       throw error;
     }
+  },
+  getParticularCity: async (city_id: string): Promise<City | undefined> => {
+    try {
+      const response : City= await api.get('/cities/'+city_id)
+      return response
+    } catch (error) {
+      console.log(error);
+      return undefined
+    }
   }
 };

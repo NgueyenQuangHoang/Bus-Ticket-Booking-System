@@ -1,7 +1,6 @@
 import type { Timestamp } from './common';
 
 export interface User {
-  user_id: number | string;
   first_name: string;
   last_name: string;
   email: string;
@@ -10,7 +9,7 @@ export interface User {
   status?: string;
   created_at?: Timestamp;
   updated_at?: Timestamp;
-  id?: number|string
+  id: number|string
 }
 
 export interface Role {

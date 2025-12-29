@@ -19,22 +19,21 @@ export const routesService = {
         try {
             const responseGetRoutes: Route[] = await api.get('/routes');
             const responseGetStations: Station[] = await api.get('/stations')
-
             const stationMap = responseGetStations.reduce((acc, curr) => {
-                acc[curr.station_id] = curr.station_name;
+                acc[String(curr.id)] = curr.station_name;
                 return acc;
-            }, {} as Record<number, string>);
+            }, {} as Record<string, string>);
             console.log(stationMap);
 
             const dataReturn: routesInfomation[] = responseGetRoutes.map((item) => {
                 const departure_name = stationMap[item.departure_station_id]
                 const arrival_name = stationMap[item.arrival_station_id]
-                return {
-                    route_id: item.route_id,
+                return [{
+                    route_id: item.id,
                     departure_station_name: departure_name ? departure_name : '',
                     arrival_station_name: arrival_name ? arrival_name : '',
                     description: item.description
-                }
+                }]
             })
 
             return responseGetRoutes ? dataReturn : undefined
@@ -50,6 +49,32 @@ export const routesService = {
         } catch (error) {
             console.error('Error fetching popular routes:', error);
             throw error;
+        }
+    },
+    deleteRoute: async (route_id: string): Promise<string> => {
+        try {
+            await api.delete('/routes/'+route_id)
+            return route_id
+        } catch (error) {
+            console.log(error);
+            return '0'
+        }
+    },
+    updateRoute: async (route:Route): Promise<Route | undefined> => {
+        try {
+            await api.put('/routes/'+route.id, route)
+            return route
+        } catch (error) {
+            console.log(error);
+        }   
+    },
+    createRoute: async (route: Route) : Promise<Route> => {
+        try {
+            await api.post('/routes', route)
+            return route
+        } catch (error) {
+            console.log(error);
+            return error as Route
         }
     }
 }

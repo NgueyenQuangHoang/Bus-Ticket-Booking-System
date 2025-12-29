@@ -1,8 +1,11 @@
 import { Add, Close, LocationOn, AttachMoney, AccessTime, Straighten, Description, Save, RestartAlt } from '@mui/icons-material'
 import { Box, Button, Divider, IconButton, InputAdornment, MenuItem, Modal, TextField, Typography } from '@mui/material'
-import { useState, type ChangeEvent } from 'react';
+import { useMemo, useState, type ChangeEvent } from 'react';
 import type { Route } from '../../../../../types';
-
+import ReactQuill from 'react-quill-new';
+import { useAppDispatch } from '../../../../../hooks';
+import { createPostRoute } from '../../../../../slices/routesSlice';
+import { v4 as uuidv4 } from 'uuid';
 // Style cho thân Modal
 const modalStyle = {
     position: 'absolute',
@@ -19,25 +22,47 @@ const modalStyle = {
     overflowY: 'auto'
 };
 
-export default function RouteFormModal() {
+interface PropType {
+    stationMapping: {[key: string] : string},
+
+}
+
+export default function RouteFormModal({stationMapping: stations}: PropType) {
+
+    const modules = useMemo(() => ({
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'align': [] }],
+            ['link', 'image', 'video'], // Cho phép chèn ảnh và video
+            ['clean']
+        ],
+    }), []);
+
+
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     // Khởi tạo state dựa trên Interface Route
-    const [formData, setFormData] = useState<Partial<Route>>({
-        departure_station_id: 0,
-        arrival_station_id: 0,
+    const [formData, setFormData] = useState<Route>({
+        id: uuidv4(),
+        departure_station_id: '',
+        arrival_station_id: '',
         base_price: 0,
         duration: 0,
         distance: 0,
-        description: ''
+        description: '',
+        created_at: (new Date()).toString(),
+        updated_at: (new Date()).toString()
     });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         // Chuyển đổi giá trị sang số nếu là các trường ID hoặc định lượng
-        const isNumber = ['departure_station_id', 'arrival_station_id', 'base_price', 'duration', 'distance'].includes(name);
+        const isNumber = ['base_price', 'duration', 'distance'].includes(name);
         setFormData(prev => ({
             ...prev,
             [name]: isNumber ? Number(value) : value
@@ -46,18 +71,19 @@ export default function RouteFormModal() {
 
     const handleReset = () => {
         setFormData({
-            departure_station_id: 0,
-            arrival_station_id: 0,
+            id: uuidv4(),
+            departure_station_id: '',
+            arrival_station_id: '',
             base_price: 0,
             duration: 0,
             distance: 0,
-            description: ''
+            description: '',
         });
     };
-
+const dispatch = useAppDispatch()
     const handleSubmit = () => {
         console.log("Dữ liệu Route:", formData);
-        // Xử lý logic lưu dữ liệu tại đây
+        dispatch(createPostRoute(formData))
         handleClose();
     };
 
@@ -112,9 +138,11 @@ export default function RouteFormModal() {
                                 value={formData.departure_station_id}
                                 onChange={handleChange}
                             >
-                                <MenuItem value={0}>Chọn ga đi</MenuItem>
-                                <MenuItem value={1}>Ga Sài Gòn</MenuItem>
-                                <MenuItem value={2}>Ga Hà Nội</MenuItem>
+                                {Object.entries(stations).map(([id, name]) => (
+                                    <MenuItem value={id}>{name}</MenuItem>
+                                ))}
+                                {/* <MenuItem value={0}>Chọn ga đi</MenuItem>
+                                <MenuItem value={2}>Ga Hà Nội</MenuItem> */}
                             </TextField>
                         </div>
 
@@ -132,9 +160,12 @@ export default function RouteFormModal() {
                                 value={formData.arrival_station_id}
                                 onChange={handleChange}
                             >
-                                <MenuItem value={0}>Chọn ga đến</MenuItem>
+                                {Object.entries(stations).map(([id, name]) => (
+                                    <MenuItem value={id}>{name}</MenuItem>
+                                ))}
+                                {/* <MenuItem value={0}>Chọn ga đến</MenuItem>
                                 <MenuItem value={3}>Ga Đà Nẵng</MenuItem>
-                                <MenuItem value={4}>Ga Huế</MenuItem>
+                                <MenuItem value={4}>Ga Huế</MenuItem> */}
                             </TextField>
                         </div>
 
@@ -201,14 +232,15 @@ export default function RouteFormModal() {
                                 <Description fontSize="small" className="text-gray-500" />
                                 Mô tả chi tiết
                             </label>
-                            <TextField
-                                fullWidth
-                                multiline
-                                rows={3}
-                                name="description"
+                            <ReactQuill
+                                theme="snow"
                                 value={formData.description}
-                                onChange={handleChange}
-                                placeholder="Nhập ghi chú cho tuyến đường..."
+                                onChange={(content) => {
+                                    setFormData(prev => ({ ...prev, description: content }));
+                                }}
+                                modules={modules}
+                                placeholder="Thông tin thêm về bến xe..."
+                                style={{ height: '200px', marginBottom: '50px' }}
                             />
                         </div>
                     </div>
