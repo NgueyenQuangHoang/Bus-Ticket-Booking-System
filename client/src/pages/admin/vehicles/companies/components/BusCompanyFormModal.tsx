@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { BusCompany } from "../../../../../types/bus";
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   open: boolean;
@@ -120,7 +121,7 @@ export default function BusCompanyFormModal({ open, onClose, onSubmit, initialDa
         address: form.address,
         status: form.status as any,
         description: form.description,
-        ...(initialData?.id ? { id: initialData.id } : {}),
+        ...(initialData?.id ? { id: initialData.id } : { id: uuidv4() }),
         ...(initialData?.bus_company_id ? { bus_company_id: initialData.bus_company_id } : {})
       });
       onClose();

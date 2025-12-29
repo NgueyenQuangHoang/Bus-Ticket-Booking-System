@@ -1,7 +1,7 @@
 import type { Timestamp } from './common';
 
 export interface BusCompany {
-  bus_company_id: number;
+  bus_company_id: string | number; // Changed from number
   id?: string;
   company_name: string;
   image?: string;
@@ -18,9 +18,9 @@ export interface BusCompany {
 }
 
 export interface Bus {
-  bus_id: number;
-  company_id: number;
-  bus_company_id?: number;
+  bus_id: string | number; // Changed from number
+  company_id: string | number; // Changed from number
+  bus_company_id?: string | number; // Changed from number
   name?: string;
   descriptions?: string;
   license_plate?: string;
@@ -30,23 +30,24 @@ export interface Bus {
   updated_at?: Timestamp;
   id?: string | number;
   vehicle_type_id?: string | number;
+  status?: 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'MAINTENANCE';
 }
 
 export interface BusStation {
-  station_id: number;
-  bus_id: number;
+  station_id: string | number;
+  bus_id: string | number; // Changed from number
 }
 
 export interface BusImage {
-  bus_image_id: number;
+  bus_image_id: string | number; // Changed from number
   id?: string;
   image_url?: string;
-  bus_id: number;
+  bus_id: string | number; // Changed from number
 }
 
 export interface BusReview {
-  review_id: number;
-  user_id: number;
+  review_id: string | number;
+  user_id: string | number;
   bus_id: number;
   rating?: number;
   review?: string;

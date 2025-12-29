@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
+import { Pagination } from "@mui/material";
 
 import BusFormModal from "./components/BusFormModal";
 import BusSearch from "./components/BusSearch";
@@ -49,7 +50,7 @@ export default function BusesPage() {
 
     // Enrich bus data with names
     const enrichedBuses = buses.map(bus => {
-        const company = companies.find(c => c.bus_company_id === (bus.bus_company_id || bus.company_id));
+        const company = companies.find(c => String(c.id) === String(bus.company_id) || String(c.bus_company_id) === String(bus.company_id));
         // Compare with both string and number representations just in case
         const layout = layouts.find(l => String(l.layout_id) === String(bus.layout_id) || String(l.id) === String(bus.layout_id));
         const type = vehicleTypes.find(v => String(v.id) === String(bus.vehicle_type_id) || String(v.code) === String(bus.vehicle_type_id)); // Handle inconsistent ID usage if any
@@ -114,6 +115,30 @@ export default function BusesPage() {
         }
     };
 
+    const [searchTerm, setSearchTerm] = useState("");
+    const [page, setPage] = useState(1);
+    const ITEMS_PER_PAGE = 5;
+
+    // Filter Logic
+    const filteredData = enrichedBuses.filter(bus => 
+        (bus.name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) || 
+        (bus.license_plate?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+        bus.company_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        bus.bus_type?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Pagination Logic
+    const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+    const paginatedData = filteredData.slice(
+        (page - 1) * ITEMS_PER_PAGE,
+        page * ITEMS_PER_PAGE
+    );
+
+    const handleSearchChange = (val: string) => {
+        setSearchTerm(val);
+        setPage(1);
+    };
+
     return (
         <>
             <section className="bg-[#f5f7fa] min-h-screen">
@@ -146,17 +171,35 @@ export default function BusesPage() {
                     </div>
 
                     {/* ===== SEARCH ===== */}
-                    <BusSearch data={enrichedBuses} />
+                    <BusSearch 
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        total={filteredData.length}
+                    />
 
                     {/* ===== TABLE ===== */}
                     {loading ? (
                         <div className="text-center py-10">Đang tải...</div>
                     ) : (
-                        <BusTable
-                            data={enrichedBuses}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
-                        />
+                        <>
+                            <BusTable
+                                data={paginatedData}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                            />
+                             {/* PAGINATION */}
+                            {totalPages > 1 && (
+                                <div className="flex justify-end mt-4">
+                                    <Pagination 
+                                        count={totalPages}
+                                        page={page}
+                                        onChange={(_event, value: number) => setPage(value)}
+                                        color="primary"
+                                        shape="rounded"
+                                    />
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </section>
@@ -168,6 +211,8 @@ export default function BusesPage() {
                 onSubmit={handleSubmit}
                 initialData={selectedBus}
                 busCompanies={companies}
+                vehicleTypes={vehicleTypes}
+                layouts={layouts}
             />
         </>
     );

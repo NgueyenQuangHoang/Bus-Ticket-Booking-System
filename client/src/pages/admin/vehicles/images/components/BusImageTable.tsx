@@ -65,8 +65,13 @@ export default function BusImageTable({ data, onDelete }: Props) {
                         >
                             {/* ID – CHỈ DESKTOP */}
                             <td
-                                className="  px-4 py-2 hidden [@media(min-width:769px)]:table-cell  "   >
-                                {item.id || item.bus_image_id}
+                                className="  px-4 py-2 hidden [@media(min-width:769px)]:table-cell  "
+                                title={String(item.id || item.bus_image_id)}
+                            >
+                                {(() => {
+                                    const id = String(item.id || item.bus_image_id);
+                                    return id.length > 8 ? id.substring(0, 8) + '...' : id;
+                                })()}
                             </td>
 
                             {/* IMAGE */}

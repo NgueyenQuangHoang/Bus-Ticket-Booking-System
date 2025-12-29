@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
-import type { Bus, BusCompany } from "../../../../../types";
+import { useState, useEffect } from "react";
+import type { Bus, BusCompany, BusLayout } from "../../../../../types";
+import { v4 as uuidv4 } from 'uuid';
+import type { VehicleType } from "../../../../../services/vehicleTypeService";
 
 type Props = {
   open: boolean;
@@ -7,9 +9,11 @@ type Props = {
   onSubmit: (data: Partial<Bus>) => void;
   initialData?: Bus | null;
   busCompanies: BusCompany[];
+  vehicleTypes: VehicleType[];
+  layouts: BusLayout[];
 };
 
-export default function BusFormModal({ open, onClose, onSubmit, initialData, busCompanies }: Props) {
+export default function BusFormModal({ open, onClose, onSubmit, initialData, busCompanies, vehicleTypes, layouts }: Props) {
   if (!open) return null;
 
   /* ===== STATE ===== */
@@ -20,6 +24,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
     status: "ACTIVE",
     type: "",
     layout: "",
+    capacity: 0,
   });
 
   useEffect(() => {
@@ -27,10 +32,11 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
         setForm({
             name: initialData.name || "",
             plate: initialData.license_plate || "",
-            company: initialData.company_id ? String(initialData.company_id) : "",
-            status: "ACTIVE", // Default or fetch if available in future
-            type: "", // Mapped or stored?
+            company: initialData.company_id ? String(initialData.company_id) : (initialData.bus_company_id ? String(initialData.bus_company_id) : ""),
+            status: initialData.status || "ACTIVE",
+            type: initialData.vehicle_type_id ? String(initialData.vehicle_type_id) : "",
             layout: initialData.layout_id ? String(initialData.layout_id) : "",
+            capacity: initialData.capacity || 0,
         });
     } else {
         setForm({
@@ -40,6 +46,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
             status: "ACTIVE",
             type: "",
             layout: "",
+            capacity: 0,
         });
     }
   }, [initialData, open]);
@@ -57,8 +64,29 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
     key: keyof typeof form,
     value: any
   ) => {
-    setForm({ ...form, [key]: value });
+    setForm(prev => ({ ...prev, [key]: value }));
     setErrors({ ...errors, [key]: "" });
+  };
+
+  const handleLayoutChange = (layoutId: string) => {
+    const selectedLayout = layouts.find(l => String(l.id) === layoutId || String(l.layout_id) === layoutId);
+    let calculatedCapacity = 0;
+    
+    if (selectedLayout) {
+        // Calculate capacity: rows * columns * floors
+        // Fallback to 0 if properties are missing
+        const rows = selectedLayout.total_rows || 0;
+        const cols = selectedLayout.total_columns || 0;
+        const floors = selectedLayout.floor_count || 1;
+        calculatedCapacity = rows * cols * floors;
+    }
+
+    setForm(prev => ({ 
+        ...prev, 
+        layout: layoutId,
+        capacity: calculatedCapacity
+    }));
+    setErrors({ ...errors, layout: "" });
   };
 
 
@@ -93,9 +121,12 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
       onSubmit({
         name: form.name,
         license_plate: form.plate,
-        company_id: Number(form.company),
-        layout_id: form.layout, // Keep as string or number depending on usage
-        ...(initialData?.id ? { id: initialData.id } : {}),
+        company_id: form.company as any, // ID can be string or number
+        layout_id: form.layout, 
+        vehicle_type_id: form.type,
+        capacity: form.capacity,
+        status: form.status as any,
+        ...(initialData?.id ? { id: initialData.id } : { id: uuidv4() }),
         ...(initialData?.bus_id ? { bus_id: initialData.bus_id } : {})
       });
       onClose();
@@ -161,7 +192,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 label="Nhà xe"
                 value={form.company}
                 error={errors.company}
-                options={busCompanies.map(c => ({ value: String(c.bus_company_id), label: c.company_name }))}
+                options={busCompanies.map(c => ({ value: String(c.id || c.bus_company_id), label: c.company_name }))}
                 onChange={(v) =>
                   handleChange("company", v)
                 }
@@ -185,12 +216,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 label="Loại xe"
                 value={form.type}
                 error={errors.type}
-                options={[
-                  "",
-                  "Giường nằm",
-                  "Limousine",
-                  "Ghế ngồi",
-                ]}
+                options={vehicleTypes.map(v => ({ value: String(v.id), label: v.display_name }))}
                 onChange={(v) =>
                   handleChange("type", v)
                 }
@@ -200,14 +226,13 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 label="Layout ghế"
                 value={form.layout}
                 error={errors.layout}
-                options={["", "2-2", "1-2", "2-1"]}
-                onChange={(v) =>
-                  handleChange("layout", v)
-                }
+                options={[{value: "", label: "-- Chọn layout --"}, ...layouts.map(l => ({ value: String(l.id || l.layout_id), label: l.layout_name }))]}
+                onChange={handleLayoutChange}
               />
 
               <Input
                 label="Số ghế"
+                value={String(form.capacity)}
                 placeholder="Tự động"
                 disabled
               />
@@ -221,13 +246,13 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
         <div className="flex justify-end gap-3 px-4 py-3 sm:px-5 border-t border-gray-200">
           <button
             onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded text-sm"
+            className="px-4 py-2 border border-gray-300 rounded text-sm hover:cursor-pointer"
           >
             Hủy
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white rounded text-sm"
+            className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:cursor-pointer"
           >
             Lưu
           </button>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
+import { Pagination } from "@mui/material";
 
 import BusCompanyFormModal from "./components/BusCompanyFormModal";
 import BusCompanySearch from "./components/BusCompanySearch";
@@ -84,6 +85,29 @@ export default function BusCompaniesPage() {
         }
     };
 
+    const [searchTerm, setSearchTerm] = useState("");
+    const [page, setPage] = useState(1);
+    const ITEMS_PER_PAGE = 5; // Or 10
+
+    // Filter Logic
+    const filteredData = busCompanies.filter(c => 
+        c.company_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        c.license_number.includes(searchTerm) ||
+        (c.contact_phone && c.contact_phone.includes(searchTerm))
+    );
+
+    // Pagination Logic
+    const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+    const paginatedData = filteredData.slice(
+        (page - 1) * ITEMS_PER_PAGE,
+        page * ITEMS_PER_PAGE
+    );
+
+    const handleSearchChange = (val: string) => {
+        setSearchTerm(val);
+        setPage(1);
+    };
+
     return (
         <section className="bg-[#f5f7fa] min-h-screen">
             <div className="max-w-[1200px] mx-auto px-4 py-6">
@@ -116,18 +140,36 @@ export default function BusCompaniesPage() {
                 </div>
 
                 {/* ===== SEARCH (COMPONENT – TOP ROUNDED) ===== */}
-                <BusCompanySearch data={busCompanies} />
+                <BusCompanySearch 
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    total={filteredData.length} 
+                />
 
                 {/* ===== TABLE (DESKTOP – BOTTOM ROUNDED) ===== */}
 
                 {loading ? (
                     <div className="text-center py-10">Đang tải...</div>
                 ) : (
-                    <BusCompanyTable
-                        data={busCompanies}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                    />
+                    <>
+                        <BusCompanyTable
+                            data={paginatedData}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
+                         {/* PAGINATION */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-end mt-4">
+                                <Pagination 
+                                    count={totalPages}
+                                    page={page}
+                                    onChange={(_event, value: number) => setPage(value)}
+                                    color="primary"
+                                    shape="rounded"
+                                />
+                            </div>
+                        )}
+                    </>
                 )}
 
 

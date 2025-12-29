@@ -3,6 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 
 import type { Bus, BusImage } from "../../../../types";
+import { Pagination } from "@mui/material";
 import BusSelect from "./components/BusSelect";
 import BusImageTable from "./components/BusImageTable";
 import BusImageUploadModal from "./components/BusImageUploadModal";
@@ -32,6 +33,22 @@ export default function BusImagesPage() {
     };
     fetchBuses();
   }, []);
+
+  // Pagination State
+  const [page, setPage] = useState(1);
+  const ITEMS_PER_PAGE = 8; // Images might use a grid, so 8 or 12 is good
+
+  // Reset page when bus changes
+  useEffect(() => {
+    setPage(1);
+  }, [selectedBusId]);
+
+  const totalPages = Math.ceil(images.length / ITEMS_PER_PAGE);
+  const paginatedImages = images.slice(
+      (page - 1) * ITEMS_PER_PAGE,
+      page * ITEMS_PER_PAGE
+  );
+
 
   // Fetch Images when Bus Selected
   const fetchImages = async (busId: string | number) => {
@@ -116,10 +133,24 @@ export default function BusImagesPage() {
         {loading ? (
              <div className="text-center py-10">Đang tải ảnh...</div>
         ) : (
-            <BusImageTable
-            data={images}
-            onDelete={handleDelete}
-            />
+            <>
+                <BusImageTable
+                    data={paginatedImages}
+                    onDelete={handleDelete}
+                />
+                 {/* PAGINATION */}
+                {totalPages > 1 && (
+                    <div className="flex justify-end mt-4">
+                        <Pagination 
+                            count={totalPages}
+                            page={page}
+                            onChange={(_e, v) => setPage(v)}
+                            color="primary"
+                            shape="rounded"
+                        />
+                    </div>
+                )}
+            </>
         )}
        
 

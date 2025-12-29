@@ -40,7 +40,7 @@ export const busImageService = {
             // For now, we assume we just save the record with URL. 
             // In a real app, we might upload file to Cloudinary first.
             const data = {
-                bus_id: Number(busId), // Ensure standard type if backend expects number
+                bus_id: busId, // Removed Number() casting
                 image_url: imageUrl
             };
             const response = await api.post('/bus_images', data);

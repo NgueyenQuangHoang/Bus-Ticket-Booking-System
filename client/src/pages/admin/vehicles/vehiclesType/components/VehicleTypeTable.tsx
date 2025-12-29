@@ -39,7 +39,9 @@ export default function VehicleTypeTable({
                   key={item.id}
                   className="hover:bg-gray-50 transition-colors"
                 >
-                  <td className="px-6 py-4">{item.id}</td>
+                  <td className="px-6 py-4" title={String(item.id)}>
+                      {String(item.id).length > 8 ? String(item.id).substring(0, 8) + '...' : item.id}
+                  </td>
                   <td className="px-6 py-4 font-semibold text-gray-700">{item.code}</td>
                   <td className="px-6 py-4">{item.display_name}</td>
                   <td className="px-6 py-4 text-gray-500">{item.description}</td>

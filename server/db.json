@@ -1,34 +1,4 @@
 {
-  "vehicle_types": [
-    {
-      "vehicle_type_id": 1,
-      "code": "SLEEPER",
-      "display_name": "Giường nằm",
-      "description": "Xe giường nằm, phù hợp cho chuyến đi đường dài",
-      "id": "1"
-    },
-    {
-      "vehicle_type_id": 2,
-      "code": "SEAT",
-      "display_name": "Ghế ngồi",
-      "description": "Xe ghế ngồi tiêu chuẩn, đi quãng đường ngắn",
-      "id": "2"
-    },
-    {
-      "vehicle_type_id": 3,
-      "code": "LIMOUSINE",
-      "display_name": "Limousine",
-      "description": "Xe limousine cao cấp, không gian rộng rãi",
-      "id": "3"
-    },
-    {
-      "vehicle_type_id": 4,
-      "code": "VIP",
-      "display_name": "VIP",
-      "description": "Xe VIP cao cấp nhất, dịch vụ đặc biệt",
-      "id": "4"
-    }
-  ],
   "users": [
     {
       "id": "1",
@@ -876,6 +846,16 @@
       "status": "ACTIVE",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
+      "company_name": "Nhà xe Cúc Phương",
+      "license_number": "123456789",
+      "contact_phone": "9090900990",
+      "contact_email": "cucphuong123@gmail.com",
+      "address": "97 Nguyễn Duy Dương",
+      "status": "ACTIVE",
+      "description": "Nhà xe xuyên Việt từ Nam ra Bắc, từ Bắc vào Nam"
     }
   ],
   "vehicle_types": [
@@ -902,22 +882,15 @@
       "code": "VIP",
       "display_name": "VIP",
       "description": "Xe VIP cao cấp nhất, dịch vụ đặc biệt"
+    },
+    {
+      "id": "e7a2ddb2-6692-4e31-957f-881dffeb5a82",
+      "code": "SUPPERVIP",
+      "display_name": "SUPPER VIP",
+      "description": "Loại xe cao cấp nhất"
     }
   ],
   "buses": [
-    {
-      "id": "1",
-      "bus_company_id": "1",
-      "vehicle_type_id": "1",
-      "layout_id": "3bcb",
-      "name": "An Hòa Hiệp – Giường nằm 40 chỗ",
-      "license_plate": "51B-12345",
-      "capacity": 40,
-      "amenities": "Wifi, Nước, Chăn, Điều hòa",
-      "status": "ACTIVE",
-      "created_at": "2025-01-15T08:00:00",
-      "updated_at": "2025-01-15T08:00:00"
-    },
     {
       "id": "2",
       "bus_company_id": "2",
@@ -995,6 +968,16 @@
       "status": "ACTIVE",
       "created_at": "2025-01-21T08:00:00",
       "updated_at": "2025-01-21T08:00:00"
+    },
+    {
+      "id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "name": "Cúc Phương Supper Vip",
+      "license_plate": "BH - 123586",
+      "company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
+      "layout_id": "102",
+      "vehicle_type_id": "e7a2ddb2-6692-4e31-957f-881dffeb5a82",
+      "capacity": 48,
+      "status": "ACTIVE"
     }
   ],
   "bus_images": [

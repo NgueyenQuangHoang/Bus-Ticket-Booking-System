@@ -1,10 +1,7 @@
 import { useState } from "react";
-<<<<<<< HEAD
 import { busImageService } from "../../../../../services/admin/busImageService";
 import Swal from "sweetalert2";
-=======
 import { v4 as uuidv4 } from 'uuid';
->>>>>>> ec55d9fa056b5758a6cc8cdbbbd5933c8ebd5e47
 
 type ImageItem = {
   id: string;
