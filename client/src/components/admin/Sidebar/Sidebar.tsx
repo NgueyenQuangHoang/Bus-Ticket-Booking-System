@@ -96,6 +96,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
           subItems={[
             { label: "Loại ghế", to: "/admin/seat-types" },
             { label: "Sơ đồ ghế", to: "/admin/seat-maps" },
+            { label: "Mẫu sơ đồ ghế", to: "/admin/seat-templates" },
           ]}
         />
 

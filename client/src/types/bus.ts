@@ -23,8 +23,10 @@ export interface Bus {
   descriptions?: string;
   license_plate?: string;
   capacity?: number;
+  layout_id?: number | string;
   created_at?: Timestamp;
   updated_at?: Timestamp;
+  id?: string | number;
 }
 
 export interface BusStation {
