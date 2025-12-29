@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Popover, TextField, Checkbox, FormControlLabel, Button, MenuItem, Select, FormControl, InputLabel, Divider } from '@mui/material';
 import type { SeatPosition, SeatType } from '../../../../../types/seat';
 import seatService from '../../../../../services/admin/seatService';
@@ -30,7 +31,7 @@ export default function LayoutPreview({ rows, cols, positions, setPositions, act
     const existing = positions.find(p => p.floor === floor && p.row_index === row && p.column_index === col);
     
     const pos = existing || {
-        position_id: Date.now(), // Temporary ID
+        position_id: uuidv4(), // Temporary ID
         layout_id: 0,
         floor, 
         row_index: row, 

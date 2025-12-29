@@ -34,9 +34,10 @@ import BusCompaniesPage from "../pages/admin/vehicles/companies/BusCompaniesPage
 import BusesPage from "../pages/admin/vehicles/buses/BusesPage";
 import VehiclesTypePage from "../pages/admin/vehicles/vehiclesType/vehiclesTypePage";
 import BusImagesPage from "../pages/admin/vehicles/images/BusImagesPage";
-import SeatTypesPage from "../pages/admin/seats/types/SeatTypesPage";
-import SeatLayoutPage from "../pages/admin/seats/layouts/SeatLayoutPage";
+import SeatTypesPage from "../pages/admin/seats/layouts/components/SeatTypesPage";
+import SeatLayoutPage from "../pages/admin/seats/layouts/components/SeatLayoutPage";
 import SeatStatusPage from "../pages/admin/seats/status/SeatStatusPage";
+import SeatLayoutTemplatePage from "../pages/admin/seats/layouts/components/SeatLayoutTemplatePage";
 import TicketsPage from "../pages/admin/tickets/TicketsPage";
 import PaymentGatewaysPage from "../pages/admin/payments/PaymentGateways/PaymentGatewaysPage";
 import TransactionsPage from "../pages/admin/payments/Transactions/TransactionsPage";
@@ -104,6 +105,7 @@ export const router = createBrowserRouter([
           { path: "bus-images", element: <BusImagesPage /> },
           { path: "seat-types", element: <SeatTypesPage /> },
           { path: "seat-maps", element: <SeatLayoutPage /> },
+          { path: "seat-templates", element: <SeatLayoutTemplatePage /> },
           { path: "seat-status", element: <SeatStatusPage /> },
           { path: "tickets", element: <TicketsPage /> },
           { path: "payment-gateways", element: <PaymentGatewaysPage /> },
@@ -111,6 +113,7 @@ export const router = createBrowserRouter([
           { path: "cancellation-policies", element: <CancellationPoliciesPage /> },
           { path: "reviews", element: <ReviewsPage /> },
           { path: "banners", element: <BannersPage /> },
+
         ],
       },
     ],

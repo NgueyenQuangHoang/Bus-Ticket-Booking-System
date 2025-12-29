@@ -50,3 +50,12 @@ export interface Seat {
   updated_at?: Timestamp;
   id?: string | number;
 }
+
+export interface SeatTemplate {
+  id: number | string;
+  name: string;
+  rows: number;
+  cols: number;
+  floors: 1 | 2;
+  created_at?: Timestamp;
+}

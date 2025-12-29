@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import type { SeatPosition, SeatType } from '../../../../../types/seat';
 import seatService from '../../../../../services/admin/seatService';
 import SeatCell from './SeatCell';
@@ -25,7 +26,7 @@ export default function SeatGrid({ rows, cols, positions, setPositions, activeFl
     const existing = positions.find(p => p.floor === activeFloor && p.row_index === row && p.column_index === col);
     
     const pos = existing || {
-      position_id: Date.now(),
+      position_id: uuidv4(),
       layout_id: 0,
       floor: activeFloor, 
       row_index: row, 

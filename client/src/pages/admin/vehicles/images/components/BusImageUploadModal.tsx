@@ -1,9 +1,13 @@
 import { useState } from "react";
+<<<<<<< HEAD
 import { busImageService } from "../../../../../services/admin/busImageService";
 import Swal from "sweetalert2";
+=======
+import { v4 as uuidv4 } from 'uuid';
+>>>>>>> ec55d9fa056b5758a6cc8cdbbbd5933c8ebd5e47
 
 type ImageItem = {
-  id: number;
+  id: string;
   file: File;
   preview: string;
   isThumbnail?: boolean;
@@ -29,7 +33,7 @@ export default function BusImageUploadModal({
 
   const handleAddImage = (file: File) => {
     const newImage: ImageItem = {
-      id: Date.now(),
+      id: uuidv4(),
       file,
       preview: URL.createObjectURL(file),
       isThumbnail: images.length === 0,
@@ -38,7 +42,7 @@ export default function BusImageUploadModal({
     setImages((prev) => [...prev, newImage]);
   };
 
-  const setThumbnail = (id: number) => {
+  const setThumbnail = (id: string) => {
     setImages((prev) =>
       prev.map((img) => ({
         ...img,
@@ -47,7 +51,7 @@ export default function BusImageUploadModal({
     );
   };
 
-  const removeImage = (id: number) => {
+  const removeImage = (id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
   };
 

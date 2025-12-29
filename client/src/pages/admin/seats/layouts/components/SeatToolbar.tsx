@@ -37,7 +37,7 @@ export default function SeatToolbar({ buses, selectedBusId, onBusChange, onCreat
         startIcon={<i className="fa-solid fa-plus"></i>}
         className="normal-case whitespace-nowrap h-[40px]" // Thêm chiều cao cố định bằng với ô input (ví dụ h-[40px])
       >
-        Tạo sơ đồ mới
+        Chọn mẫu sơ đồ ghế
       </Button>
     </div>
   );
