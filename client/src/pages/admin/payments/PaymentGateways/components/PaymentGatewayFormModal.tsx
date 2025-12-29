@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Close } from '@mui/icons-material';
 import CustomSelect from './CustomSelect';
 import type { PaymentProvider } from '../PaymentGatewaysPage';
@@ -34,7 +35,7 @@ export default function PaymentGatewayFormModal({ isOpen, onClose, onSave, payme
         provider_name: '',
         provider_type: 'GATEWAY',
         api_endpoint: '',
-        id: Math.random().toString(36).substr(2, 9)
+        id: uuidv4()
       });
     }
     setErrors({});
