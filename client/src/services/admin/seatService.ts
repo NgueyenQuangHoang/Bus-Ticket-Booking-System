@@ -1,5 +1,5 @@
 import api from '../../api/api';
-import type { SeatType, BusLayout, SeatPosition } from '../../types/seat';
+import type { SeatType, BusLayout, SeatPosition, SeatTemplate } from '../../types/seat';
 
 const seatService = {
   // --- Seat Types ---
@@ -109,6 +109,27 @@ const seatService = {
     } catch (error) {
       console.error('Error updating layout positions:', error);
       return false;
+    }
+  },
+  
+  // --- Seat Templates ---
+  getAllTemplates: async (): Promise<SeatTemplate[]> => {
+    try {
+      const response = await api.get('/seat_templates');
+      return response as unknown as SeatTemplate[];
+    } catch (error) {
+      console.error('Error fetching templates:', error);
+      return [];
+    }
+  },
+
+  createTemplate: async (data: Partial<SeatTemplate>): Promise<SeatTemplate | null> => {
+    try {
+      const response = await api.post('/seat_templates', data);
+      return response as unknown as SeatTemplate;
+    } catch (error) {
+      console.error('Error creating template:', error);
+      return null;
     }
   }
 };

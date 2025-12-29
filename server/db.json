@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "user_id": 2,
+      "id": "1",
       "first_name": "Admin",
       "last_name": "System",
       "email": "admin@gmail.com",
@@ -9,17 +9,15 @@
       "password": "Admin123",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "Sat Dec 27 2025 20:26:40 GMT+0700 (GMT+07:00)",
-      "id": "33aa"
+      "updated_at": "Sat Dec 27 2025 20:26:40 GMT+0700 (GMT+07:00)"
     },
     {
-      "id": "083b",
+      "id": "2",
       "first_name": "ho va ten",
       "last_name": "jkl,",
       "email": "doi_thatday@gmail.com",
       "phone": "0812912031",
       "password": "1231223",
-      "user_id": "65c7ce3f-761a-4982-89d1-3a9b64eb1843",
       "status": "LOCKED",
       "created_at": "Sat Dec 27 2025 19:15:34 GMT+0700 (GMT+07:00)",
       "updated_at": "Sat Dec 27 2025 20:42:42 GMT+0700 (GMT+07:00)"
@@ -27,841 +25,760 @@
   ],
   "roles": [
     {
-      "role_id": 1,
-      "role_name": "USER",
-      "id": "d91b"
+      "id": "1",
+      "role_name": "USER"
     },
     {
-      "role_id": 2,
-      "role_name": "ADMIN",
-      "id": "73a0"
+      "id": "2",
+      "role_name": "ADMIN"
     },
     {
-      "role_id": 3,
-      "role_name": "BUS_COMPANY",
-      "id": "1072"
+      "id": "3",
+      "role_name": "BUS_COMPANY"
     }
   ],
   "user_role": [
     {
-      "user_id": 2,
-      "role_id": 2,
-      "id": "a9f5"
+      "id": "1",
+      "user_id": "1",
+      "role_id": "2"
     },
     {
-      "user_id": "65c7ce3f-761a-4982-89d1-3a9b64eb1843",
-      "role_id": "2",
-      "id": "2bdc"
+      "id": "2",
+      "user_id": "2",
+      "role_id": "1"
     }
   ],
   "cities": [
     {
-      "city_id": 1,
+      "id": "1",
       "city_name": "Hà Nội",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "971d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 2,
+      "id": "2",
       "city_name": "Hồ Chí Minh",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "971d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 3,
+      "id": "3",
       "city_name": "Đà Nẵng",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "971d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 4,
+      "id": "4",
       "city_name": "Hải Phòng",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "971d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 5,
+      "id": "5",
       "city_name": "Cần Thơ",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "6631",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 6,
+      "id": "6",
       "city_name": "An Giang",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "e483",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 7,
+      "id": "7",
       "city_name": "Bà Rịa - Vũng Tàu",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/4269c72b5a06b8cf26f8f058d41c868ec5ff3f54_mfuk81.png",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "dc5d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 9,
+      "id": "9",
       "city_name": "Bắc Kạn",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "2f44",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 10,
+      "id": "10",
       "city_name": "Bạc Liêu",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "6d10",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 11,
+      "id": "11",
       "city_name": "Bắc Ninh",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "4b1f",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 12,
+      "id": "12",
       "city_name": "Bến Tre",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "793c",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 13,
+      "id": "13",
       "city_name": "Bình Định",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "decc",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 14,
+      "id": "14",
       "city_name": "Bình Dương",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "232e",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 15,
+      "id": "15",
       "city_name": "Bình Phước",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "214d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 16,
+      "id": "16",
       "city_name": "Bình Thuận",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/5113199f887a0c349f2185e27fc156a46829b277_ssgeo2.png",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "4d40",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 17,
+      "id": "17",
       "city_name": "Cà Mau",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "4349",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 18,
+      "id": "18",
       "city_name": "Cao Bằng",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "a1af",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 19,
+      "id": "19",
       "city_name": "Đắk Lắk",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "36d8",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 20,
+      "id": "20",
       "city_name": "Đắk Nông",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "f8dc",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 21,
+      "id": "21",
       "city_name": "Điện Biên",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "764c",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 22,
+      "id": "22",
       "city_name": "Đồng Nai",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "b813",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 23,
+      "id": "23",
       "city_name": "Đồng Tháp",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "b4b6",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 24,
+      "id": "24",
       "city_name": "Gia Lai",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "38fc",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 25,
+      "id": "25",
       "city_name": "Hà Giang",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "ed94",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 26,
+      "id": "26",
       "city_name": "Hà Nam",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "5545",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 27,
+      "id": "27",
       "city_name": "Hà Tĩnh",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "e32b",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 28,
+      "id": "28",
       "city_name": "Hải Dương",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "665b",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 29,
+      "id": "29",
       "city_name": "Hậu Giang",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "43cf",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 30,
+      "id": "30",
       "city_name": "Hòa Bình",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "3db5",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 31,
+      "id": "31",
       "city_name": "Hưng Yên",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "f92f",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 32,
+      "id": "32",
       "city_name": "Khánh Hòa",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/924d54b9d9dca45ff676616cf5e0007fe28b6001_lsb5ua.png",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "6c15",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 33,
+      "id": "33",
       "city_name": "Kiên Giang",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "ecbe",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 34,
+      "id": "34",
       "city_name": "Kon Tum",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "420a",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 35,
+      "id": "35",
       "city_name": "Lai Châu",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "c683",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 36,
+      "id": "36",
       "city_name": "Lâm Đồng",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450897/202a875aa331df0e80f37ef79ff442a61a21b919_qzv5uz.png",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "8bd6",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 37,
+      "id": "37",
       "city_name": "Lạng Sơn",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "8d40",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 38,
+      "id": "38",
       "city_name": "Lào Cai",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "97e0",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 39,
+      "id": "39",
       "city_name": "Long An",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "c161",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 40,
+      "id": "40",
       "city_name": "Nam Định",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "9d61",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 41,
+      "id": "41",
       "city_name": "Nghệ An",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "35f7",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 42,
+      "id": "42",
       "city_name": "Ninh Bình",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "9db5",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 43,
+      "id": "43",
       "city_name": "Ninh Thuận",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "e83d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 44,
+      "id": "44",
       "city_name": "Phú Thọ",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "e8a4",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 45,
+      "id": "45",
       "city_name": "Phú Yên",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "e124",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 46,
+      "id": "46",
       "city_name": "Quảng Bình",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "dbba",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 47,
+      "id": "47",
       "city_name": "Quảng Nam",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "f878",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 48,
+      "id": "48",
       "city_name": "Quảng Ngãi",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "39de",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 49,
+      "id": "49",
       "city_name": "Quảng Ninh",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "ae8a",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 50,
+      "id": "50",
       "city_name": "Quảng Trị",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "12d4",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 51,
+      "id": "51",
       "city_name": "Sóc Trăng",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "d2d3",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 52,
+      "id": "52",
       "city_name": "Sơn La",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "568b",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 53,
+      "id": "53",
       "city_name": "Tây Ninh",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "014a",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 54,
+      "id": "54",
       "city_name": "Thái Bình",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "d025",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 55,
+      "id": "55",
       "city_name": "Thái Nguyên",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "6b20",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 56,
+      "id": "56",
       "city_name": "Thanh Hóa",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "8d76",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 57,
+      "id": "57",
       "city_name": "Thừa Thiên Huế",
       "image_city": "",
       "region": "Trung",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "f63e",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 58,
+      "id": "58",
       "city_name": "Tiền Giang",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "6a65",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 59,
+      "id": "59",
       "city_name": "Trà Vinh",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "26ac",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 60,
+      "id": "60",
       "city_name": "Tuyên Quang",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "e106",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 61,
+      "id": "61",
       "city_name": "Vĩnh Long",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "e77b",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 62,
+      "id": "62",
       "city_name": "Vĩnh Phúc",
       "image_city": "",
       "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "0c9d",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     },
     {
-      "city_id": 63,
+      "id": "63",
       "city_name": "Yên Bái",
       "image_city": "",
       "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "d318",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
     }
   ],
   "stations": [
     {
-      "station_id": 1,
+      "id": "1",
       "station_name": "Bến xe Mỹ Đình",
-      "city_id": 1,
+      "city_id": "1",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
       "description": "Bến xe lớn phía Tây Hà Nội",
       "location": "20 Phạm Hùng, Mỹ Đình",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "0a6c"
+      "updated_at": "2025-01-01"
     },
     {
-      "station_id": 2,
+      "id": "2",
       "station_name": "Bến xe Giáp Bát",
-      "city_id": 1,
+      "city_id": "1",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg",
       "description": "Bến xe phía Nam Hà Nội",
       "location": "Giải Phóng, Hoàng Mai",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "676f"
+      "updated_at": "2025-01-01"
     },
     {
-      "station_id": 3,
+      "id": "3",
       "station_name": "Bến xe Miền Đông",
-      "city_id": 2,
+      "city_id": "2",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
       "description": "Bến xe lớn tại TP.HCM",
       "location": "292 Đinh Bộ Lĩnh, Bình Thạnh",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "41b3"
+      "updated_at": "2025-01-01"
     },
     {
-      "station_id": 4,
+      "id": "4",
       "station_name": "Bến xe Miền Tây",
-      "city_id": 2,
+      "city_id": "2",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410846/bxBG_dzhqh5.jpg",
       "description": "Bến xe đi miền Tây",
       "location": "395 Kinh Dương Vương, Q6",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "8e2c"
+      "updated_at": "2025-01-01"
     },
     {
-      "station_id": 5,
+      "id": "5",
       "station_name": "Bến xe Đà Nẵng",
-      "city_id": 3,
+      "city_id": "3",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg",
       "description": "Bến xe trung tâm Đà Nẵng",
       "location": "Tôn Đức Thắng, Liên Chiểu",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "2c4e"
+      "updated_at": "2025-01-01"
     },
     {
-      "station_id": 6,
+      "id": "6",
       "station_name": "Bến xe Niệm Nghĩa",
-      "city_id": 4,
+      "city_id": "4",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
       "description": "Bến xe chính Hải Phòng",
       "location": "Trần Nguyên Hãn",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "597f"
+      "updated_at": "2025-01-01"
     },
     {
-      "station_id": 7,
+      "id": "7",
       "station_name": "Bến xe Cần Thơ",
-      "city_id": 5,
+      "city_id": "5",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
       "description": "Bến xe trung tâm Cần Thơ",
       "location": "Nguyễn Trãi, Ninh Kiều",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "fbb0"
+      "updated_at": "2025-01-01"
     }
   ],
   "routes": [
     {
-      "route_id": 1,
-      "departure_station_id": 1,
-      "arrival_station_id": 3,
+      "id": "1",
+      "departure_station_id": "1",
+      "arrival_station_id": "3",
       "distance": 1700,
       "duration": 1800,
       "base_price": 350000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "a42a",
       "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
     },
     {
-      "route_id": 2,
-      "departure_station_id": 3,
-      "arrival_station_id": 1,
+      "id": "2",
+      "departure_station_id": "3",
+      "arrival_station_id": "1",
       "distance": 1700,
       "duration": 1800,
       "base_price": 350000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "3671",
       "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
     },
     {
-      "route_id": 3,
-      "departure_station_id": 1,
-      "arrival_station_id": 6,
+      "id": "3",
+      "departure_station_id": "1",
+      "arrival_station_id": "6",
       "distance": 120,
       "duration": 150,
       "base_price": 120000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
-      "id": "3bed",
       "description": "Bạn đang tìm kiếm phương tiện di chuyển thuận tiện và nhanh chóng giữa Sài Gòn và Kiên Giang"
     },
     {
-      "route_id": 4,
-      "departure_station_id": 6,
-      "arrival_station_id": 1,
+      "id": "4",
+      "departure_station_id": "6",
+      "arrival_station_id": "1",
       "distance": 120,
       "duration": 150,
       "base_price": 120000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "2484"
+      "updated_at": "2025-01-01"
     },
     {
-      "route_id": 5,
-      "departure_station_id": 3,
-      "arrival_station_id": 5,
+      "id": "5",
+      "departure_station_id": "3",
+      "arrival_station_id": "5",
       "distance": 960,
       "duration": 960,
       "base_price": 280000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "35a8"
+      "updated_at": "2025-01-01"
     },
     {
-      "route_id": 6,
-      "departure_station_id": 5,
-      "arrival_station_id": 3,
+      "id": "6",
+      "departure_station_id": "5",
+      "arrival_station_id": "3",
       "distance": 960,
       "duration": 960,
       "base_price": 280000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "53a6"
+      "updated_at": "2025-01-01"
     },
     {
-      "route_id": 7,
-      "departure_station_id": 4,
-      "arrival_station_id": 7,
+      "id": "7",
+      "departure_station_id": "4",
+      "arrival_station_id": "7",
       "distance": 200,
       "duration": 180,
       "base_price": 150000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "016b"
+      "updated_at": "2025-01-01"
     },
     {
-      "route_id": 8,
-      "departure_station_id": 1,
-      "arrival_station_id": 5,
+      "id": "8",
+      "departure_station_id": "1",
+      "arrival_station_id": "5",
       "distance": 800,
       "duration": 720,
       "base_price": 250000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "94e4"
+      "updated_at": "2025-01-01"
     },
     {
-      "route_id": 9,
-      "departure_station_id": 5,
-      "arrival_station_id": 1,
+      "id": "9",
+      "departure_station_id": "5",
+      "arrival_station_id": "1",
       "distance": 800,
       "duration": 720,
       "base_price": 250000,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "f048"
+      "updated_at": "2025-01-01"
     }
   ],
   "bus_companies": [
     {
-      "bus_company_id": 1,
+      "id": "1",
       "company_name": "Nhà xe An Hòa Hiệp",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
       "description": "Nhà xe chất lượng cao",
@@ -872,11 +789,10 @@
       "address": "TP.HCM",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "9cfc"
+      "updated_at": "2025-01-01"
     },
     {
-      "bus_company_id": 2,
+      "id": "2",
       "company_name": "Nhà xe Futa Hà Sơn",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
       "description": "Chuyên tuyến Hà Nội - Lào Cai",
@@ -887,11 +803,10 @@
       "address": "Hà Nội",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "4a30"
+      "updated_at": "2025-01-01"
     },
     {
-      "bus_company_id": 3,
+      "id": "3",
       "company_name": "Nhà xe Vũ Linh",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
       "description": "Dịch vụ 5 sao",
@@ -902,11 +817,10 @@
       "address": "Cần Thơ",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "fcb0"
+      "updated_at": "2025-01-01"
     },
     {
-      "bus_company_id": 4,
+      "id": "4",
       "company_name": "Nhà xe Toàn Thắng",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
       "description": "An toàn, tiện lợi",
@@ -917,11 +831,10 @@
       "address": "Vũng Tàu",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "6f43"
+      "updated_at": "2025-01-01"
     },
     {
-      "bus_company_id": 5,
+      "id": "5",
       "company_name": "Nhà xe Phương Trang",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
       "description": "Chất lượng là danh dự",
@@ -932,159 +845,214 @@
       "address": "TP.HCM",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "328f"
+      "updated_at": "2025-01-01"
+    }
+  ],
+  "vehicle_types": [
+    {
+      "id": "1",
+      "code": "SLEEPER",
+      "display_name": "Giường nằm",
+      "description": "Xe giường nằm, phù hợp cho chuyến đi đường dài"
+    },
+    {
+      "id": "2",
+      "code": "SEAT",
+      "display_name": "Ghế ngồi",
+      "description": "Xe ghế ngồi tiêu chuẩn, đi quãng đường ngắn"
+    },
+    {
+      "id": "3",
+      "code": "LIMOUSINE",
+      "display_name": "Limousine",
+      "description": "Xe limousine cao cấp, không gian rộng rãi"
+    },
+    {
+      "id": "4",
+      "code": "VIP",
+      "display_name": "VIP",
+      "description": "Xe VIP cao cấp nhất, dịch vụ đặc biệt"
     }
   ],
   "buses": [
     {
-      "bus_id": 1,
-      "bus_company_id": 1,
-      "layout_id": "6ace",
-      "name": "Limousine 34 giường",
+      "id": "1",
+      "bus_company_id": "1",
+      "vehicle_type_id": "1",
+      "layout_id": "3bcb",
+      "name": "An Hòa Hiệp – Giường nằm 40 chỗ",
       "license_plate": "51B-12345",
-      "capacity": 34,
-      "amenities": "Wifi, Nước, Chăn",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "9b3e"
-    },
-    {
-      "bus_id": 2,
-      "bus_company_id": 2,
-      "name": "Giường nằm cao cấp",
-      "license_plate": "29B-54321",
       "capacity": 40,
-      "amenities": "Wifi, TV, Nước",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "5f70"
+      "amenities": "Wifi, Nước, Chăn, Điều hòa",
+      "status": "ACTIVE",
+      "created_at": "2025-01-15T08:00:00",
+      "updated_at": "2025-01-15T08:00:00"
     },
     {
-      "bus_id": 3,
-      "bus_company_id": 3,
-      "name": "VIP Limousine 9 chỗ",
+      "id": "2",
+      "bus_company_id": "2",
+      "vehicle_type_id": "1",
+      "layout_id": "102",
+      "name": "Futa Hà Sơn – Limousine 34 giường",
+      "license_plate": "29B-54321",
+      "capacity": 34,
+      "amenities": "Wifi, TV, Nước, Chăn",
+      "status": "ACTIVE",
+      "created_at": "2025-01-16T08:00:00",
+      "updated_at": "2025-01-16T08:00:00"
+    },
+    {
+      "id": "3",
+      "bus_company_id": "3",
+      "vehicle_type_id": "3",
+      "layout_id": "30c7",
+      "name": "Vũ Linh – Limousine 9 chỗ VIP",
       "license_plate": "51C-99999",
       "capacity": 9,
-      "amenities": "Wifi, Nước, Massage",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "faf4"
+      "amenities": "Massage, Wifi, Nước, Cổng sạc",
+      "status": "ACTIVE",
+      "created_at": "2025-01-17T08:00:00",
+      "updated_at": "2025-01-17T08:00:00"
     },
     {
-      "bus_id": 4,
-      "bus_company_id": 4,
-      "name": "Ghế ngồi tiêu chuẩn",
+      "id": "4",
+      "bus_company_id": "4",
+      "vehicle_type_id": "2",
+      "layout_id": "103",
+      "name": "Toàn Thắng – Ghế ngồi 45 chỗ",
       "license_plate": "43B-11111",
       "capacity": 45,
       "amenities": "Điều hòa",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "a902"
+      "status": "ACTIVE",
+      "created_at": "2025-01-18T08:00:00",
+      "updated_at": "2025-01-18T08:00:00"
     },
     {
-      "bus_id": 5,
-      "bus_company_id": 5,
-      "name": "Phương Trang Limousine",
+      "id": "5",
+      "bus_company_id": "5",
+      "vehicle_type_id": "4",
+      "layout_id": "102",
+      "name": "Phương Trang – VIP 34 giường",
       "license_plate": "51B-88888",
       "capacity": 34,
-      "amenities": "Wifi, Nước, Chăn, TV",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "cc11"
+      "amenities": "Wifi, TV, Massage, Chăn cao cấp, Điều hòa",
+      "status": "ACTIVE",
+      "created_at": "2025-01-19T08:00:00",
+      "updated_at": "2025-01-19T08:00:00"
+    },
+    {
+      "id": "6",
+      "bus_company_id": "2",
+      "vehicle_type_id": "2",
+      "layout_id": "105",
+      "name": "Futa Hà Sơn – Ghế ngồi 29 chỗ",
+      "license_plate": "29B-77777",
+      "capacity": 29,
+      "amenities": "Điều hòa, Nước",
+      "status": "ACTIVE",
+      "created_at": "2025-01-20T08:00:00",
+      "updated_at": "2025-01-20T08:00:00"
+    },
+    {
+      "id": "7",
+      "bus_company_id": "1",
+      "vehicle_type_id": "1",
+      "layout_id": "101",
+      "name": "An Hòa Hiệp – Giường nằm 40 chỗ (Xe tăng cường)",
+      "license_plate": "51B-22222",
+      "capacity": 40,
+      "amenities": "Wifi, Nước, Chăn, Điều hòa",
+      "status": "ACTIVE",
+      "created_at": "2025-01-21T08:00:00",
+      "updated_at": "2025-01-21T08:00:00"
     }
   ],
   "bus_images": [
     {
-      "bus_image_id": 1,
-      "bus_id": 1,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
-      "id": "eb7b"
+      "id": "1",
+      "bus_id": "1",
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg"
     },
     {
-      "bus_image_id": 2,
-      "bus_id": 2,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
-      "id": "26ee"
+      "id": "2",
+      "bus_id": "2",
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg"
     },
     {
-      "bus_image_id": 3,
-      "bus_id": 3,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
-      "id": "cb34"
+      "id": "3",
+      "bus_id": "3",
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png"
     },
     {
-      "bus_image_id": 4,
-      "bus_id": 4,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
-      "id": "e2f5"
+      "id": "4",
+      "bus_id": "4",
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg"
     },
     {
-      "bus_image_id": 5,
-      "bus_id": 5,
-      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
-      "id": "978b"
+      "id": "5",
+      "bus_id": "5",
+      "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg"
     }
   ],
   "bus_layouts": [
     {
-      "layout_id": 1,
-      "layout_name": "Giường nằm 2 tầng",
-      "total_rows": 6,
-      "total_columns": 3,
+      "id": "101",
+      "layout_name": "Giường nằm 40 chỗ – 2 tầng",
+      "total_rows": 10,
+      "total_columns": 4,
       "floor_count": 2,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "5e69"
+      "created_at": "2025-01-10T08:00:00",
+      "updated_at": "2025-01-10T08:00:00"
     },
     {
-      "id": "1837",
-      "layout_name": "xe 45 người",
-      "total_rows": 6,
+      "id": "102",
+      "layout_name": "Giường nằm 34 chỗ – Limousine",
+      "total_rows": 12,
+      "total_columns": 2,
+      "floor_count": 2,
+      "created_at": "2025-01-11T08:00:00",
+      "updated_at": "2025-01-11T08:00:00"
+    },
+    {
+      "id": "103",
+      "layout_name": "Ghế ngồi 45 chỗ",
+      "total_rows": 9,
+      "total_columns": 5,
+      "floor_count": 1,
+      "created_at": "2025-01-12T08:00:00",
+      "updated_at": "2025-01-12T08:00:00"
+    },
+    {
+      "id": "104",
+      "layout_name": "Limousine 9 chỗ VIP",
+      "total_rows": 3,
+      "total_columns": 3,
+      "floor_count": 1,
+      "created_at": "2025-01-13T08:00:00",
+      "updated_at": "2025-01-13T08:00:00"
+    },
+    {
+      "id": "105",
+      "layout_name": "Ghế ngồi 29 chỗ",
+      "total_rows": 7,
       "total_columns": 4,
+      "floor_count": 1,
+      "created_at": "2025-01-14T08:00:00",
+      "updated_at": "2025-01-14T08:00:00"
+    },
+    {
+      "id": "3bcb",
+      "layout_name": "lmao",
+      "total_rows": 7,
+      "total_columns": 2,
       "floor_count": 1
     },
     {
-      "id": "c56d",
-      "layout_name": "xe 45 chỗ",
-      "total_rows": 6,
-      "total_columns": 3,
-      "floor_count": 2
-    },
-    {
-      "id": "4027",
-      "layout_name": "xe 45 chỗ",
+      "id": "30c7",
+      "layout_name": "vip 9 chỗ",
       "total_rows": 5,
       "total_columns": 2,
       "floor_count": 1
-    },
-    {
-      "id": "f349",
-      "layout_name": "xe 24 chỗ",
-      "total_rows": 6,
-      "total_columns": 2,
-      "floor_count": 2
-    },
-    {
-      "id": "203d",
-      "layout_name": "Xe 24 giường",
-      "total_rows": 6,
-      "total_columns": 2,
-      "floor_count": 2
-    },
-    {
-      "id": "dd82",
-      "layout_name": "xe 34 giường",
-      "total_rows": 12,
-      "total_columns": 2,
-      "floor_count": 2
-    },
-    {
-      "id": "6ace",
-      "layout_name": "xe 34 chỗ",
-      "total_rows": 12,
-      "total_columns": 2,
-      "floor_count": 2
     }
   ],
   "seat_types": [
@@ -1110,587 +1078,509 @@
       "description": "Ngồi cứng",
       "price_multiplier": 1,
       "color": "#ff0000"
+    },
+    {
+      "id": "05b2",
+      "type_name": "Ghế Vip",
+      "description": "",
+      "price_multiplier": 1.5,
+      "color": "#f6ef13"
     }
   ],
   "seats": [
     {
-      "seat_id": 1,
-      "bus_id": 1,
+      "id": "1",
+      "bus_id": "1",
       "seat_number": "A1",
       "seat_label": "A1",
-      "seat_type_id": 2,
+      "seat_type_id": "2",
       "price_extra": 50000,
-      "is_available_for_booking": true,
-      "id": "bb41"
+      "is_available_for_booking": true
     },
     {
-      "seat_id": 2,
-      "bus_id": 1,
+      "id": "2",
+      "bus_id": "1",
       "seat_number": "A2",
       "seat_label": "A2",
-      "seat_type_id": 2,
+      "seat_type_id": "2",
       "price_extra": 50000,
-      "is_available_for_booking": true,
-      "id": "37aa"
+      "is_available_for_booking": true
     },
     {
-      "seat_id": 3,
-      "bus_id": 1,
+      "id": "3",
+      "bus_id": "1",
       "seat_number": "B1",
       "seat_label": "B1",
-      "seat_type_id": 1,
+      "seat_type_id": "1",
       "price_extra": 0,
-      "is_available_for_booking": true,
-      "id": "cdee"
+      "is_available_for_booking": true
     }
   ],
   "seat_positions": [
     {
-      "position_id": 1,
-      "seat_id": 1,
-      "layout_id": 1,
+      "id": "1",
+      "seat_id": "1",
+      "layout_id": "1",
       "floor": 1,
       "row_index": 1,
       "column_index": 1,
       "is_driver_seat": false,
       "is_door": false,
       "is_stair": false,
-      "rotation": 0,
-      "id": "1a13"
+      "rotation": 0
     },
     {
-      "position_id": 2,
-      "seat_id": 2,
-      "layout_id": 1,
+      "id": "2",
+      "seat_id": "2",
+      "layout_id": "1",
       "floor": 1,
       "row_index": 1,
       "column_index": 2,
       "is_driver_seat": false,
       "is_door": false,
       "is_stair": false,
-      "rotation": 0,
-      "id": "13e2"
+      "rotation": 0
     },
     {
-      "position_id": 3,
-      "seat_id": 3,
-      "layout_id": 1,
+      "id": "3",
+      "seat_id": "3",
+      "layout_id": "1",
       "floor": 1,
       "row_index": 2,
       "column_index": 1,
       "is_driver_seat": false,
       "is_door": false,
       "is_stair": false,
-      "rotation": 0,
-      "id": "c32f"
-    },
-    {
-      "id": "a141",
-      "position_id": 1766900993076,
-      "layout_id": "f349",
-      "floor": 1,
-      "row_index": 6,
-      "column_index": 2,
-      "is_driver_seat": true,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": ""
-    },
-    {
-      "id": "83ca",
-      "position_id": 1766900998681,
-      "layout_id": "f349",
-      "floor": 1,
-      "row_index": 6,
-      "column_index": 1,
-      "is_driver_seat": false,
-      "is_door": true,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": ""
-    },
-    {
-      "id": "6d18",
-      "position_id": 1766901013543,
-      "layout_id": "f349",
-      "floor": 1,
-      "row_index": 5,
-      "column_index": 1,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "A1",
-      "seat_type_id": "0364"
-    },
-    {
-      "id": "184c",
-      "position_id": 1766901345912,
-      "layout_id": "203d",
-      "floor": 1,
-      "row_index": 6,
-      "column_index": 2,
-      "is_driver_seat": true,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": ""
-    },
-    {
-      "id": "92c3",
-      "position_id": 1766901354258,
-      "layout_id": "203d",
-      "floor": 1,
-      "row_index": 6,
-      "column_index": 1,
-      "is_driver_seat": false,
-      "is_door": true,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": ""
-    },
-    {
-      "id": "f5bc",
-      "position_id": 1766901356684,
-      "layout_id": "203d",
-      "floor": 1,
-      "row_index": 5,
-      "column_index": 1,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "A1",
-      "seat_type_id": "0364"
-    },
-    {
-      "id": "df36",
-      "position_id": 1766901942538,
-      "layout_id": "dd82",
-      "floor": 1,
-      "row_index": 12,
-      "column_index": 2,
-      "is_driver_seat": true,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": ""
-    },
-    {
-      "id": "61aa",
-      "position_id": 1766901954933,
-      "layout_id": "dd82",
-      "floor": 1,
-      "row_index": 12,
-      "column_index": 1,
-      "is_driver_seat": false,
-      "is_door": true,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": ""
-    },
-    {
-      "id": "4c65",
-      "position_id": 1766907286892,
-      "layout_id": "6ace",
-      "floor": 1,
-      "row_index": 12,
-      "column_index": 2,
-      "is_driver_seat": true,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": ""
+      "rotation": 0
     }
   ],
   "schedules": [
     {
-      "schedule_id": 1,
-      "route_id": 1,
-      "bus_id": 1,
+      "id": "1",
+      "route_id": "1",
+      "bus_id": "1",
       "departure_time": "2025-12-25T08:00",
       "arrival_time": "2025-12-26T14:00",
       "total_seats": 34,
       "available_seats": 20,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "a373"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 2,
-      "route_id": 1,
-      "bus_id": 2,
+      "id": "2",
+      "route_id": "1",
+      "bus_id": "2",
       "departure_time": "2025-12-25T20:00",
       "arrival_time": "2025-12-26T06:00",
       "total_seats": 40,
       "available_seats": 35,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "0d7f"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 3,
-      "route_id": 1,
-      "bus_id": 5,
+      "id": "3",
+      "route_id": "1",
+      "bus_id": "5",
       "departure_time": "2025-12-25T22:00",
       "arrival_time": "2025-12-26T08:00",
       "total_seats": 34,
       "available_seats": 30,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "7833"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 4,
-      "route_id": 2,
-      "bus_id": 1,
+      "id": "4",
+      "route_id": "2",
+      "bus_id": "1",
       "departure_time": "2025-12-25T19:00",
       "arrival_time": "2025-12-26T05:00",
       "total_seats": 34,
       "available_seats": 15,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "1b16"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 5,
-      "route_id": 3,
-      "bus_id": 3,
+      "id": "5",
+      "route_id": "3",
+      "bus_id": "3",
       "departure_time": "2025-12-25T10:00",
       "arrival_time": "2025-12-25T12:30",
       "total_seats": 9,
       "available_seats": 5,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "d38c"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 6,
-      "route_id": 3,
-      "bus_id": 4,
+      "id": "6",
+      "route_id": "3",
+      "bus_id": "4",
       "departure_time": "2025-12-25T14:00",
       "arrival_time": "2025-12-25T16:30",
       "total_seats": 45,
       "available_seats": 40,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "3846"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 7,
-      "route_id": 4,
-      "bus_id": 3,
+      "id": "7",
+      "route_id": "4",
+      "bus_id": "3",
       "departure_time": "2025-12-25T11:00",
       "arrival_time": "2025-12-25T13:30",
       "total_seats": 9,
       "available_seats": 7,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "ebc3"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 8,
-      "route_id": 5,
-      "bus_id": 5,
+      "id": "8",
+      "route_id": "5",
+      "bus_id": "5",
       "departure_time": "2025-12-25T06:00",
       "arrival_time": "2025-12-25T22:00",
       "total_seats": 34,
       "available_seats": 25,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "70be"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 9,
-      "route_id": 8,
-      "bus_id": 2,
+      "id": "9",
+      "route_id": "8",
+      "bus_id": "2",
       "departure_time": "2025-12-25T21:00",
       "arrival_time": "2025-12-26T09:00",
       "total_seats": 40,
       "available_seats": 38,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "10b5"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 10,
-      "route_id": 9,
-      "bus_id": 2,
+      "id": "10",
+      "route_id": "9",
+      "bus_id": "2",
       "departure_time": "2025-12-25T20:00",
       "arrival_time": "2025-12-26T08:00",
       "total_seats": 40,
       "available_seats": 32,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "baab"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 11,
-      "route_id": 1,
-      "bus_id": 1,
+      "id": "11",
+      "route_id": "1",
+      "bus_id": "1",
       "departure_time": "2025-12-26T08:00",
       "arrival_time": "2025-12-27T14:00",
       "total_seats": 34,
       "available_seats": 28,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "8edd"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 12,
-      "route_id": 1,
-      "bus_id": 2,
+      "id": "12",
+      "route_id": "1",
+      "bus_id": "2",
       "departure_time": "2025-12-26T20:00",
       "arrival_time": "2025-12-27T06:00",
       "total_seats": 40,
       "available_seats": 38,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "3887"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 13,
-      "route_id": 3,
-      "bus_id": 3,
+      "id": "13",
+      "route_id": "3",
+      "bus_id": "3",
       "departure_time": "2025-12-26T09:30",
       "arrival_time": "2025-12-26T12:00",
       "total_seats": 9,
       "available_seats": 8,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "4b4b"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 14,
-      "route_id": 3,
-      "bus_id": 4,
+      "id": "14",
+      "route_id": "3",
+      "bus_id": "4",
       "departure_time": "2025-12-26T15:00",
       "arrival_time": "2025-12-26T17:30",
       "total_seats": 45,
       "available_seats": 42,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "22ee"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 15,
-      "route_id": 8,
-      "bus_id": 2,
+      "id": "15",
+      "route_id": "8",
+      "bus_id": "2",
       "departure_time": "2025-12-26T21:00",
       "arrival_time": "2025-12-27T09:00",
       "total_seats": 40,
       "available_seats": 35,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "34a8"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 16,
-      "route_id": 1,
-      "bus_id": 5,
+      "id": "16",
+      "route_id": "1",
+      "bus_id": "5",
       "departure_time": "2025-12-27T08:00",
       "arrival_time": "2025-12-28T14:00",
       "total_seats": 34,
       "available_seats": 30,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "a777"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 17,
-      "route_id": 1,
-      "bus_id": 1,
+      "id": "17",
+      "route_id": "1",
+      "bus_id": "1",
       "departure_time": "2025-12-27T20:00",
       "arrival_time": "2025-12-28T06:00",
       "total_seats": 34,
       "available_seats": 25,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "e512"
+      "updated_at": "2025-01-01"
     },
     {
-      "schedule_id": 18,
-      "route_id": 3,
-      "bus_id": 3,
+      "id": "18",
+      "route_id": "3",
+      "bus_id": "3",
       "departure_time": "2025-12-27T10:00",
       "arrival_time": "2025-12-27T12:30",
       "total_seats": 9,
       "available_seats": 6,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "89e4"
+      "updated_at": "2025-01-01"
     }
   ],
   "seat_schedule": [
     {
-      "seat_id": 1,
-      "schedule_id": 1,
+      "id": "1",
+      "seat_id": "1",
+      "schedule_id": "1",
       "status": "BOOKED",
-      "hold_expired_at": null,
-      "id": "a87a"
+      "hold_expired_at": null
     },
     {
-      "seat_id": 2,
-      "schedule_id": 1,
+      "id": "2",
+      "seat_id": "2",
+      "schedule_id": "1",
       "status": "AVAILABLE",
-      "hold_expired_at": null,
-      "id": "1a5d"
+      "hold_expired_at": null
     },
     {
-      "seat_id": 3,
-      "schedule_id": 1,
+      "id": "3",
+      "seat_id": "3",
+      "schedule_id": "1",
       "status": "AVAILABLE",
-      "hold_expired_at": null,
-      "id": "fe67"
+      "hold_expired_at": null
     }
   ],
   "tickets": [
     {
-      "ticket_id": 1,
-      "user_id": 1,
-      "schedule_id": 1,
-      "seat_id": 1,
-      "seat_type": "Giường đôi",
+      "id": "1",
+      "user_id": "2",
+      "schedule_id": "1",
+      "seat_id": "1",
       "price": 800000,
       "status": "BOOKED",
       "created_at": "2025-01-10",
-      "updated_at": "2025-01-10",
-      "id": "7179"
+      "updated_at": "2025-01-10"
     }
   ],
   "passengers": [
     {
-      "passenger_id": 1,
-      "ticket_id": 1,
-      "full_name": "Nguyễn Đại Phát",
+      "id": "1",
+      "ticket_id": "1",
+      "full_name": "Nguyễn Phát",
       "phone": "0909123456",
-      "identity_number": "079201234567",
-      "id": "5c2c"
+      "identity_number": "079201234567"
     }
   ],
   "payment_providers": [
     {
-      "payment_provider_id": 1,
+      "id": "1",
       "provider_name": "VNPay",
       "provider_type": "QR_CODE",
-      "api_endpoint": "https://vnpay.vn/api",
-      "id": "dd6a"
+      "api_endpoint": "https://vnpay.vn/api"
+    },
+    {
+      "id": "2",
+      "provider_name": "MoMo",
+      "provider_type": "E_WALLET",
+      "api_endpoint": "https://developers.momo.vn/api"
+    },
+    {
+      "id": "3",
+      "provider_name": "ZaloPay",
+      "provider_type": "E_WALLET",
+      "api_endpoint": "https://zalopay.vn/api"
     }
   ],
   "payments": [
     {
-      "payment_id": 1,
-      "ticket_id": 1,
-      "user_id": 1,
-      "payment_provider_id": 1,
+      "id": "1",
+      "ticket_id": "1",
+      "user_id": "2",
+      "payment_provider_id": "1",
       "payment_method": "ONLINE",
       "amount": 800000,
       "transaction_code": "VNPAY001",
       "status": "COMPLETED",
       "paid_at": "2025-01-10T10:30",
       "created_at": "2025-01-10",
-      "updated_at": "2025-01-10",
-      "id": "3ec1"
+      "updated_at": "2025-01-10"
     }
   ],
   "cancellation_policies": [
     {
-      "policy_id": 1,
-      "route_id": 1,
+      "id": "1",
+      "route_id": "1",
       "cancellation_time_limit": 360,
       "refund_percentage": 80,
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01",
-      "id": "89f5"
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "2",
+      "route_id": "2",
+      "cancellation_time_limit": 360,
+      "refund_percentage": 80,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "3",
+      "route_id": "3",
+      "cancellation_time_limit": 120,
+      "refund_percentage": 90,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "4",
+      "route_id": "5",
+      "cancellation_time_limit": 240,
+      "refund_percentage": 70,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "5",
+      "route_id": "8",
+      "cancellation_time_limit": 240,
+      "refund_percentage": 75,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "6",
+      "route_id": "7",
+      "cancellation_time_limit": 60,
+      "refund_percentage": 95,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
     }
   ],
   "bus_reviews": [
     {
-      "review_id": 1,
-      "user_id": 1,
-      "bus_id": 1,
+      "id": "1",
+      "user_id": "1",
+      "bus_id": "1",
       "rating": 5,
       "review": "Xe sạch, chạy êm",
       "status": "VISIBLE",
       "created_at": "2025-01-05",
-      "updated_at": "2025-01-05",
-      "id": "7a44"
+      "updated_at": "2025-01-05"
     }
   ],
   "banners": [
     {
-      "banner_id": 1,
+      "id": "1",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766454384/20251222-090812_j3qisq.jpg",
       "position": 1,
       "target_type": "ROUTE",
-      "target_id": 1,
+      "target_id": "1",
       "start_date": "2025-01-01",
-      "end_date": "2025-02-01",
-      "id": "9cb4"
+      "end_date": "2025-02-01"
     },
     {
-      "banner_id": 2,
+      "id": "2",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766454382/20251222-090730_abj2kq.jpg",
       "position": 2,
       "target_type": "ROUTE",
-      "target_id": 2,
+      "target_id": "2",
       "start_date": "2025-01-01",
-      "end_date": "2025-02-01",
-      "id": "c9b5"
+      "end_date": "2025-02-01"
     }
   ],
   "popular_routes": [
     {
-      "popular_route_id": 1,
-      "route_id": 2,
+      "id": "1",
+      "route_id": "2",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-vt_bcgm29.png",
-      "priority": 1,
-      "id": "315a"
+      "priority": 1
     },
     {
-      "popular_route_id": 2,
-      "route_id": 3,
+      "id": "2",
+      "route_id": "3",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410530/sg-mn_zz0prg.png",
-      "priority": 2,
-      "id": "fd6f"
+      "priority": 2
     },
     {
-      "popular_route_id": 3,
-      "route_id": 4,
+      "id": "3",
+      "route_id": "4",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410525/sg-nt_ffltel.png",
-      "priority": 3,
-      "id": "a16a"
+      "priority": 3
     },
     {
-      "popular_route_id": 4,
-      "route_id": 5,
+      "id": "4",
+      "route_id": "5",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
-      "priority": 4,
-      "id": "6eed"
+      "priority": 4
     },
     {
-      "popular_route_id": 5,
-      "route_id": 6,
+      "id": "5",
+      "route_id": "6",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
-      "priority": 5,
-      "id": "d023"
+      "priority": 5
+    }
+  ],
+  "seat_templates": [
+    {
+      "id": "82d6",
+      "name": "lmao",
+      "rows": 7,
+      "cols": 2,
+      "floors": 1,
+      "created_at": "2025-12-29T00:44:07.524Z"
+    },
+    {
+      "id": "fd4b",
+      "name": "vip 9 chỗ",
+      "rows": 5,
+      "cols": 2,
+      "floors": 1,
+      "created_at": "2025-12-29T00:59:02.016Z"
     }
   ]
 }

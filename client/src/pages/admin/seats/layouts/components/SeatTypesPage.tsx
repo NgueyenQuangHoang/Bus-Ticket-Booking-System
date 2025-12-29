@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Paper, Pagination } from '@mui/material';
-import type { SeatType } from '../../../../types/seat';
-import seatService from '../../../../services/admin/seatService';
-import SeatTypeTable from './components/SeatTypeTable';
-import SeatTypeFormModal from './components/SeatTypeFormModal';
+import type { SeatType } from '../../../../../types/seat';
+import seatService from '../../../../../services/admin/seatService';
+import SeatTypeTable from '../../types/components/SeatTypeTable';
+import SeatTypeFormModal from '../../types/components/SeatTypeFormModal';
 
 export default function SeatTypesPage() {
   const [seatTypes, setSeatTypes] = useState<SeatType[]>([]);

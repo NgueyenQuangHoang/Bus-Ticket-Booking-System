@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 type ImageItem = {
-  id: number;
+  id: string;
   file: File;
   preview: string;
   isThumbnail?: boolean;
@@ -24,7 +25,7 @@ export default function BusImageUploadModal({
 
   const handleAddImage = (file: File) => {
     const newImage: ImageItem = {
-      id: Date.now(),
+      id: uuidv4(),
       file,
       preview: URL.createObjectURL(file),
       isThumbnail: images.length === 0,
@@ -33,7 +34,7 @@ export default function BusImageUploadModal({
     setImages((prev) => [...prev, newImage]);
   };
 
-  const setThumbnail = (id: number) => {
+  const setThumbnail = (id: string) => {
     setImages((prev) =>
       prev.map((img) => ({
         ...img,
@@ -42,7 +43,7 @@ export default function BusImageUploadModal({
     );
   };
 
-  const removeImage = (id: number) => {
+  const removeImage = (id: string) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
   };
 
