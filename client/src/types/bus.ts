@@ -19,7 +19,7 @@ export interface BusCompany {
 
 export interface Bus {
   bus_id: string | number; // Changed from number
-  company_id: string | number; // Changed from number
+  company_id?: string | number;
   bus_company_id?: string | number; // Changed from number
   name?: string;
   descriptions?: string;
@@ -31,6 +31,7 @@ export interface Bus {
   id?: string | number;
   vehicle_type_id?: string | number;
   status?: 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'MAINTENANCE';
+  thumbnail_image?: string;
 }
 
 export interface BusStation {

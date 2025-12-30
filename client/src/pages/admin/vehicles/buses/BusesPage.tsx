@@ -10,6 +10,7 @@ import type { Bus, BusCompany, BusLayout } from "../../../../types";
 import busService from "../../../../services/admin/busService";
 import { busCompanyService } from "../../../../services/busCompanyService";
 import { vehicleTypeService } from "../../../../services/vehicleTypeService";
+import { busImageService } from "../../../../services/admin/busImageService";
 import type { VehicleType } from "../../../../services/vehicleTypeService";
 
 
@@ -59,7 +60,10 @@ export default function BusesPage() {
             ...bus,
             company_name: company?.company_name || "N/A",
             seat_layout: layout?.layout_name || "N/A",
-            bus_type: type?.display_name || "N/A"
+            bus_type: type?.display_name || "N/A",
+            total_rows: layout?.total_rows || 0,
+            total_columns: layout?.total_columns || 0,
+            floor_count: layout?.floor_count || 1,
         };
     });
 
@@ -68,13 +72,13 @@ export default function BusesPage() {
         setOpenModal(true);
     };
 
-    const handleEdit = (bus: any) => {
+    const handleEdit = (bus: Bus) => {
         // bus from table might have extra props, but we pass it as initialData which is compatible
         setSelectedBus(bus);
         setOpenModal(true);
     };
 
-    const handleDelete = async (bus: any) => {
+    const handleDelete = async (bus: Bus) => {
         const result = await Swal.fire({
             title: "Xác nhận xóa?",
             text: `Bạn có chắc muốn xóa xe "${bus.name}"?`,
@@ -98,13 +102,26 @@ export default function BusesPage() {
         }
     };
 
-    const handleSubmit = async (data: Partial<Bus>) => {
+    const handleSubmit = async (data: Partial<Bus>, thumbnailFile?: File) => {
         try {
+            let uploadedThumbnail = "";
+
+            // 1. Upload thumbnail if present
+            if (thumbnailFile) {
+                uploadedThumbnail = await busImageService.uploadFileToCloudinary(thumbnailFile);
+            }
+
+            // 2. Prepare data
+            const busData = { ...data };
+            if (uploadedThumbnail) {
+                busData.thumbnail_image = uploadedThumbnail;
+            }
+
             if (selectedBus) {
-                await busService.updateBus(String(selectedBus.id || selectedBus.bus_id), data);
+                await busService.updateBus(String(selectedBus.id || selectedBus.bus_id), busData);
                 Swal.fire("Thành công", "Cập nhật xe thành công", "success");
             } else {
-                await busService.createBus(data as any);
+                await busService.createBus(busData as Omit<Bus, 'bus_id' | 'id'>);
                 Swal.fire("Thành công", "Thêm xe thành công", "success");
             }
             fetchData();

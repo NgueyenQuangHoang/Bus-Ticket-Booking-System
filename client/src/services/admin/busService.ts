@@ -12,10 +12,10 @@ const busService = {
     }
   },
 
-  getAllBusLayouts: async (): Promise<any[]> => {
+  getAllBusLayouts: async (): Promise<import('../../types/bus').BusLayout[]> => {
     try {
       const response = await api.get('/bus_layouts');
-      return response as unknown as any[];
+      return response as unknown as import('../../types/bus').BusLayout[];
     } catch (error) {
       console.error('Error fetching bus layouts:', error);
       return [];
