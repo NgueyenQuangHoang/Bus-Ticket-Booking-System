@@ -15,6 +15,15 @@ export const routesService = {
             throw error;
         }
     },
+    getRoutesByStations: async (dep_id: number | string, arr_id: number | string): Promise<Route[]> => {
+        try {
+            const response = await api.get<Route[]>(`/routes?departure_station_id=${dep_id}&arrival_station_id=${arr_id}`);
+            return response as unknown as Route[];
+        } catch (error) {
+            console.error('Error fetching routes by stations:', error);
+            return [];
+        }
+    },
     getInformationRoutes: async (): Promise<routesInfomation[] | undefined> => {
         try {
             const responseGetRoutes: Route[] = await api.get('/routes');
@@ -28,12 +37,12 @@ export const routesService = {
             const dataReturn: routesInfomation[] = responseGetRoutes.map((item) => {
                 const departure_name = stationMap[item.departure_station_id]
                 const arrival_name = stationMap[item.arrival_station_id]
-                return [{
+                return {
                     route_id: item.id,
                     departure_station_name: departure_name ? departure_name : '',
                     arrival_station_name: arrival_name ? arrival_name : '',
                     description: item.description
-                }]
+                }
             })
 
             return responseGetRoutes ? dataReturn : undefined
@@ -53,22 +62,22 @@ export const routesService = {
     },
     deleteRoute: async (route_id: string): Promise<string> => {
         try {
-            await api.delete('/routes/'+route_id)
+            await api.delete('/routes/' + route_id)
             return route_id
         } catch (error) {
             console.log(error);
             return '0'
         }
     },
-    updateRoute: async (route:Route): Promise<Route | undefined> => {
+    updateRoute: async (route: Route): Promise<Route | undefined> => {
         try {
-            await api.put('/routes/'+route.id, route)
+            await api.put('/routes/' + route.id, route)
             return route
         } catch (error) {
             console.log(error);
-        }   
+        }
     },
-    createRoute: async (route: Route) : Promise<Route> => {
+    createRoute: async (route: Route): Promise<Route> => {
         try {
             await api.post('/routes', route)
             return route
