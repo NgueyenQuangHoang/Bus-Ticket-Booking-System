@@ -113,13 +113,13 @@ export default function BusImageUploadModal({
                 <div className="flex gap-3 mt-2">
                   <button
                     onClick={() => setThumbnail(img.id)}
-                    className="text-yellow-600 hover:underline"
+                    className="text-yellow-600 hover:underline hover:cursor-pointer"
                   >
                     Đặt đại diện
                   </button>
                   <button
                     onClick={() => removeImage(img.id)}
-                    className="text-gray-500 hover:text-red-500"
+                    className="text-gray-500 hover:text-red-500 hover:cursor-pointer"
                   >
                     Xóa
                   </button>
@@ -150,8 +150,8 @@ export default function BusImageUploadModal({
         {/* FOOTER */}
         <div className="flex justify-end px-6 py-4 border-t border-gray-300">
           <button
-            onClick={onClose}
-            className="px-4 py-2 text-sm rounded bg-gray-300 hover:bg-gray-400 mr-2"
+            onClick={onClose} 
+            className="px-4 py-2 text-sm rounded bg-gray-300 hover:bg-gray-400 mr-2 hover:cursor-pointer"
           >
             Đóng
           </button>
@@ -163,8 +163,10 @@ export default function BusImageUploadModal({
                     // Mock upload by sending data URL or just validation
                     // Real implementation would involve uploading file to storage
                     for (const img of images) {
-                         // Pass validation/URL to service
-                         await busImageService.uploadBusImage(busId, "https://via.placeholder.com/150");
+                         // Upload to Cloudinary
+                         const secureUrl = await busImageService.uploadFileToCloudinary(img.file);
+                         // Save URL to backend
+                         await busImageService.uploadBusImage(busId, secureUrl);
                     }
                      Swal.fire("Thành công", "Đã tải ảnh lên", "success");
                      onUploadSuccess();
@@ -177,7 +179,7 @@ export default function BusImageUploadModal({
                     setUploading(false);
                 }
             }}
-            className="px-4 py-2 text-sm rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 text-sm rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 hover:cursor-pointer"
           >
             {uploading ? "Đang tải..." : "Lưu ảnh"}
           </button>

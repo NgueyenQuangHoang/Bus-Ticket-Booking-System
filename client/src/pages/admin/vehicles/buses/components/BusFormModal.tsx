@@ -6,7 +6,7 @@ import type { VehicleType } from "../../../../../services/vehicleTypeService";
 type Props = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: Partial<Bus>) => void;
+  onSubmit: (data: Partial<Bus>, thumbnailFile?: File) => void;
   initialData?: Bus | null;
   busCompanies: BusCompany[];
   vehicleTypes: VehicleType[];
@@ -27,6 +27,10 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
     capacity: 0,
   });
 
+  /* ===== THUMBNAIL STATE ===== */
+  const [thumbnailPreview, setThumbnailPreview] = useState("");
+  const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
+
   useEffect(() => {
     if (initialData) {
         setForm({
@@ -38,6 +42,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
             layout: initialData.layout_id ? String(initialData.layout_id) : "",
             capacity: initialData.capacity || 0,
         });
+        setThumbnailPreview(initialData.thumbnail_image || "");
     } else {
         setForm({
             name: "",
@@ -48,7 +53,9 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
             layout: "",
             capacity: 0,
         });
+        setThumbnailPreview("");
     }
+    setThumbnailFile(undefined);
   }, [initialData, open]);
 
   const [errors, setErrors] = useState({
@@ -62,7 +69,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
   /* ===== HANDLER ===== */
   const handleChange = (
     key: keyof typeof form,
-    value: any
+    value: string
   ) => {
     setForm(prev => ({ ...prev, [key]: value }));
     setErrors({ ...errors, [key]: "" });
@@ -87,6 +94,14 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
         capacity: calculatedCapacity
     }));
     setErrors({ ...errors, layout: "" });
+  };
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setThumbnailFile(file);
+      setThumbnailPreview(URL.createObjectURL(file));
+    }
   };
 
 
@@ -121,14 +136,14 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
       onSubmit({
         name: form.name,
         license_plate: form.plate,
-        company_id: form.company as any, // ID can be string or number
+        bus_company_id: form.company,
         layout_id: form.layout, 
         vehicle_type_id: form.type,
         capacity: form.capacity,
-        status: form.status as any,
+        status: form.status as 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'MAINTENANCE',
         ...(initialData?.id ? { id: initialData.id } : { id: uuidv4() }),
         ...(initialData?.bus_id ? { bus_id: initialData.bus_id } : {})
-      });
+      }, thumbnailFile);
       onClose();
     }
   };
@@ -192,7 +207,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 label="Nhà xe"
                 value={form.company}
                 error={errors.company}
-                options={busCompanies.map(c => ({ value: String(c.id || c.bus_company_id), label: c.company_name }))}
+                options={busCompanies.map(c => ({ value: String(c.id || c.bus_company_id), label: c.company_name, }))}
                 onChange={(v) =>
                   handleChange("company", v)
                 }
@@ -226,21 +241,106 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 label="Layout ghế"
                 value={form.layout}
                 error={errors.layout}
-                options={[{value: "", label: "-- Chọn layout --"}, ...layouts.map(l => ({ value: String(l.id || l.layout_id), label: l.layout_name }))]}
+                options={[
+                  { value: "", label: "-- Chọn layout --" },
+                  ...layouts.map((l) => ({
+                    value: String(l.id || l.layout_id),
+                    label: `${l.layout_name} (Hàng: ${l.total_rows || 0}, Cột: ${l.total_columns || 0}, Tầng: ${l.floor_count || 1})`,
+                  })),
+                ]}
                 onChange={handleLayoutChange}
               />
 
-              <Input
-                label="Số ghế"
-                value={String(form.capacity)}
-                placeholder="Tự động"
-                disabled
-              />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Input
+                  label="Số hàng"
+                  value={
+                    form.layout
+                      ? String(
+                          layouts.find(
+                            (l) =>
+                              String(l.id) === form.layout ||
+                              String(l.layout_id) === form.layout
+                          )?.total_rows || 0
+                        )
+                      : "Tự động"
+                  }
+                  disabled
+                />
+
+                <Input
+                  label="Số cột"
+                  value={
+                    form.layout
+                      ? String(
+                          layouts.find(
+                            (l) =>
+                              String(l.id) === form.layout ||
+                              String(l.layout_id) === form.layout
+                          )?.total_columns || 0
+                        )
+                      : "Tự động"
+                  }
+                  disabled
+                />
+
+                <Input
+                  label="Số tầng"
+                  value={
+                    form.layout
+                      ? String(
+                          layouts.find(
+                            (l) =>
+                              String(l.id) === form.layout ||
+                              String(l.layout_id) === form.layout
+                          )?.floor_count || 1
+                        )
+                      : "Tự động"
+                  }
+                  disabled
+                />
+              </div>
             </div>
+            </div>
+
+            {/* ===== ẢNH ĐẠI DIỆN ===== */}
+            <div className="space-y-4">
+              <SectionTitle text="Ảnh đại diện" />
+              
+              <div className="flex items-start gap-4">
+                <div className="w-32 h-24 border border-gray-300 rounded overflow-hidden flex items-center justify-center bg-gray-50">
+                  {thumbnailPreview ? (
+                    <img 
+                      src={thumbnailPreview} 
+                      alt="thumbnail" 
+                      className="w-full h-full object-cover" 
+                    />
+                  ) : (
+                    <span className="text-gray-400 text-xs">Chưa có ảnh</span>
+                  )}
+                </div>
+                <div>
+                  <label className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded cursor-pointer hover:bg-blue-100 transition text-sm font-medium">
+                    Chọn ảnh
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      hidden 
+                      onChange={handleThumbnailChange}
+                    />
+                  </label>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Chọn ảnh đại diện cho xe. 
+                    Ảnh này sẽ hiển thị ở trang chủ.
+                  </p>
+                </div>
+              </div>
+            </div>
+
           </div>
 
 
-        </div>
+
 
         {/* ===== FOOTER ===== */}
         <div className="flex justify-end gap-3 px-4 py-3 sm:px-5 border-t border-gray-200">

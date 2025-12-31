@@ -126,7 +126,6 @@ export default function BusImageTable({ data, onDelete }: Props) {
                     [@media(min-width:769px)]:justify-center
                   "
                                 >
-                                    <EditIcon className="text-gray-400 hover:text-green-600 cursor-pointer transition" />
                                     <DeleteIcon 
                                         className="text-gray-400 hover:text-red-500 cursor-pointer transition" 
                                         onClick={() => onDelete?.(item)}
