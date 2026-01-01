@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import type { BusLayout, SeatTemplate } from '../../../../../types/seat';
+import type { BusLayout } from '../../../../../types/seat';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   onSubmit: (layoutData: Partial<BusLayout>) => void;
-  templates: SeatTemplate[];
+  templates: BusLayout[];
 }
 
 export default function LayoutFormModal({ open, onClose, onSubmit, templates = [] }: Props) {
@@ -28,10 +28,10 @@ export default function LayoutFormModal({ open, onClose, onSubmit, templates = [
       setFormData(prev => ({
         ...prev,
         // Auto-fill name from template
-        layout_name: template.name,
-        total_rows: template.rows,
-        total_columns: template.cols,
-        floor_count: template.floors
+        layout_name: template.layout_name,
+        total_rows: template.total_rows,
+        total_columns: template.total_columns,
+        floor_count: template.floor_count
       }));
     } else {
       // If for some reason template is not found (or cleared if we allowed clear)
@@ -73,7 +73,7 @@ export default function LayoutFormModal({ open, onClose, onSubmit, templates = [
               {templates.length === 0 && <MenuItem disabled value="">Chưa có mẫu nào</MenuItem>}
               {templates.map((t) => (
                 <MenuItem key={t.id} value={t.id}>
-                  {t.name} ({t.rows}x{t.cols}, {t.floors} tầng)
+                  {t.layout_name} ({t.total_rows}x{t.total_columns}, {t.floor_count} tầng)
                 </MenuItem>
               ))}
             </Select>

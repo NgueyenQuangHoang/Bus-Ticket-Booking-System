@@ -95,6 +95,14 @@ export default function SeatAction({ anchorEl, position, seatTypes, onClose, onS
             />} 
             label={<span className='text-xs'>Cầu thang</span>} 
           />
+          <FormControlLabel 
+            control={<Checkbox 
+              size="small" 
+              checked={formData?.is_aisle || false}
+              onChange={(e) => handleChange('is_aisle', e.target.checked)}
+            />} 
+            label={<span className='text-xs'>Lối đi</span>} 
+          />
         </div>
         
         <Divider />
