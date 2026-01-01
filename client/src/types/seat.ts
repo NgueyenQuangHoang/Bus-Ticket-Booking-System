@@ -34,6 +34,7 @@ export interface SeatPosition {
   is_driver_seat?: boolean;
   is_door?: boolean;
   is_stair?: boolean;
+  is_aisle?: boolean;
   label?: string; // e.g. A1, B2
   status?: 'ACTIVE' | 'MAINTENANCE';
   id?: string | number;
@@ -51,11 +52,4 @@ export interface Seat {
   id?: string | number;
 }
 
-export interface SeatTemplate {
-  id: number | string;
-  name: string;
-  rows: number;
-  cols: number;
-  floors: 1 | 2;
-  created_at?: Timestamp;
-}
+

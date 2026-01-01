@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Close } from '@mui/icons-material';
 import CustomSelect from './CustomSelect';
@@ -12,34 +12,38 @@ interface PaymentGatewayModalProps {
 }
 
 export default function PaymentGatewayFormModal({ isOpen, onClose, onSave, payment }: PaymentGatewayModalProps) {
-  const [formData, setFormData] = useState({
-    provider_name: '',
-    provider_type: 'GATEWAY',
-    api_endpoint: '',
-    id: ''
-  });
-  
+  const getInitialFormState = (currentPayment: PaymentProvider | null | undefined) => {
+    if (currentPayment) {
+      return {
+        provider_name: currentPayment.provider_name,
+        provider_type: currentPayment.provider_type,
+        api_endpoint: currentPayment.api_endpoint,
+        id: currentPayment.id
+      };
+    }
+    return {
+      provider_name: '',
+      provider_type: 'GATEWAY',
+      api_endpoint: '',
+      id: uuidv4()
+    };
+  };
+
+  const [formData, setFormData] = useState(() => getInitialFormState(payment));
   const [errors, setErrors] = useState<{ provider_name?: string; api_endpoint?: string }>({});
 
-  // Update form data when payment prop changes or modal opens
-  useEffect(() => {
-    if (payment) {
-      setFormData({
-        provider_name: payment.provider_name,
-        provider_type: payment.provider_type,
-        api_endpoint: payment.api_endpoint,
-        id: payment.id
-      });
-    } else {
-      setFormData({
-        provider_name: '',
-        provider_type: 'GATEWAY',
-        api_endpoint: '',
-        id: uuidv4()
-      });
+  const [prevPayment, setPrevPayment] = useState(payment);
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+
+  // Sync state with props
+  if (payment !== prevPayment || isOpen !== prevIsOpen) {
+    setPrevPayment(payment);
+    setPrevIsOpen(isOpen);
+    if (isOpen) {
+      setFormData(getInitialFormState(payment));
+      setErrors({});
     }
-    setErrors({});
-  }, [payment, isOpen]);
+  }
 
   if (!isOpen) return null;
 
@@ -64,7 +68,7 @@ export default function PaymentGatewayFormModal({ isOpen, onClose, onSave, payme
       onSave({
           ...(payment && { payment_provider_id: payment.payment_provider_id }),
           ...formData
-      } as any);
+      } as PaymentProvider | Omit<PaymentProvider, 'payment_provider_id'>);
       onClose();
     }
   };

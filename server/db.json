@@ -879,7 +879,7 @@
       "id": "1",
       "bus_company_id": "1",
       "vehicle_type_id": "1",
-      "layout_id": "3bcb",
+      "layout_id": "840b",
       "name": "An Hòa Hiệp – Giường nằm 40 chỗ",
       "license_plate": "51B-12345",
       "capacity": 40,
@@ -1041,18 +1041,29 @@
       "updated_at": "2025-01-14T08:00:00"
     },
     {
-      "id": "3bcb",
-      "layout_name": "lmao",
-      "total_rows": 7,
-      "total_columns": 2,
-      "floor_count": 1
-    },
-    {
-      "id": "30c7",
+      "id": "fd4b",
       "layout_name": "vip 9 chỗ",
       "total_rows": 5,
       "total_columns": 2,
-      "floor_count": 1
+      "floor_count": 1,
+      "is_template": true,
+      "created_at": "2025-12-29T00:59:02.016Z"
+    },
+    {
+      "id": "5374",
+      "layout_name": "test",
+      "total_rows": 7,
+      "total_columns": 5,
+      "floor_count": 2,
+      "created_at": "2025-12-30T00:52:32.531Z",
+      "is_template": true
+    },
+    {
+      "id": "840b",
+      "layout_name": "test",
+      "total_rows": 7,
+      "total_columns": 5,
+      "floor_count": 2
     }
   ],
   "seat_types": [
@@ -1152,6 +1163,24 @@
       "is_door": false,
       "is_stair": false,
       "rotation": 0
+    },
+    {
+      "id": "eca4",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": true,
+      "label": "Tài",
+      "layout_id": "840b"
+    },
+    {
+      "id": "995f",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 5,
+      "is_door": true,
+      "label": "Cửa",
+      "layout_id": "840b"
     }
   ],
   "schedules": [
@@ -1563,24 +1592,6 @@
       "route_id": "6",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
       "priority": 5
-    }
-  ],
-  "seat_templates": [
-    {
-      "id": "82d6",
-      "name": "lmao",
-      "rows": 7,
-      "cols": 2,
-      "floors": 1,
-      "created_at": "2025-12-29T00:44:07.524Z"
-    },
-    {
-      "id": "fd4b",
-      "name": "vip 9 chỗ",
-      "rows": 5,
-      "cols": 2,
-      "floors": 1,
-      "created_at": "2025-12-29T00:59:02.016Z"
     }
   ]
 }

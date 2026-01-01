@@ -5,7 +5,7 @@ import SeatToolbar from './SeatToolbar';
 import SeatGrid from './SeatGrid';
 import SeatLegend from './SeatLegend';
 import LayoutFormModal from './LayoutFormModal';
-import type { BusLayout, SeatPosition, SeatType, SeatTemplate } from '../../../../../types/seat';
+import type { BusLayout, SeatPosition, SeatType } from '../../../../../types/seat';
 import type { Bus } from '../../../../../types/bus';
 import seatService from '../../../../../services/admin/seatService';
 import busService from '../../../../../services/admin/busService';
@@ -13,7 +13,7 @@ import busService from '../../../../../services/admin/busService';
 export default function SeatLayoutPage() {
   const [buses, setBuses] = useState<Bus[]>([]);
   const [seatTypes, setSeatTypes] = useState<SeatType[]>([]);
-  const [templates, setTemplates] = useState<SeatTemplate[]>([]);
+  const [templates, setTemplates] = useState<BusLayout[]>([]);
   const [selectedBusId, setSelectedBusId] = useState<number | string>('');
   
   const [layout, setLayout] = useState<BusLayout | null>(null);
@@ -71,7 +71,29 @@ export default function SeatLayoutPage() {
       return;
     }
 
-    const createdLayout = await seatService.createLayout(layoutData, []);
+    // Generate initial positions for Driver and Door
+    const initialPositions: Partial<SeatPosition>[] = [];
+    const cols = layoutData.total_columns || 4; // Default to 4 if not set
+
+    // Driver at (1, 1) on Floor 1
+    initialPositions.push({
+      floor: 1,
+      row_index: 1,
+      column_index: 1,
+      is_driver_seat: true,
+      label: 'Tài'
+    });
+
+    // Door at (1, Last Column) on Floor 1
+    initialPositions.push({
+      floor: 1,
+      row_index: 1,
+      column_index: cols,
+      is_door: true,
+      label: 'Cửa'
+    });
+
+    const createdLayout = await seatService.createLayout(layoutData, initialPositions);
     if (createdLayout && createdLayout.id) {
       await busService.updateBusLayout(selectedBusId, createdLayout.id);
       

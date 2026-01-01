@@ -1,13 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { IconButton, Tooltip } from "@mui/material";
+import { Delete as DeleteIcon } from "@mui/icons-material";
 import seatService from "../../../../../services/admin/seatService";
-// import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import type { BusLayout } from "../../../../../types/seat";
 
 export default function SeatLayoutTemplatePage() {
   const [layoutName, setLayoutName] = useState("");
   const [rows, setRows] = useState(7);
   const [cols, setCols] = useState(5);
   const [floors, setFloors] = useState<1 | 2>(1);
-  // const navigate = useNavigate();
+  const [templates, setTemplates] = useState<BusLayout[]>([]);
+
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      const data = await seatService.getAllTemplates();
+      setTemplates(data || []);
+    };
+    fetchTemplates();
+  }, [refreshKey]);
+
+  const triggerRefresh = () => setRefreshKey((prev) => prev + 1);
 
   const handleSave = async () => {
     if (!layoutName) {
@@ -16,18 +31,19 @@ export default function SeatLayoutTemplatePage() {
     }
 
     const templateData = {
-      name: layoutName,
-      rows: rows,
-      cols: cols,
-      floors: floors,
+      layout_name: layoutName,
+      total_rows: rows,
+      total_columns: cols,
+      floor_count: floors,
       created_at: new Date().toISOString()
     };
 
     const result = await seatService.createTemplate(templateData);
     if (result) {
       alert("Đã lưu sơ đồ mẫu thành công!");
-      // Optionally navigate or reset
-      // navigate('/admin/seat-maps'); 
+      triggerRefresh(); 
+      setLayoutName(""); 
+      // Optionally navigate or reset 
     } else {
       alert("Lỗi khi lưu sơ đồ mẫu");
     }
@@ -104,7 +120,7 @@ export default function SeatLayoutTemplatePage() {
         <div className="col-span-8 bg-white rounded-xl p-4 border">
           <h2 className="font-semibold mb-4">Xem trước sơ đồ</h2>
 
-          <div className="flex gap-6">
+          <div className="flex gap-6 justify-center">
             {Array.from({ length: floors }).map((_, floorIdx) => (
               <div key={floorIdx}>
                 <p className="text-sm text-center mb-2">
@@ -127,6 +143,71 @@ export default function SeatLayoutTemplatePage() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl p-6 border">
+        <h2 className="font-semibold mb-4">Danh sách sơ đồ mẫu</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            <thead className="bg-gray-50 text-gray-700 font-medium">
+              <tr>
+                <th className="px-4 py-3 rounded-l-lg">Tên sơ đồ</th>
+                <th className="px-4 py-3">Kích thước</th>
+                <th className="px-4 py-3">Số tầng</th>
+                <th className="px-4 py-3 rounded-r-lg text-right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {templates.length === 0 ? (
+                <tr>
+                   <td colSpan={4} className="px-4 py-6 text-center text-gray-500">Chưa có mẫu nào</td>
+                </tr>
+              ) : (
+                templates.map((t) => (
+                  <tr key={t.id} className="hover:bg-gray-50/50">
+                    <td className="px-4 py-3 font-medium">{t.layout_name}</td>
+                    <td className="px-4 py-3">{t.total_rows} x {t.total_columns}</td>
+                    <td className="px-4 py-3">{t.floor_count} tầng</td>
+                    <td className="px-4 py-3 text-right">
+                       <Tooltip title="Xóa mẫu">
+                         <IconButton 
+                           color="error"
+                           onClick={() => {
+                             Swal.fire({
+                               title: "Are you sure?",
+                               text: "You won't be able to revert this!",
+                               icon: "warning",
+                               showCancelButton: true,
+                               confirmButtonColor: "#3085d6",
+                               cancelButtonColor: "#d33",
+                               confirmButtonText: "Yes, delete it!"
+                             }).then(async (result) => {
+                               if (result.isConfirmed) {
+                                 const success = await seatService.deleteTemplate(t.id!);
+                                 if (success) {
+                                  triggerRefresh();
+                                  Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Your file has been deleted.",
+                                    icon: "success"
+                                  });
+                                 } else {
+                                  Swal.fire("Lỗi!", "Không thể xóa mẫu này.", "error");
+                                 }
+                               }
+                             });
+                           }}
+                         >
+                           <DeleteIcon />
+                         </IconButton>
+                       </Tooltip>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
