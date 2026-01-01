@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Paper, Pagination } from '@mui/material';
+import Swal from 'sweetalert2';
 import type { SeatType } from '../../../../../types/seat';
 import seatService from '../../../../../services/admin/seatService';
 import SeatTypeTable from '../../types/components/SeatTypeTable';
@@ -34,10 +35,25 @@ export default function SeatTypesPage() {
   };
 
   const handleDelete = async (id: number | string) => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa loại ghế này?')) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
         await seatService.deleteSeatType(id);
         fetchSeatTypes();
-    }
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+    });
   };
 
   const filtered = seatTypes.filter(st => 

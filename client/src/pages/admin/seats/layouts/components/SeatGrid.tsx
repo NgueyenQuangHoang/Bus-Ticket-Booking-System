@@ -52,7 +52,7 @@ export default function SeatGrid({ rows, cols, positions, setPositions, activeFl
       p => !(p.floor === pos.floor && p.row_index === pos.row_index && p.column_index === pos.column_index)
     );
 
-    if (pos.label || pos.is_driver_seat || pos.is_door || pos.is_stair || pos.seat_type_id) {
+    if (pos.label || pos.is_driver_seat || pos.is_door || pos.is_stair || pos.is_aisle || pos.seat_type_id) {
       setPositions([...otherPositions, pos]);
     } else {
       setPositions([...otherPositions]);

@@ -1,4 +1,5 @@
 {
+  "bookings": [],
   "users": [
     {
       "id": "1",
@@ -21,6 +22,18 @@
       "status": "LOCKED",
       "created_at": "Sat Dec 27 2025 19:15:34 GMT+0700 (GMT+07:00)",
       "updated_at": "Sat Dec 27 2025 20:42:42 GMT+0700 (GMT+07:00)"
+    },
+    {
+      "id": "bba5",
+      "first_name": "Hoàng",
+      "last_name": "Nguyễn",
+      "email": "nguyenquanghoang1080@gmail.com",
+      "password": "15122004",
+      "phone": "0338470809",
+      "created_at": "2026-01-01T04:47:12.552Z",
+      "updated_at": "2026-01-01T04:47:12.552Z",
+      "status": "ACTIVE",
+      "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9"
     }
   ],
   "roles": [
@@ -47,6 +60,11 @@
       "id": "2",
       "user_id": "2",
       "role_id": "1"
+    },
+    {
+      "id": "a2eb1e12-3c0e-41f7-9f6d-13b5ca7d2982",
+      "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9",
+      "role_id": 1
     }
   ],
   "cities": [
@@ -679,6 +697,16 @@
       "location": "Nguyễn Trãi, Ninh Kiều",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "id": "8",
+      "station_name": "Bến xe Vũng Tàu",
+      "city_id": "7",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
+      "description": "Bến xe trung tâm Vũng Tàu",
+      "location": "192 Nam Kỳ Khởi Nghĩa, Phường 3",
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01"
     }
   ],
   "routes": [
@@ -774,6 +802,17 @@
       "base_price": 250000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "id": "10",
+      "departure_station_id": "8",
+      "arrival_station_id": "3",
+      "distance": 120,
+      "duration": 150,
+      "base_price": 100000,
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01",
+      "description": "Tuyến xe từ Bà Rịa Vũng Tàu đến Hồ Chí Minh, thời gian di chuyển khoảng 2.5 giờ"
     }
   ],
   "bus_companies": [
@@ -1172,18 +1211,29 @@
       "updated_at": "2025-01-14T08:00:00"
     },
     {
-      "id": "3bcb",
-      "layout_name": "lmao",
-      "total_rows": 7,
-      "total_columns": 2,
-      "floor_count": 1
-    },
-    {
-      "id": "30c7",
+      "id": "fd4b",
       "layout_name": "vip 9 chỗ",
       "total_rows": 5,
       "total_columns": 2,
-      "floor_count": 1
+      "floor_count": 1,
+      "is_template": true,
+      "created_at": "2025-12-29T00:59:02.016Z"
+    },
+    {
+      "id": "5374",
+      "layout_name": "test",
+      "total_rows": 7,
+      "total_columns": 5,
+      "floor_count": 2,
+      "created_at": "2025-12-30T00:52:32.531Z",
+      "is_template": true
+    },
+    {
+      "id": "840b",
+      "layout_name": "test",
+      "total_rows": 7,
+      "total_columns": 5,
+      "floor_count": 2
     }
   ],
   "seat_types": [
@@ -1283,6 +1333,441 @@
       "is_door": false,
       "is_stair": false,
       "rotation": 0
+    },
+    {
+      "id": "eca4",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": true,
+      "label": "Tài",
+      "layout_id": "840b"
+    },
+    {
+      "id": "995f",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 5,
+      "is_door": true,
+      "label": "Cửa",
+      "layout_id": "840b"
+    },
+    {
+      "id": "1767247870423",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A01",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870424",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A02",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870425",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A03",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870426",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A04",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870427",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A05",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870428",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A06",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870429",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A07",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870430",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A08",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870431",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A09",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870432",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A10",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870433",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A11",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870434",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A12",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870435",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A13",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870436",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A14",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870437",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A15",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870438",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 6,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A16",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870439",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 6,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A17",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870440",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 0,
+      "is_driver_seat": true,
+      "label": "Tài"
+    },
+    {
+      "id": "1767247870441",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B01",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870442",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 1,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B02",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870443",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 1,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B03",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870444",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 2,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B04",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870445",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 2,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B05",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870446",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 2,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B06",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870447",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 3,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B07",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870448",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 3,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B08",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870449",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 3,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B09",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870450",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 4,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B10",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870451",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 4,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B11",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870452",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 4,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B12",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870453",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 5,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B13",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870454",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 5,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B14",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870455",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 5,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B15",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870456",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 6,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B16",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870457",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 6,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B17",
+      "seat_type_id": 2
     }
   ],
   "schedules": [
@@ -1501,6 +1986,42 @@
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "id": "19",
+      "route_id": "10",
+      "bus_id": "5",
+      "departure_time": "2026-01-02T08:00",
+      "arrival_time": "2026-01-02T10:30",
+      "total_seats": 34,
+      "available_seats": 34,
+      "status": "AVAILABLE",
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01"
+    },
+    {
+      "id": "20",
+      "route_id": "10",
+      "bus_id": "2",
+      "departure_time": "2026-01-02T14:00",
+      "arrival_time": "2026-01-02T16:30",
+      "total_seats": 34,
+      "available_seats": 34,
+      "status": "AVAILABLE",
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01"
+    },
+    {
+      "id": "21",
+      "route_id": "10",
+      "bus_id": "7",
+      "departure_time": "2026-01-02T19:00",
+      "arrival_time": "2026-01-02T21:30",
+      "total_seats": 40,
+      "available_seats": 40,
+      "status": "AVAILABLE",
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01"
     }
   ],
   "seat_schedule": [
@@ -1694,24 +2215,6 @@
       "route_id": "6",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
       "priority": 5
-    }
-  ],
-  "seat_templates": [
-    {
-      "id": "82d6",
-      "name": "lmao",
-      "rows": 7,
-      "cols": 2,
-      "floors": 1,
-      "created_at": "2025-12-29T00:44:07.524Z"
-    },
-    {
-      "id": "fd4b",
-      "name": "vip 9 chỗ",
-      "rows": 5,
-      "cols": 2,
-      "floors": 1,
-      "created_at": "2025-12-29T00:59:02.016Z"
     }
   ]
 }
