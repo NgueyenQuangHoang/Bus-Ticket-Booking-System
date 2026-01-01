@@ -11,9 +11,18 @@ export const stationService = {
             return [];
         }
     },
-    getAllStationWithCity: async () : Promise<(Station&{city_name?:string})[]> => {
+    getStationsByCity: async (city_id: number | string): Promise<Station[]> => {
         try {
-            const response : Station[] = await api.get('/stations')
+            const response = await api.get<Station[]>(`/stations?city_id=${city_id}`);
+            return response as unknown as Station[];
+        } catch (error) {
+            console.error(`Error fetching stations for city ${city_id}:`, error);
+            return [];
+        }
+    },
+    getAllStationWithCity: async (): Promise<(Station & { city_name?: string })[]> => {
+        try {
+            const response: Station[] = await api.get('/stations')
             const responseCity: City[] = await api.get('/cities')
 
             const cityMapping: Record<string, string> = responseCity.reduce((acc, city) => {
@@ -24,16 +33,16 @@ export const stationService = {
             }, {});
 
             const returnData: (Station & { city_name?: string })[] = response.map((item) => {
-                return {...item, city_name: cityMapping[item.city_id]}
+                return { ...item, city_name: cityMapping[item.city_id] }
             })
-            
+
             return returnData
         } catch (error) {
             console.log(error);
             return []
         }
     }
-    
+
     ,
 
     getPopularStations: async (limit: number = 5): Promise<Station[]> => {

@@ -4,6 +4,12 @@ import type { ScheduleUI } from "./ScheduleTable";
 import CustomSelect from "./CustomSelect";
 import CustomDateTimePicker from "./CustomDateTimePicker";
 import { validateSchedule } from "./validation";
+import { cityService } from "../../../../services/cityService";
+import { stationService } from "../../../../services/stationService";
+import { routesService } from "../../../../services/routesService";
+import busService from "../../../../services/admin/busService";
+import type { City, Station, Route } from "../../../../types";
+import type { Bus } from "../../../../types/bus";
 
 type Props = {
   open: boolean;
@@ -12,19 +18,6 @@ type Props = {
   initialData?: ScheduleUI | null;
   existingSchedules: ScheduleUI[];
 };
-
-// Mock data for selections
-const ROUTES = [
-  { id: 101, name: "Bến xe Miền Đông → Bến xe Mỹ Đình" },
-  { id: 102, name: "Bến xe Miền Đông → Bến xe Giáp Bát" },
-  { id: 103, name: "Bến xe Miền Tây → Bến xe Mỹ Đình" },
-];
-
-const BUSES = [
-  { id: 201, name: "FUTA-VIP01", license: "51B-12345" },
-  { id: 202, name: "FUTA-VIP02", license: "51B-67890" },
-  { id: 203, name: "HL-001", license: "29B-99999" },
-];
 
 const STATUS_OPTIONS = [
     { label: "Sẵn sàng (Available)", value: "AVAILABLE" },
@@ -36,7 +29,7 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
   const [formData, setFormData] = useState<Partial<ScheduleUI>>({
     route_id: 0,
     bus_id: 0,
-    departure_time_str: "", // Default empty
+    departure_time_str: "",
     total_seats: 40,
     available_seat: 40,
     status: "AVAILABLE",
@@ -44,18 +37,101 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
   
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Data Source States
+  const [cities, setCities] = useState<City[]>([]);
+  const [stationsFrom, setStationsFrom] = useState<Station[]>([]);
+  const [stationsTo, setStationsTo] = useState<Station[]>([]);
+  const [availableRoutes, setAvailableRoutes] = useState<Route[]>([]);
+  const [buses, setBuses] = useState<Bus[]>([]);
+
+  // Selection States
+  const [selectedCityFrom, setSelectedCityFrom] = useState<string | number | null>(null);
+  const [selectedStationFrom, setSelectedStationFrom] = useState<string | number | null>(null);
+  const [selectedCityTo, setSelectedCityTo] = useState<string | number | null>(null);
+  const [selectedStationTo, setSelectedStationTo] = useState<string | number | null>(null);
+
+  // Load Initial Data (Cities + Buses)
   useEffect(() => {
-    if (initialData) {
+      const fetchData = async () => {
+          try {
+              const [citiesData, busesData] = await Promise.all([
+                  cityService.getAllCities(),
+                  busService.getAllBuses()
+              ]);
+              setCities(citiesData);
+              setBuses(busesData);
+          } catch (err) {
+              console.error("Failed to load initial data", err);
+          }
+      };
+      if (open) {
+        fetchData();
+      }
+  }, [open]);
+
+  // Load Initial Data Logic
+  useEffect(() => {
+    if (initialData && open) {
       setFormData(initialData);
-    } else {
-      // Set default time to something valid for the picker to parse if new
+      
+      const loadInitialRouteInfo = async () => {
+          if (!initialData.route_id) return;
+
+          // 1. Get all routes to find the specific one (or get by ID if possible)
+          // Since we don't have getRouteById in service yet, we can filter or use getAllRoutes
+          // But actually, we need to know the STATIONS to pre-fill the dropdowns.
+          try {
+               const allRoutes = await routesService.getAllRoutes();
+               // CASTING: route.id from backend might be string, initialData.route_id is number.
+               // Compare loosely or convert.
+               const currentRoute = allRoutes.find(r => String(r.id) === String(initialData.route_id));
+               
+               if (currentRoute) {
+                   const depStationId = currentRoute.departure_station_id;
+                   const arrStationId = currentRoute.arrival_station_id;
+
+                   // 2. Fetch Stations Details to get their City IDs
+                   // We need to fetch ALL stations or just specific ones? 
+                   // stationService.getParticularStation takes number.
+                   const depStation = await stationService.getParticularStation(Number(depStationId));
+                   const arrStation = await stationService.getParticularStation(Number(arrStationId));
+
+                   if (depStation && arrStation) {
+                       // 3. Set Cities
+                       setSelectedCityFrom(depStation.city_id);
+                       setSelectedCityTo(arrStation.city_id);
+
+                       // 4. Fetch Stations for those cities so dropdowns are populated
+                       const stationsForCityFrom = await stationService.getStationsByCity(depStation.city_id);
+                       const stationsForCityTo = await stationService.getStationsByCity(arrStation.city_id);
+                       
+                       setStationsFrom(stationsForCityFrom);
+                       setStationsTo(stationsForCityTo);
+
+                       // 5. Set Stations
+                       setSelectedStationFrom(depStation.id);
+                       setSelectedStationTo(arrStation.id);
+
+                       // 6. Fetch Compatible Routes
+                       const routes = await routesService.getRoutesByStations(depStation.id, arrStation.id);
+                       setAvailableRoutes(routes);
+                   }
+               }
+          } catch (err) {
+              console.error("Failed to load initial route info", err);
+          }
+      };
+      
+      loadInitialRouteInfo();
+
+    } else if (open) {
+       // New Form Setup
        const now = new Date();
-       // Format as HH:mm dd/MM/yyyy (Manual or using options to ensure no seconds)
        const timePart = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
        const datePart = now.toLocaleDateString('en-GB');
        const timeStr = `${timePart} ${datePart}`;
        
-      setFormData({
+       setFormData({
         route_id: 0,
         bus_id: 0,
         departure_time_str: timeStr,
@@ -63,8 +139,17 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
         available_seat: 40,
         status: "AVAILABLE",
       });
+      
+      // Reset selections
+      setSelectedCityFrom(null);
+      setSelectedStationFrom(null);
+      setSelectedCityTo(null);
+      setSelectedStationTo(null);
+      setStationsFrom([]);
+      setStationsTo([]);
+      setAvailableRoutes([]);
     }
-    setErrors({}); // Reset errors on open
+    setErrors({});
   }, [initialData, open]);
 
   const handleChange = (field: keyof ScheduleUI, value: any) => {
@@ -72,12 +157,54 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
       ...prev,
       [field]: value,
     }));
-    // Clear error when user changes the field
     if (errors[field]) {
         setErrors(prev => ({ ...prev, [field]: "" }));
     }
   };
-  
+
+  // --- Handlers ---
+
+  const handleCityFromChange = async (val: string | number) => {
+      setSelectedCityFrom(val);
+      setSelectedStationFrom(null);
+      setAvailableRoutes([]);
+      setFormData(prev => ({ ...prev, route_id: 0 }));
+      
+      // Fetch stations for this city
+      const stations = await stationService.getStationsByCity(val);
+      setStationsFrom(stations);
+  };
+
+  const handleStationFromChange = async (val: string | number) => {
+      setSelectedStationFrom(val);
+      setFormData(prev => ({ ...prev, route_id: 0 }));
+      
+      if (selectedStationTo) {
+          const routes = await routesService.getRoutesByStations(val, selectedStationTo);
+          setAvailableRoutes(routes);
+      }
+  };
+
+  const handleCityToChange = async (val: string | number) => {
+      setSelectedCityTo(val);
+      setSelectedStationTo(null);
+      setAvailableRoutes([]);
+      setFormData(prev => ({ ...prev, route_id: 0 }));
+      
+      const stations = await stationService.getStationsByCity(val);
+      setStationsTo(stations);
+  };
+
+  const handleStationToChange = async (val: string | number) => {
+      setSelectedStationTo(val);
+      setFormData(prev => ({ ...prev, route_id: 0 }));
+      
+      if (selectedStationFrom) {
+          const routes = await routesService.getRoutesByStations(selectedStationFrom, val);
+          setAvailableRoutes(routes);
+      }
+  };
+
   const validate = (): boolean => {
       const newErrors = validateSchedule(formData, existingSchedules, initialData?.schedule_id);
       setErrors(newErrors);
@@ -86,20 +213,25 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     
-    if (!validate()) {
-        return;
+    const route = availableRoutes.find(r => String(r.id) === String(formData.route_id));
+    const bus = buses.find(b => String(b.id) === String(formData.bus_id));
+    
+    let routeName = route?.description || "Tuyến xe";
+    if (selectedStationFrom && selectedStationTo) {
+        const dep = stationsFrom.find(s => String(s.id) === String(selectedStationFrom));
+        const arr = stationsTo.find(s => String(s.id) === String(selectedStationTo));
+        if (dep && arr) {
+            routeName = `${dep.station_name} → ${arr.station_name}`;
+        }
     }
-    
-    // Resolve names for UI (Mock logic)
-    const route = ROUTES.find(r => r.id === formData.route_id);
-    const bus = BUSES.find(b => b.id === formData.bus_id);
-    
+
     onSubmit({
         ...formData,
-        route_name: route?.name,
+        route_name: routeName,
         bus_name: bus?.name,
-        bus_license: bus?.license,
+        bus_license: bus?.license_plate,
     });
     onClose();
   };
@@ -107,9 +239,9 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl animate-modal-in">
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm flex items-start justify-center p-4">
+      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-2xl animate-modal-in my-8">
+        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10 rounded-t-xl">
           <h2 className="text-xl font-bold text-slate-800">
             {initialData ? "Cập nhật lịch trình" : "Tạo lịch trình mới"}
           </h2>
@@ -118,27 +250,87 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Route - Custom Select */}
-            <div className="md:col-span-1">
-                <CustomSelect
-                    label="Tuyến xe"
-                    options={ROUTES.map(r => ({ label: r.name, value: r.id }))}
-                    value={formData.route_id || 0}
-                    onChange={(val) => handleChange("route_id", Number(val))}
-                    placeholder="Chọn tuyến xe"
-                />
-                {errors.route_id && <p className="text-red-500 text-xs mt-1 ml-1">{errors.route_id}</p>}
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+            {/* --- Route Selection Flow --- */}
+            <div className="p-4 bg-slate-50 rounded-lg border border-slate-100 space-y-4">
+                <h3 className="font-semibold text-slate-700">Chọn Lộ Trình</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* 1. City From */}
+                    <CustomSelect
+                        label="Thành phố đi"
+                        options={cities.map(c => ({ label: c.city_name, value: c.id }))}
+                        value={selectedCityFrom || 0}
+                        onChange={(val) => handleCityFromChange(val)}
+                        placeholder="Chọn thành phố đi"
+                    />
+                    
+                    {/* 2. Station From */}
+                    <div className={!selectedCityFrom ? "opacity-50 pointer-events-none" : ""}>
+                        <CustomSelect
+                            label="Bến đi"
+                            options={stationsFrom.map(s => ({ label: s.station_name, value: s.id }))}
+                            value={selectedStationFrom || 0}
+                            onChange={(val) => handleStationFromChange(val)}
+                            placeholder="Chọn bến đi"
+                        />
+                    </div>
+                    
+                    {/* 3. City To */}
+                    <CustomSelect
+                        label="Thành phố đến"
+                        options={cities.map(c => ({ label: c.city_name, value: c.id }))}
+                        value={selectedCityTo || 0}
+                        onChange={(val) => handleCityToChange(val)}
+                        placeholder="Chọn thành phố đến"
+                    />
+
+                    {/* 4. Station To */}
+                    <div className={!selectedCityTo ? "opacity-50 pointer-events-none" : ""}>
+                         <CustomSelect
+                            label="Bến đến"
+                            options={stationsTo.map(s => ({ label: s.station_name, value: s.id }))}
+                            value={selectedStationTo || 0}
+                            onChange={(val) => handleStationToChange(val)}
+                            placeholder="Chọn bến đến"
+                        />
+                    </div>
+                </div>
+
+                {/* Resulting Route Select */}
+                <div className={(!selectedStationFrom || !selectedStationTo) ? "opacity-70" : ""}>
+                    <CustomSelect
+                        label="Tuyến xe phù hợp"
+                        // Display Distance/Price info if available
+                        options={availableRoutes.map(r => ({ 
+                            label: `${r.distance ? r.distance + 'km' : ''} - ${r.base_price ? Number(r.base_price).toLocaleString() + 'đ' : ''} ${r.description ? '('+r.description.substring(0, 30)+'...)': ''}`, 
+                            value: r.id 
+                        }))}
+                        value={formData.route_id || 0}
+                        onChange={(val) => handleChange("route_id", val)}
+                        placeholder={
+                            !selectedStationFrom || !selectedStationTo 
+                            ? "Vui lòng chọn đầy đủ bến đi và bến đến..." 
+                            : availableRoutes.length === 0 
+                                ? "Không tìm thấy tuyến xe phù hợp" 
+                                : "Chọn tuyến xe"
+                        }
+                    />
+                     {errors.route_id && <p className="text-red-500 text-xs mt-1 ml-1">{errors.route_id}</p>}
+                </div>
             </div>
 
+            <hr className="border-slate-100" />
+            
+            {/* --- Other Info --- */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
             {/* Bus - Custom Select */}
             <div className="md:col-span-1">
                 <CustomSelect
                     label="Xe"
-                    options={BUSES.map(b => ({ label: `${b.name} - ${b.license}`, value: b.id }))}
+                    options={buses.map(b => ({ label: `${b.name} - ${b.license_plate}`, value: b.id || "" }))}
                     value={formData.bus_id || 0}
-                    onChange={(val) => handleChange("bus_id", Number(val))}
+                    onChange={(val) => handleChange("bus_id", val)}
                     placeholder="Chọn xe"
                 />
                 {errors.bus_id && <p className="text-red-500 text-xs mt-1 ml-1">{errors.bus_id}</p>}
@@ -177,11 +369,11 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
                  {errors.total_seats && <p className="text-red-500 text-xs mt-1 ml-1">{errors.total_seats}</p>}
             </div>
 
-             <div>
+             <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-slate-700 mb-1">Ghế trống</label>
                 <input
                     type="text"
-                    className={`w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${errors.available_seat ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${errors.available_seat ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
                     value={formData.available_seat}
                     onChange={(e) => handleChange("available_seat",e.target.value)}
                 />

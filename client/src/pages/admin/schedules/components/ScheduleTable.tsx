@@ -2,14 +2,16 @@ import type { ScheduleStatus } from "../../../../types/route";
 import { Edit, Delete } from "@mui/icons-material";
 
 export type ScheduleUI = {
-  schedule_id: number;
-  route_id: number;
+  schedule_id: number | string;
+  route_id: number | string;
   bus_id: number;
   route_name?: string;
   bus_name?: string;
   bus_license?: string;
   departure_time_str?: string; 
-  available_seat?: number;
+  departure_time?: string; // From API
+  available_seat?: number; 
+  available_seats?: number; // From API
   total_seats?: number;
   status: ScheduleStatus;
 };
@@ -56,7 +58,7 @@ export default function ScheduleTable({
 
                 {/* BUS */}
                 <td className='px-6 py-4'>
-                  <div className="text-sm font-medium text-slate-900">{item.bus_name || `Bus #${item.bus_id}`}</div>
+                  <div className="text-sm font-medium text-slate-900">{item.bus_name}</div>
                   {item.bus_license && <div className="text-xs text-slate-500">{item.bus_license}</div>}
                 </td>
 
