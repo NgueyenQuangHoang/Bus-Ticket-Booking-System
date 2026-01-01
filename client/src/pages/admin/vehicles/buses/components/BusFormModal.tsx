@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import type { Bus, BusCompany, BusLayout } from "../../../../../types";
+import { v4 as uuidv4 } from 'uuid';
+import type { VehicleType } from "../../../../../services/vehicleTypeService";
 
 type Props = {
   open: boolean;
   onClose: () => void;
+  onSubmit: (data: Partial<Bus>, thumbnailFile?: File) => void;
+  initialData?: Bus | null;
+  busCompanies: BusCompany[];
+  vehicleTypes: VehicleType[];
+  layouts: BusLayout[];
 };
 
-export default function BusFormModal({ open, onClose }: Props) {
+export default function BusFormModal({ open, onClose, onSubmit, initialData, busCompanies, vehicleTypes, layouts }: Props) {
   if (!open) return null;
 
   /* ===== STATE ===== */
@@ -16,9 +24,39 @@ export default function BusFormModal({ open, onClose }: Props) {
     status: "ACTIVE",
     type: "",
     layout: "",
-    note: "",
-    utilities: [] as string[],
+    capacity: 0,
   });
+
+  /* ===== THUMBNAIL STATE ===== */
+  const [thumbnailPreview, setThumbnailPreview] = useState("");
+  const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
+
+  useEffect(() => {
+    if (initialData) {
+        setForm({
+            name: initialData.name || "",
+            plate: initialData.license_plate || "",
+            company: initialData.company_id ? String(initialData.company_id) : (initialData.bus_company_id ? String(initialData.bus_company_id) : ""),
+            status: initialData.status || "ACTIVE",
+            type: initialData.vehicle_type_id ? String(initialData.vehicle_type_id) : "",
+            layout: initialData.layout_id ? String(initialData.layout_id) : "",
+            capacity: initialData.capacity || 0,
+        });
+        setThumbnailPreview(initialData.thumbnail_image || "");
+    } else {
+        setForm({
+            name: "",
+            plate: "",
+            company: "",
+            status: "ACTIVE",
+            type: "",
+            layout: "",
+            capacity: 0,
+        });
+        setThumbnailPreview("");
+    }
+    setThumbnailFile(undefined);
+  }, [initialData, open]);
 
   const [errors, setErrors] = useState({
     name: "",
@@ -31,20 +69,41 @@ export default function BusFormModal({ open, onClose }: Props) {
   /* ===== HANDLER ===== */
   const handleChange = (
     key: keyof typeof form,
-    value: any
+    value: string
   ) => {
-    setForm({ ...form, [key]: value });
+    setForm(prev => ({ ...prev, [key]: value }));
     setErrors({ ...errors, [key]: "" });
   };
 
-  const toggleUtility = (item: string) => {
-    setForm((prev) => ({
-      ...prev,
-      utilities: prev.utilities.includes(item)
-        ? prev.utilities.filter((u) => u !== item)
-        : [...prev.utilities, item],
+  const handleLayoutChange = (layoutId: string) => {
+    const selectedLayout = layouts.find(l => String(l.id) === layoutId || String(l.layout_id) === layoutId);
+    let calculatedCapacity = 0;
+    
+    if (selectedLayout) {
+        // Calculate capacity: rows * columns * floors
+        // Fallback to 0 if properties are missing
+        const rows = selectedLayout.total_rows || 0;
+        const cols = selectedLayout.total_columns || 0;
+        const floors = selectedLayout.floor_count || 1;
+        calculatedCapacity = rows * cols * floors;
+    }
+
+    setForm(prev => ({ 
+        ...prev, 
+        layout: layoutId,
+        capacity: calculatedCapacity
     }));
+    setErrors({ ...errors, layout: "" });
   };
+
+  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setThumbnailFile(file);
+      setThumbnailPreview(URL.createObjectURL(file));
+    }
+  };
+
 
   const handleSubmit = () => {
     const newErrors = {
@@ -71,12 +130,22 @@ export default function BusFormModal({ open, onClose }: Props) {
       newErrors.layout = "Vui lòng chọn layout ghế";
 
     setErrors(newErrors);
+    const hasError = Object.values(newErrors).some(Boolean);
 
-    if (Object.values(newErrors).some(Boolean)) return;
-
-    console.log("SUBMIT:", form);
-    alert("Lưu xe thành công!");
-    onClose();
+    if (!hasError) {
+      onSubmit({
+        name: form.name,
+        license_plate: form.plate,
+        bus_company_id: form.company,
+        layout_id: form.layout, 
+        vehicle_type_id: form.type,
+        capacity: form.capacity,
+        status: form.status as 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'MAINTENANCE',
+        ...(initialData?.id ? { id: initialData.id } : { id: uuidv4() }),
+        ...(initialData?.bus_id ? { bus_id: initialData.bus_id } : {})
+      }, thumbnailFile);
+      onClose();
+    }
   };
 
   return (
@@ -138,11 +207,7 @@ export default function BusFormModal({ open, onClose }: Props) {
                 label="Nhà xe"
                 value={form.company}
                 error={errors.company}
-                options={[
-                  "",
-                  "Phương Trang FUTA",
-                  "Hoàng Long",
-                ]}
+                options={busCompanies.map(c => ({ value: String(c.id || c.bus_company_id), label: c.company_name, }))}
                 onChange={(v) =>
                   handleChange("company", v)
                 }
@@ -166,12 +231,7 @@ export default function BusFormModal({ open, onClose }: Props) {
                 label="Loại xe"
                 value={form.type}
                 error={errors.type}
-                options={[
-                  "",
-                  "Giường nằm",
-                  "Limousine",
-                  "Ghế ngồi",
-                ]}
+                options={vehicleTypes.map(v => ({ value: String(v.id), label: v.display_name }))}
                 onChange={(v) =>
                   handleChange("type", v)
                 }
@@ -181,74 +241,118 @@ export default function BusFormModal({ open, onClose }: Props) {
                 label="Layout ghế"
                 value={form.layout}
                 error={errors.layout}
-                options={["", "2-2", "1-2", "2-1"]}
-                onChange={(v) =>
-                  handleChange("layout", v)
-                }
+                options={[
+                  { value: "", label: "-- Chọn layout --" },
+                  ...layouts.map((l) => ({
+                    value: String(l.id || l.layout_id),
+                    label: `${l.layout_name} (Hàng: ${l.total_rows || 0}, Cột: ${l.total_columns || 0}, Tầng: ${l.floor_count || 1})`,
+                  })),
+                ]}
+                onChange={handleLayoutChange}
               />
 
-              <Input
-                label="Số ghế"
-                placeholder="Tự động"
-                disabled
-              />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Input
+                  label="Số hàng"
+                  value={
+                    form.layout
+                      ? String(
+                          layouts.find(
+                            (l) =>
+                              String(l.id) === form.layout ||
+                              String(l.layout_id) === form.layout
+                          )?.total_rows || 0
+                        )
+                      : "Tự động"
+                  }
+                  disabled
+                />
+
+                <Input
+                  label="Số cột"
+                  value={
+                    form.layout
+                      ? String(
+                          layouts.find(
+                            (l) =>
+                              String(l.id) === form.layout ||
+                              String(l.layout_id) === form.layout
+                          )?.total_columns || 0
+                        )
+                      : "Tự động"
+                  }
+                  disabled
+                />
+
+                <Input
+                  label="Số tầng"
+                  value={
+                    form.layout
+                      ? String(
+                          layouts.find(
+                            (l) =>
+                              String(l.id) === form.layout ||
+                              String(l.layout_id) === form.layout
+                          )?.floor_count || 1
+                        )
+                      : "Tự động"
+                  }
+                  disabled
+                />
+              </div>
             </div>
-          </div>
+            </div>
 
-          {/* ===== TIỆN ÍCH ===== */}
-          <div>
-            <SectionTitle text="Tiện ích" />
-            <div className="flex flex-wrap gap-4">
-              {["Wifi", "Nước", "TV", "Chăn"].map(
-                (item) => (
-                  <label
-                    key={item}
-                    className="flex items-center gap-2"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={form.utilities.includes(
-                        item
-                      )}
-                      onChange={() =>
-                        toggleUtility(item)
-                      }
+            {/* ===== ẢNH ĐẠI DIỆN ===== */}
+            <div className="space-y-4">
+              <SectionTitle text="Ảnh đại diện" />
+              
+              <div className="flex items-start gap-4">
+                <div className="w-32 h-24 border border-gray-300 rounded overflow-hidden flex items-center justify-center bg-gray-50">
+                  {thumbnailPreview ? (
+                    <img 
+                      src={thumbnailPreview} 
+                      alt="thumbnail" 
+                      className="w-full h-full object-cover" 
                     />
-                    {item}
+                  ) : (
+                    <span className="text-gray-400 text-xs">Chưa có ảnh</span>
+                  )}
+                </div>
+                <div>
+                  <label className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded cursor-pointer hover:bg-blue-100 transition text-sm font-medium">
+                    Chọn ảnh
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      hidden 
+                      onChange={handleThumbnailChange}
+                    />
                   </label>
-                )
-              )}
+                  <p className="text-xs text-gray-500 mt-2">
+                    Chọn ảnh đại diện cho xe. 
+                    Ảnh này sẽ hiển thị ở trang chủ.
+                  </p>
+                </div>
+              </div>
             </div>
+
           </div>
 
-          {/* ===== GHI CHÚ ===== */}
-          <div>
-            <label className="block mb-1 text-gray-600">
-              Ghi chú
-            </label>
-            <textarea
-              rows={3}
-              value={form.note}
-              onChange={(e) =>
-                handleChange("note", e.target.value)
-              }
-              placeholder="Ghi chú thêm cho xe"
-              className="w-full border border-gray-300 rounded px-3 py-2 resize-none"
-            />
-          </div>
-        </div>
+
+
 
         {/* ===== FOOTER ===== */}
         <div className="flex justify-end gap-3 px-4 py-3 sm:px-5 border-t border-gray-200">
           <button
             onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded text-sm"
+            className="px-4 py-2 border border-gray-300 rounded text-sm hover:cursor-pointer"
           >
             Hủy
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white rounded text-sm"
+            className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:cursor-pointer"
           >
             Lưu
           </button>
@@ -312,19 +416,21 @@ function Input({
   );
 }
 
+type SelectProps = {
+  label: string;
+  value?: string;
+  options: { value: string; label: string }[] | string[];
+  onChange: (v: string) => void;
+  error?: string;
+};
+
 function Select({
   label,
   value,
   options,
   onChange,
   error,
-}: {
-  label: string;
-  value?: string;
-  options: string[];
-  onChange: (v: string) => void;
-  error?: string;
-}) {
+}: SelectProps) {
   return (
     <div>
       <label className="block mb-1 text-gray-600">
@@ -342,11 +448,20 @@ function Select({
               : "border-gray-300"
           }`}
       >
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt || "-- Chọn --"}
-          </option>
-        ))}
+        {options.map((opt) => {
+            if (typeof opt === 'string') {
+                return (
+                    <option key={opt} value={opt}>
+                        {opt || "-- Chọn --"}
+                    </option>
+                );
+            }
+            return (
+                <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                </option>
+            );
+        })}
       </select>
       {error && (
         <p className="text-xs text-red-500 mt-1">

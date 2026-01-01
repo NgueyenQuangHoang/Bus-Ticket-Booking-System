@@ -1,29 +1,13 @@
 import { Delete, Edit, Close, LocationOn, AttachMoney, AccessTime, Straighten, Description, Save } from '@mui/icons-material';
 import { IconButton, Modal, Box, Typography, Divider, TextField, MenuItem, Button, InputAdornment } from '@mui/material';
 import Swal from 'sweetalert2';
-import { useState, type ChangeEvent } from 'react';
+import { useMemo, useState, type ChangeEvent } from 'react';
+import { useAppDispatch } from '../../../../../hooks';
+import { removeRoute, updateRoutes } from '../../../../../slices/routesSlice';
+import type { Route } from '../../../../../types';
+import ReactQuill from 'react-quill-new';
 
-// 1. Định nghĩa Interface Route
-export interface Route {
-    route_id: number;
-    departure_station_id: number;
-    arrival_station_id: number;
-    base_price?: number; // Giả định number cho Decimal trong form
-    duration?: number;
-    distance?: number;
-    description: string;
-}
 
-// 2. Tạo dữ liệu giả duy nhất để hiển thị khi bấm Sửa
-const mockRoute: Route = {
-    route_id: 501,
-    departure_station_id: 1, // Ga Sài Gòn
-    arrival_station_id: 2,   // Ga Hà Nội
-    base_price: 1250000,
-    duration: 1800,          // 30 tiếng
-    distance: 1726,
-    description: "Tuyến đường sắt Bắc Nam huyết mạch xuyên suốt Việt Nam."
-};
 
 const modalStyle = {
     position: 'absolute',
@@ -40,27 +24,51 @@ const modalStyle = {
     overflowY: 'auto'
 };
 
-export default function RouteAction() {
-    const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState<Route>(mockRoute);
+interface PropType {
+    id: string,
+    route: Route,
+    stations: { [key: string]: string }
+}
 
+export default function RouteAction({ id, route, stations }: PropType) {
+    const modules = useMemo(() => ({
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],        // Định dạng chữ
+            [{ 'color': [] }, { 'background': [] }],          // Màu chữ, màu nền
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],    // Danh sách
+            [{ 'align': [] }],                                // Căn lề
+            ['link', 'image', 'video'],                       // Chèn link, ảnh, video
+            ['clean']                                         // Xóa định dạng
+        ],
+    }), []);
+    const formats = [
+        'header', 'bold', 'italic', 'underline', 'strike',
+        'color', 'background', 'list', 'bullet', 'align',
+        'link', 'image', 'video'
+    ];
+    const dispatch = useAppDispatch()
+    const [open, setOpen] = useState(false);
+    const [formData, setFormData] = useState<Route>(route);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         // Các trường ID, Giá, Thời gian, Khoảng cách cần lưu dạng số
-        const numericFields = ['departure_station_id', 'arrival_station_id', 'base_price', 'duration', 'distance'];
-        setFormData(prev => ({
-            ...prev,
-            [name]: numericFields.includes(name) ? Number(value) : value
-        }));
+        const listNumberName = ['base_price', 'duration', 'distance', 'total_bookings']
+        setFormData(prev => {
+            return {
+                ...prev,
+                [name]: listNumberName.includes(name) ? Number(value) : value
+            }
+        });
     };
 
     const handleDeleteClick = () => {
         Swal.fire({
             title: "Xác nhận xóa?",
-            text: `Bạn muốn xóa tuyến đường ID: ${formData.route_id}?`,
+            text: `Bạn muốn xóa tuyến đường ID: ${formData.id}?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -68,6 +76,8 @@ export default function RouteAction() {
             cancelButtonText: "Hủy",
             reverseButtons: true
         }).then((result) => {
+            // delete theo id
+            dispatch(removeRoute(id))
             if (result.isConfirmed) {
                 Swal.fire("Đã xóa!", "Tuyến đường đã được loại bỏ.", "success");
             }
@@ -75,8 +85,9 @@ export default function RouteAction() {
     };
 
     const handleSave = () => {
-        console.log("Dữ liệu Route cập nhật:", formData);
+        dispatch(updateRoutes(formData))
         Swal.fire({
+            // change data
             title: "Thành công",
             text: "Thông tin tuyến đường đã được cập nhật",
             icon: "success",
@@ -85,6 +96,7 @@ export default function RouteAction() {
         });
         handleClose();
     };
+    console.log(route);
 
     return (
         <>
@@ -93,7 +105,7 @@ export default function RouteAction() {
                 <Edit fontSize="small" />
             </IconButton>
 
-            <IconButton size="small" className="text-red-500 hover:bg-red-50" onClick={handleDeleteClick}>
+            <IconButton size="small" className="text-red-500 hover:bg-red-50" onClick={() => handleDeleteClick()}>
                 <Delete fontSize="small" />
             </IconButton>
 
@@ -119,11 +131,14 @@ export default function RouteAction() {
                             </label>
                             <TextField
                                 select fullWidth size="small" name="departure_station_id"
-                                value={formData.departure_station_id} onChange={handleChange}
+                                value={formData.departure_station_id}
+                                onChange={handleChange}
                             >
-                                <MenuItem value={1}>Ga Sài Gòn</MenuItem>
-                                <MenuItem value={2}>Ga Hà Nội</MenuItem>
-                                <MenuItem value={3}>Ga Đà Nẵng</MenuItem>
+                                {Object.entries(stations).map(([id, name]) => (
+                                    <MenuItem key={id} value={id}>
+                                        {name}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                         </div>
 
@@ -136,9 +151,11 @@ export default function RouteAction() {
                                 select fullWidth size="small" name="arrival_station_id"
                                 value={formData.arrival_station_id} onChange={handleChange}
                             >
-                                <MenuItem value={1}>Ga Sài Gòn</MenuItem>
-                                <MenuItem value={2}>Ga Hà Nội</MenuItem>
-                                <MenuItem value={3}>Ga Đà Nẵng</MenuItem>
+                                {Object.entries(stations).map(([id, name]) => (
+                                    <MenuItem key={id} value={id}>
+                                        {name}
+                                    </MenuItem>
+                                ))}
                             </TextField>
                         </div>
 
@@ -183,9 +200,16 @@ export default function RouteAction() {
                             <label className="text-xs font-bold text-gray-600 uppercase flex items-center gap-1">
                                 <Description className="text-gray-500 text-[16px]" /> Ghi chú tuyến đường
                             </label>
-                            <TextField
-                                fullWidth multiline rows={3} name="description"
-                                value={formData.description} onChange={handleChange}
+                            <ReactQuill
+                                theme="snow"
+                                value={formData.description}
+                                onChange={(content) => {
+                                    setFormData(prev => ({ ...prev, description: content }));
+                                }}
+                                modules={modules}
+                                formats={formats}
+                                placeholder="Nhập mô tả về nhà ga..."
+                                style={{ height: '200px', marginBottom: '50px' }}
                             />
                         </div>
                     </div>

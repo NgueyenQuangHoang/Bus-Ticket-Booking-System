@@ -54,7 +54,7 @@
       "id": "1",
       "city_name": "Hà Nội",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
-      "region": "Bắc",
+      "region": "Nam",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
@@ -625,7 +625,7 @@
       "station_name": "Bến xe Giáp Bát",
       "city_id": "1",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg",
-      "description": "Bến xe phía Nam Hà Nội",
+      "description": "<p>Bến&nbsp;xe&nbsp;phía&nbsp;Nam&nbsp;Hà&nbsp;Nội</p>",
       "location": "Giải Phóng, Hoàng Mai",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -635,7 +635,7 @@
       "station_name": "Bến xe Miền Đông",
       "city_id": "2",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-      "description": "Bến xe lớn tại TP.HCM",
+      "description": "<p>Bến&nbsp;xe&nbsp;lớn&nbsp;tại&nbsp;TP.HCM</p>",
       "location": "292 Đinh Bộ Lĩnh, Bình Thạnh",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -665,7 +665,7 @@
       "station_name": "Bến xe Niệm Nghĩa",
       "city_id": "4",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-      "description": "Bến xe chính Hải Phòng",
+      "description": "<p>Bến&nbsp;xe&nbsp;chính&nbsp;Hải&nbsp;Phòng&nbsp;miền&nbsp;Bắc&nbsp;nước&nbsp;việt&nbsp;nam&nbsp;ấy</p>",
       "location": "Trần Nguyên Hãn",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -846,6 +846,16 @@
       "status": "ACTIVE",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
+      "company_name": "Nhà xe Cúc Phương",
+      "license_number": "123456789",
+      "contact_phone": "9090900990",
+      "contact_email": "cucphuong123@gmail.com",
+      "address": "97 Nguyễn Duy Dương",
+      "status": "ACTIVE",
+      "description": "Nhà xe xuyên Việt từ Nam ra Bắc, từ Bắc vào Nam"
     }
   ],
   "vehicle_types": [
@@ -872,10 +882,17 @@
       "code": "VIP",
       "display_name": "VIP",
       "description": "Xe VIP cao cấp nhất, dịch vụ đặc biệt"
+    },
+    {
+      "id": "e7a2ddb2-6692-4e31-957f-881dffeb5a82",
+      "code": "SUPPERVIP",
+      "display_name": "SUPPER VIP",
+      "description": "Loại xe cao cấp nhất"
     }
   ],
   "buses": [
     {
+<<<<<<< HEAD
       "id": "1",
       "bus_company_id": "1",
       "vehicle_type_id": "1",
@@ -889,6 +906,8 @@
       "updated_at": "2025-01-15T08:00:00"
     },
     {
+=======
+>>>>>>> af74b9c1fb3e8f84a9e1befa81999a4646d25d4d
       "id": "2",
       "bus_company_id": "2",
       "vehicle_type_id": "1",
@@ -899,7 +918,9 @@
       "amenities": "Wifi, TV, Nước, Chăn",
       "status": "ACTIVE",
       "created_at": "2025-01-16T08:00:00",
-      "updated_at": "2025-01-16T08:00:00"
+      "updated_at": "2025-01-16T08:00:00",
+      "company_id": "2",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062423/zhiw6vxcgclu5owxdwkf.jpg"
     },
     {
       "id": "3",
@@ -912,7 +933,9 @@
       "amenities": "Massage, Wifi, Nước, Cổng sạc",
       "status": "ACTIVE",
       "created_at": "2025-01-17T08:00:00",
-      "updated_at": "2025-01-17T08:00:00"
+      "updated_at": "2025-01-17T08:00:00",
+      "company_id": "3",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062461/zksrm02pjzfbb726nmno.jpg"
     },
     {
       "id": "4",
@@ -925,7 +948,9 @@
       "amenities": "Điều hòa",
       "status": "ACTIVE",
       "created_at": "2025-01-18T08:00:00",
-      "updated_at": "2025-01-18T08:00:00"
+      "updated_at": "2025-01-18T08:00:00",
+      "company_id": "4",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062495/ydtbws15q3n6fnkxpouf.jpg"
     },
     {
       "id": "5",
@@ -938,7 +963,9 @@
       "amenities": "Wifi, TV, Massage, Chăn cao cấp, Điều hòa",
       "status": "ACTIVE",
       "created_at": "2025-01-19T08:00:00",
-      "updated_at": "2025-01-19T08:00:00"
+      "updated_at": "2025-01-19T08:00:00",
+      "company_id": "5",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062570/ptwvinrownvepsnfeomm.jpg"
     },
     {
       "id": "6",
@@ -951,7 +978,9 @@
       "amenities": "Điều hòa, Nước",
       "status": "ACTIVE",
       "created_at": "2025-01-20T08:00:00",
-      "updated_at": "2025-01-20T08:00:00"
+      "updated_at": "2025-01-20T08:00:00",
+      "company_id": "2",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062599/tyxuq8ru01totbr2j55k.jpg"
     },
     {
       "id": "7",
@@ -964,7 +993,20 @@
       "amenities": "Wifi, Nước, Chăn, Điều hòa",
       "status": "ACTIVE",
       "created_at": "2025-01-21T08:00:00",
-      "updated_at": "2025-01-21T08:00:00"
+      "updated_at": "2025-01-21T08:00:00",
+      "company_id": "1",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062627/yr9mkd3x9ltog8tm3ixp.jpg"
+    },
+    {
+      "id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "name": "Cúc Phương Supper Vip",
+      "license_plate": "BH - 123586",
+      "company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
+      "layout_id": "102",
+      "vehicle_type_id": "e7a2ddb2-6692-4e31-957f-881dffeb5a82",
+      "capacity": 48,
+      "status": "ACTIVE",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062665/mzswbxhurnuwmujt6cnp.jpg"
     }
   ],
   "bus_images": [
@@ -992,12 +1034,117 @@
       "id": "5",
       "bus_id": "5",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg"
+    },
+    {
+      "id": "3281",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767058838/nzn9betjatizoipr452o.jpg"
+    },
+    {
+      "id": "561c",
+      "bus_id": "2",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767059961/acsyx0spcre3v6jp6ni7.jpg"
+    },
+    {
+      "id": "ad85",
+      "bus_id": "2",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767059964/zvebolwlu9tvuzhgwt2e.jpg"
+    },
+    {
+      "id": "bfc6",
+      "bus_id": "2",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767059965/oucysrhtqhggkole4hfa.jpg"
+    },
+    {
+      "id": "aaab5e88-dcb0-488b-aece-52ff7c8fa4eb",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095178/qjxz3dp8z9ffptytghg0.jpg"
+    },
+    {
+      "id": "04c37f75-b7b5-4c64-9954-867a4bb4ef33",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095178/vtkciwmtiopai0qqivi6.jpg"
+    },
+    {
+      "id": "5b564cd4-af9f-42b6-b2b4-35c88e65c81c",
+      "bus_id": "3",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095430/q84iackhv6eso7nkopbi.jpg"
+    },
+    {
+      "id": "6925e1d3-0ca2-4ea7-a944-9cb6d1d6d40a",
+      "bus_id": "3",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095431/qrbk0ietqzc36zgr2pnu.png"
+    },
+    {
+      "id": "8b8d2ad2-2b4b-41bc-a833-d1b2960440aa",
+      "bus_id": "4",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095476/cwglkwwgj5qb2ubagpx2.jpg"
+    },
+    {
+      "id": "cc367762-0a5a-41f1-aaba-cba0cf8c4a3d",
+      "bus_id": "4",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095476/t6bnf1cen6xlirpceugp.jpg"
+    },
+    {
+      "id": "8a43dc49-7fe8-40df-8bd0-3977a3acc03f",
+      "bus_id": "5",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095720/uzlmqaahugbaw23d1cud.jpg"
+    },
+    {
+      "id": "cdab33f7-55eb-4cf0-8096-d1bd192152ee",
+      "bus_id": "5",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095721/jlql5yls6lq9lue2hur9.jpg"
+    },
+    {
+      "id": "e29cb1cd-96e2-4bce-ae4e-251b6219e2c1",
+      "bus_id": "5",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095721/aucbz3rvp8hkqhc1iopk.png"
+    },
+    {
+      "id": "b2feb229-1f54-490c-99e4-6a19a5cd6858",
+      "bus_id": "6",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095807/zkdke2fv7a8doqyrbwbk.jpg"
+    },
+    {
+      "id": "c8ad7a71-9ac4-413c-a5b0-a23cdc78a9c5",
+      "bus_id": "6",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095816/m36d8hdozihrjojuugpn.jpg"
+    },
+    {
+      "id": "ead3c7a8-6c75-4f85-84d4-252f75ef0c33",
+      "bus_id": "6",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095817/wtdbfxipb5setyzg5fjg.jpg"
+    },
+    {
+      "id": "1212e99f-c7da-4055-8fa8-01b8b0c19f76",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095988/hyonmdojb0fg5xn3w4pj.jpg"
+    },
+    {
+      "id": "56bb8aec-d75a-4dbd-b90e-2a428873e4e6",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095989/d0rccuarxalfzdycjl5k.jpg"
+    },
+    {
+      "id": "8a1591c0-5117-4860-807e-f8a7944ac556",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095989/b7k3l2ztbvveltfqqyjy.jpg"
+    },
+    {
+      "id": "ffca6dcc-981c-4302-99a6-0926725c02fc",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095990/zf2tgqwlp6td82ehp10t.png"
+    },
+    {
+      "id": "b6e59f8a-1a2d-49bd-890a-7fd0f1972d54",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095991/f0qg5gqjicscdu6dvo35.png"
     }
   ],
   "bus_layouts": [
     {
       "id": "101",
-      "layout_name": "Giường nằm 40 chỗ – 2 tầng",
+      "layout_name": "Giường nằm 40 chỗ",
       "total_rows": 10,
       "total_columns": 4,
       "floor_count": 2,

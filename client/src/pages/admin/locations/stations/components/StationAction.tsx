@@ -1,36 +1,17 @@
 import { Delete, Edit, Close, LocationOn, Save } from '@mui/icons-material';
 import { IconButton, Modal, Box, Typography, Divider, TextField, MenuItem, Button, InputAdornment } from '@mui/material';
 import Swal from 'sweetalert2';
-import { useState, type ChangeEvent } from 'react';
-
-// 1. Định nghĩa Interface trực tiếp
-export interface Station {
-    station_id: number;
-    station_name: string;
-    city_id: number;
-    image?: string;
-    wallpaper?: string;
-    description?: string;
-    location?: string;
-}
-
-// 2. Tạo dữ liệu giả duy nhất
-const mockStation: Station = {
-    station_id: 101,
-    station_name: "Ga Sài Gòn",
-    city_id: 1,
-    image: "https://vcdn1-dulich.vnecdn.net/2021/03/26/ga-sai-gon-1-1616745054.jpg",
-    wallpaper: "https://viettravel.com/wallpaper-ga.jpg",
-    description: "Nhà ga quan trọng nhất của tuyến đường sắt Bắc Nam.",
-    location: "01 Nguyễn Thông, Quận 3, TP.HCM"
-};
+import { useState, type ChangeEvent, useMemo } from 'react';
+import type { City, Station } from '../../../../../types';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 const modalStyle = {
-    position: 'absolute',
+    position: 'absolute' as const,
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: { xs: '95%', sm: 650 },
+    width: { xs: '95%', sm: 700 },
     bgcolor: 'background.paper',
     borderRadius: 4,
     boxShadow: 24,
@@ -40,28 +21,56 @@ const modalStyle = {
     overflowY: 'auto'
 };
 
-export default function StationAction() {
-    // Quản lý đóng mở Modal
-    const [open, setOpen] = useState(false);
-    
-    // State chứa dữ liệu form (mặc định lấy từ mockStation)
-    const [formData, setFormData] = useState<Station>(mockStation);
+interface PropType {
+    station: Station
+    onDelete: (id: string) => void
+    onEdit: (station: Station) => void
+    cities: City[]
+}
 
-    const handleOpen = () => setOpen(true);
+export default function StationAction({ station, onDelete, onEdit, cities }: PropType) {
+    const [open, setOpen] = useState(false);
+    const [formData, setFormData] = useState(station);
+
+    // Cấu hình Toolbar cho ReactQuill
+    // Sử dụng useMemo để tránh re-render không cần thiết làm mất focus khi gõ
+    const modules = useMemo(() => ({
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],        // Định dạng chữ
+            [{ 'color': [] }, { 'background': [] }],          // Màu chữ, màu nền
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],    // Danh sách
+            [{ 'align': [] }],                                // Căn lề
+            ['link', 'image', 'video'],                       // Chèn link, ảnh, video
+            ['clean']                                         // Xóa định dạng
+        ],
+    }), []);
+
+    const formats = [
+        'header', 'bold', 'italic', 'underline', 'strike',
+        'color', 'background', 'list', 'bullet', 'align',
+        'link', 'image', 'video'
+    ];
+
+    const handleOpen = () => {
+        setFormData(station); // Reset data về ban đầu khi mở modal
+        setOpen(true);
+    };
+
     const handleClose = () => setOpen(false);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: name === 'city_id' ? Number(value) : value
+            [name]: value
         }));
     };
 
     const handleDeleteClick = () => {
         Swal.fire({
             title: "Xác nhận xóa?",
-            text: `Bạn có chắc chắn muốn xóa ga ${formData.station_name}?`,
+            text: `Bạn có chắc chắn muốn xóa ga ${station.station_name}?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -70,13 +79,14 @@ export default function StationAction() {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
+                onDelete(station.id)
                 Swal.fire("Đã xóa!", "Dữ liệu đã được cập nhật.", "success");
             }
         });
     };
 
     const handleSave = () => {
-        console.log("Dữ liệu sau khi sửa:", formData);
+        onEdit(formData)
         Swal.fire("Thành công", "Đã cập nhật thông tin nhà ga", "success");
         handleClose();
     };
@@ -92,7 +102,7 @@ export default function StationAction() {
                 <Delete fontSize="small" />
             </IconButton>
 
-            {/* Modal chỉnh sửa nằm trong cùng file */}
+            {/* Modal chỉnh sửa */}
             <Modal open={open} onClose={handleClose}>
                 <Box sx={modalStyle}>
                     <div className="flex justify-between items-center mb-4">
@@ -109,37 +119,44 @@ export default function StationAction() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-gray-600 uppercase">Tên nhà ga</label>
-                            <TextField 
+                            <TextField
                                 fullWidth size="small" name="station_name"
-                                value={formData.station_name} onChange={handleChange} 
+                                value={formData.station_name} onChange={handleChange}
                             />
                         </div>
 
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-gray-600 uppercase">Thành phố</label>
-                            <TextField 
+                            <TextField
                                 select fullWidth size="small" name="city_id"
                                 value={formData.city_id} onChange={handleChange}
                             >
-                                <MenuItem value={1}>TP. Hồ Chí Minh</MenuItem>
-                                <MenuItem value={2}>Hà Nội</MenuItem>
+                                {cities.map((item) => (
+                                    <MenuItem value={item.id} key={item.id}>{item.city_name}</MenuItem>
+                                ))}
                             </TextField>
                         </div>
 
                         <div className="col-span-1 md:col-span-2 space-y-1">
                             <label className="text-xs font-bold text-gray-600 uppercase">Địa chỉ cụ thể</label>
-                            <TextField 
+                            <TextField
                                 fullWidth size="small" name="location"
                                 value={formData.location} onChange={handleChange}
-                                InputProps={{
-                                    startAdornment: <InputAdornment position="start"><LocationOn fontSize="small" className="text-red-400"/></InputAdornment>,
+                                slotProps={{
+                                    input: {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <LocationOn fontSize="small" className="text-red-400" />
+                                            </InputAdornment>
+                                        ),
+                                    }
                                 }}
                             />
                         </div>
 
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-gray-600 uppercase">Ảnh đại diện (URL)</label>
-                            <TextField 
+                            <TextField
                                 fullWidth size="small" name="image"
                                 value={formData.image} onChange={handleChange}
                             />
@@ -147,25 +164,51 @@ export default function StationAction() {
 
                         <div className="space-y-1">
                             <label className="text-xs font-bold text-gray-600 uppercase">Ảnh nền (URL)</label>
-                            <TextField 
+                            <TextField
                                 fullWidth size="small" name="wallpaper"
                                 value={formData.wallpaper} onChange={handleChange}
                             />
                         </div>
 
                         <div className="col-span-1 md:col-span-2 space-y-1">
-                            <label className="text-xs font-bold text-gray-600 uppercase">Mô tả</label>
-                            <TextField 
-                                fullWidth multiline rows={3} name="description"
-                                value={formData.description} onChange={handleChange}
-                            />
+                            <label className="text-xs font-bold text-gray-600 uppercase">Mô tả chi tiết</label>
+                            <div className="bg-white">
+                                <ReactQuill
+                                    theme="snow"
+                                    value={formData.description}
+                                    onChange={(content) => {
+                                        setFormData(prev => ({ ...prev, description: content }));
+                                    }}
+                                    modules={modules}
+                                    formats={formats}
+                                    placeholder="Nhập mô tả về nhà ga..."
+                                    style={{ height: '200px', marginBottom: '50px' }}
+                                />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="flex justify-end gap-2">
+                    {/* CSS Custom để giới hạn ảnh trong editor */}
+                    <style>{`
+                        .ql-editor img {
+                            max-width: 100%;
+                            height: auto;
+                            border-radius: 8px;
+                        }
+                        .ql-container {
+                            border-bottom-left-radius: 8px;
+                            border-bottom-right-radius: 8px;
+                        }
+                        .ql-toolbar {
+                            border-top-left-radius: 8px;
+                            border-top-right-radius: 8px;
+                        }
+                    `}</style>
+
+                    <div className="flex justify-end gap-2 mt-4">
                         <Button onClick={handleClose} className="text-gray-500 font-bold">Hủy</Button>
-                        <Button 
-                            variant="contained" 
+                        <Button
+                            variant="contained"
                             startIcon={<Save />}
                             onClick={handleSave}
                             className="bg-blue-600 hover:bg-blue-700 shadow-none normal-case px-6"

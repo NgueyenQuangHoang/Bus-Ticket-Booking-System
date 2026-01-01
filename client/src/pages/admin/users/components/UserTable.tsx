@@ -39,7 +39,7 @@ export default function UserTable({ users, onToggleStatus, onView, onEdit, onDel
                 <td className='px-6 py-4 text-center'>
                   <UserStatusBadge status={user.status ? user.status : 'ACTIVE'} />
                 </td>
-                <td className='px-6 py-4 text-sm text-slate-600 text-center'>{roles[user.user_id]}</td>
+                <td className='px-6 py-4 text-sm text-slate-600 text-center'>{roles[user.id]}</td>
                 <td className='px-6 py-4'>
                   <div className='flex items-center justify-end gap-2'>
                       <button 

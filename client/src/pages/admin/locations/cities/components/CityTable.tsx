@@ -26,7 +26,7 @@ export default function CityTable({ cities, updateCitiesOnDelete, updateCitiesOn
                             </TableHead>
                             <TableBody>
                                 {cities.map((city, index) => (
-                                    <TableRow key={city.city_id} hover className="transition-colors">
+                                    <TableRow key={index} hover className="transition-colors">
                                         <TableCell className="text-gray-600">{index+1}</TableCell>
                                         <TableCell className="font-medium">{city.city_name}</TableCell>
                                         <TableCell>
@@ -41,7 +41,7 @@ export default function CityTable({ cities, updateCitiesOnDelete, updateCitiesOn
                                         </TableCell>
                                         <TableCell align="right">
                                             <CityAction 
-                                            city_id={city.id ? city.id : ''} 
+                                            id={city.id ? city.id : ''} 
                                             updateCitiesOnDelete={updateCitiesOnDelete }
                                             updateCitiesOnFix={updateCitiesOnFix }
                                             city={city}

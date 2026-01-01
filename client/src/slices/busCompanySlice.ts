@@ -23,7 +23,7 @@ export const fetchBusCompanies = createAsyncThunk(
     try {
       const data = await busCompanyService.getAllBusCompanies();
       return data;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch bus companies');
     }
@@ -36,7 +36,7 @@ export const fetchPopularBusCompanies = createAsyncThunk(
     try {
       const data = await busCompanyService.getPopularBusCompanies(limit);
       return data;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch popular bus companies');
     }

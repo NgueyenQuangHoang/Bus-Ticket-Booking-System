@@ -28,6 +28,10 @@ export const fetchCities = createAsyncThunk(
   }
 );
 
+
+
+
+
 const citySlice = createSlice({
   name: 'city',
   initialState,
@@ -46,6 +50,9 @@ const citySlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       });
+
+      // fetch data
+
   },
 });
 

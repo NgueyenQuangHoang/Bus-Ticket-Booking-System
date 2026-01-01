@@ -6,6 +6,9 @@ type BusTableItem = Bus & {
   bus_type?: string;
   seat_layout?: string;
   status?: string;
+  total_rows?: number;
+  total_columns?: number;
+  floor_count?: number;
 };
 
 type Props = {
@@ -26,7 +29,7 @@ export default function BusTable({
         {/* HEADER */}
         <div
           className="
-            grid grid-cols-[60px_2fr_2fr_2fr_1.5fr_2fr_1fr_1fr_100px]
+            grid grid-cols-[100px_1.5fr_1.5fr_1.5fr_1.2fr_2fr_0.7fr_0.7fr_0.7fr_1fr_90px]
             bg-gray-50
             text-sm text-gray-500
             border-b border-gray-200
@@ -38,16 +41,18 @@ export default function BusTable({
           <div className="p-3">Nhà xe</div>
           <div className="p-3">Loại xe</div>
           <div className="p-3">Layout ghế</div>
-          <div className="p-3">Số ghế</div>
+          <div className="p-3 text-center">Hàng</div>
+          <div className="p-3 text-center">Cột</div>
+          <div className="p-3 text-center">Tầng</div>
           <div className="p-3 text-center">Trạng thái</div>
           <div className="p-3 text-center">Thao tác</div>
         </div>
 
         {data.map((bus) => (
           <div
-            key={bus.bus_id}
+            key={bus.id || bus.bus_id}
             className="
-              grid grid-cols-[60px_2fr_2fr_2fr_1.5fr_2fr_1fr_1fr_100px]
+              grid grid-cols-[100px_1.5fr_1.5fr_1.5fr_1.2fr_2fr_0.7fr_0.7fr_0.7fr_1fr_90px]
               items-center
               border-t border-gray-200
               text-sm text-gray-700
@@ -55,8 +60,11 @@ export default function BusTable({
             "
           >
             {/* ID */}
-            <div className="p-3 text-center font-mono">
-              {bus.bus_id}
+            <div className="p-3 text-center font-mono" title={String(bus.id || bus.bus_id)}>
+              {(() => {
+                  const id = String(bus.id || bus.bus_id);
+                  return id.length > 8 ? id.substring(0, 8) + '...' : id;
+              })()}
             </div>
 
             <div className="p-3 font-medium">{bus.name}</div>
@@ -64,7 +72,9 @@ export default function BusTable({
             <div className="p-3">{bus.company_name ?? "—"}</div>
             <div className="p-3">{bus.bus_type ?? "—"}</div>
             <div className="p-3">{bus.seat_layout ?? "—"}</div>
-            <div className="p-3">{bus.capacity ?? "—"}</div>
+            <div className="p-3 text-center">{bus.total_rows ?? 0}</div>
+            <div className="p-3 text-center">{bus.total_columns ?? 0}</div>
+            <div className="p-3 text-center">{bus.floor_count ?? 1}</div>
 
             {/* STATUS */}
             <div className="p-3 flex justify-center">
@@ -100,7 +110,7 @@ export default function BusTable({
       <div className="space-y-4 [@media(min-width:391px)]:hidden">
         {data.map((bus) => (
           <div
-            key={bus.bus_id}
+            key={bus.id || bus.bus_id}
             className="bg-white border border-gray-200 rounded-xl p-4 space-y-2"
           >
             <div className="flex justify-between items-center">
@@ -123,7 +133,7 @@ export default function BusTable({
             </p>
 
             <p className="text-sm text-gray-600">
-              Số ghế: {bus.capacity}
+                Cấu trúc: {bus.total_rows} hàng x {bus.total_columns} cột x {bus.floor_count} tầng
             </p>
 
             <div className="flex justify-end">

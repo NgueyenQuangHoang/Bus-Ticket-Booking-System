@@ -1,10 +1,10 @@
 import { Close } from '@mui/icons-material';
-import type { User } from '../UsersPage';
+import type { User } from '../../../../types';
 
 interface ViewUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  user: User | null; 
+  user: User | null;
 }
 
 export default function ViewUserModal({ isOpen, onClose, user }: ViewUserModalProps) {
@@ -19,21 +19,21 @@ export default function ViewUserModal({ isOpen, onClose, user }: ViewUserModalPr
             <Close />
           </button>
         </div>
-        
+
         <div className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-500 mb-1">ID</label>
               <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.id}</div>
             </div>
-             <div>
+            <div>
               <label className="block text-sm font-medium text-slate-500 mb-1">User ID</label>
-              <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.user_id}</div>
+              <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.id}</div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-             <div>
+            <div>
               <label className="block text-sm font-medium text-slate-500 mb-1">Họ</label>
               <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.first_name}</div>
             </div>
@@ -53,18 +53,18 @@ export default function ViewUserModal({ isOpen, onClose, user }: ViewUserModalPr
             <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.phone}</div>
           </div>
 
-           <div>
+          <div>
             <label className="block text-sm font-medium text-slate-500 mb-1">Mật khẩu</label>
             <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.password}</div>
           </div>
-          
-           <div>
+
+          <div>
             <label className="block text-sm font-medium text-slate-500 mb-1">Trạng thái</label>
             <div className={`
                 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                 ${user.status === 'ACTIVE' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}
             `}>
-                {user.status}
+              {user.status}
             </div>
           </div>
 
@@ -72,13 +72,13 @@ export default function ViewUserModal({ isOpen, onClose, user }: ViewUserModalPr
             <div>
               <label className="block text-sm font-medium text-slate-500 mb-1">Ngày tạo</label>
               <div className="text-xs text-slate-700 bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">
-                  {new Date(user.created_at).toLocaleString()}
+                {new Date(user?.created_at ? user?.created_at : "").toLocaleString()}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-500 mb-1">Ngày cập nhật</label>
               <div className="text-xs text-slate-700 bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">
-                  {new Date(user.updated_at).toLocaleString()}
+                {new Date(user.updated_at ? user.updated_at : '').toLocaleString()}
               </div>
             </div>
           </div>

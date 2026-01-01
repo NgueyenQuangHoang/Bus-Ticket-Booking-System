@@ -155,9 +155,9 @@ export const authService = {
     updateUser: async(id: string | number, uFix: User, role: string): Promise<void>=>{
         try {
             await api.put('/users/'+id, uFix)
-            const response: UserRole[] = await api.get('/user_role?user_id='+uFix.user_id)
+            const response: UserRole[] = await api.get('/user_role?user_id='+uFix.id)
             const idUR = response[0].id
-            await api.put('/user_role/'+idUR, {user_id: uFix.user_id, role_id: role == 'ADMIN' ? '2' : role == 'USER' ? '1' : '3'})
+            await api.put('/user_role/'+idUR, {user_id: uFix.id, role_id: role == 'ADMIN' ? '2' : role == 'USER' ? '1' : '3'})
         } catch (error) {
             console.log(error);
         }
