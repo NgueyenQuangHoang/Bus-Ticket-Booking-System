@@ -28,12 +28,12 @@ export const routesService = {
             const dataReturn: routesInfomation[] = responseGetRoutes.map((item) => {
                 const departure_name = stationMap[item.departure_station_id]
                 const arrival_name = stationMap[item.arrival_station_id]
-                return [{
-                    route_id: item.id,
+                return {
+                    route_id: Number(item.id),
                     departure_station_name: departure_name ? departure_name : '',
                     arrival_station_name: arrival_name ? arrival_name : '',
                     description: item.description
-                }]
+                }
             })
 
             return responseGetRoutes ? dataReturn : undefined

@@ -16,9 +16,11 @@ import type { ContactFormData } from "./components/useContactForm";
 import QRPaymentPage from "./payment/QRPaymentPage";
 import PaymentSuccessPage from "./success/PaymentSuccessPage";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { useNavigate } from "react-router-dom";
-import { SHARED_TRIP } from "./Shared/TripInfo";
+import { useNavigate, useLocation } from "react-router-dom";
+import { SHARED_TRIP, type TripData } from "./Shared/TripInfo";
 import FooterBookingConfirmation from "./Shared/FooterBookingConfirmation";
+import type { User } from "../../../../types";
+import bookingService, { type Booking } from "../../../../services/bookingService";
 
 // Steps definition
 const STEPS = ["Thông tin liên hệ", "Thanh toán", "Hoàn tất"];
@@ -47,7 +49,7 @@ export default function BookingConfirmation() {
     }
   };
 
-  const setUser = (user: any) => {
+  const setUser = (user: User) => {
     console.log("User set:", user);
   };
   const [isContactValid, setIsContactValid] = useState(false);
@@ -59,6 +61,10 @@ export default function BookingConfirmation() {
   });
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const tripData = location.state?.trip as TripData || SHARED_TRIP;
+  // const selectedSeats = location.state?.selectedSeats || [];
 
   // Handlers
   const handleContinue = () => {
@@ -74,9 +80,32 @@ export default function BookingConfirmation() {
     }
   };
 
-  const handlePaymentSuccess = () => {
-    setActiveStep(2);
-    window.scrollTo(0, 0);
+  const handlePaymentSuccess = async () => {
+    try {
+      const bookingData: Booking = {
+        tripInfo: tripData,
+        contactInfo: contactData,
+        totalPrice: tripData.totalPrice,
+        status: 'CONFIRMED',
+        createdAt: new Date().toISOString(),
+        paymentMethod: 'QR_PAYMENT'
+      };
+
+      const result = await bookingService.createBooking(bookingData);
+
+      if (result) {
+        notify("Thanh toán và lưu vé thành công!", true);
+        setActiveStep(2);
+        window.scrollTo(0, 0);
+      } else {
+        notify("Thanh toán thành công nhưng không thể lưu vé. Vui lòng liên hệ CSKH.", false);
+        setActiveStep(2); // Still advance but warn user
+        window.scrollTo(0, 0);
+      }
+    } catch (error) {
+      console.error("Booking error:", error);
+      notify("Có lỗi xảy ra khi lưu vé.", false);
+    }
   };
 
   const handleHome = () => {
@@ -95,7 +124,7 @@ export default function BookingConfirmation() {
         <QRPaymentPage
           onBack={handleBack}
           onSuccess={handlePaymentSuccess}
-          tripData={SHARED_TRIP}
+          tripData={tripData}
         />
       );
     }
@@ -104,7 +133,7 @@ export default function BookingConfirmation() {
       return (
         <PaymentSuccessPage
           passengerInfo={contactData}
-          tripData={SHARED_TRIP}
+          tripData={tripData}
           onHome={handleHome}
         />
       );
@@ -135,7 +164,7 @@ export default function BookingConfirmation() {
             </div>
 
             <div className="lg:col-span-5 relative">
-              <TripDetails trips={[SHARED_TRIP]} />
+              <TripDetails trips={[tripData]} />
             </div>
           </div>
         </main>

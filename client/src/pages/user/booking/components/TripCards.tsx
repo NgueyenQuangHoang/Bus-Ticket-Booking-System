@@ -5,6 +5,7 @@ import { searchTrips } from "../../../../slices/tripSearchSlice";
 import type { TripSearchResult } from "../../../../services/tripSearchService";
 import type { TimeSort, PriceSort } from "../BookingTicket";
 import type { FiltersState } from "./FilterSidebar";
+import SeatSelection from "./SeatSelection";
 
 type Mode = "idle" | "detail" | "booking";
 type DetailTab = "info" | "cancel";
@@ -26,7 +27,7 @@ export default function TripCard({ searchParams, timeSort = "", priceSort = "", 
   const dispatch = useDispatch<AppDispatch>();
   const { trips, loading, error } = useSelector((state: RootState) => state.tripSearch);
 
-  const [activeTripId, setActiveTripId] = useState<number | null>(null);
+  const [activeTripId, setActiveTripId] = useState<string | null>(null);
   const [mode, setMode] = useState<Mode>("idle");
   const [detailTab, setDetailTab] = useState<DetailTab>("info");
 
@@ -334,24 +335,12 @@ export default function TripCard({ searchParams, timeSort = "", priceSort = "", 
             {/* BOOKING PANEL */}
             {isActive && mode === "booking" && (
               <div className="border-t pt-4 px-4 pb-4">
-                <div className="p-4 bg-yellow-50 rounded-lg">
-                  <p className="text-lg font-semibold mb-2">👉 Chọn ghế cho chuyến {trip.company_name}</p>
-                  <p className="text-gray-600">
-                    {trip.departure_station} → {trip.arrival_station}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    (Component chọn ghế sẽ được tích hợp ở đây)
-                  </p>
-                </div>
-                <button
-                  onClick={() => {
-                    setActiveTripId(null);
-                    setMode("idle");
-                  }}
-                  className="mt-3 text-red-600 underline"
-                >
-                  Đóng
-                </button>
+                <SeatSelection
+                  layoutId={trip.layout_id}
+                  scheduleId={trip.schedule_id}
+                  price={trip.price}
+                  trip={trip}
+                />
               </div>
             )}
           </div>
