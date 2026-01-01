@@ -892,20 +892,6 @@
   ],
   "buses": [
     {
-<<<<<<< HEAD
-      "id": "1",
-      "bus_company_id": "1",
-      "vehicle_type_id": "1",
-      "layout_id": "840b",
-      "name": "An Hòa Hiệp – Giường nằm 40 chỗ",
-      "license_plate": "51B-12345",
-      "capacity": 40,
-      "amenities": "Wifi, Nước, Chăn, Điều hòa",
-      "status": "ACTIVE",
-      "created_at": "2025-01-15T08:00:00",
-      "updated_at": "2025-01-15T08:00:00"
-    },
-    {
 =======
 >>>>>>> af74b9c1fb3e8f84a9e1befa81999a4646d25d4d
       "id": "2",
