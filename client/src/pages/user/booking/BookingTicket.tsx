@@ -65,7 +65,7 @@ const BookingTicket = () => {
                 )}
 
                 {/* Widget tìm kiếm - z-index cao để dropdown không bị đè */}
-                <div className="mt-5 mb-10 relative z-50">
+                <div className="mt-5 mb-10 relative z-10">
                     <BusSearchWidget />
                 </div>
 

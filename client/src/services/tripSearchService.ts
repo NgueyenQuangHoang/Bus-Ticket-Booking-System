@@ -52,6 +52,7 @@ interface Schedule {
 // Kết quả tìm kiếm chuyến xe
 export interface TripSearchResult {
   schedule_id: string;
+  bus_id: string;
   departure_time: string;
   arrival_time: string;
   duration: number; // minutes
@@ -157,7 +158,7 @@ export const tripSearchService = {
       // Actually simply filtering by time >= now + 1 hour covers both today and future.
       // But if user searches for past date, this would return empty, which is correct.
       const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000); // Thêm 1 tiếng
-      
+
       matchingSchedules = matchingSchedules.filter(s => {
         const departureTime = new Date(s.departure_time);
         return departureTime >= oneHourFromNow;
@@ -173,6 +174,7 @@ export const tripSearchService = {
 
         return {
           schedule_id: schedule.id,
+          bus_id: schedule.bus_id,
           departure_time: schedule.departure_time,
           arrival_time: schedule.arrival_time,
           duration: route.duration,
