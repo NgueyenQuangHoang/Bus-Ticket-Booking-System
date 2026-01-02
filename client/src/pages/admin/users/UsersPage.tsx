@@ -5,61 +5,48 @@ import UserSearch from "./components/UserSearch";
 import UserTable from "./components/UserTable";
 import AddUserModal from "./components/AddUserModal";
 import ViewUserModal from "./components/ViewUserModal";
-import { authService } from "../../../services/authService";
 import type { User, UserRole } from "../../../types";
 import { v4 as uuidv4 } from "uuid";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { fetch_Roles, fetchUser_Roles, fetchUsers, postNewUser, removeUser, updateStatus, updateUser } from "../../../slices/userSlice";
 
-
-const allUser: User[] = [];
 
 export default function UsersPage() {
-    const [users, setUsers] = useState<User[]>(allUser);
+    const {users, roles: listRole, user_roles} = useAppSelector(state=> state.user)
+    const dispatch = useAppDispatch()
     const [searchTerm, setSearchTerm] = useState("");
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
-    const [roles, setRoles] = useState<{ [x: string]: string }>({})
     const [statusForm, setStatus] = useState<'edit' | 'add'>('add')
     
+    const roleMapping = listRole.reduce((acc: { [key: string | number]: string }, role) => {
+        acc[role.id] = role.role_name
+        return acc
+    }, {})
 
-    const handleToggleStatus = (id: string | number, status: string) => {
-        console.log(id, status);
-        
-        setUsers(
-            users.map((user) => {
-                if (user.id === id) {
-                    authService.updateStatus(id, { ...user, status: status })
-                    return {
-                        ...user,
-                        status: status
-                    };
-                }
-                return user;
-            })
-        );
-        
+    const urMapping = user_roles.reduce((acc: { [key: string | number]: string }, role) => {
+        acc[role.user_id] = roleMapping[role.role_id]
+        return acc
+    }, {})
+
+
+    const handleToggleStatus = (id: string, status: string) => {
+        const user = users.find(item => item.id == id)
+        const newUser = {...user, status} as User
+        if(newUser){
+            dispatch(updateStatus({user: newUser}))
+        }
     };
 
-    const handleAddUser = (newUser: Omit<User,'status' | 'created_at' | 'updated_at'>, role: string) => {
-        if (newUser.id && users.some((u) => u.id === newUser.id)) {
-            setUsers(
-                users.map((u) =>
-                    u.id === newUser.id
-                        ? ({
-                            ...u,
-                            ...newUser,
-                            updated_at: new Date().toISOString(),
-                        } as User)
-                        : u
-                )
-            );
-        } else {
+    const handleAddUser = (newUser: Omit<User, 'status' | 'created_at' | 'updated_at'>, role_id: string) => {
             // Add new
-            const id = uuidv4()
-            const user_role_id = uuidv4()
+            console.log(role_id);
+            
+            const user_id = uuidv4()
             const userToAdd: User = {
                 ...newUser,
-                id,
+                id: user_id,
                 first_name: newUser.first_name || "",
                 last_name: newUser.last_name || "",
                 email: newUser.email || "",
@@ -69,16 +56,11 @@ export default function UsersPage() {
                 created_at: (new Date()).toString(),
                 updated_at: (new Date()).toString(),
             };
-            setUsers([userToAdd, ...users]);
-            const newRole = roles
-            // eslint-disable-next-line react-hooks/immutability
-            newRole[id] = role
-            setRoles(newRole)
-
-            // api post
-            const userRole: UserRole = { id: user_role_id, user_id: id, role_id: role == 'ADMIN' ? 2 : role == 'BUS_COMPANY' ? 3 : 1}
-            authService.createUser(userToAdd, userRole)
-        }
+            const user_role : UserRole = {
+                role_id: role_id,
+                user_id
+            }
+            dispatch(postNewUser({user: userToAdd, ur: user_role}))
     };
 
     const handleEditClick = (user: User) => {
@@ -92,20 +74,8 @@ export default function UsersPage() {
         setIsViewModalOpen(true);
     };
 
-    const handleEdit = (id: string| number, user: User, role: string) => {
-        authService.updateUser(id, user, role)
-        setUsers(users.map(item => 
-        {
-            if(item.id == user.id){
-                return user
-            }
-            return item
-        }
-        ))
-        const newRoles = roles
-        // eslint-disable-next-line react-hooks/immutability
-        newRoles[user.id] = role
-        setRoles(newRoles)
+    const handleEdit = (user: User, role_id: string) => {
+        dispatch(updateUser({user, roleId: role_id}))
     }
 
     const handleDeleteClick = (user: User) => {
@@ -122,8 +92,9 @@ export default function UsersPage() {
         }).then((result) => {
             if (result.isConfirmed) {
                 // goi api xoa o day
-                setUsers(users.filter((u) => u.id !== user.id));
-                authService.deleteUser(user.id ? user.id : '', user.id)
+                // setUsers(users.filter((u) => u.id !== user.id));
+                // authService.deleteUser(user.id ? user.id : '', user.id)
+                dispatch(removeUser({idU: user.id}))
                 Swal.fire("Đã xóa!", "Người dùng đã được xóa thành công.", "success");
             }
         });
@@ -138,43 +109,16 @@ export default function UsersPage() {
             (user.phone && user.phone.includes(searchTerm))
     );
 
-
-
     useEffect(() => {
-        authService.getAllUsers().then((res) => {
-            setUsers(res)
-
-            res.map((item) => {
-
-                authService.getRoleUser(item.id).then((res) => {
-                    res?.forEach((role) => {
-
-                        setRoles((prevRoles) => {
-                            if (prevRoles[item.id] == 'ADMIN') {
-                                return prevRoles
-                            }
-                            if (prevRoles[item.id] == 'BUS_COMPANY' && role.role_name == 'ADMIN') {
-                                return {
-                                    ...prevRoles,
-                                    [item.id]: role.role_name
-                                }
-                            }
-                            return {
-                                ...prevRoles,
-                                [item.id]: role.role_name
-                            }
-                        }
-                        )
-                    })
-                })
-
-            })
-
-        })
-
-    }, [])
+        dispatch(fetchUsers())
+        dispatch(fetch_Roles())
+        dispatch(fetchUser_Roles())
+    }, [dispatch])
 
     
+    console.log(urMapping, roleMapping);
+    
+
     return (
         <div className="space-y-6">
             <UserHeader
@@ -190,7 +134,7 @@ export default function UsersPage() {
 
             <UserTable
                 users={filteredUsers}
-                roles={roles}
+                roles={urMapping}
                 onToggleStatus={handleToggleStatus}
                 onView={handleViewClick}
                 onEdit={handleEditClick}

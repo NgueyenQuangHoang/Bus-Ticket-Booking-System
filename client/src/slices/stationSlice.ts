@@ -79,8 +79,6 @@ const stationSlice = createSlice({
       });
   },
 
-  
-
 });
 
 export default stationSlice.reducer;

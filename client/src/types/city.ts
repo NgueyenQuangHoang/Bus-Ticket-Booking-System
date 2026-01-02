@@ -6,6 +6,6 @@ export interface City {
   region?: string;
   created_at?: Timestamp;
   updated_at?: Timestamp;
-  id: string| number;
+  id: string;
   description: string
 }

@@ -29,7 +29,20 @@ export const fetchCities = createAsyncThunk(
 );
 
 
+export const deleteCity = createAsyncThunk('city/removeItem', async (id: string) => {
+  await cityService.deleteCity(id)
+  return id
+})
 
+export const addNewCity = createAsyncThunk('city/create', async (city: City) => {
+  await cityService.createCity(city)
+  return city
+})
+
+export const updateCity = createAsyncThunk('city/update', async (city: City) => {
+  await cityService.updateCity(city)
+  return city
+})
 
 
 const citySlice = createSlice({
@@ -37,6 +50,7 @@ const citySlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // add data
     builder
       .addCase(fetchCities.pending, (state) => {
         state.loading = true;
@@ -51,8 +65,28 @@ const citySlice = createSlice({
         state.error = action.payload as string;
       });
 
-      // fetch data
+      // remove
+      builder
+        .addCase(deleteCity.fulfilled, (state, action) => {
+          const id = action.payload
+          state.cities = state.cities.filter(item => item.id != id)
+        })
 
+        // add
+      builder
+        .addCase(addNewCity.fulfilled, (state, action) => {
+          const city = action.payload
+          state.cities = [...state.cities, city]
+        })
+        
+        // update
+      builder
+        .addCase(updateCity.fulfilled, (state, action) => {
+          const cityUpdate = action.payload
+          console.log(cityUpdate);
+          
+          state.cities = state.cities.map(item => item.id === cityUpdate.id ? cityUpdate : item)
+        })
   },
 });
 

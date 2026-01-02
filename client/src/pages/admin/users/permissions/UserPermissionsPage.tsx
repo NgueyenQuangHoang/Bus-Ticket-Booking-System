@@ -1,95 +1,50 @@
-import { useState } from "react";
-import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 import PermissionHeader from "./components/PermissionHeader";
 import PermissionTable from "./components/PermissionTable";
 import PermissionFormModal from "./components/PermissionFormModal";
 import UserSearch from "../components/UserSearch";
-
-export interface Permission {
-  id: number;
-  name: string;
-  description: string;
-}
-
-const initialPermissions: Permission[] = [
-  { id: 1, name: "ADMIN", description: "Quản trị viên hệ thống" },
-  { id: 2, name: "USER", description: "Người dùng thông thường" },
-  { id: 3, name: "BUS_COMPANY", description: "Nhà xe" },
-];
-
+import type { Role } from "../../../../types";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { deleteRole, fetch_Roles, PostNewRole, updateRole } from "../../../../slices/userSlice";
 export default function UserPermissionsPage() {
-  const [permissions, setPermissions] =
-    useState<Permission[]>(initialPermissions);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPermission, setSelectedPermission] = useState<Permission | null>(null);
+    const { roles } = useAppSelector(state => state.user)
+    const dispatch = useAppDispatch()
+    const [inputFilter, setInputFilter] = useState('')
+    const [isOpen, setOpen] = useState(false)
+    const [isEdit, setIsEdit] = useState(false) // mat dinh se la add
+    
 
-  const handleDelete = (id: number) => {
-    Swal.fire({
-      title: 'Xác nhận xóa?',
-      text: 'Bạn có chắc chắn muốn xóa quyền này không?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Xóa',
-      cancelButtonText: 'Hủy',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        setPermissions(permissions.filter((p) => p.id !== id));
-        Swal.fire('Đã xóa!', 'Quyền đã được xóa thành công.', 'success');
-      }
-    });
-  };
 
-  const handleEdit = (permission: Permission) => {
-      setSelectedPermission(permission);
-      setIsModalOpen(true);
-  };
+    useEffect(() => {
+        dispatch(fetch_Roles())
+    }, [dispatch])
 
-  const handleSave = (permissionData: Omit<Permission, 'id'> | Permission) => {
-      if ('id' in permissionData) {
-          // Update
-          setPermissions(permissions.map(p => p.id === permissionData.id ? permissionData : p));
-      } else {
-          // Add
-          const newId = Math.max(...permissions.map(p => p.id), 0) + 1;
-          const newPermission = { ...permissionData, id: newId } as Permission;
-          setPermissions([newPermission, ...permissions]);
-      }
-  };
+    const handleSubmit = (role: Role) => {
+        if(!isEdit){
+            // add
+            dispatch(PostNewRole(role))
+        }else{
+            // edit
+            dispatch(updateRole(role))
+        }
+    }
+    const [role, setRole] = useState<Role | undefined>(undefined)
 
-  const filteredPermissions = permissions.filter(
-    (p) =>
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    const handleDelete = (role: Role) => {
+        dispatch(deleteRole(role))
+    }
 
-  return (
-    <div className="space-y-6">
-      <PermissionHeader 
-        count={permissions.length} 
-        onAddClick={() => {
-            setSelectedPermission(null);
-            setIsModalOpen(true);
-        }}
-      />
+console.log(role);
 
-      <UserSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+    return (
+        <div className="space-y-6">
+            <PermissionHeader openFormAdd={() => {setOpen(true); setIsEdit(false); setRole(undefined)}}/>
 
-      <PermissionTable
-        permissions={filteredPermissions}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-      />
+            <UserSearch inputData={inputFilter} setInputData={setInputFilter} />
 
-      <PermissionFormModal
-        key={selectedPermission ? selectedPermission.id : 'new'}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSave={handleSave}
-        permission={selectedPermission}
-      />
-    </div>
-  );
+            <PermissionTable setRole={setRole} role={roles.filter(item => item.role_name.includes(inputFilter))} openModalEdit={() => {setOpen(true); setIsEdit(true)}} onDelete={handleDelete}/>
+
+            <PermissionFormModal isOpen={isOpen} onToggle={() => setOpen(false)} onSubmit={handleSubmit} role={role}/>
+        </div>
+    );
 }

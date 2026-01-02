@@ -6,6 +6,7 @@ import popularRouteReducer from '../slices/popularRouteSlice';
 import stationReducer from '../slices/stationSlice';
 import cityReducer from '../slices/citySlice';
 import tripSearchReducer from '../slices/tripSearchSlice';
+import userReducer from '../slices/userSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     station: stationReducer,
     city: cityReducer,
     tripSearch: tripSearchReducer,
+    user: userReducer
   },
 });
 

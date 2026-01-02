@@ -16,7 +16,6 @@ import type { City } from '../../../../../types';
 
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import { cityService } from '../../../../../services/cityService';
 import { v4 as uuidv4 } from "uuid";
 
 // Style cho Modal
@@ -35,7 +34,7 @@ const modalStyle = {
     outline: 'none'
 };
 
-export default function CityFormModal({ numberCities, updateCitiesOnAdd }: { numberCities: number, updateCitiesOnAdd : (city: City) => void}) {
+export default function CityFormModal({ numberCities, onAdd }: { numberCities: number, onAdd : (city: City) => void}) {
     const [open, setOpen] = useState(false)
     const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)
@@ -67,9 +66,7 @@ export default function CityFormModal({ numberCities, updateCitiesOnAdd }: { num
 
     const handleSubmit = () => {
         // Gộp description vào formData khi gửi đi
-        updateCitiesOnAdd(formData);
-        cityService.createCity(formData)
-        console.log("Dữ liệu gửi đi:", formData);
+        onAdd(formData);
         handleClose();
     };
 
