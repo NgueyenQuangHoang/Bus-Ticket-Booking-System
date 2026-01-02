@@ -1,5 +1,96 @@
 {
-  "bookings": [],
+  "bookings": [
+    {
+      "id": "9abe",
+      "tripInfo": {
+        "id": "5fe0",
+        "type": "departure",
+        "dateStr": "T7, 10/1/2026",
+        "operator": {
+          "name": "Nhà xe Phương Trang",
+          "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
+          "vehicleType": "Phương Trang – VIP 34 giường",
+          "passengerCount": 1,
+          "seatIds": "A14"
+        },
+        "departure": {
+          "time": "18:03",
+          "date": "10-01",
+          "name": "Bến xe Mỹ Đình",
+          "address": "Hà Nội"
+        },
+        "arrival": {
+          "time": "00:03",
+          "date": "12-01",
+          "name": "Bến xe Miền Đông",
+          "address": "Hồ Chí Minh"
+        },
+        "policy": {
+          "text": "Phí hủy 10% trước 24h khởi hành",
+          "colorClass": "text-orange-500"
+        },
+        "totalPrice": 350000,
+        "priceDisplay": "350.000đ",
+        "route": "Hà Nội - Hồ Chí Minh",
+        "price": "350.000đ"
+      },
+      "contactInfo": {
+        "fullName": "Hồ Quốc Khải",
+        "phone": "0963147932",
+        "email": "khaiho6040@gmail.com",
+        "countryCode": "+84"
+      },
+      "totalPrice": 350000,
+      "status": "CONFIRMED",
+      "createdAt": "2026-01-02T07:51:45.174Z",
+      "paymentMethod": "QR_PAYMENT"
+    },
+    {
+      "id": "4454",
+      "tripInfo": {
+        "id": "5fe0",
+        "type": "departure",
+        "dateStr": "T7, 10/1/2026",
+        "operator": {
+          "name": "Nhà xe Phương Trang",
+          "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
+          "vehicleType": "Phương Trang – VIP 34 giường",
+          "passengerCount": 1,
+          "seatIds": "A07"
+        },
+        "departure": {
+          "time": "18:03",
+          "date": "10-01",
+          "name": "Bến xe Mỹ Đình",
+          "address": "Hà Nội"
+        },
+        "arrival": {
+          "time": "00:03",
+          "date": "12-01",
+          "name": "Bến xe Miền Đông",
+          "address": "Hồ Chí Minh"
+        },
+        "policy": {
+          "text": "Phí hủy 10% trước 24h khởi hành",
+          "colorClass": "text-orange-500"
+        },
+        "totalPrice": 350000,
+        "priceDisplay": "350.000đ",
+        "route": "Hà Nội - Hồ Chí Minh",
+        "price": "350.000đ"
+      },
+      "contactInfo": {
+        "fullName": "Hồ Quốc Khải",
+        "phone": "0963147932",
+        "email": "khaiho6040@gmail.com",
+        "countryCode": "+84"
+      },
+      "totalPrice": 350000,
+      "status": "CONFIRMED",
+      "createdAt": "2026-01-02T07:54:28.269Z",
+      "paymentMethod": "QR_PAYMENT"
+    }
+  ],
   "users": [
     {
       "id": "1",
@@ -2022,6 +2113,18 @@
       "arrival_time": "2026-02-12T00:03",
       "updated_at": "2026-01-01T06:14:23.679Z",
       "id": "e9d8"
+    },
+    {
+      "id": "aceb",
+      "route_id": "9",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "total_seats": 40,
+      "available_seats": 40,
+      "status": "AVAILABLE",
+      "departure_time": "2026-01-15T05:05",
+      "arrival_time": "2026-01-15T17:05",
+      "updated_at": "2026-01-02T11:37:14.727Z",
+      "created_at": "2026-01-02T11:37:14.727Z"
     }
   ],
   "seat_schedule": [
@@ -2049,14 +2152,48 @@
   ],
   "tickets": [
     {
-      "id": "1",
-      "user_id": "2",
-      "schedule_id": "1",
-      "seat_id": "1",
-      "price": 800000,
+      "id": "ticket_01",
+      "user_id": "bba5",
+      "schedule_id": "5fe0",
+      "seat_id": "seat_01",
+      "price": 320000,
+      "status": "COMPLETED",
+      "code": "VX-204912",
+      "created_at": "2025-12-20T10:00:00Z",
+      "updated_at": "2025-12-20T10:00:00Z"
+    },
+    {
+      "id": "ticket_02",
+      "user_id": "bba5",
+      "schedule_id": "e9d8",
+      "seat_id": "seat_02",
+      "price": 280000,
       "status": "BOOKED",
-      "created_at": "2025-01-10",
-      "updated_at": "2025-01-10"
+      "code": "VX-204913",
+      "created_at": "2026-01-01T08:00:00Z",
+      "updated_at": "2026-01-01T08:00:00Z"
+    },
+    {
+      "id": "ticket_03",
+      "user_id": "bba5",
+      "schedule_id": "aceb",
+      "seat_id": "seat_03",
+      "price": 150000,
+      "status": "CANCELLED",
+      "code": "VX-204914",
+      "created_at": "2026-01-02T09:00:00Z",
+      "updated_at": "2026-01-02T10:00:00Z"
+    },
+    {
+      "id": "ticket_04",
+      "user_id": "bba5",
+      "schedule_id": "014f",
+      "seat_id": "seat_05",
+      "price": 300000,
+      "status": "COMPLETED",
+      "code": "VX-204915",
+      "created_at": "2025-12-25T10:00:00Z",
+      "updated_at": "2025-12-25T10:00:00Z"
     }
   ],
   "passengers": [
@@ -2156,13 +2293,47 @@
   "bus_reviews": [
     {
       "id": "1",
-      "user_id": "1",
-      "bus_id": "1",
-      "rating": 5,
-      "review": "Xe sạch, chạy êm",
+      "user_id": "bba5",
+      "bus_id": "5",
+      "ticket_id": "ticket_01",
+      "rating": 4.4,
+      "details": {
+        "safety": 5,
+        "info_accuracy": 5,
+        "info_completeness": 5,
+        "staff_attitude": 3,
+        "comfort": 4,
+        "service_quality": 5,
+        "punctuality": 4
+      },
+      "review": "test 1",
       "status": "VISIBLE",
-      "created_at": "2025-01-05",
-      "updated_at": "2025-01-05"
+      "created_at": "2026-01-02T12:49:38.390Z",
+      "updated_at": "2026-01-02T13:58:22.576Z",
+      "is_verified": true,
+      "booking_id": "ticket_01"
+    },
+    {
+      "id": "9106",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "user_id": "bba5",
+      "booking_id": "ticket_04",
+      "ticket_id": "ticket_04",
+      "rating": 5,
+      "details": {
+        "safety": 5,
+        "info_accuracy": 5,
+        "info_completeness": 5,
+        "staff_attitude": 5,
+        "comfort": 5,
+        "service_quality": 5,
+        "punctuality": 5
+      },
+      "review": "xe chạy êm, dịch vụ tốt.",
+      "created_at": "2026-01-02T14:14:30.756Z",
+      "is_verified": true,
+      "status": "VISIBLE",
+      "updated_at": "2026-01-02T14:14:30.756Z"
     }
   ],
   "banners": [

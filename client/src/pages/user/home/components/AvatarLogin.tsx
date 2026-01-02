@@ -17,14 +17,14 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
     const [checkRole, setCheckRole] = useState<string>('User')
     useEffect(() => {
         if (user) {
-            authService.getRoleUser(user.user_id).then((res) => {
+            authService.getRoleUser(user.id).then((res) => {
                 if(res){
                     res.forEach((item) => {
-                        if(item.role_name === 'ADMIN'){
+                        if (item && item.role_name === 'ADMIN') {
                             setCheckRole('ADMIN')
                             return
                         }
-                        if(item.role_name == 'BUS_COMPANY'){
+                        if (item && item.role_name == 'BUS_COMPANY') {
                             setCheckRole('BUS_COMPANY')
                             return
                         }
@@ -73,6 +73,9 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
                     <div className="py-1">
                         <span
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4]"
+                            onClick={() => {
+                                navigate('/accountProfile')
+                            }}
                         >
                             Thông tin tài khoản
                         </span>
