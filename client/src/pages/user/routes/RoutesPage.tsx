@@ -4,7 +4,7 @@ import PaginationRoutes from "./components/PaginationRoutes";
 import { routesService } from "../../../services/routesService";
 
 export type routesInfomation = {
-  route_id: number;
+  route_id: number | string;
   departure_station_name: string;
   arrival_station_name: string;
   description: string;

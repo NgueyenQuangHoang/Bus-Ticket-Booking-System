@@ -26,6 +26,10 @@ export default function SeatCell({ position, seatTypes, isSelected, onClick }: P
     } else if (position.is_stair) {
       specificClasses = "bg-gray-200 text-gray-400 border border-gray-300 rounded";
       content = "|||";
+    } else if (position.is_aisle) {
+        // Transparent / Hidden but hoverable
+        specificClasses = "bg-transparent border border-dashed border-gray-200 opacity-20 hover:opacity-100";
+        content = "";
     } else if (position.seat_type_id) {
       const type = seatTypes.find(t => t.id === position.seat_type_id || t.seat_type_id === position.seat_type_id);
       

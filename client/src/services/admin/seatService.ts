@@ -1,5 +1,5 @@
 import api from '../../api/api';
-import type { SeatType, BusLayout, SeatPosition, SeatTemplate } from '../../types/seat';
+import type { SeatType, BusLayout, SeatPosition } from '../../types/seat';
 
 const seatService = {
   // --- Seat Types ---
@@ -112,24 +112,37 @@ const seatService = {
     }
   },
   
-  // --- Seat Templates ---
-  getAllTemplates: async (): Promise<SeatTemplate[]> => {
+  // --- Seat Templates (Now part of bus_layouts) ---
+  getAllTemplates: async (): Promise<BusLayout[]> => {
     try {
-      const response = await api.get('/seat_templates');
-      return response as unknown as SeatTemplate[];
+      const response = await api.get('/bus_layouts?is_template=true');
+      return response as unknown as BusLayout[];
     } catch (error) {
       console.error('Error fetching templates:', error);
       return [];
     }
   },
 
-  createTemplate: async (data: Partial<SeatTemplate>): Promise<SeatTemplate | null> => {
+  createTemplate: async (data: Partial<BusLayout>): Promise<BusLayout | null> => {
     try {
-      const response = await api.post('/seat_templates', data);
-      return response as unknown as SeatTemplate;
+       const templateData = { ...data, is_template: true };
+       const response = await api.post('/bus_layouts', templateData);
+       // Note: Templates stored in bus_layouts don't necessarily need positions created immediately
+       // unless we want to "pre-fill" them. For now, just creating the layout record.
+      return response as unknown as BusLayout;
     } catch (error) {
       console.error('Error creating template:', error);
       return null;
+    }
+  },
+
+  deleteTemplate: async (id: string | number): Promise<boolean> => {
+    try {
+      await api.delete(`/bus_layouts/${id}`);
+      return true;
+    } catch (error) {
+      console.error('Error deleting template:', error);
+      return false;
     }
   }
 };

@@ -1,4 +1,5 @@
 {
+  "bookings": [],
   "users": [
     {
       "id": "1",
@@ -20,29 +21,19 @@
       "password": "1231223",
       "status": "ACTIVE",
       "created_at": "Sat Dec 27 2025 19:15:34 GMT+0700 (GMT+07:00)",
-      "updated_at": "Tue Dec 30 2025 16:23:00 GMT+0700 (GMT+07:00)"
+      "updated_at": "Sat Dec 27 2025 20:42:42 GMT+0700 (GMT+07:00)"
     },
     {
-      "id": "87ec81e0-3109-4de6-88a9-58dfd4bfe36c",
-      "first_name": "nguyen",
-      "last_name": "A",
-      "email": "nguyenA@gmail.com",
-      "phone": "0812719014",
-      "password": "123123",
+      "id": "bba5",
+      "first_name": "Hoàng",
+      "last_name": "Nguyễn",
+      "email": "nguyenquanghoang1080@gmail.com",
+      "password": "15122004",
+      "phone": "0338470809",
+      "created_at": "2026-01-01T04:47:12.552Z",
+      "updated_at": "2026-01-01T04:47:12.552Z",
       "status": "ACTIVE",
-      "created_at": "Tue Dec 30 2025 08:54:17 GMT+0700 (GMT+07:00)",
-      "updated_at": "Tue Dec 30 2025 08:54:17 GMT+0700 (GMT+07:00)"
-    },
-    {
-      "id": "4964f00c-5399-49e8-8b32-51e4397b3efb",
-      "first_name": "asdf",
-      "last_name": "adsf",
-      "email": "asdf@gmail.com",
-      "phone": "0901234567",
-      "password": "0901234567",
-      "status": "ACTIVE",
-      "created_at": "Tue Dec 30 2025 09:34:24 GMT+0700 (GMT+07:00)",
-      "updated_at": "Tue Dec 30 2025 09:34:24 GMT+0700 (GMT+07:00)"
+      "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9"
     }
   ],
   "roles": [
@@ -67,18 +58,12 @@
     },
     {
       "user_id": "2",
-      "role_id": "3",
-      "id": "2"
+      "role_id": "1"
     },
     {
-      "id": "0fa21287-e195-489d-8d17-a37d42ecc1d0",
-      "user_id": "87ec81e0-3109-4de6-88a9-58dfd4bfe36c",
-      "role_id": 2
-    },
-    {
-      "id": "7f84",
-      "role_id": "1",
-      "user_id": "4964f00c-5399-49e8-8b32-51e4397b3efb"
+      "id": "a2eb1e12-3c0e-41f7-9f6d-13b5ca7d2982",
+      "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9",
+      "role_id": 1
     }
   ],
   "cities": [
@@ -711,6 +696,16 @@
       "location": "Nguyễn Trãi, Ninh Kiều",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "id": "8",
+      "station_name": "Bến xe Vũng Tàu",
+      "city_id": "7",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
+      "description": "Bến xe trung tâm Vũng Tàu",
+      "location": "192 Nam Kỳ Khởi Nghĩa, Phường 3",
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01"
     }
   ],
   "routes": [
@@ -806,6 +801,17 @@
       "base_price": 250000,
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "id": "10",
+      "departure_station_id": "8",
+      "arrival_station_id": "3",
+      "distance": 120,
+      "duration": 150,
+      "base_price": 100000,
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01",
+      "description": "Tuyến xe từ Bà Rịa Vũng Tàu đến Hồ Chí Minh, thời gian di chuyển khoảng 2.5 giờ"
     }
   ],
   "bus_companies": [
@@ -932,7 +938,9 @@
       "amenities": "Wifi, TV, Nước, Chăn",
       "status": "ACTIVE",
       "created_at": "2025-01-16T08:00:00",
-      "updated_at": "2025-01-16T08:00:00"
+      "updated_at": "2025-01-16T08:00:00",
+      "company_id": "2",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062423/zhiw6vxcgclu5owxdwkf.jpg"
     },
     {
       "id": "3",
@@ -945,7 +953,9 @@
       "amenities": "Massage, Wifi, Nước, Cổng sạc",
       "status": "ACTIVE",
       "created_at": "2025-01-17T08:00:00",
-      "updated_at": "2025-01-17T08:00:00"
+      "updated_at": "2025-01-17T08:00:00",
+      "company_id": "3",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062461/zksrm02pjzfbb726nmno.jpg"
     },
     {
       "id": "4",
@@ -958,7 +968,9 @@
       "amenities": "Điều hòa",
       "status": "ACTIVE",
       "created_at": "2025-01-18T08:00:00",
-      "updated_at": "2025-01-18T08:00:00"
+      "updated_at": "2025-01-18T08:00:00",
+      "company_id": "4",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062495/ydtbws15q3n6fnkxpouf.jpg"
     },
     {
       "id": "5",
@@ -971,7 +983,9 @@
       "amenities": "Wifi, TV, Massage, Chăn cao cấp, Điều hòa",
       "status": "ACTIVE",
       "created_at": "2025-01-19T08:00:00",
-      "updated_at": "2025-01-19T08:00:00"
+      "updated_at": "2025-01-19T08:00:00",
+      "company_id": "5",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062570/ptwvinrownvepsnfeomm.jpg"
     },
     {
       "id": "6",
@@ -984,7 +998,9 @@
       "amenities": "Điều hòa, Nước",
       "status": "ACTIVE",
       "created_at": "2025-01-20T08:00:00",
-      "updated_at": "2025-01-20T08:00:00"
+      "updated_at": "2025-01-20T08:00:00",
+      "company_id": "2",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062599/tyxuq8ru01totbr2j55k.jpg"
     },
     {
       "id": "7",
@@ -997,7 +1013,20 @@
       "amenities": "Wifi, Nước, Chăn, Điều hòa",
       "status": "ACTIVE",
       "created_at": "2025-01-21T08:00:00",
-      "updated_at": "2025-01-21T08:00:00"
+      "updated_at": "2025-01-21T08:00:00",
+      "company_id": "1",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062627/yr9mkd3x9ltog8tm3ixp.jpg"
+    },
+    {
+      "id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "name": "Cúc Phương Supper Vip",
+      "license_plate": "BH - 123586",
+      "company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
+      "layout_id": "102",
+      "vehicle_type_id": "e7a2ddb2-6692-4e31-957f-881dffeb5a82",
+      "capacity": 48,
+      "status": "ACTIVE",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767062665/mzswbxhurnuwmujt6cnp.jpg"
     }
   ],
   "bus_images": [
@@ -1025,12 +1054,117 @@
       "id": "5",
       "bus_id": "5",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg"
+    },
+    {
+      "id": "3281",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767058838/nzn9betjatizoipr452o.jpg"
+    },
+    {
+      "id": "561c",
+      "bus_id": "2",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767059961/acsyx0spcre3v6jp6ni7.jpg"
+    },
+    {
+      "id": "ad85",
+      "bus_id": "2",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767059964/zvebolwlu9tvuzhgwt2e.jpg"
+    },
+    {
+      "id": "bfc6",
+      "bus_id": "2",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767059965/oucysrhtqhggkole4hfa.jpg"
+    },
+    {
+      "id": "aaab5e88-dcb0-488b-aece-52ff7c8fa4eb",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095178/qjxz3dp8z9ffptytghg0.jpg"
+    },
+    {
+      "id": "04c37f75-b7b5-4c64-9954-867a4bb4ef33",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095178/vtkciwmtiopai0qqivi6.jpg"
+    },
+    {
+      "id": "5b564cd4-af9f-42b6-b2b4-35c88e65c81c",
+      "bus_id": "3",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095430/q84iackhv6eso7nkopbi.jpg"
+    },
+    {
+      "id": "6925e1d3-0ca2-4ea7-a944-9cb6d1d6d40a",
+      "bus_id": "3",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095431/qrbk0ietqzc36zgr2pnu.png"
+    },
+    {
+      "id": "8b8d2ad2-2b4b-41bc-a833-d1b2960440aa",
+      "bus_id": "4",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095476/cwglkwwgj5qb2ubagpx2.jpg"
+    },
+    {
+      "id": "cc367762-0a5a-41f1-aaba-cba0cf8c4a3d",
+      "bus_id": "4",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095476/t6bnf1cen6xlirpceugp.jpg"
+    },
+    {
+      "id": "8a43dc49-7fe8-40df-8bd0-3977a3acc03f",
+      "bus_id": "5",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095720/uzlmqaahugbaw23d1cud.jpg"
+    },
+    {
+      "id": "cdab33f7-55eb-4cf0-8096-d1bd192152ee",
+      "bus_id": "5",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095721/jlql5yls6lq9lue2hur9.jpg"
+    },
+    {
+      "id": "e29cb1cd-96e2-4bce-ae4e-251b6219e2c1",
+      "bus_id": "5",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095721/aucbz3rvp8hkqhc1iopk.png"
+    },
+    {
+      "id": "b2feb229-1f54-490c-99e4-6a19a5cd6858",
+      "bus_id": "6",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095807/zkdke2fv7a8doqyrbwbk.jpg"
+    },
+    {
+      "id": "c8ad7a71-9ac4-413c-a5b0-a23cdc78a9c5",
+      "bus_id": "6",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095816/m36d8hdozihrjojuugpn.jpg"
+    },
+    {
+      "id": "ead3c7a8-6c75-4f85-84d4-252f75ef0c33",
+      "bus_id": "6",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095817/wtdbfxipb5setyzg5fjg.jpg"
+    },
+    {
+      "id": "1212e99f-c7da-4055-8fa8-01b8b0c19f76",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095988/hyonmdojb0fg5xn3w4pj.jpg"
+    },
+    {
+      "id": "56bb8aec-d75a-4dbd-b90e-2a428873e4e6",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095989/d0rccuarxalfzdycjl5k.jpg"
+    },
+    {
+      "id": "8a1591c0-5117-4860-807e-f8a7944ac556",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095989/b7k3l2ztbvveltfqqyjy.jpg"
+    },
+    {
+      "id": "ffca6dcc-981c-4302-99a6-0926725c02fc",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095990/zf2tgqwlp6td82ehp10t.png"
+    },
+    {
+      "id": "b6e59f8a-1a2d-49bd-890a-7fd0f1972d54",
+      "bus_id": "7",
+      "image_url": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767095991/f0qg5gqjicscdu6dvo35.png"
     }
   ],
   "bus_layouts": [
     {
       "id": "101",
-      "layout_name": "Giường nằm 40 chỗ – 2 tầng",
+      "layout_name": "Giường nằm 40 chỗ",
       "total_rows": 10,
       "total_columns": 4,
       "floor_count": 2,
@@ -1074,18 +1208,29 @@
       "updated_at": "2025-01-14T08:00:00"
     },
     {
-      "id": "3bcb",
-      "layout_name": "lmao",
-      "total_rows": 7,
-      "total_columns": 2,
-      "floor_count": 1
-    },
-    {
-      "id": "30c7",
+      "id": "fd4b",
       "layout_name": "vip 9 chỗ",
       "total_rows": 5,
       "total_columns": 2,
-      "floor_count": 1
+      "floor_count": 1,
+      "is_template": true,
+      "created_at": "2025-12-29T00:59:02.016Z"
+    },
+    {
+      "id": "5374",
+      "layout_name": "test",
+      "total_rows": 7,
+      "total_columns": 5,
+      "floor_count": 2,
+      "created_at": "2025-12-30T00:52:32.531Z",
+      "is_template": true
+    },
+    {
+      "id": "840b",
+      "layout_name": "test",
+      "total_rows": 7,
+      "total_columns": 5,
+      "floor_count": 2
     }
   ],
   "seat_types": [
@@ -1185,20 +1330,461 @@
       "is_door": false,
       "is_stair": false,
       "rotation": 0
+    },
+    {
+      "id": "eca4",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": true,
+      "label": "Tài",
+      "layout_id": "840b"
+    },
+    {
+      "id": "995f",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 5,
+      "is_door": true,
+      "label": "Cửa",
+      "layout_id": "840b"
+    },
+    {
+      "id": "1767247870423",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A01",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870424",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A02",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870425",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A03",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870426",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A04",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870427",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A05",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870428",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A06",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870429",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A07",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870430",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A08",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870431",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A09",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870432",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A10",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870433",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A11",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870434",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A12",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870435",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A13",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870436",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A14",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870437",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A15",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870438",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 6,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A16",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870439",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 6,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A17",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870440",
+      "layout_id": "102",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 0,
+      "is_driver_seat": true,
+      "label": "Tài"
+    },
+    {
+      "id": "1767247870441",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B01",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870442",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 1,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B02",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870443",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 1,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B03",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870444",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 2,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B04",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870445",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 2,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B05",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870446",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 2,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B06",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870447",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 3,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B07",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870448",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 3,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B08",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870449",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 3,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B09",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870450",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 4,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B10",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870451",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 4,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B11",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870452",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 4,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B12",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870453",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 5,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B13",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870454",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 5,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B14",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870455",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 5,
+      "column_index": 3,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B15",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870456",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 6,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B16",
+      "seat_type_id": 2
+    },
+    {
+      "id": "1767247870457",
+      "layout_id": "102",
+      "floor": 2,
+      "row_index": 6,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B17",
+      "seat_type_id": 2
     }
   ],
   "schedules": [
     {
       "id": "1",
       "route_id": "1",
-      "bus_id": "1",
+      "bus_id": "2",
       "departure_time": "2025-12-25T08:00",
       "arrival_time": "2025-12-26T14:00",
       "total_seats": 34,
       "available_seats": 20,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "updated_at": "2025-01-01",
+      "route_name": "Bến xe Mỹ Đình → Bến xe Mỹ Đình",
+      "bus_name": "Futa Hà Sơn – Limousine 34 giường",
+      "bus_license": "29B-54321",
+      "departure_time_str": "08:00 25/12/2025",
+      "available_seat": 20,
+      "schedule_id": "1"
     },
     {
       "id": "2",
@@ -1225,16 +1811,15 @@
       "updated_at": "2025-01-01"
     },
     {
-      "id": "4",
       "route_id": "2",
-      "bus_id": "1",
-      "departure_time": "2025-12-25T19:00",
-      "arrival_time": "2025-12-26T05:00",
+      "bus_id": "5",
       "total_seats": 34,
       "available_seats": 15,
       "status": "AVAILABLE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "departure_time": "2025-12-25T19:00",
+      "arrival_time": "2025-12-27T01:00",
+      "updated_at": "2025-12-31T09:44:06.231Z",
+      "id": "4"
     },
     {
       "id": "5",
@@ -1309,16 +1894,15 @@
       "updated_at": "2025-01-01"
     },
     {
-      "id": "11",
       "route_id": "1",
-      "bus_id": "1",
-      "departure_time": "2025-12-26T08:00",
-      "arrival_time": "2025-12-27T14:00",
+      "bus_id": "5",
       "total_seats": 34,
       "available_seats": 28,
       "status": "AVAILABLE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "departure_time": "2025-12-26T08:00",
+      "arrival_time": "2025-12-27T14:00",
+      "updated_at": "2025-12-31T09:44:16.750Z",
+      "id": "11"
     },
     {
       "id": "12",
@@ -1381,16 +1965,15 @@
       "updated_at": "2025-01-01"
     },
     {
-      "id": "17",
       "route_id": "1",
-      "bus_id": "1",
-      "departure_time": "2025-12-27T20:00",
-      "arrival_time": "2025-12-28T06:00",
+      "bus_id": "4",
       "total_seats": 34,
       "available_seats": 25,
       "status": "AVAILABLE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "departure_time": "2025-12-27T20:00",
+      "arrival_time": "2025-12-29T02:00",
+      "updated_at": "2025-12-31T09:44:22.838Z",
+      "id": "17"
     },
     {
       "id": "18",
@@ -1403,6 +1986,39 @@
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
+    },
+    {
+      "route_id": "1",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "total_seats": 40,
+      "available_seats": 40,
+      "status": "AVAILABLE",
+      "departure_time": "2025-12-31T03:00",
+      "arrival_time": "2026-01-01T09:00",
+      "updated_at": "2025-12-31T09:41:40.015Z",
+      "id": "014f"
+    },
+    {
+      "route_id": "1",
+      "bus_id": "5",
+      "total_seats": 40,
+      "available_seats": "30",
+      "status": "AVAILABLE",
+      "departure_time": "2026-01-10T18:03",
+      "arrival_time": "2026-01-12T00:03",
+      "updated_at": "2026-01-01T06:12:45.960Z",
+      "id": "5fe0"
+    },
+    {
+      "route_id": "1",
+      "bus_id": "5",
+      "total_seats": 40,
+      "available_seats": "30",
+      "status": "AVAILABLE",
+      "departure_time": "2026-02-10T18:03",
+      "arrival_time": "2026-02-12T00:03",
+      "updated_at": "2026-01-01T06:14:23.679Z",
+      "id": "e9d8"
     }
   ],
   "seat_schedule": [
@@ -1596,24 +2212,6 @@
       "route_id": "6",
       "image_url": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410532/sg-dl_qbddyl.png",
       "priority": 5
-    }
-  ],
-  "seat_templates": [
-    {
-      "id": "82d6",
-      "name": "lmao",
-      "rows": 7,
-      "cols": 2,
-      "floors": 1,
-      "created_at": "2025-12-29T00:44:07.524Z"
-    },
-    {
-      "id": "fd4b",
-      "name": "vip 9 chỗ",
-      "rows": 5,
-      "cols": 2,
-      "floors": 1,
-      "created_at": "2025-12-29T00:59:02.016Z"
     }
   ]
 }

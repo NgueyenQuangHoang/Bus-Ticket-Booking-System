@@ -16,7 +16,7 @@ export default function BusSelect({ value, onChange, buses }: Props) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full max-w-sm border border-gray-300 rounded-lg px-3 py-2 text-sm"
+        className="w-full max-w-sm border border-gray-300 rounded-lg px-3 py-2 text-sm hover:cursor-pointer"
       >
         <option value="">-- Chọn xe --</option>
         {buses.map((bus) => (

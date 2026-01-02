@@ -115,7 +115,7 @@ export default function BusImagesPage() {
                 }
                 setOpenModal(true);
             }}
-            className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm disabled:opacity-50"
+            className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm disabled:opacity-50 hover:cursor-pointer"
           >
             <AddIcon sx={{ fontSize: 18 }} />
             Tải ảnh lên

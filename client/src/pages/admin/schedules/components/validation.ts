@@ -5,7 +5,7 @@ export interface ScheduleFormData extends Partial<ScheduleUI> { }
 export const validateSchedule = (
     formData: ScheduleFormData,
     existingSchedules: ScheduleUI[],
-    currentId?: number
+    currentId?: number | string
 ): Record<string, string> => {
     const newErrors: Record<string, string> = {};
 
