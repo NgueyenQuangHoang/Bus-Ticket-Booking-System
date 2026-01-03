@@ -11,6 +11,15 @@ export const busCompanyService = {
             throw error;
         }
     },
+    getBusCompanyById: async (id: string): Promise<BusCompany> => {
+        try {
+            const response = await api.get(`/bus_companies/${id}`);
+            return response as unknown as BusCompany;
+        } catch (error) {
+            console.error('Error fetching bus company:', error);
+            throw error;
+        }
+    },
     getPopularBusCompanies: async (limit: number = 5): Promise<BusCompany[]> => {
         try {
             const response = await api.get(`/bus_companies?_sort=rating&_order=desc&_limit=${limit}`);

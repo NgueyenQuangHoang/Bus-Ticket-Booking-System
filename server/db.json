@@ -87,10 +87,23 @@
       "email": "cucphuong1@gmail.com",
       "phone": "0992099338",
       "password": "12345678",
-      "bus_company_id": "ea844ea1-e8b8-4b37-af15-a2b3a93fed83",
+      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
       "status": "ACTIVE",
       "created_at": "Sat Jan 03 2026 22:20:41 GMT+0700 (GMT+07:00)",
-      "updated_at": "Sat Jan 03 2026 22:20:41 GMT+0700 (GMT+07:00)"
+      "updated_at": "Sat Jan 03 2026 22:51:04 GMT+0700 (GMT+07:00)"
+    },
+    {
+      "id": "f370588b-abcd-4162-866c-86d7f62fec7c",
+      "first_name": "Nguyễn văn",
+      "last_name": "A",
+      "email": "a123@gmail.com",
+      "phone": "0938588445",
+      "password": "111111",
+      "bus_company_id": "5",
+      "status": "ACTIVE",
+      "created_at": "Sat Jan 03 2026 22:57:12 GMT+0700 (GMT+07:00)",
+      "updated_at": "Sat Jan 03 2026 23:04:14 GMT+0700 (GMT+07:00)",
+      "role_id": "1"
     }
   ],
   "roles": [
@@ -129,9 +142,14 @@
       "id": "f9fb"
     },
     {
-      "id": "e961",
+      "user_id": "f6fbd897-9a07-4f8b-a840-8a427dd568f1",
       "role_id": "3",
-      "user_id": "f6fbd897-9a07-4f8b-a840-8a427dd568f1"
+      "id": "e961"
+    },
+    {
+      "user_id": "f370588b-abcd-4162-866c-86d7f62fec7c",
+      "role_id": "3",
+      "id": "3743"
     }
   ],
   "cities": [

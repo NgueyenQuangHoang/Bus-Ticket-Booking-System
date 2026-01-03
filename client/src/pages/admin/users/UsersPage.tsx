@@ -145,7 +145,10 @@ export default function UsersPage() {
                 isOpen={isAddModalOpen}
                 onClose={() => setIsAddModalOpen(false)}
                 onAdd={handleAddUser}
-                user={selectedUser}
+                user={selectedUser ? {
+                    ...selectedUser,
+                    role_id: user_roles.find(ur => ur.user_id === selectedUser.id)?.role_id
+                } as any : null}
                 statusForm={statusForm}
                 Edit={handleEdit}
             />
@@ -154,6 +157,7 @@ export default function UsersPage() {
                 isOpen={isViewModalOpen}
                 onClose={() => setIsViewModalOpen(false)}
                 user={selectedUser}
+                roleName={selectedUser ? urMapping[selectedUser.id] : ''}
             />
         </div>
     );
