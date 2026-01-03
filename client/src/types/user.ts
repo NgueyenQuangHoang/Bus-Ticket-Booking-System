@@ -9,16 +9,17 @@ export interface User {
   status?: string;
   created_at?: Timestamp;
   updated_at?: Timestamp;
-  id: string
+  id: string;
+  bus_company_id?: string;
 }
 
 export interface Role {
   role_name: string;
-  id:string
+  id: string
 }
 
 export interface UserRole {
   user_id: string;
   role_id: string;
-  id?:number|string
+  id?: number | string
 }
