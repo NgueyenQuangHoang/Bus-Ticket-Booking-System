@@ -70,33 +70,10 @@ export const authService = {
         return response as unknown as User;
     },
 
-<<<<<<< HEAD
     getRole_User: async (): Promise<UserRole[]> => {
         try {
             const response: UserRole[] = await api.get('/user_role')
             return response
-=======
-    getRoleUser: async (user_id: number | string): Promise<Role[] | undefined> => {
-        try {
-            const responseGetRole: Role[] = await api.get('http://localhost:8080/roles')
-            const responseGetUserRole: UserRole[] = await api.get('http://localhost:8080/user_role?user_id=' + user_id)
-
-            const dataUser = responseGetUserRole.filter((item) => item.user_id == user_id)
-            const roleMap = responseGetRole.reduce((acc, current) => {
-                acc[current.role_id] = current
-                return acc
-            }, {} as Record<string, Role>)
-
-
-            const dataReturn = dataUser.reduce((acc, item) => {
-                acc.push(roleMap[item.role_id])
-                return acc
-            }, [] as Role[])
-            localStorage.setItem('role', JSON.stringify(dataReturn))
-
-
-            return dataReturn
->>>>>>> b8825a2c34e745a69e0c772102b2e1b1df3a9054
         } catch (error) {
             console.log(error);
             return []
@@ -105,15 +82,8 @@ export const authService = {
     deleteUser: async (id: number | string): Promise<void> => {
         try {
             await api.delete('/users/' + id)
-<<<<<<< HEAD
             const responseUR: UserRole[] = await api.get('user_role?user_id=' + id)
             responseUR.forEach(element => {
-=======
-            const responseUR: UserRole[] = await api.get('user_role?user_id=' + user_id)
-            responseUR.forEach(element => {
-                console.log(element.id);
-
->>>>>>> b8825a2c34e745a69e0c772102b2e1b1df3a9054
                 api.delete('/user_role/' + element.id)
             });
         } catch (error) {
@@ -155,20 +125,19 @@ export const authService = {
             console.log(error);
         }
     },
-    updateStatus: async (id: string | number, uFix: User): Promise<void> => {
+    updateStatus: async (uFix: User): Promise<void> => {
         try {
-            await api.put('/users/' + id, uFix)
+            await api.put('/users/' + uFix.id, uFix)
         } catch (error) {
             console.log(error);
-
         }
     },
-    updateUser: async (id: string | number, uFix: User, role: string): Promise<void> => {
+    updateUser: async (uFix: User, role: string): Promise<void> => {
         try {
-            await api.put('/users/' + id, uFix)
+            await api.put('/users/' + uFix.id, uFix)
             const response: UserRole[] = await api.get('/user_role?user_id=' + uFix.id)
             const idUR = response[0].id
-            await api.put('/user_role/' + idUR, { user_id: uFix.id, role_id: role == 'ADMIN' ? '2' : role == 'USER' ? '1' : '3' })
+            await api.put('/user_role/' + idUR, { user_id: uFix.id, role_id: role })
         } catch (error) {
             console.log(error);
         }
