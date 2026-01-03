@@ -1,49 +1,40 @@
 {
-  "bookings": [
+  "tickets": [
     {
-      "id": "0302",
-      "tripInfo": {
-        "id": "SCH_MQ_001",
-        "type": "departure",
-        "dateStr": "T2, 5/1/2026",
-        "operator": {
-          "name": "Nhà xe Minh Quốc",
-          "image": "",
-          "vehicleType": "Minh Quốc",
-          "passengerCount": 1,
-          "seatIds": "A3"
-        },
-        "departure": {
-          "time": "07:30",
-          "date": "05-01",
-          "name": "Bến xe Vũng Tàu",
-          "address": "Bà Rịa - Vũng Tàu"
-        },
-        "arrival": {
-          "time": "10:00",
-          "date": "05-01",
-          "name": "Bến xe Miền Đông",
-          "address": "Hồ Chí Minh"
-        },
-        "policy": {
-          "text": "Phí hủy 10% trước 24h khởi hành",
-          "colorClass": "text-orange-500"
-        },
-        "totalPrice": 100000,
-        "priceDisplay": "100.000đ",
-        "route": "Bà Rịa - Vũng Tàu - Hồ Chí Minh",
-        "price": "100.000đ"
-      },
-      "contactInfo": {
-        "fullName": "Phátto",
-        "phone": "0987654321",
-        "email": "phat@gmail.com",
+      "id": "1767462002501",
+      "user_id": "guest",
+      "schedule_id": "SCH_MQ_001",
+      "code": "TICKET_002501",
+      "status": "BOOKED",
+      "total_price": 100000,
+      "created_at": "2026-01-03T17:40:02.501Z",
+      "updated_at": "2026-01-03T17:40:02.501Z",
+      "contact_info": {
+        "fullName": "Hoàng Nguyễn",
+        "phone": "0338470809",
+        "email": "nguyenquanghoang1080@gmail.com",
         "countryCode": "+84"
-      },
-      "totalPrice": 100000,
-      "status": "CONFIRMED",
-      "createdAt": "2026-01-01T11:09:38.880Z",
-      "paymentMethod": "QR_PAYMENT"
+      }
+    }
+  ],
+  "seat_schedules": [
+    {
+      "id": "1767462002553_ff4c",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "ff4c",
+      "ticket_id": "1767462002501",
+      "status": "BOOKED",
+      "price": 100000
+    }
+  ],
+  "payments": [
+    {
+      "id": "PAY_1767462002565",
+      "ticket_id": "1767462002501",
+      "amount": 100000,
+      "method": "QR_PAYMENT",
+      "status": "COMPLETED",
+      "transaction_date": "2026-01-03T17:40:02.501Z"
     }
   ],
   "users": [
@@ -2614,7 +2605,7 @@
       "departure_time": "2026-01-05T07:30",
       "arrival_time": "2026-01-05T10:00",
       "total_seats": 70,
-      "available_seats": 70,
+      "available_seats": 69,
       "status": "AVAILABLE",
       "created_at": "2026-01-01",
       "updated_at": "2026-01-01"
@@ -2655,18 +2646,6 @@
       "hold_expired_at": null
     }
   ],
-  "tickets": [
-    {
-      "id": "1",
-      "user_id": "2",
-      "schedule_id": "1",
-      "seat_id": "1",
-      "price": 800000,
-      "status": "BOOKED",
-      "created_at": "2025-01-10",
-      "updated_at": "2025-01-10"
-    }
-  ],
   "passengers": [
     {
       "id": "1",
@@ -2694,21 +2673,6 @@
       "provider_name": "ZaloPay",
       "provider_type": "E_WALLET",
       "api_endpoint": "https://zalopay.vn/api"
-    }
-  ],
-  "payments": [
-    {
-      "id": "1",
-      "ticket_id": "1",
-      "user_id": "2",
-      "payment_provider_id": "1",
-      "payment_method": "ONLINE",
-      "amount": 800000,
-      "transaction_code": "VNPAY001",
-      "status": "COMPLETED",
-      "paid_at": "2025-01-10T10:30",
-      "created_at": "2025-01-10",
-      "updated_at": "2025-01-10"
     }
   ],
   "cancellation_policies": [

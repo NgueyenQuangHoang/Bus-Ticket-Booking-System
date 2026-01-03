@@ -25,7 +25,7 @@ interface Route {
     arrival_station_id: string;
     duration: number;
     base_price: number;
-    name?: string; // Some routes might have names if defined
+    name?: string;
 }
 
 interface Station {
@@ -34,35 +34,46 @@ interface Station {
     city_id: string;
 }
 
+interface SeatSchedule {
+    id: string;
+    schedule_id: string;
+    seat_name: string;
+    ticket_id: string;
+    status: string;
+    price: number;
+}
+
 interface TicketResponse {
     id: string;
     user_id: string;
     schedule_id: string;
-    seat_id: string;
+    // seat_id: string; // Removed
     price: number;
-    status: "BOOKED" | "COMPLETED" | "CANCELLED";
+    total_price?: number; // Added to match new schema
+    status: "BOOKED" | "COMPLETED" | "CANCELLED" | "PENDING";
     code: string;
     created_at: string;
     updated_at: string;
-    schedule?: Schedule; // Expanded from json-server
+    schedule?: Schedule;
 }
 
 export interface TicketUI {
     id: string;
     code: string;
     busInfo: {
-        id: string; // Bus ID
+        id: string;
         time: string;
         date: string;
-        name: string; // Bus Name or Company Name
+        name: string;
         route: string;
         price: number;
-        type: string; // Layout or Vehicle type
+        type: string;
     };
-    status: "BOOKED" | "COMPLETED" | "CANCELLED";
+    status: "BOOKED" | "COMPLETED" | "CANCELLED" | "PENDING";
     pickup: string;
     dropoff: string;
-    review?: Review; // Review if exists
+    seats: string[]; // Added seats array
+    review?: Review;
 }
 
 export const ticketService = {
@@ -72,6 +83,7 @@ export const ticketService = {
                 status: "CANCELLED",
                 updated_at: new Date().toISOString()
             });
+            // Also cancel seat schedules?? Ideally yes, but keeping it simple for now or separate call.
             return response as unknown as TicketResponse;
         } catch (error) {
             console.error("Error cancelling ticket:", error);
@@ -81,7 +93,7 @@ export const ticketService = {
 
     getMyTickets: async (userId: string): Promise<TicketUI[]> => {
         try {
-            // 1. Fetch tickets with schedule expanded
+            // 1. Fetch tickets
             const response = await api.get<TicketResponse[]>(
                 `/tickets?user_id=${userId}&_sort=created_at&_order=desc`
             );
@@ -91,11 +103,11 @@ export const ticketService = {
 
             // 2. Parallel fetch related entities
             const [buses, routes, stations, schedules, reviews] = await Promise.all([
-                api.get<Bus[]>(`/buses`), // Fetch all or filter if possible. json-server doesn't support "id_in" array param easily without query builder. fetching all for now is safer for small db.
+                api.get<Bus[]>(`/buses`),
                 api.get<Route[]>(`/routes`),
                 api.get<Station[]>(`/stations`),
-                api.get<Schedule[]>(`/schedules`), // Fetch all schedules manually
-                api.get<Review[]>(`/bus_reviews?user_id=${userId}`) // Fetch reviews for current user
+                api.get<Schedule[]>(`/schedules`),
+                api.get<Review[]>(`/bus_reviews?user_id=${userId}`)
             ]);
 
             const busesArr = buses as unknown as Bus[];
@@ -104,16 +116,22 @@ export const ticketService = {
             const schedulesArr = schedules as unknown as Schedule[];
             const reviewsArr = reviews as unknown as Review[];
 
-            // 4. Map to UI Model
+            // 3. Map to UI Model
             const mappedTickets: TicketUI[] = [];
 
             for (const ticket of tickets) {
+                // Fetch seats for this ticket
+                const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
+                const seatSchedules = seatSchedulesRes as unknown as SeatSchedule[];
+                const seatNames = seatSchedules.map(s => s.seat_name);
+
                 // Manually find schedule
                 const schedule = schedulesArr.find(s => s.id === ticket.schedule_id);
 
-                // Skip if schedule is missing
+                // If schedule is missing, we might still want to show the ticket with warning or skip
+                // Skipping for now to avoid crashes
                 if (!schedule) {
-                    console.warn(`Ticket ${ticket.id} missing schedule data (schedule_id: ${ticket.schedule_id})`);
+                    console.warn(`Ticket ${ticket.id} missing schedule data`);
                     continue;
                 }
 
@@ -123,14 +141,12 @@ export const ticketService = {
                 const depStation = stationsArr.find(s => s.id === route?.departure_station_id);
                 const arrStation = stationsArr.find(s => s.id === route?.arrival_station_id);
 
-                // Mock route name if not present
                 const routeName = (depStation && arrStation)
                     ? `${depStation.station_name} - ${arrStation.station_name}`
                     : "Tuyến đường không xác định";
 
                 const departureDate = new Date(schedule.departure_time);
 
-                // Find review for this ticket
                 const review = reviewsArr.find(r => r.ticket_id === ticket.id);
 
                 mappedTickets.push({
@@ -143,11 +159,12 @@ export const ticketService = {
                         date: departureDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }),
                         name: bus?.name || "Xe khách",
                         route: routeName,
-                        price: ticket.price,
-                        type: "Giường nằm" // Mocking type for now or fetch layout
+                        price: ticket.total_price || ticket.price, // use total_price if available
+                        type: "Giường nằm"
                     },
                     pickup: depStation?.station_name || "Điểm đón",
                     dropoff: arrStation?.station_name || "Điểm trả",
+                    seats: seatNames.length > 0 ? seatNames : ["N/A"],
                     review: review
                 });
             }
