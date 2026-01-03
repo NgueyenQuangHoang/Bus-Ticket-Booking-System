@@ -64,7 +64,7 @@ export default function BookingConfirmation() {
 
   const location = useLocation();
   const tripData = location.state?.trip as TripData || SHARED_TRIP;
-  // const selectedSeats = location.state?.selectedSeats || [];
+  const selectedSeats = location.state?.selectedSeats || [];
 
   // Handlers
   const handleContinue = () => {
@@ -91,7 +91,7 @@ export default function BookingConfirmation() {
         paymentMethod: 'QR_PAYMENT'
       };
 
-      const result = await bookingService.createBooking(bookingData);
+      const result = await bookingService.createBooking(bookingData, selectedSeats);
 
       if (result) {
         notify("Thanh toán và lưu vé thành công!", true);
