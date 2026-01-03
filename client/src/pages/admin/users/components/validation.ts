@@ -18,9 +18,10 @@ export interface UserFormData {
     email: string;
     phone: string;
     password: string;
+    bus_company_id?: string;
 }
 
-export const validateUserForm = (data: UserFormData,isUpdate:boolean) => {
+export const validateUserForm = (data: UserFormData, isUpdate: boolean) => {
     const errors: Partial<Record<keyof UserFormData, string>> = {};
 
     if (!validateRequired(data.last_name)) {

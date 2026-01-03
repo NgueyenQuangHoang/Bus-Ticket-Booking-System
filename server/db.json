@@ -79,6 +79,18 @@
       "status": "ACTIVE",
       "created_at": "Sat Jan 03 2026 19:26:04 GMT+0700 (GMT+07:00)",
       "updated_at": "Sat Jan 03 2026 19:26:10 GMT+0700 (GMT+07:00)"
+    },
+    {
+      "id": "f6fbd897-9a07-4f8b-a840-8a427dd568f1",
+      "first_name": "Nhà xe cúc phương",
+      "last_name": "User 1",
+      "email": "cucphuong1@gmail.com",
+      "phone": "0992099338",
+      "password": "12345678",
+      "bus_company_id": "ea844ea1-e8b8-4b37-af15-a2b3a93fed83",
+      "status": "ACTIVE",
+      "created_at": "Sat Jan 03 2026 22:20:41 GMT+0700 (GMT+07:00)",
+      "updated_at": "Sat Jan 03 2026 22:20:41 GMT+0700 (GMT+07:00)"
     }
   ],
   "roles": [
@@ -102,10 +114,9 @@
       "id": "1"
     },
     {
-      "id": "2",
+      "id": "9c59",
       "user_id": "2",
-      "role_id": "1",
-      "id": "9c59"
+      "role_id": "1"
     },
     {
       "id": "a2eb1e12-3c0e-41f7-9f6d-13b5ca7d2982",
@@ -116,6 +127,11 @@
       "user_id": "49b3fd55-121c-4ff9-8428-9d7989871434",
       "role_id": "1",
       "id": "f9fb"
+    },
+    {
+      "id": "e961",
+      "role_id": "3",
+      "user_id": "f6fbd897-9a07-4f8b-a840-8a427dd568f1"
     }
   ],
   "cities": [
