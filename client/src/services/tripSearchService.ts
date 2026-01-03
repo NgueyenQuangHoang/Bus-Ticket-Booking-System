@@ -52,6 +52,7 @@ interface Schedule {
 // Kết quả tìm kiếm chuyến xe
 export interface TripSearchResult {
   schedule_id: string;
+  bus_id: string;
   departure_time: string;
   arrival_time: string;
   duration: number; // minutes
@@ -83,13 +84,14 @@ export const tripSearchService = {
   searchTrips: async (params: SearchParams): Promise<TripSearchResult[]> => {
     try {
       // 1. Fetch tất cả dữ liệu cần thiết
-      const [cities, stations, routes, schedules, buses, busCompanies] = await Promise.all([
+      const [cities, stations, routes, schedules, buses, busCompanies, reviews] = await Promise.all([
         api.get<City[]>('/cities'),
         api.get<Station[]>('/stations'),
         api.get<Route[]>('/routes'),
         api.get<Schedule[]>('/schedules'),
         api.get<Bus[]>('/buses'),
         api.get<BusCompany[]>('/bus_companies'),
+        api.get<any[]>('/bus_reviews'), // Fetch reviews
       ]);
 
       // Cast to arrays
@@ -99,6 +101,21 @@ export const tripSearchService = {
       const schedulesArr = schedules as unknown as Schedule[];
       const busesArr = buses as unknown as Bus[];
       const companiesArr = busCompanies as unknown as BusCompany[];
+      const reviewsArr = reviews as unknown as any[]; // Use any or define interface
+
+      // Calculate Company Ratings dynamically
+      const companyRatings: Record<string, { total: number; count: number }> = {};
+
+      reviewsArr.forEach(review => {
+        const bus = busesArr.find(b => b.id === review.bus_id);
+        if (bus && bus.bus_company_id) {
+          if (!companyRatings[bus.bus_company_id]) {
+            companyRatings[bus.bus_company_id] = { total: 0, count: 0 };
+          }
+          companyRatings[bus.bus_company_id].total += review.rating;
+          companyRatings[bus.bus_company_id].count += 1;
+        }
+      });
 
       // 2. Tìm city_id từ tên thành phố
       const fromCityData = citiesArr.find(c => c.city_name === params.fromCity);
@@ -153,11 +170,8 @@ export const tripSearchService = {
 
       // 6. Filter chuyến xe còn hiệu lực (ít nhất 1 tiếng trước giờ khởi hành)
       const now = new Date();
-      // Only check future time if the date is today or in the future
-      // Actually simply filtering by time >= now + 1 hour covers both today and future.
-      // But if user searches for past date, this would return empty, which is correct.
       const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000); // Thêm 1 tiếng
-      
+
       matchingSchedules = matchingSchedules.filter(s => {
         const departureTime = new Date(s.departure_time);
         return departureTime >= oneHourFromNow;
@@ -171,8 +185,14 @@ export const tripSearchService = {
         const depStation = stationsArr.find(s => s.id === route.departure_station_id);
         const arrStation = stationsArr.find(s => s.id === route.arrival_station_id);
 
+        let rating = company?.rating; // Default to static rating
+        if (company && companyRatings[company.id] && companyRatings[company.id].count > 0) {
+          rating = parseFloat((companyRatings[company.id].total / companyRatings[company.id].count).toFixed(1));
+        }
+
         return {
           schedule_id: schedule.id,
+          bus_id: schedule.bus_id,
           departure_time: schedule.departure_time,
           arrival_time: schedule.arrival_time,
           duration: route.duration,
@@ -184,7 +204,7 @@ export const tripSearchService = {
           layout_id: bus?.layout_id,
           company_name: company?.company_name || 'Không xác định',
           company_image: company?.image,
-          company_rating: company?.rating,
+          company_rating: rating,
           departure_station: depStation?.station_name || '',
           arrival_station: arrStation?.station_name || '',
           departure_city: params.fromCity,
