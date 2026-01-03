@@ -130,7 +130,7 @@ export default function UsersPage() {
                 }}
             />
 
-            <UserSearch searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+            <UserSearch setInputData={setSearchTerm} inputData={searchTerm}/>
 
             <UserTable
                 users={filteredUsers}
