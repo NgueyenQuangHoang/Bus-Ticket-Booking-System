@@ -3,12 +3,13 @@ import { Close } from '@mui/icons-material';
 import { validateUserForm, type UserFormData } from './validation';
 import type { User } from '../../../../types';
 import { v4 as uuidv4 } from "uuid";
+import { useAppSelector } from '../../../../hooks';
 
 interface AddUserModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAdd: (user: Omit<User, 'user_id' | 'status' | 'created_at' | 'updated_at'>, role: string) => void;
-  Edit: (id:string | number, user: User, role: string) => void;
+  Edit: (user: User, role: string) => void;
   user?: User | null;
   statusForm: 'edit' | 'add'
 }
@@ -22,8 +23,9 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
     password: '',
     status: 'ACTIVE'
   });
+  const {roles} = useAppSelector(state => state.user)
   const [errors, setErrors] = useState<Partial<Record<keyof UserFormData, string>>>({});
-  const [role, setRole] = useState<string>('USER')
+  const [role_id, setRole] = useState<string>('1')
   useEffect(() => {
     if (user) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -84,7 +86,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
     }
 
     if (statusForm == 'add') {
-      onAdd(finalData, role);
+      onAdd(finalData, role_id);
     } else if (user) {
       const newUser: User = {
         ...user,
@@ -96,7 +98,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
         updated_at: (new Date()).toString()
       }
       
-      Edit(user.id ? user.id : '',newUser, role)
+      Edit(newUser, role_id)
     }
     onClose();
   };
@@ -209,11 +211,11 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
                 border-slate-300 focus:ring-blue-500 focus:border-blue-500
 
                 }`}
-              value={role}
+              value={role_id}
               onChange={(e) => { setRole(e.target.value) }}>
-              <option value="USER">USER</option>
-              <option value="BUS_COMPANY">BUS_COMPANY</option>
-              <option value="ADMIN">ADMIN</option>
+                {roles.map(item => (
+                  <option value={item.id}>{item.role_name}</option>
+                ))}
             </select>
 
           </div>

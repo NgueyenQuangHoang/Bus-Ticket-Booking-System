@@ -4,7 +4,7 @@ import type { User } from '../../../../types';
 
 interface UserTableProps {
   users: User[];
-  onToggleStatus: (id: string | number, status: string) => void;
+  onToggleStatus: (id: string, status: string) => void;
   onView: (user: User) => void;
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;

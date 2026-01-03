@@ -110,7 +110,7 @@
       "email": "doi_thatday@gmail.com",
       "phone": "0812912031",
       "password": "1231223",
-      "status": "LOCKED",
+      "status": "ACTIVE",
       "created_at": "Sat Dec 27 2025 19:15:34 GMT+0700 (GMT+07:00)",
       "updated_at": "Sat Dec 27 2025 20:42:42 GMT+0700 (GMT+07:00)"
     },
@@ -148,7 +148,6 @@
       "role_id": "2"
     },
     {
-      "id": "2",
       "user_id": "2",
       "role_id": "1"
     },
@@ -163,7 +162,7 @@
       "id": "1",
       "city_name": "Hà Nội",
       "image_city": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766450896/ced44f147b504ef911ce4b7454bef571c94d9641_u3rtaf.png",
-      "region": "Nam",
+      "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
@@ -712,7 +711,7 @@
       "id": "63",
       "city_name": "Yên Bái",
       "image_city": "",
-      "region": "Nam",
+      "region": "Bắc",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
@@ -976,16 +975,6 @@
       "status": "ACTIVE",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
-    },
-    {
-      "id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
-      "company_name": "Nhà xe Cúc Phương",
-      "license_number": "123456789",
-      "contact_phone": "9090900990",
-      "contact_email": "cucphuong123@gmail.com",
-      "address": "97 Nguyễn Duy Dương",
-      "status": "ACTIVE",
-      "description": "Nhà xe xuyên Việt từ Nam ra Bắc, từ Bắc vào Nam"
     }
   ],
   "vehicle_types": [
@@ -1012,15 +1001,23 @@
       "code": "VIP",
       "display_name": "VIP",
       "description": "Xe VIP cao cấp nhất, dịch vụ đặc biệt"
-    },
-    {
-      "id": "e7a2ddb2-6692-4e31-957f-881dffeb5a82",
-      "code": "SUPPERVIP",
-      "display_name": "SUPPER VIP",
-      "description": "Loại xe cao cấp nhất"
     }
   ],
   "buses": [
+    {
+      "id": "1",
+      "bus_company_id": "1",
+      "vehicle_type_id": "1",
+      "layout_id": "3bcb",
+      "name": "An Hòa Hiệp – Giường nằm 40 chỗ",
+      "license_plate": "51B-12345 n",
+      "capacity": 40,
+      "amenities": "Wifi, Nước, Chăn, Điều hòa",
+      "status": "ACTIVE",
+      "created_at": "2025-01-15T08:00:00",
+      "updated_at": "2025-01-15T08:00:00",
+      "company_id": "1"
+    },
     {
       "id": "2",
       "bus_company_id": "2",

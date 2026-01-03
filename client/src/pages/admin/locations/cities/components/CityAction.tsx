@@ -2,24 +2,9 @@ import { Delete, Edit, Close, Business, Public, Description, Save } from '@mui/i
 import { IconButton, Modal, Box, Typography, Divider, TextField, MenuItem, Button } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useState, type ChangeEvent } from 'react';
-import { cityService } from '../../../../../services/cityService';
 import type { City } from '../../../../../types';
 import ReactQuill from 'react-quill-new';
 
-// export interface City {
-//     city_id: number;
-//     city_name: string;
-//     region: string;
-//     description?: string;
-// }
-
-// 2. Tạo dữ liệu giả duy nhất để hiển thị khi bấm Sửa
-// const mockCity: City = {
-//     city_id: 1,
-//     city_name: "TP. Hồ Chí Minh",
-//     region: "Miền Nam",
-//     description: "Trung tâm kinh tế, văn hóa và giáo dục lớn nhất Việt Nam."
-// };
 
 const modalStyle = {
     position: 'absolute',
@@ -35,15 +20,16 @@ const modalStyle = {
 };
 
 interface PropType {
-    id: number | string
-    updateCitiesOnDelete: (id: number | string) => void
+    onDelete: (id: string) => void
     updateCitiesOnFix: (city: City) => void
     city: City
 }
 
-export default function CityAction({ id, updateCitiesOnDelete, updateCitiesOnFix , city }: PropType) {
+export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropType) {    
+    const {id} = city
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState<City>(city);
+    
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -68,9 +54,7 @@ export default function CityAction({ id, updateCitiesOnDelete, updateCitiesOnFix
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                cityService.deleteCity(id)
-                updateCitiesOnDelete(id)
-
+                onDelete(id)
                 Swal.fire(
                     "Đã xóa!",
                     `Thành phố ${formData.city_name} đã được xóa.`,
@@ -81,7 +65,6 @@ export default function CityAction({ id, updateCitiesOnDelete, updateCitiesOnFix
     };
 
     const handleSave = () => {
-        cityService.updateCity(id, formData);
         updateCitiesOnFix(formData)
         Swal.fire({
             title: "Thành công",
@@ -92,6 +75,7 @@ export default function CityAction({ id, updateCitiesOnDelete, updateCitiesOnFix
         });
         handleClose();
     };
+    
 
     return (
         <>
