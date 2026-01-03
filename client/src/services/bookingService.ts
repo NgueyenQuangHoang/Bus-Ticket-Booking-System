@@ -70,9 +70,41 @@ const bookingService = {
     }
   },
 
-  createBooking: async (bookingData: Booking): Promise<Booking | null> => {
+  createBooking: async (bookingData: Booking, selectedSeats: string[] = []): Promise<Booking | null> => {
     try {
+      // 1. Create Booking
       const response = await api.post<Booking>('/bookings', bookingData);
+
+      // 2. Lock Seats in seat_schedule
+      const scheduleId = bookingData.tripInfo.id;
+      const seatPromises = selectedSeats.map(seatId => {
+        return api.post('/seat_schedule', {
+          id: `${Date.now()}_${seatId}`, // Simple unique ID
+          seat_id: seatId,
+          schedule_id: scheduleId,
+          status: 'BOOKED',
+          hold_expired_at: null
+        });
+      });
+      await Promise.all(seatPromises);
+
+      // 3. Update Available Seats in Schedule
+      // Fetch current schedule first to be safe, or just atomic update if supported (json-server doesn't support atomic)
+      try {
+        const scheduleResponse: any = await api.get(`/schedules/${scheduleId}`);
+        if (scheduleResponse) {
+          const currentAvailable = parseInt(scheduleResponse.available_seats) || 0;
+          const newAvailable = Math.max(0, currentAvailable - selectedSeats.length);
+
+          await api.patch(`/schedules/${scheduleId}`, {
+            available_seats: newAvailable
+          });
+        }
+      } catch (scheduleError) {
+        console.error('Error updating schedule availability:', scheduleError);
+        // Don't fail the whole booking if this fails, but log it
+      }
+
       return response as unknown as Booking;
     } catch (error) {
       console.error('Error creating booking:', error);
