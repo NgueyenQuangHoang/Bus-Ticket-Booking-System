@@ -15,6 +15,7 @@ import type { TicketUI } from "../../../../services/ticketService";
 import { ticketService } from "../../../../services/ticketService";
 import { reviewService } from "../../../../services/reviewService";
 import ReviewModal from "./components/ReviewModal";
+import CancelTicketModal from "./components/CancelTicketModal";
 import Swal from "sweetalert2";
 
 export default function MyTicketsPage() {
@@ -29,6 +30,9 @@ export default function MyTicketsPage() {
 
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<TicketUI | null>(null);
+
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [ticketToCancel, setTicketToCancel] = useState<TicketUI | null>(null);
 
   // Hardcoded user ID for demo purposes as requested
   const CURRENT_USER_ID = "bba5"; 
@@ -163,6 +167,42 @@ export default function MyTicketsPage() {
             text: "Xoá đánh giá thất bại. Vui lòng thử lại.",
             confirmButtonColor: "#d33",
         });
+    }
+  };
+
+  const handleOpenCancel = (ticket: TicketUI) => {
+    setTicketToCancel(ticket);
+    setIsCancelModalOpen(true);
+  };
+
+  const handleConfirmCancel = async (ticketId: string) => {
+    try {
+      // API Call to cancel ticket
+      await ticketService.cancelTicket(ticketId);
+
+      // Show Success Message
+      Swal.fire({
+          icon: "success",
+          title: "Hủy vé thành công!",
+          text: "Vé đã được hủy và quy trình hoàn tiền đã bắt đầu.",
+          confirmButtonColor: "#1295DB",
+      });
+
+      setIsCancelModalOpen(false);
+      
+      // Update local state to reflect change immediately
+      setTickets(prev => prev.map(t => 
+        t.id === ticketId ? { ...t, status: "CANCELLED" as const } : t
+      ));
+
+    } catch (error) {
+       console.error("Error cancelling ticket:", error);
+       Swal.fire({
+          icon: "error",
+          title: "Lỗi!",
+          text: "Hủy vé thất bại. Vui lòng thử lại sau.",
+          confirmButtonColor: "#d33",
+      });
     }
   };
 
@@ -347,6 +387,15 @@ export default function MyTicketsPage() {
                                    <button className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm">
                                         Chi tiết vé ›
                                    </button>
+
+                                   {ticket.status === "BOOKED" && (
+                                       <button 
+                                            onClick={() => handleOpenCancel(ticket)}
+                                            className="w-full py-2 border border-red-200 text-red-600 font-medium rounded-lg hover:bg-red-50 transition-colors text-sm hover:cursor-pointer mt-1"
+                                       >
+                                            Hủy vé
+                                       </button>
+                                   )}
                                </div>
                           </div>
                        </div>
@@ -383,6 +432,14 @@ export default function MyTicketsPage() {
         ticket={selectedTicket}
         initialData={selectedTicket?.review}
         onDelete={handleDeleteReview}
+      />
+
+      {/* CANCEL TICKET MODAL */}
+      <CancelTicketModal
+        isOpen={isCancelModalOpen}
+        onClose={() => setIsCancelModalOpen(false)}
+        onConfirm={handleConfirmCancel}
+        ticket={ticketToCancel}
       />
     </section>
   );
