@@ -64,6 +64,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
         status: 'ACTIVE',
         bus_company_id: ''
       });
+      setRole('2'); // Default to USER (ID: 2) when adding new
     }
     setErrors({});
   }, [user, isOpen]);
@@ -72,7 +73,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(user);
+
     
     // Validate
     // If editing, password is optional
@@ -84,6 +85,11 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
     if (!isValid) {
       setErrors(validationErrors);
       return;
+    }
+
+    if (role_id === '3' && !formData.bus_company_id) {
+        setErrors(prev => ({...prev, bus_company_id: "Vui lòng chọn nhà xe"}));
+        return;
     }
 
     // Split fullName to first/last
@@ -246,7 +252,11 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
                 Chọn nhà xe
               </label>
               <select
-                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all border-slate-300 focus:ring-blue-500 focus:border-blue-500`}
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${
+                  errors.bus_company_id
+                    ? 'border-red-500 focus:ring-red-200 focus:border-red-500'
+                    : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
+                }`}
                 value={formData.bus_company_id}
                 onChange={(e) => handleChange('bus_company_id', e.target.value)}
               >
@@ -257,6 +267,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
                   </option>
                 ))}
               </select>
+               {errors.bus_company_id && <p className="mt-1 text-xs text-red-500">{errors.bus_company_id}</p>}
             </div>
           )}
 
