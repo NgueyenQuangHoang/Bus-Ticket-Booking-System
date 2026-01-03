@@ -250,7 +250,7 @@ export default function TripCard({ searchParams, timeSort = "", priceSort = "", 
                           setMode("detail");
                         }
                       }}
-                      className="text-blue-600 md:block hidden text-sm hover:underline"
+                      className="text-blue-600 md:block hidden text-sm hover:underline hover:cursor-pointer"
                     >
                       {isActive && mode === "detail" ? "Ẩn chi tiết" : "Thông tin chi tiết"}
                     </button>
@@ -282,19 +282,19 @@ export default function TripCard({ searchParams, timeSort = "", priceSort = "", 
                 <div className="flex gap-6 justify-center border-b mb-4">
                   <button
                     onClick={() => setDetailTab("info")}
-                    className={`pb-2 ${detailTab === "info" ? "border-b-2 border-orange-500 text-orange-500" : "text-gray-500"}`}
+                    className={`pb-2 ${detailTab === "info" ? "border-b-2 border-orange-500 text-orange-500" : "text-gray-500 hover:text-orange-500 hover:border-b-2 hover:cursor-pointer"}`}
                   >
                     Thông tin xe
                   </button>
                   <button
                     onClick={() => setDetailTab("review")}
-                    className={`pb-2 ${detailTab === "review" ? "border-b-2 border-orange-500 text-orange-500" : "text-gray-500"}`}
+                    className={`pb-2 ${detailTab === "review" ? "border-b-2 border-orange-500 text-orange-500" : "text-gray-500 hover:text-orange-500 hover:border-b-2 hover:cursor-pointer"}`}
                   >
                     Đánh giá
                   </button>
                   <button
                     onClick={() => setDetailTab("cancel")}
-                    className={`pb-2 ${detailTab === "cancel" ? "border-b-2 border-orange-500 text-orange-500" : "text-gray-500"}`}
+                    className={`pb-2 ${detailTab === "cancel" ? "border-b-2 border-orange-500 text-orange-500" : "text-gray-500 hover:text-orange-500 hover:border-b-2 hover:cursor-pointer"}`}
                   >
                     Chính sách hủy
                   </button>

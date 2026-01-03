@@ -118,11 +118,7 @@ export default function ReviewsPage() {
                 Xem và kiểm duyệt đánh giá từ hành khách
               </p>
           </div>
-          <div className="flex items-center gap-3">
-              <span className="px-3 py-1 bg-white rounded-full text-xs font-semibold border border-gray-200 shadow-sm text-gray-600">
-                  {total} đánh giá tổng cộng
-              </span>
-          </div>
+
         </div>
 
         {/* CARD */}

@@ -3,6 +3,7 @@ import ProfileSidebar from "../components/ProfileSidebar";
 
 // MUI ICONS
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import Pagination from "@mui/material/Pagination";
 
 
 
@@ -19,7 +20,12 @@ import Swal from "sweetalert2";
 export default function MyTicketsPage() {
   const [activeTab, setActiveTab] = useState<"current" | "past" | "cancelled">("current");
   const [tickets, setTickets] = useState<TicketUI[]>([]);
+
   const [loading, setLoading] = useState(true);
+  
+  // PAGINATION MOCK turned REAL
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 2;
 
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<TicketUI | null>(null);
@@ -106,6 +112,11 @@ export default function MyTicketsPage() {
   };
 
   const filteredTickets = getFilteredTickets();
+  const totalPages = Math.ceil(filteredTickets.length / ITEMS_PER_PAGE);
+  const paginatedTickets = filteredTickets.slice(
+     (currentPage - 1) * ITEMS_PER_PAGE, 
+     currentPage * ITEMS_PER_PAGE
+  );
 
   if (loading) {
     return (
@@ -116,6 +127,16 @@ export default function MyTicketsPage() {
         </section>
     );
   }
+
+  const formatDateParts = (dateStr: string) => {
+    // Assuming dateStr is DD/MM/YYYY or similar
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+      return { day: parts[0], monthYear: `${parts[1]}/${parts[2]}` };
+    }
+    // Fallback if format is different (e.g. T7, ...)
+    return { day: dateStr.split(',')[0], monthYear: dateStr };
+  };
 
   const handleDeleteReview = async () => {
     if (!selectedTicket?.review) return;
@@ -151,15 +172,15 @@ export default function MyTicketsPage() {
         className="
           max-w-[1024px] mx-auto
           px-3 py-6
-          [@media(min-width(391px)]:px-4
-          [@media(min-width(769px)]:px-0
+          [@media(min-width:391px)]:px-4
+          [@media(min-width:769px)]:px-0
         "
       >
         <div
           className="
             grid gap-6
             grid-cols-1
-            [@media(min-width(391px)]:grid-cols-[260px_1fr]
+            [@media(min-width:391px)]:grid-cols-[260px_1fr]
             items-start
           "
         >
@@ -171,31 +192,31 @@ export default function MyTicketsPage() {
             {/* TABS */}
             <div className="bg-white rounded-xl p-1.5 flex shadow-sm border border-gray-100 mb-6">
               <button
-                onClick={() => setActiveTab("current")}
+                onClick={() => { setActiveTab("current"); setCurrentPage(1); }}
                 className={`flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all ${
                   activeTab === "current"
                     ? "bg-[#1295DB] text-white shadow-md"
-                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-700 hover:cursor-pointer"
                 }`}
               >
                 Vé hiện tại
               </button>
               <button
-                onClick={() => setActiveTab("past")}
+                onClick={() => { setActiveTab("past"); setCurrentPage(1); }}
                 className={`flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all ${
                   activeTab === "past"
                     ? "bg-[#1295DB] text-white shadow-md"
-                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-700 hover:cursor-pointer"
                 }`}
               >
                 Chuyến đã đi
               </button>
               <button
-                onClick={() => setActiveTab("cancelled")}
+                onClick={() => { setActiveTab("cancelled"); setCurrentPage(1); }}
                 className={`flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all ${
                   activeTab === "cancelled"
                     ? "bg-[#1295DB] text-white shadow-md"
-                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-700 hover:cursor-pointer"
                 }`}
               >
                 Vé đã huỷ
@@ -213,101 +234,140 @@ export default function MyTicketsPage() {
                   <p className="text-sm text-gray-400">Bạn chưa có chuyến đi nào trong danh mục này.</p>
                 </div>
               ) : (
-                filteredTickets.map((ticket) => (
-                  <div key={ticket.id} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
-                    <div className="flex flex-col md:flex-row gap-6">
-                        {/* LEFT: TIME & DATE */}
-                        <div className="md:w-48 flex-shrink-0 flex flex-col justify-center border-r border-gray-100 pr-6 md:border-b-0 border-b md:pb-0 pb-4">
-                             <div className="text-2xl font-bold text-gray-800 leading-none mb-1">
-                                {ticket.busInfo.time}
-                             </div>
-                             <div className="text-sm text-gray-500 font-medium mb-3">
-                                {ticket.busInfo.date}
-                             </div>
-                             
-                             <div className="flex items-center gap-2">
-                                {ticket.status === "COMPLETED" && (
-                                    <span className="px-2.5 py-1 bg-blue-50 text-blue-600 text-xs rounded-md font-bold text-center w-max">
+                paginatedTickets.map((ticket) => {
+                  const { day, monthYear } = formatDateParts(ticket.busInfo.date);
+                  return (
+                    <div key={ticket.id} className="bg-white rounded-xl p-0 shadow-sm border border-gray-200 hover:shadow-md transition-all overflow-hidden">
+                       <div className="flex flex-col md:flex-row">
+                          {/* LEFT: DATE */}
+                          <div className="w-full md:w-32 bg-gray-50 flex flex-row md:flex-col items-center justify-center p-4 border-b md:border-b-0 md:border-r border-gray-200 gap-2 md:gap-0">
+                               <div className="text-3xl md:text-4xl font-bold text-gray-800">{day}</div>
+                               <div className="text-sm text-gray-500 font-medium">{monthYear}</div>
+                          </div>
+
+                          {/* MIDDLE: INFO */}
+                          <div className="flex-1 p-5">
+                               {/* HEADER: TIME & STATUS */}
+                               <div className="flex flex-wrap items-center gap-3 mb-3">
+                                   <div className="text-xl font-bold text-gray-800">{ticket.busInfo.time}</div>
+                                   {ticket.status === "COMPLETED" && (
+                                     <span className="px-2.5 py-1 bg-blue-100 text-blue-600 text-xs rounded-full font-bold flex items-center gap-1">
+                                        <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
                                         Đã đi
-                                    </span>
-                                )}
-                                {ticket.status === "BOOKED" && (
-                                    <span className="px-2.5 py-1 bg-green-50 text-green-600 text-xs rounded-md font-bold text-center w-max">
-                                        Sắp đi
-                                    </span>
-                                )}
-                                {ticket.status === "CANCELLED" && (
-                                    <span className="px-2.5 py-1 bg-red-50 text-red-600 text-xs rounded-md font-bold text-center w-max">
-                                        Đã huỷ
-                                    </span>
-                                )}
-                                <span className="px-2.5 py-1 bg-gray-100 text-gray-600 text-xs rounded-md font-bold text-center w-max">
-                                    Đã thanh toán
-                                </span>
-                             </div>
-                        </div>
+                                     </span>
+                                   )}
+                                   {ticket.status === "BOOKED" && (
+                                      <span className="px-2.5 py-1 bg-green-100 text-green-600 text-xs rounded-full font-bold flex items-center gap-1">
+                                         <div className="w-1.5 h-1.5 bg-green-600 rounded-full"></div>
+                                         Sắp đi
+                                      </span>
+                                   )}
+                                   {ticket.status === "CANCELLED" && (
+                                      <span className="px-2.5 py-1 bg-red-100 text-red-600 text-xs rounded-full font-bold flex items-center gap-1">
+                                          <div className="w-1.5 h-1.5 bg-red-600 rounded-full"></div>
+                                          Đã huỷ
+                                      </span>
+                                   )}
+                                   <span className="px-2.5 py-1 bg-green-50 text-green-600 text-xs rounded-full font-bold border border-green-100">
+                                       Đã thanh toán
+                                   </span>
+                               </div>
 
-                        {/* MIDDLE: INFO */}
-                        <div className="flex-1">
-                             <div className="flex justify-between items-start mb-2">
-                                <h3 className="font-bold text-lg text-gray-800 group-hover:text-[#1295DB] transition-colors">{ticket.busInfo.name}</h3>
-                                <div className="text-lg font-bold text-[#1295DB]">
-                                    {ticket.busInfo.price.toLocaleString()}đ
-                                </div>
-                             </div>
-                             
-                             <p className="text-sm text-gray-600 font-medium mb-4">{ticket.busInfo.route}</p>
-                             
-                             <div className="bg-gray-50 rounded-lg p-3 flex flex-col sm:flex-row gap-4 text-sm mb-4 border border-gray-100">
-                                <div className="flex-1">
-                                    <div className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">Điểm đón</div>
-                                    <div className="font-semibold text-gray-700">{ticket.pickup}</div>
-                                </div>
-                                <div className="hidden sm:block w-[1px] bg-gray-200"></div>
-                                <div className="flex-1">
-                                    <div className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1">Điểm trả</div>
-                                    <div className="font-semibold text-gray-700">{ticket.dropoff}</div>
-                                </div>
-                             </div>
+                               {/* BUS NAME & ROUTE */}
+                               <div className="mb-4">
+                                   <h3 className="font-bold text-lg text-gray-800 mb-1">{ticket.busInfo.name}</h3>
+                                   <p className="text-gray-600">{ticket.busInfo.route}</p>
+                               </div>
 
-                             <div className="flex justify-between items-end">
-                                <div className="text-xs text-gray-400">
-                                    <span className="block mb-0.5">Mã vé: <span className="font-mono font-medium text-gray-600">{ticket.code}</span></span>
-                                    <span className="block">Loại xe: <span className="font-medium text-gray-600">{ticket.busInfo.type}</span></span>
-                                </div>
-                                
-                                <div className="flex gap-3">
-                                    <button className="px-4 py-2 border border-gray-200 text-gray-600 text-sm font-semibold rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all">
-                                        Chi tiết
-                                    </button>
-                                    {ticket.status === "COMPLETED" && (
-                                        <button 
+                               {/* LOCATION BOXES */}
+                               <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                                   <div className="flex-1 bg-gray-50 rounded-lg p-3 border border-gray-100">
+                                       <span className="text-xs text-gray-500 block mb-1">Đón</span>
+                                       <span className="font-semibold text-gray-800 text-sm">{ticket.pickup}</span>
+                                   </div>
+                                    <div className="flex-1 bg-gray-50 rounded-lg p-3 border border-gray-100">
+                                       <span className="text-xs text-gray-500 block mb-1">Trả</span>
+                                       <span className="font-semibold text-gray-800 text-sm">{ticket.dropoff}</span>
+                                   </div>
+                               </div>
+
+                                {/* REVIEW STATUS OR MESSAGE */}
+                                {ticket.review ? (
+                                    <div className="bg-yellow-50 border border-yellow-100 rounded-lg p-3 flex justify-between items-center text-sm">
+                                        <span className="font-semibold text-gray-800">Bạn đã đánh giá chuyến đi này</span>
+                                        <div className="flex items-center gap-1 text-orange-400 font-bold">
+                                             <span>★</span>
+                                             <span>{ticket.review.rating}</span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <p className="text-xs text-gray-400 italic">
+                                        Chưa có nhận xét. Chia sẻ trải nghiệm của bạn để giúp người khác chọn nhà xe phù hợp.
+                                    </p>
+                                )}
+                          </div>
+
+                          {/* RIGHT: PRICE & ACTIONS */}
+                          <div className="w-full md:w-64 border-t md:border-t-0 md:border-l border-gray-200 p-5 flex flex-col justify-between bg-white md:bg-gray-50/30">
+                               <div className="text-right mb-4 flex flex-row justify-between md:flex-col md:items-end">
+                                   <div className="text-xl font-bold text-[#1295DB]">{ticket.busInfo.price.toLocaleString()}đ</div>
+                                   <div className="text-xs text-gray-500 mt-1">Mã vé: <span className="font-medium text-gray-700">{ticket.code}</span></div>
+                               </div>
+
+                               <div className="space-y-1 text-xs text-gray-500 mb-6 hidden md:block text-right">
+                                   <div>Loại xe: <span className="font-medium text-gray-700">{ticket.busInfo.type}</span></div>
+                                   <div>Trạng thái: <span className="font-medium text-green-600">Hoàn thành</span></div>
+                               </div>
+
+                               <div className="flex flex-col gap-2">
+                                   {ticket.status === "COMPLETED" && !ticket.review && (
+                                       <button 
                                             onClick={() => handleOpenReview(ticket)}
-                                            className={`px-4 py-2 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all ${
-                                                ticket.review 
-                                                    ? "bg-orange-500 hover:bg-orange-600" 
-                                                    : "bg-[#1295DB] hover:bg-[#0b84c7]"
-                                            }`}
-                                        >
-                                            {ticket.review ? "Sửa đánh giá" : "Viết nhận xét"}
-                                        </button>
-                                    )}
-                                </div>
-                             </div>
-                        </div>
+                                            className="w-full py-2.5 bg-[#1295DB] hover:bg-[#0b84c7] text-white font-semibold rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 hover:cursor-pointer"
+                                       >
+                                            <span className="text-lg pb-1">✎</span> Viết nhận xét
+                                       </button>
+                                   )}
+                                   
+                                   {ticket.status === "COMPLETED" && ticket.review && (
+                                       <div className="w-full py-2.5 bg-green-100 text-gray-500 font-semibold rounded-lg text-center flex items-center justify-center gap-2 cursor-default">
+                                            <span className="text-green-500">✓</span> Đã đánh giá
+                                       </div>
+                                   )}
+
+                                   {ticket.status === "COMPLETED" && ticket.review && (
+                                       <button 
+                                            onClick={() => handleOpenReview(ticket)}
+                                            className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm hover:cursor-pointer"
+                                       >
+                                            Xem nhận xét
+                                       </button>
+                                   )}
+
+                                   <button className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                                        Chi tiết vé ›
+                                   </button>
+                               </div>
+                          </div>
+                       </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
             
-            {/* PAGINATION MOCK */}
-             {filteredTickets.length > 0 && (
-                 <div className="flex justify-center gap-2 mt-8">
-                    <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-500 transition-colors">&lt;</button>
-                    <button className="w-9 h-9 flex items-center justify-center rounded-lg bg-[#1295DB] text-white font-bold shadow-sm">1</button>
-                    <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-500 transition-colors">2</button>
-                    <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-500 transition-colors">&gt;</button>
+            {/* PAGINATION */}
+             {totalPages > 1 && (
+                 <div className="flex justify-center mt-8">
+                    <Pagination 
+                        count={totalPages} 
+                        page={currentPage} 
+                        onChange={(_, value) => setCurrentPage(value)}
+                        color="primary"
+                        shape="rounded"
+                        showFirstButton 
+                        showLastButton
+                    />
                  </div>
              )}
 

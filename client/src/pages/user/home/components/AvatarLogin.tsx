@@ -54,7 +54,7 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1190D4] transition-colors"
+                className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1190D4] transition-colors hover:cursor-pointer"
             >
 
                 <span className="text-[#1190D4] font-bold text-lg">{initial}</span>
@@ -72,7 +72,7 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
 
                     <div className="py-1">
                         <span
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4]"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4] hover:cursor-pointer"
                             onClick={() => {
                                 navigate('/accountProfile')
                             }}
@@ -80,7 +80,7 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
                             Thông tin tài khoản
                         </span>
                         {checkRole === 'ADMIN' && <span
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4]"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4] hover:cursor-pointer"
                             onClick={() => {
                                 navigate('/admin/dashboard')
                             }}
@@ -88,7 +88,7 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
                             ADMIN
                         </span>}
                         {checkRole === 'BUS_COMPANY' && <span
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4]"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4] hover:cursor-pointer"
                             onClick={() => {
                                 navigate('/admin/busCompany')
                             }}
@@ -96,7 +96,7 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
                             Quản lý nhà xe
                         </span>}
                         <span
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4]"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4] hover:cursor-pointer"
                         >
                             Cài đặt
                         </span>
@@ -112,7 +112,7 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
                                 authService.logout()
                                 setIsOpen(false);
                             }}
-                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:cursor-pointer"
                         >
                             Đăng xuất
                         </button>

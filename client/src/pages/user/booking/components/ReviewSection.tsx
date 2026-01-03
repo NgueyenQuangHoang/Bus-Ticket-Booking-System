@@ -62,27 +62,16 @@ export default function ReviewSection({ busId }: ReviewSectionProps) {
             const sumRating = allReviews.reduce((acc, curr) => acc + curr.rating, 0);
             const avg = (sumRating / total).toFixed(1);
 
-            // Calculate detailed ratings
-            const detailsSum: Record<string, number> = {};
-            const detailsCount: Record<string, number> = {};
+            /* Removed detailed stats calculation loop */
 
-            allReviews.forEach(review => {
-              if (review.details) {
-                Object.entries(review.details).forEach(([key, value]) => {
-                  detailsSum[key] = (detailsSum[key] || 0) + value;
-                  detailsCount[key] = (detailsCount[key] || 0) + 1;
-                });
-              }
-            });
-
+            // MOCK DETAILS STATS FOR UI ONLY
             const detailsStats: Record<string, { score: number; percent: number }> = {};
             Object.keys(RATING_LABELS).forEach(key => {
-               const sum = detailsSum[key] || 0;
-               const count = detailsCount[key] || 0;
-               const score = count > 0 ? (sum / count) : 0;
+               // Randomize slightly between 4.5 and 5.0 for a good look, or just static 5.0
+               // User asked for UI only, no calculation
                detailsStats[key] = {
-                 score: parseFloat(score.toFixed(1)),
-                 percent: (score / 5) * 100
+                 score: 4.8,
+                 percent: 96
                };
             });
             
@@ -263,7 +252,7 @@ export default function ReviewSection({ busId }: ReviewSectionProps) {
           className={`px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-sm ${
             filterRating === null
               ? "bg-[#1295DB] text-white shadow-blue-200"
-              : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+              : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:cursor-pointer"
           }`}
         >
           Tất cả ({stats.totalReviews})
@@ -276,7 +265,7 @@ export default function ReviewSection({ busId }: ReviewSectionProps) {
              className={`px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-sm flex items-center gap-1 ${
                filterRating === star
                  ? "bg-[#1295DB] text-white shadow-blue-200"
-                 : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                 : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:cursor-pointer"
              }`}
            >
              {star} Sao

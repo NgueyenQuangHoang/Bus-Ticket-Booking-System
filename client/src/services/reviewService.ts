@@ -27,15 +27,6 @@ export interface Review {
         name: string;
         bus_number?: string;
     };
-    details?: {
-        safety: number;
-        info_accuracy: number;
-        info_completeness: number;
-        staff_attitude: number;
-        comfort: number;
-        service_quality: number;
-        punctuality: number;
-    };
     is_verified?: boolean;
 }
 
@@ -144,9 +135,20 @@ export const reviewService = {
 
             const response = await axios.get(url);
             const totalHeader = response.headers['x-total-count'] || response.headers['X-Total-Count'];
-            const totalCount = parseInt(totalHeader || '0', 10);
+            let totalCount = parseInt(totalHeader || '0', 10);
 
             const reviews = response.data as Review[];
+
+            // Fallback if header is missing but data exists (common in some CORS setups or json-server versions)
+            if (totalCount === 0 && reviews.length > 0) {
+                if (page === 1 && reviews.length < limit) {
+                    totalCount = reviews.length;
+                } else {
+                    // Best effort guess if we assume it's at least the current page amount
+                    // If we are on page 1 and length == limit, likely at least limit.
+                    totalCount = reviews.length;
+                }
+            }
 
             // Enrich with User and Bus info
             const enrichedReviews = await Promise.all(reviews.map(async (review) => {
