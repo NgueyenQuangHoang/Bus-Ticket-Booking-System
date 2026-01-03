@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import StarIcon from "@mui/icons-material/Star";
+import Swal from "sweetalert2";
 import type { Review } from "../../../../../services/reviewService";
 
 interface ReviewModalProps {
@@ -45,6 +46,32 @@ export default function ReviewModal({ isOpen, onClose, onSubmit, ticket, initial
     onClose();
   };
 
+  const handleCancel = () => {
+    const initialRating = initialData?.rating || 5;
+    const initialReview = initialData?.review || "";
+    
+    const isDirty = rating !== initialRating || reviewText !== initialReview;
+
+    if (isDirty) {
+      Swal.fire({
+        title: "Bạn có chắc chắn muốn hủy?",
+        text: "Các thay đổi của bạn sẽ không được lưu.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Hủy bỏ thay đổi",
+        cancelButtonText: "Tiếp tục chỉnh sửa"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          onClose();
+        }
+      });
+    } else {
+      onClose();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -56,7 +83,7 @@ export default function ReviewModal({ isOpen, onClose, onSubmit, ticket, initial
             {initialData ? "Chỉnh sửa đánh giá" : "Viết nhận xét chuyến đi"}
           </h3>
           <button
-                onClick={onClose}
+                onClick={handleCancel}
                 className="px-5 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold text-sm transition-colors hover:cursor-pointer"
             >
                 Hủy

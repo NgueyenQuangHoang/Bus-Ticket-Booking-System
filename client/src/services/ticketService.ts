@@ -66,6 +66,19 @@ export interface TicketUI {
 }
 
 export const ticketService = {
+    cancelTicket: async (ticketId: string): Promise<TicketResponse> => {
+        try {
+            const response = await api.patch<TicketResponse>(`/tickets/${ticketId}`, {
+                status: "CANCELLED",
+                updated_at: new Date().toISOString()
+            });
+            return response as unknown as TicketResponse;
+        } catch (error) {
+            console.error("Error cancelling ticket:", error);
+            throw error;
+        }
+    },
+
     getMyTickets: async (userId: string): Promise<TicketUI[]> => {
         try {
             // 1. Fetch tickets with schedule expanded
