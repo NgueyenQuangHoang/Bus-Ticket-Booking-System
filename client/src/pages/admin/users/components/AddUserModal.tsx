@@ -11,7 +11,7 @@ interface AddUserModalProps {
   onAdd: (user: Omit<User, 'user_id' | 'status' | 'created_at' | 'updated_at'>, role: string) => void;
   Edit: (user: User, role: string) => void;
   user?: User | null;
-  statusForm: 'edit' | 'add'
+  statusForm: 'edit' | 'add';
 }
 
 export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm, Edit}: AddUserModalProps) {
@@ -21,7 +21,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
     email: '',
     phone: '',
     password: '',
-    status: 'ACTIVE'
+    status: 'ACTIVE',
   });
   const {roles} = useAppSelector(state => state.user)
   const [errors, setErrors] = useState<Partial<Record<keyof UserFormData, string>>>({});

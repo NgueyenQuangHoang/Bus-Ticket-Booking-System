@@ -101,7 +101,7 @@
       "password": "Admin123",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
-      "updated_at": "Sat Dec 27 2025 20:26:40 GMT+0700 (GMT+07:00)"
+      "updated_at": "Sat Jan 03 2026 19:14:42 GMT+0700 (GMT+07:00)"
     },
     {
       "id": "2",
@@ -115,16 +115,15 @@
       "updated_at": "Sat Dec 27 2025 20:42:42 GMT+0700 (GMT+07:00)"
     },
     {
-      "id": "bba5",
-      "first_name": "Hoàng",
-      "last_name": "Nguyễn",
-      "email": "nguyenquanghoang1080@gmail.com",
-      "password": "15122004",
-      "phone": "0338470809",
-      "created_at": "2026-01-01T04:47:12.552Z",
-      "updated_at": "2026-01-01T04:47:12.552Z",
+      "id": "49b3fd55-121c-4ff9-8428-9d7989871434",
+      "first_name": "lslkdjf",
+      "last_name": "alskdjf",
+      "email": "nkasjdjf@gmail.com",
+      "phone": "0812719014",
+      "password": "123123",
       "status": "ACTIVE",
-      "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9"
+      "created_at": "Sat Jan 03 2026 19:26:04 GMT+0700 (GMT+07:00)",
+      "updated_at": "Sat Jan 03 2026 19:26:10 GMT+0700 (GMT+07:00)"
     }
   ],
   "roles": [
@@ -143,18 +142,24 @@
   ],
   "user_role": [
     {
-      "id": "1",
       "user_id": "1",
-      "role_id": "2"
+      "role_id": "2",
+      "id": "1"
     },
     {
       "user_id": "2",
-      "role_id": "1"
+      "role_id": "1",
+      "id": "9c59"
     },
     {
       "id": "a2eb1e12-3c0e-41f7-9f6d-13b5ca7d2982",
       "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9",
       "role_id": 1
+    },
+    {
+      "user_id": "49b3fd55-121c-4ff9-8428-9d7989871434",
+      "role_id": "1",
+      "id": "f9fb"
     }
   ],
   "cities": [
