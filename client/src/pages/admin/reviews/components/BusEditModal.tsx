@@ -11,15 +11,7 @@ interface Props {
   onSave: (id: string, updates: Partial<Review>) => void;
 }
 
-const RATING_LABELS: Record<string, string> = {
-  safety: "An toàn",
-  info_accuracy: "Thông tin chính xác",
-  info_completeness: "Thông tin đầy đủ",
-  staff_attitude: "Thái độ nhân viên",
-  comfort: "Tiện nghi & thoải mái",
-  service_quality: "Chất lượng dịch vụ",
-  punctuality: "Đúng giờ",
-};
+
 
 export default function BusEditModal({ open, review, onClose, onSave }: Props) {
   const [content, setContent] = useState("");
@@ -68,11 +60,11 @@ export default function BusEditModal({ open, review, onClose, onSave }: Props) {
             <span className="bg-blue-100 p-1.5 rounded-lg">✏️</span> Chỉnh sửa đánh giá
           </h2>
           <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-700 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition-colors"
-          >
-            ✕
-          </button>
+                onClick={onClose}
+                className="px-5 py-2.5 border border-gray-300 bg-white text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors shadow-sm hover:cursor-pointer"
+            >
+                Hủy bỏ
+            </button>
         </div>
 
         {/* ===== BODY ===== */}
@@ -114,16 +106,7 @@ export default function BusEditModal({ open, review, onClose, onSave }: Props) {
             </div>
             
             {/* Detailed Ratings */}
-            {review.details && (
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs bg-gray-50 p-3 rounded-lg border border-gray-100">
-                    {Object.entries(review.details).map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center">
-                            <span className="text-gray-500">{RATING_LABELS[key] || key}:</span>
-                            <span className="font-bold text-gray-700">{value} ★</span>
-                        </div>
-                    ))}
-                </div>
-            )}
+            {/* Detailed Ratings Removed */}
           </div>
 
           {/* CONTENT */}
@@ -193,15 +176,10 @@ export default function BusEditModal({ open, review, onClose, onSave }: Props) {
         {/* ===== FOOTER ===== */}
         <div className="flex justify-between px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl flex-shrink-0">
           <div className="flex gap-3 ml-auto">
-            <button
-                onClick={onClose}
-                className="px-5 py-2.5 border border-gray-300 bg-white text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors shadow-sm"
-            >
-                Hủy bỏ
-            </button>
+            
             <button 
                 onClick={handleSave}
-                className="px-6 py-2.5 bg-[#1295DB] text-white rounded-lg text-sm font-bold hover:bg-[#0b84c7] transition-all shadow-md hover:shadow-lg flex items-center gap-2"
+                className="px-6 py-2.5 bg-[#1295DB] text-white rounded-lg text-sm font-bold hover:bg-[#0b84c7] transition-all shadow-md hover:shadow-lg flex items-center gap-2 hover:cursor-pointer"
             >
                 <span>Lưu thay đổi</span>
             </button>
