@@ -49,8 +49,14 @@ export default function BookingConfirmation() {
     }
   };
 
-  const setUser = (user: User) => {
-    console.log("User set:", user);
+  const [user, setUserState] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const setUser = (userData: User) => {
+    console.log("User set:", userData);
+    setUserState(userData);
   };
   const [isContactValid, setIsContactValid] = useState(false);
   const [contactData, setContactData] = useState<ContactFormData>({
@@ -159,6 +165,7 @@ export default function BookingConfirmation() {
                   notify={notify}
                   changeLoginState={changeLoginState}
                   setUser={setUser}
+                  user={user}
                 />
               </section>
             </div>
