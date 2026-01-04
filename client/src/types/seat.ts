@@ -41,15 +41,16 @@ export interface SeatPosition {
 }
 
 export interface Seat {
-  seat_id: number | string;
-  bus_id: number | string;
+  id: string;
+  bus_id: string;
   seat_number: string;
-  seat_type_id: number | string;
-  status: 'AVAILABLE' | 'BOOKED' | 'LOCKED';
-  price?: Decimal;
+  seat_label: string; // Display label like A1
+  seat_type_id: string; 
+  price_extra?: number;
+  is_available_for_booking: boolean;
+  status: 'AVAILABLE' | 'BOOKED' | 'LOCKED' | 'MAINTENANCE'; // Keep status for generic usage, though it might come from seat_schedules in reality
   created_at?: Timestamp;
   updated_at?: Timestamp;
-  id?: string | number;
 }
 
 
