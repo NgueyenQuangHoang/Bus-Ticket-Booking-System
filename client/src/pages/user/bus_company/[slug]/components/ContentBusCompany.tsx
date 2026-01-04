@@ -18,7 +18,7 @@ export default function ContentBusCompany({busCompany} : {busCompany?: BusCompan
         <strong>Địa chỉ:</strong> {busCompany?.address}
       </p>
 
-      {busCompany?.description && <div className="text-center" dangerouslySetInnerHTML={{__html: busCompany?.description}}>
+      {busCompany?.description && <div dangerouslySetInnerHTML={{__html: busCompany?.description}}>
       </div>}
       {/* <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
         Bến xe Gia Lâm thuộc quận Long Biên, nằm về phía Đông Bắc và cách
