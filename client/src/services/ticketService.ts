@@ -37,19 +37,20 @@ interface Station {
 interface SeatSchedule {
     id: string;
     schedule_id: string;
-    seat_name: string;
+    seat_name?: string;
     ticket_id: string;
     status: string;
     price: number;
+    seat_id?: string;
 }
 
 interface TicketResponse {
     id: string;
-    user_id: string;
+    user_id?: string;
     schedule_id: string;
-    // seat_id: string; // Removed
+    seat_id?: string;
     price: number;
-    total_price?: number; // Added to match new schema
+    total_price?: number; 
     status: "BOOKED" | "COMPLETED" | "CANCELLED" | "PENDING";
     code: string;
     created_at: string;
@@ -123,7 +124,7 @@ export const ticketService = {
                 // Fetch seats for this ticket
                 const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
                 const seatSchedules = seatSchedulesRes as unknown as SeatSchedule[];
-                const seatNames = seatSchedules.map(s => s.seat_name);
+                const seatNames = seatSchedules.map(s => s.seat_name || s.seat_id || "Ghe");
 
                 // Manually find schedule
                 const schedule = schedulesArr.find(s => s.id === ticket.schedule_id);
