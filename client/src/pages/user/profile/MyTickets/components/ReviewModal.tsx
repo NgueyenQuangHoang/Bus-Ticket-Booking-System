@@ -82,12 +82,7 @@ export default function ReviewModal({ isOpen, onClose, onSubmit, ticket, initial
           <h3 className="text-lg font-bold text-gray-800">
             {initialData ? "Chỉnh sửa đánh giá" : "Viết nhận xét chuyến đi"}
           </h3>
-          <button
-                onClick={handleCancel}
-                className="px-5 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold text-sm transition-colors hover:cursor-pointer"
-            >
-                Hủy
-            </button>
+          
         </div>
 
         {/* CONTENT - SCROLLABLE */}
@@ -152,12 +147,20 @@ export default function ReviewModal({ isOpen, onClose, onSubmit, ticket, initial
                     Xoá
                  </button>
             )}
+            <div className="flex gap-2">
+              <button
+                onClick={handleCancel}
+                className="px-5 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-semibold text-sm transition-colors hover:cursor-pointer"
+            >
+                Hủy
+            </button>
             <button
                 onClick={handleSubmit}
                 className="px-5 py-2 text-white bg-[#1295DB] rounded-lg hover:bg-[#0e7dbb] font-semibold text-sm shadow-sm transition-colors hover:cursor-pointer"
             >
                 Gửi đánh giá
             </button>
+            </div>
           </div>
         </div>
       </div>

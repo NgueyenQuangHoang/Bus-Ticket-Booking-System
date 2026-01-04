@@ -1,7 +1,6 @@
 import type { Timestamp } from './common';
 
 export interface BusCompany {
-  bus_company_id: string | number; // Changed from number
   id?: string;
   company_name: string;
   image?: string;

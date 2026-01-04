@@ -16,6 +16,7 @@ import { ticketService } from "../../../../services/ticketService";
 import { reviewService } from "../../../../services/reviewService";
 import ReviewModal from "./components/ReviewModal";
 import CancelTicketModal from "./components/CancelTicketModal";
+import TicketDetailModal from "./components/TicketDetailModal";
 import Swal from "sweetalert2";
 
 export default function MyTicketsPage() {
@@ -32,12 +33,20 @@ export default function MyTicketsPage() {
   const [selectedTicket, setSelectedTicket] = useState<TicketUI | null>(null);
 
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+
   const [ticketToCancel, setTicketToCancel] = useState<TicketUI | null>(null);
 
-  // Hardcoded user ID for demo purposes as requested
-  const CURRENT_USER_ID = "bba5"; 
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [ticketDetail, setTicketDetail] = useState<TicketUI | null>(null);
+
+  // Get User from LocalStorage
+  const userString = localStorage.getItem("user");
+  const currentUser = userString ? JSON.parse(userString) : null;
+  const CURRENT_USER_ID = currentUser?.id;
 
   useEffect(() => {
+    if (!CURRENT_USER_ID) return; // Or redirect handled by protected route
+
     const fetchTickets = async () => {
       setLoading(true);
       try {
@@ -205,6 +214,12 @@ export default function MyTicketsPage() {
       });
     }
   };
+
+  const handleOpenDetail = (ticket: TicketUI) => {
+    setTicketDetail(ticket);
+    setIsDetailModalOpen(true);
+  };
+
 
   return (
     <section className="bg-[#f5f7fa] min-h-screen">
@@ -384,7 +399,10 @@ export default function MyTicketsPage() {
                                        </button>
                                    )}
 
-                                   <button className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                                   <button 
+                                        onClick={() => handleOpenDetail(ticket)}
+                                        className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm hover:cursor-pointer"
+                                   >
                                         Chi tiết vé ›
                                    </button>
 
@@ -440,6 +458,13 @@ export default function MyTicketsPage() {
         onClose={() => setIsCancelModalOpen(false)}
         onConfirm={handleConfirmCancel}
         ticket={ticketToCancel}
+      />
+
+       {/* DETAIL MODAL */}
+       <TicketDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        ticket={ticketDetail}
       />
     </section>
   );
