@@ -4,6 +4,8 @@ import BusReviewSearch from "./components/BusReviewSearch";
 import BusReviewTable from "./components/BusReviewTable";
 import BusEditModal from "./components/BusEditModal";
 import Swal from 'sweetalert2';
+import { getStoredRole, getStoredBusCompanyId } from "../../../utils/authStorage";
+import busService from "../../../services/admin/busService";
 
 export default function ReviewsPage() {
   const [openEdit, setOpenEdit] = useState(false);
@@ -20,7 +22,18 @@ export default function ReviewsPage() {
   const fetchReviews = async () => {
     setLoading(true);
     try {
-        const response = await reviewService.getAllReviews(page, limit, search);
+        const role = getStoredRole();
+        let busIds: string[] = [];
+
+        if (role === "BUS_COMPANY") {
+            const companyId = getStoredBusCompanyId();
+            if (companyId) {
+                const buses = await busService.getBusesByCompanyId(companyId);
+                busIds = buses.map(b => String(b.id)); // ensure string id
+            }
+        }
+
+        const response = await reviewService.getAllReviews(page, limit, search, busIds);
         setReviews(response.data);
         setTotal(response.total);
     } catch (error) {

@@ -60,6 +60,8 @@ export const authService = {
     logout: () => {
         localStorage.removeItem('user');
         localStorage.removeItem('isLogin')
+        localStorage.removeItem('role');
+        localStorage.removeItem('bus_company_id');
         return false
     },
 
@@ -174,6 +176,44 @@ export const authService = {
     deleteRole: async (role: Role) => {
         await api.delete('/roles/' + role.id)
         return role
-    }
+    },
+    loginAdmin: async (
+        credentials: Pick<User, 'email' | 'password'>
+    ): Promise<Omit<User, 'password'> | undefined> => {
+        try {
+            const { email, password } = credentials
 
+            //  Tìm user
+            const users: User[] = await api.get('/users')
+            const foundUser = users.find(
+                (u) => u.email === email && u.password === password
+            )
+
+            if (!foundUser) return undefined
+
+            // Lấy role của user
+            const userRoles: UserRole[] = await api.get(
+                `/user_role?user_id=${foundUser.id}`
+            )
+            if (!userRoles.length) return undefined
+
+            const role: Role = await api.get(`/roles/${userRoles[0].role_id}`)
+
+            //  Chặn USER thường
+            if (role.role_name === 'USER') return undefined
+
+            // Bỏ password trước khi return
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { password: _pw, ...safeUser } = foundUser
+
+            // localStorage.setItem('user', JSON.stringify(foundUser))
+            localStorage.setItem('isLogin', JSON.stringify(true))
+            localStorage.setItem('role', JSON.stringify(role.role_name))
+
+            return safeUser
+        } catch (error) {
+            console.error(error)
+            return undefined
+        }
+    }
 };

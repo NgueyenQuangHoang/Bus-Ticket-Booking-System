@@ -10,6 +10,7 @@ import { routesService } from "../../../../services/routesService";
 import busService from "../../../../services/admin/busService";
 import type { City, Station, Route } from "../../../../types";
 import type { Bus } from "../../../../types/bus";
+import { getStoredBusCompanyId, getStoredRole } from "../../../../utils/authStorage";
 
 type Props = {
   open: boolean;
@@ -26,6 +27,9 @@ const STATUS_OPTIONS = [
 ];
 
 export default function ScheduleModalForm({ open, onClose, onSubmit, initialData, existingSchedules }: Props) {
+  const isBusCompany = getStoredRole() === "BUS_COMPANY";
+  const busCompanyId = getStoredBusCompanyId();
+
   const [formData, setFormData] = useState<Partial<ScheduleUI>>({
     route_id: 0,
     bus_id: 0,
@@ -54,15 +58,23 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const [citiesData, busesData] = await Promise.all([
-                  cityService.getAllCities(),
-                  busService.getAllBuses()
-              ]);
-              setCities(citiesData);
-              setBuses(busesData);
-          } catch (err) {
-              console.error("Failed to load initial data", err);
-          }
+          const [citiesData, busesData] = await Promise.all([
+              cityService.getAllCities(),
+              busService.getAllBuses()
+          ]);
+          setCities(citiesData);
+          const scopedBuses = isBusCompany
+            ? (busCompanyId
+                ? (busesData || []).filter((bus) => {
+                    const companyId = bus.bus_company_id ?? bus.company_id;
+                    return companyId && String(companyId) === String(busCompanyId);
+                  })
+                : [])
+            : (busesData || []);
+          setBuses(scopedBuses);
+      } catch (err) {
+          console.error("Failed to load initial data", err);
+      }
       };
       if (open) {
         fetchData();

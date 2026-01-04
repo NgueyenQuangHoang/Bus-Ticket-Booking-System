@@ -12,6 +12,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import BookingTicket from "../pages/user/booking/BookingTicket";
 import AboutPage from "../pages/user/about/AboutPage";
 import DashboardPage from "../pages/admin/dashboard/DashboardPage";
+import BusCompanyDashboardPage from "../pages/admin/dashboard/BusCompanyDashBoardPage";
 import BusCompanyPage from "../pages/user/bus_company/BusCompanyPage";
 import BusCompanyDetailPage from "../pages/user/bus_company/[slug]/BusCompanyDetailPage";
 import HomePage from "../pages/user/home/HomePage";
@@ -69,7 +70,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/customer",
-    element: <ProtectedRoute requiredRole="CUSTOMER" />,
+    element: <ProtectedRoute requiredRoles={["CUSTOMER"]} />,
     children: [
       {
         element: <CustomerLayout />,
@@ -89,7 +90,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <ProtectedRoute requiredRole="ADMIN" />,
+    element: <ProtectedRoute requiredRoles={["ADMIN", "BUS_COMPANY"]} />,
     children: [
       {
         element: <AdminLayout />,
@@ -119,6 +120,18 @@ export const router = createBrowserRouter([
           { path: "banners", element: <BannersPage /> },
 
         ],
+      },
+    ],
+  },
+  {
+    path: "/bus-company",
+    element: (
+      <ProtectedRoute requiredRoles={["BUS_COMPANY"]} redirectTo="/admin" />
+    ),
+    children: [
+      {
+        element: <AdminLayout />,
+        children: [{ index: true, element: <BusCompanyDashboardPage /> }],
       },
     ],
   },

@@ -11,8 +11,12 @@ import { scheduleService } from "../../../services/scheduleService";
 import { routesService } from "../../../services/routesService";
 import busService from "../../../services/admin/busService";
 import { stationService } from "../../../services/stationService";
+import { getStoredBusCompanyId, getStoredRole } from "../../../utils/authStorage";
 
 export default function SchedulesPage() {
+  const isBusCompany = getStoredRole() === "BUS_COMPANY";
+  const busCompanyId = getStoredBusCompanyId();
+
   // Data State
   const [data, setData] = useState<ScheduleUI[]>([]);
   const [loading, setLoading] = useState(false);
@@ -47,12 +51,23 @@ export default function SchedulesPage() {
 
       // Create Lookups
       const routeMap = new Map(routes.map(r => [String(r.id), r]));
-      const busMap = new Map(buses.map(b => [String(b.id), b]));
+      const busMap = new Map(buses.map(b => [String(b.id ?? b.bus_id), b]));
       const stationMap = new Map(stations.map(s => [String(s.id), s.station_name]));
       // ... (Rest of Enrich Data logic)
 
+      const scopedSchedules = isBusCompany
+        ? (busCompanyId
+            ? schedules.filter((item) => {
+                const bus = busMap.get(String(item.bus_id));
+                const companyId =
+                  (bus as any)?.bus_company_id ?? (bus as any)?.company_id;
+                return companyId && String(companyId) === String(busCompanyId);
+              })
+            : [])
+        : schedules;
+
       // Enrich Data
-      const enrichedData = schedules.map(item => {
+      const enrichedData = scopedSchedules.map(item => {
         const route = routeMap.get(String(item.route_id));
         const bus = busMap.get(String(item.bus_id));
         

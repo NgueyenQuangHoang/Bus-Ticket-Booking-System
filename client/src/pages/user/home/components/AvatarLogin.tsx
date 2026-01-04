@@ -90,7 +90,7 @@ export default function AvatarLogin({ user, onLogout }: UserDropdownProps) {
                         {checkRole === 'BUS_COMPANY' && <span
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#1190D4] hover:cursor-pointer"
                             onClick={() => {
-                                navigate('/admin/busCompany')
+                                navigate('/bus-company')
                             }}
                         >
                             Quản lý nhà xe

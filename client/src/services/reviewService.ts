@@ -121,7 +121,7 @@ export const reviewService = {
         }
     },
     // Admin: Get all reviews
-    getAllReviews: async (page: number = 1, limit: number = 10, search: string = "") => {
+    getAllReviews: async (page: number = 1, limit: number = 10, search: string = "", busIds: string[] = []) => {
         try {
             let url = `${API_URL}/bus_reviews?_expand=user&_sort=created_at&_order=desc`;
 
@@ -131,6 +131,12 @@ export const reviewService = {
 
             if (search) {
                 url += `&q=${search}`;
+            }
+
+             if (busIds && busIds.length > 0) {
+                busIds.forEach(id => {
+                    url += `&bus_id=${id}`;
+                });
             }
 
             const response = await axios.get(url);
