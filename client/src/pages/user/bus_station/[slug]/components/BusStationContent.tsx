@@ -30,7 +30,7 @@ export default function BusStationContent({station} : {station?: Station}) {
         <strong>Thành phố:</strong> {station?.city_id && cityMapping[station.city_id]}
       </p>
 
-    {station?.description && <div dangerouslySetInnerHTML={{__html: station?.description}} className="text-center"></div>}
+    {station?.description && <div dangerouslySetInnerHTML={{__html: station?.description}} ></div>}
       {/* <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
         Bến xe Gia Lâm thuộc quận Long Biên, nằm về phía Đông Bắc và cách
         trung tâm thành phố Hà Nội 1,4km. Đây cũng là bến lâu đời cùng với
