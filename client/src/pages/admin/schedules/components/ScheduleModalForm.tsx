@@ -126,15 +126,10 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
 
     } else if (open) {
        // New Form Setup
-       const now = new Date();
-       const timePart = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-       const datePart = now.toLocaleDateString('en-GB');
-       const timeStr = `${timePart} ${datePart}`;
-       
        setFormData({
         route_id: 0,
         bus_id: 0,
-        departure_time_str: timeStr,
+        departure_time_str: "",
         total_seats: 40,
         available_seat: 40,
         status: "AVAILABLE",
@@ -337,10 +332,39 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
             <div className="md:col-span-1">
                 <CustomSelect
                     label="Xe"
-                    options={buses.map(b => ({ label: `${b.name} - ${b.license_plate}`, value: b.id || "" }))}
+                    options={buses
+                        .filter(b => {
+                            // Filter: Only allow buses that are NOT assigned to any UPCOMING (Future) schedule.
+                            // "dựa vào những chuyến xe sắp khởi hành để lọc ra những chiếc xe chưa có lịch chạy"
+                            
+                            const now = new Date();
+
+                            const hasUpcomingSchedule = existingSchedules.some(s => {
+                                // Exclude self if editing
+                                if (s.schedule_id === initialData?.schedule_id) return false;
+                                
+                                // Ignore Cancelled
+                                if (s.status === 'CANCELLED') return false;
+
+                                // Check Bus
+                                if (String(s.bus_id) !== String(b.id)) return false;
+
+                                // Check if it is an UPCOMING schedule
+                                // We check if departure_time is in the future
+                                const depTime = s.departure_time ? new Date(s.departure_time) : null;
+                                // If depTime is invalid or in the past, it doesn't block (bus is free from that trip)
+                                if (!depTime || depTime <= now) return false;
+
+                                return true; // It's a future schedule using this bus -> Busy
+                            });
+                            
+                            return !hasUpcomingSchedule;
+                        })
+                        .map(b => ({ label: `${b.name} - ${b.license_plate}`, value: b.id || "" }))
+                    }
                     value={formData.bus_id || 0}
                     onChange={(val) => handleBusChange(val)}
-                    placeholder="Chọn xe"
+                    placeholder="Chọn xe (Chỉ hiện xe chưa có lịch sắp tới)"
                 />
                 {errors.bus_id && <p className="text-red-500 text-xs mt-1 ml-1">{errors.bus_id}</p>}
             </div>

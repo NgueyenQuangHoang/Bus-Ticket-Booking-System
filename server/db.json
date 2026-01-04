@@ -4346,28 +4346,26 @@
       "updated_at": "2026-01-01"
     },
     {
-      "id": "SCH_MQ_001",
       "route_id": "10",
       "bus_id": "80a0525f-078a-457c-a546-cd931e143e02",
-      "departure_time": "2026-01-05T07:30",
-      "arrival_time": "2026-01-05T10:00",
-      "total_seats": 70,
-      "available_seats": 66,
+      "total_seats": 34,
+      "available_seats": 34,
       "status": "AVAILABLE",
-      "created_at": "2026-01-01",
-      "updated_at": "2026-01-01"
+      "departure_time": "2026-01-05T07:30",
+      "arrival_time": "2026-01-06T03:30",
+      "updated_at": "2026-01-04T13:34:07.960Z",
+      "id": "SCH_MQ_001"
     },
     {
-      "id": "schedule_hcm_vt_20260105",
       "route_id": "11",
-      "bus_id": "4",
-      "departure_time": "2026-01-05T09:00",
-      "arrival_time": "2026-01-05T11:30",
-      "total_seats": 45,
+      "bus_id": "5",
+      "total_seats": 34,
       "available_seats": 45,
       "status": "AVAILABLE",
-      "created_at": "2026-01-03T12:00:00.000Z",
-      "updated_at": "2026-01-03T12:00:00.000Z"
+      "departure_time": "2026-01-05T09:00",
+      "arrival_time": "2026-01-06T05:00",
+      "updated_at": "2026-01-04T13:33:28.305Z",
+      "id": "schedule_hcm_vt_20260105"
     },
     {
       "id": "schedule_vt_hcm_20260105_1530",
