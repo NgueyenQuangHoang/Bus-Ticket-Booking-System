@@ -89,6 +89,12 @@ export const seatStatusService = {
       return response as unknown as Bus[];
   },
 
+  // Fetch all buses
+  getAllBuses: async (): Promise<Bus[]> => {
+      const response = await api.get<Bus[]>('/buses');
+      return response as unknown as Bus[];
+  },
+
   // Fetch all routes for the dropdown
   getRoutes: async (): Promise<Route[]> => {
     const response = await api.get<Route[]>('/routes');
@@ -104,6 +110,12 @@ export const seatStatusService = {
   // Fetch schedules by bus
   getSchedulesByBus: async (busId: string): Promise<Schedule[]> => {
       const response = await api.get<Schedule[]>(`/schedules?bus_id=${busId}`);
+      return response as unknown as Schedule[];
+  },
+
+  // Fetch all schedules (for filtering valid buses/companies)
+  getAllSchedules: async (): Promise<Schedule[]> => {
+      const response = await api.get<Schedule[]>('/schedules');
       return response as unknown as Schedule[];
   },
 
