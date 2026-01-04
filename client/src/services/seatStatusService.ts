@@ -42,7 +42,10 @@ export interface SeatSchedule {
   status: 'BOOKED' | 'HOLD' | 'AVAILABLE';
   hold_expired_at?: string;
   user_id?: string;
+  ticket_id?: string; // Added optional ticket_id
 }
+
+// ... (interfaces above)
 
 export interface Bus {
   id: string;
@@ -51,13 +54,41 @@ export interface Bus {
   bus_company_id: string;
 }
 
+export interface Passenger {
+    id: string;
+    ticket_id: string;
+    full_name: string;
+    phone: string;
+    identity_number?: string;
+    email?: string;
+}
+
 export interface SeatStatusData {
   position: SeatPosition;
   status: 'AVAILABLE' | 'BOOKED' | 'HOLD';
   ticket_id?: string;
+  note?: string; // For displaying passenger name or other info
+}
+
+export interface BusCompany {
+    id: string;
+    company_name: string;
+    // Add other fields if needed
 }
 
 export const seatStatusService = {
+  // Fetch all bus companies
+  getBusCompanies: async (): Promise<BusCompany[]> => {
+      const response = await api.get<BusCompany[]>('/bus_companies');
+      return response as unknown as BusCompany[];
+  },
+
+  // Fetch buses by company
+  getBusesByCompany: async (companyId: string): Promise<Bus[]> => {
+      const response = await api.get<Bus[]>(`/buses?bus_company_id=${companyId}`);
+      return response as unknown as Bus[];
+  },
+
   // Fetch all routes for the dropdown
   getRoutes: async (): Promise<Route[]> => {
     const response = await api.get<Route[]>('/routes');
@@ -68,6 +99,12 @@ export const seatStatusService = {
   getSchedulesByRoute: async (routeId: string): Promise<Schedule[]> => {
     const response = await api.get<Schedule[]>(`/schedules?route_id=${routeId}`);
     return response as unknown as Schedule[];
+  },
+
+  // Fetch schedules by bus
+  getSchedulesByBus: async (busId: string): Promise<Schedule[]> => {
+      const response = await api.get<Schedule[]>(`/schedules?bus_id=${busId}`);
+      return response as unknown as Schedule[];
   },
 
   // Main function to get the full seat map with status
@@ -100,9 +137,21 @@ export const seatStatusService = {
         const statusesRes = await api.get<SeatSchedule[]>(`/seat_schedules?schedule_id=${scheduleId}`);
         const seatStatuses = statusesRes as unknown as SeatSchedule[];
 
-        // 5. Merge Data
+        // 5. Get Passengers/Ticket Info for Notes
+        const passengersRes = await api.get<Passenger[]>('/passengers');
+        const passengers = passengersRes as unknown as Passenger[];
+        
+        // Map ticket_id to passenger info
+        const ticketPassengerMap = new Map<string, string>();
+        passengers.forEach(p => {
+            if (p.ticket_id) {
+                const info = `${p.full_name} (${p.phone})`;
+                ticketPassengerMap.set(String(p.ticket_id), info);
+            }
+        });
+
+        // 6. Merge Data
         // Create a map for quick lookup of status by seat_id (assuming seat_position.id matches seat_schedule.seat_id)
-        // Note: In db.json, seat_schedule.seat_id seems to match seat_position.id (e.g. "ff4c")
         const statusMap = new Map<string, SeatSchedule>();
         seatStatuses.forEach(s => statusMap.set(String(s.seat_id), s));
 
@@ -124,16 +173,22 @@ export const seatStatusService = {
                 }
             }
 
+            let note = "";
+            if (statusRecord?.ticket_id) {
+                 // Try to get passenger info
+                 const pInfo = ticketPassengerMap.get(String(statusRecord.ticket_id));
+                 if (pInfo) note = pInfo;
+            }
+
             return {
                 position: pos,
                 status: status,
-                ticket_id: undefined // Could fetch if needed
+                ticket_id: statusRecord?.ticket_id,
+                note: note
             };
         });
 
         // Calculate summary
-        // Note: We only count "seats" related to passengers, filtering out driver/door/aisle if necessary?
-        // Usually driver/door/stair don't have status, but let's count based on resultSeats status
         const booked = resultSeats.filter(s => s.status === 'BOOKED' && !s.position.is_driver_seat && !s.position.is_door && !s.position.is_stair && !s.position.is_aisle).length;
         const held = resultSeats.filter(s => s.status === 'HOLD' && !s.position.is_driver_seat).length;
         // Total sellable seats
