@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { reviewService, type Review } from "../../../services/reviewService";
 import BusReviewSearch from "./components/BusReviewSearch";
 import BusReviewTable from "./components/BusReviewTable";
@@ -6,6 +6,8 @@ import BusEditModal from "./components/BusEditModal";
 import Swal from 'sweetalert2';
 import { getStoredRole, getStoredBusCompanyId } from "../../../utils/authStorage";
 import busService from "../../../services/admin/busService";
+
+const limit = 10;
 
 export default function ReviewsPage() {
   const [openEdit, setOpenEdit] = useState(false);
@@ -16,10 +18,10 @@ export default function ReviewsPage() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
-  const limit = 10;
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async (p: number, s: string) => {
     setLoading(true);
     try {
         const role = getStoredRole();
@@ -33,7 +35,7 @@ export default function ReviewsPage() {
             }
         }
 
-        const response = await reviewService.getAllReviews(page, limit, search, busIds);
+        const response = await reviewService.getAllReviews(p, limit, s, busIds);
         setReviews(response.data);
         setTotal(response.total);
     } catch (error) {
@@ -41,20 +43,19 @@ export default function ReviewsPage() {
     } finally {
         setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    // Debounce search could be added here if needed, but for now direct effect
     const timer = setTimeout(() => {
+        setDebouncedSearch(search);
         setPage(1); // Reset to page 1 on search
-        fetchReviews();
     }, 500);
     return () => clearTimeout(timer);
   }, [search]);
 
   useEffect(() => {
-     fetchReviews();
-  }, [page]);
+     fetchReviews(page, debouncedSearch);
+  }, [page, debouncedSearch, fetchReviews]);
 
   const handleEdit = (review: Review) => {
       setSelectedReview(review);
@@ -71,7 +72,8 @@ export default function ReviewsPage() {
               timer: 1500,
               showConfirmButton: false
           });
-          fetchReviews(); // Refresh list
+          fetchReviews(page, debouncedSearch); // Refresh list
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
           Swal.fire({
               icon: 'error',
@@ -91,7 +93,7 @@ export default function ReviewsPage() {
               timer: 1500,
               showConfirmButton: false
           });
-          fetchReviews(); 
+          fetchReviews(page, debouncedSearch); 
       } catch (error) {
           Swal.fire({
               icon: 'error',
