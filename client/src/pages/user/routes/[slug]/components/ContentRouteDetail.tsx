@@ -1,8 +1,12 @@
-import img1 from "../../../../../assets/td1.png";
-import img2 from "../../../../../assets/td2.png";
-import img3 from "../../../../../assets/benxe3.png";
+import type { Route, Station } from "../../../../../types";
 
-export default function ContentRouteDetail() {
+interface PropType {
+  route?: Route,
+  departureStation?: Station,
+  arrivalStation?: Station,
+}
+
+export default function ContentRouteDetail({ arrivalStation, departureStation,route }: PropType) {
   return (
     <div
       className="
@@ -14,13 +18,12 @@ export default function ContentRouteDetail() {
         [@media(min-width:391px)]:py-8
       "
     >
-      {/* INFO */}
       <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-4">
-        <strong>Điện thoại:</strong> 0243 827 1529 <br />
-        <strong>Địa chỉ:</strong> Số 9 Ngô Gia Khảm, Q. Long Biên, Hà Nội
+        <strong>Bến khởi hành:</strong>{departureStation?.station_name}<br />
+        <strong>Bến dừng:</strong> {arrivalStation?.station_name}
       </p>
-
-      <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
+      {route && <div dangerouslySetInnerHTML={{__html: route?.description}} ></div>}
+      {/* <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
         Bến xe Gia Lâm thuộc quận Long Biên, nằm về phía Đông Bắc và cách
         trung tâm thành phố Hà Nội 1,4km. Đây cũng là bến lâu đời cùng với
         nhiều nhà xe vận hành thường xuyên như Chiến Thắng, Hồng Hà,
@@ -28,7 +31,6 @@ export default function ContentRouteDetail() {
         phía Bắc.
       </p>
 
-      {/* IMAGE 1 */}
       <img src={img1} alt="Khu vực bến xe Gia Lâm" className="w-full rounded mb-6" />
 
       <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
@@ -44,12 +46,10 @@ export default function ContentRouteDetail() {
 
       <img src={img1} alt="Bến xe Gia Lâm" className="w-full rounded mb-6" />
 
-      {/* SECTION TITLE */}
       <h2 className="font-bold text-sm [@media(min-width:391px)]:text-base mb-2">
         *Các tuyến đường và nhà xe hoạt động chính tại bến
       </h2>
 
-      {/* ROUTE 1 */}
       <p className="font-semibold mt-4 text-sm">
         + Bến xe Gia Lâm Hà Nội đi Hải Phòng
       </p>
@@ -68,7 +68,6 @@ export default function ContentRouteDetail() {
         </figcaption>
       </figure>
 
-      {/* ROUTE 2 */}
       <p className="font-semibold mt-10 text-sm">
         + Bến xe Gia Lâm Hà Nội đi Lào Cai
       </p>
@@ -85,7 +84,7 @@ export default function ContentRouteDetail() {
         <figcaption className="text-xs text-center text-gray-500 mt-2">
           Nhà xe Nam Thắng Hà Nội Lào Cai
         </figcaption>
-      </figure>
+      </figure> */}
     </div>
   );
 }

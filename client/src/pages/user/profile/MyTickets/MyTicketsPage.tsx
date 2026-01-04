@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ProfileSidebar from "../components/ProfileSidebar";
 
+
 // MUI ICONS
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import Pagination from "@mui/material/Pagination";
@@ -16,6 +17,7 @@ import { ticketService } from "../../../../services/ticketService";
 import { reviewService } from "../../../../services/reviewService";
 import ReviewModal from "./components/ReviewModal";
 import CancelTicketModal from "./components/CancelTicketModal";
+import TicketDetailModal from "./components/TicketDetailModal";
 import Swal from "sweetalert2";
 
 export default function MyTicketsPage() {
@@ -32,12 +34,22 @@ export default function MyTicketsPage() {
   const [selectedTicket, setSelectedTicket] = useState<TicketUI | null>(null);
 
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+
   const [ticketToCancel, setTicketToCancel] = useState<TicketUI | null>(null);
 
-  // Hardcoded user ID for demo purposes as requested
-  const CURRENT_USER_ID = "bba5"; 
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [ticketDetail, setTicketDetail] = useState<TicketUI | null>(null);
+
+  // Get User from LocalStorage
+  const userString = localStorage.getItem("user");
+  const currentUser = userString ? JSON.parse(userString) : null;
+  const CURRENT_USER_ID = currentUser?.id;
+
+
 
   useEffect(() => {
+    if (!CURRENT_USER_ID) return; 
+
     const fetchTickets = async () => {
       setLoading(true);
       try {
@@ -122,6 +134,25 @@ export default function MyTicketsPage() {
      currentPage * ITEMS_PER_PAGE
   );
 
+  if (!currentUser) {
+    return (
+      <section className="bg-[#f5f7fa]">
+        <div className="max-w-[1024px] mx-auto px-3 py-6 [@media(min-width:391px)]:px-4 [@media(min-width:769px)]:px-0">
+          <div className="grid gap-6 grid-cols-1 [@media(min-width:391px)]:grid-cols-[260px_1fr] items-start">
+            <ProfileSidebar />
+            <div className="bg-white rounded p-12 text-center shadow-sm">
+                <div className="mx-auto w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4">
+                    <ConfirmationNumberIcon sx={{ fontSize: 32 }} />
+                </div>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">Vui lòng đăng nhập</h3>
+                <p className="text-gray-500 mb-6">Bạn cần đăng nhập để xem lịch sử vé đã đặt.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   if (loading) {
     return (
         <section className="bg-[#f5f7fa] min-h-screen">
@@ -205,6 +236,14 @@ export default function MyTicketsPage() {
       });
     }
   };
+
+  const handleOpenDetail = (ticket: TicketUI) => {
+    setTicketDetail(ticket);
+    setIsDetailModalOpen(true);
+  };
+
+
+
 
   return (
     <section className="bg-[#f5f7fa] min-h-screen">
@@ -384,7 +423,10 @@ export default function MyTicketsPage() {
                                        </button>
                                    )}
 
-                                   <button className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm">
+                                   <button 
+                                        onClick={() => handleOpenDetail(ticket)}
+                                        className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors text-sm hover:cursor-pointer"
+                                   >
                                         Chi tiết vé ›
                                    </button>
 
@@ -440,6 +482,13 @@ export default function MyTicketsPage() {
         onClose={() => setIsCancelModalOpen(false)}
         onConfirm={handleConfirmCancel}
         ticket={ticketToCancel}
+      />
+
+       {/* DETAIL MODAL */}
+       <TicketDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        ticket={ticketDetail}
       />
     </section>
   );

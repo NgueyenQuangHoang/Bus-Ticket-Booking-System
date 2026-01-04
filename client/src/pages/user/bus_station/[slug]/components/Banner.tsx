@@ -1,6 +1,6 @@
-import banner from "../../../../../assets/bus.png";
+import type { Station } from "../../../../../types";
 
-export default function BannerBusStationDetails() {
+export default function BannerBusStationDetails({station} : {station?: Station}) {
   return (
     <div
       className="
@@ -11,7 +11,7 @@ export default function BannerBusStationDetails() {
       "
     >
       <img
-        src={banner}
+        src={station?.image}
         alt="Bến xe Gia Lâm"
         className="w-full h-full object-cover"
       />
@@ -25,7 +25,7 @@ export default function BannerBusStationDetails() {
             [@media(min-width:769px)]:text-xl
           "
         >
-          Bến xe Gia Lâm – thông tin địa điểm, giá vé 16 hãng xe đi từ bến
+          {station?.station_name}, {station?.location}
         </h1>
       </div>
     </div>

@@ -1,8 +1,6 @@
-import img1 from "../../../../../assets/td1.png";
-import img2 from "../../../../../assets/td2.png";
-import img3 from "../../../../../assets/benxe3.png";
+import type { BusCompany } from "../../../../../types";
 
-export default function ContentBusCompany() {
+export default function ContentBusCompany({busCompany} : {busCompany?: BusCompany}) {
   return (
     <div
       className="
@@ -16,11 +14,13 @@ export default function ContentBusCompany() {
     >
       {/* INFO */}
       <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-4">
-        <strong>Điện thoại:</strong> 0243 827 1529 <br />
-        <strong>Địa chỉ:</strong> Số 9 Ngô Gia Khảm, Q. Long Biên, Hà Nội
+        <strong>Điện thoại:</strong>{busCompany?.contact_phone}<br />
+        <strong>Địa chỉ:</strong> {busCompany?.address}
       </p>
 
-      <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
+      {busCompany?.description && <div dangerouslySetInnerHTML={{__html: busCompany?.description}}>
+      </div>}
+      {/* <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
         Bến xe Gia Lâm thuộc quận Long Biên, nằm về phía Đông Bắc và cách
         trung tâm thành phố Hà Nội 1,4km. Đây cũng là bến lâu đời cùng với
         nhiều nhà xe vận hành thường xuyên như Chiến Thắng, Hồng Hà,
@@ -28,7 +28,6 @@ export default function ContentBusCompany() {
         phía Bắc.
       </p>
 
-      {/* IMAGE 1 */}
       <img src={img1} alt="Khu vực bến xe Gia Lâm" className="w-full rounded mb-6" />
 
       <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
@@ -44,12 +43,10 @@ export default function ContentBusCompany() {
 
       <img src={img1} alt="Bến xe Gia Lâm" className="w-full rounded mb-6" />
 
-      {/* SECTION TITLE */}
       <h2 className="font-bold text-sm [@media(min-width:391px)]:text-base mb-2">
         *Các tuyến đường và nhà xe hoạt động chính tại bến
       </h2>
 
-      {/* ROUTE 1 */}
       <p className="font-semibold mt-4 text-sm">
         + Bến xe Gia Lâm Hà Nội đi Hải Phòng
       </p>
@@ -68,7 +65,6 @@ export default function ContentBusCompany() {
         </figcaption>
       </figure>
 
-      {/* ROUTE 2 */}
       <p className="font-semibold mt-10 text-sm">
         + Bến xe Gia Lâm Hà Nội đi Lào Cai
       </p>
@@ -85,7 +81,7 @@ export default function ContentBusCompany() {
         <figcaption className="text-xs text-center text-gray-500 mt-2">
           Nhà xe Nam Thắng Hà Nội Lào Cai
         </figcaption>
-      </figure>
+      </figure> */}
     </div>
   );
 }
