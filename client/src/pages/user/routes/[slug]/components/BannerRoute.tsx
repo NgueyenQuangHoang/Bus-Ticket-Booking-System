@@ -1,13 +1,18 @@
-import banner from "../../../../../assets/benxe2.png";
+import type { City } from "../../../../../types";
 
-export default function BannerRoute() {
+interface PropType  {
+    departureCity?: City,
+    arrivalCity?: City,
+}
+
+export default function BannerRoute({arrivalCity, departureCity} : PropType) {
     return (
         <div
             className=" w-full relative
         h-[200px] [@media(min-width:391px)]:h-[260px] [@media(min-width:769px)]:h-[320px] cursor-pointer "
         >
             <img
-                src={banner}
+                src={''}
                 alt="Nhà xe"
                 className="w-full h-full object-cover "
             />
@@ -21,7 +26,7 @@ export default function BannerRoute() {
                 <h1
                     className="text-white font-semibold text-center
       max-w-3xl text-base min-[391px]:text-lg min-[769px]:text-xl ">
-                    Tuyến Đường – thông tin địa điểm, giá vé 16 hãng xe đi từ bến
+                Tuyến Đường từ {departureCity?.city_name} đến {arrivalCity?.city_name}
                 </h1>
             </div>
 

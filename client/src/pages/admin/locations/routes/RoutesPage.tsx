@@ -16,12 +16,15 @@ export default function RouteAdminPage() {
         dispatch(fetchRoutes())
         dispatch(fetchStations())
     }, [dispatch])
-    console.log(routes, stations);
     const stationMap: Record<string, string> = Object.fromEntries(
         stations.map((s) => [s.id, s.station_name])
     );
     const [inputData, setInputData] = useState<string>('')
-    const [currentPage, serCurrentPage] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
+
+    const handleSetPage = (event: React.ChangeEvent<unknown>, page: number) => {
+        setCurrentPage(page)
+    }
 
     const routesRender = routes && stationMap && routes.filter(item => 
         stationMap[item.departure_station_id] && stationMap[item.arrival_station_id] && 
@@ -31,18 +34,21 @@ export default function RouteAdminPage() {
     return (
         <div className='py-5'>
             <div className='py-5'>
-                        <RouteFormModal stationMapping={stationMap}/>
+                        <RouteFormModal stationMapping={stationMap} length={routes.length}/>
                         <Paper className="shadow-sm rounded-xl overflow-hidden border border-gray-100">
-                        <RouteSearch onChangeInput={setInputData}/>
+                        <RouteSearch onChangeInput={setInputData} 
+                        length={routes.length}
+                        />
                             <RouteTable stationMapping={
                                 stationMap
                                 } routes={
                                     routesRender
-                                    }/>
+                                    }
+                                    />
                         </Paper>
                         <div className="py-4 flex justify-center"><Pagination 
-                        onChange={() => serCurrentPage}
-                        count={Math.ceil(routesRender.length/10)}/></div>
+                    onChange={handleSetPage}
+                        count={Math.ceil(routes.length/10)}/></div>
                     </div>
         </div>
     )

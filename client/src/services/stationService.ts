@@ -55,10 +55,10 @@ export const stationService = {
             throw error;
         }
     },
-    getParticularStation: async (station_id: number): Promise<Station | undefined> => {
+    getParticularStation: async (id: string): Promise<Station | undefined> => {
         try {
-            const response: Station[] = await api.get(`/stations?station_id=${station_id}`)
-            return response ? response[0] : undefined
+            const response: Station = await api.get(`/stations/${id}`)
+            return response
         } catch (error) {
             console.log(error);
             return undefined

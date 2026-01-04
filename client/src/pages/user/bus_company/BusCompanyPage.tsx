@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardBus from "./components/CardBus";
 import Pagination from "./components/Pagination";
-import { busCompanyService } from "../../../services/busCompanyService";
-import type { BusCompany } from "../../../types";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { fetchBusCompanies } from "../../../slices/busCompanySlice";
 
 const BusCompanyPage = () => {
-  const responseGetAllBusCompany = busCompanyService.getAllBusCompanies()
-  const [listBusCompanies, setListBusCompanies] = useState<BusCompany[]>([])
-  const itemPerPage = 4
+  const {companies: listBusCompanies} = useAppSelector(state => state.busCompany)
+  const dispatch = useAppDispatch()
+  const itemPerPage = 8
   const totalPage = Math.ceil(listBusCompanies.length / itemPerPage)
   const [currentPage, setCurrentPage] = useState(1)
   const nextPage = () => {
@@ -23,11 +23,10 @@ const BusCompanyPage = () => {
   const clickPage = (page: number) => {
     setCurrentPage(page)
   }
-  responseGetAllBusCompany.then((res) => {
-    if (res) {
-      setListBusCompanies(res)
-    }
-  })
+  useEffect(() => {
+    dispatch(fetchBusCompanies())
+  }, [dispatch])
+
   return (
     <section
       className=" max-w-7xl mx-auto py-8 px-3 [@media(min-width:391px)]:px-4 [@media(min-width:769px)]:px-0

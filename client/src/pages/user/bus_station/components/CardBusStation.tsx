@@ -1,4 +1,4 @@
-import logo1 from "../../../../assets/benxe1.png";
+import { useNavigate } from "react-router-dom";
 import type { Station } from "../../../../types";
 
 interface propInterface {
@@ -10,7 +10,7 @@ interface propInterface {
 export default function CardBusStation(
     { stations, itemPerPage, currentPage }: propInterface
 ) {
-
+    const navigate = useNavigate()
     return (
         <div
             className="
@@ -35,9 +35,10 @@ export default function CardBusStation(
     hover:-translate-y-1 hover:shadow-xl
     overflow-hidden cursor-pointer
   "
+                            onClick={() => { navigate('/detailStation/'+item.id)}}
                         >
                             <img
-                                src={logo1}
+                                src={item.image}
                                 alt="Nhà xe Thanh Nhung"
                                 className="
         w-full object-cover
