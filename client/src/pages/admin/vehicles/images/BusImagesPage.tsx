@@ -44,7 +44,7 @@ export default function BusImagesPage() {
         }
     };
     fetchBuses();
-  }, []);
+  }, [busCompanyId, isBusCompany]);
 
   // Pagination State
   const [page, setPage] = useState(1);
@@ -119,7 +119,6 @@ export default function BusImagesPage() {
             </p>
           </div>
            
-          {!isBusCompany && (
             <button
               onClick={() => {
                   if (!selectedBusId) {
@@ -133,7 +132,6 @@ export default function BusImagesPage() {
               <AddIcon sx={{ fontSize: 18 }} />
               Tải ảnh lên
             </button>
-          )}
         </div>
 
         {/* SELECT BUS */}
@@ -150,7 +148,7 @@ export default function BusImagesPage() {
             <>
                 <BusImageTable
                     data={paginatedImages}
-                    onDelete={isBusCompany ? undefined : handleDelete}
+                    onDelete={handleDelete}
                 />
                  {/* PAGINATION */}
                 {totalPages > 1 && (
@@ -169,14 +167,12 @@ export default function BusImagesPage() {
        
 
         {/* MODAL */}
-        {!isBusCompany && (
           <BusImageUploadModal
             open={openModal}
             onClose={() => setOpenModal(false)}
             busId={selectedBusId}
             onUploadSuccess={() => selectedBusId && fetchImages(selectedBusId)}
           />
-        )}
       </div>
     </section>
   );

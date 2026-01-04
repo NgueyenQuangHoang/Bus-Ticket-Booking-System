@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 import { Pagination } from "@mui/material";
@@ -27,7 +27,7 @@ export default function BusesPage() {
     const [openModal, setOpenModal] = useState(false);
     const [selectedBus, setSelectedBus] = useState<Bus | null>(null);
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             setLoading(true);
             const [busesData, companiesData, layoutsData, typesData] = await Promise.all([
@@ -49,7 +49,7 @@ export default function BusesPage() {
             const scopedCompanies = isBusCompany
                 ? (busCompanyId
                     ? (companiesData || []).filter((company) => {
-                        const companyId = company.id ?? company.bus_company_id;
+                        const companyId = company.id;
                         return companyId && String(companyId) === String(busCompanyId);
                       })
                     : [])
@@ -65,15 +65,15 @@ export default function BusesPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [isBusCompany, busCompanyId]);
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [fetchData]);
 
     // Enrich bus data with names
     const enrichedBuses = buses.map(bus => {
-        const company = companies.find(c => String(c.id) === String(bus.company_id) || String(c.bus_company_id) === String(bus.company_id));
+        const company = companies.find(c => String(c.id) === String(bus.company_id));
         // Compare with both string and number representations just in case
         const layout = layouts.find(l => String(l.layout_id) === String(bus.layout_id) || String(l.id) === String(bus.layout_id));
         const type = vehicleTypes.find(v => String(v.id) === String(bus.vehicle_type_id) || String(v.code) === String(bus.vehicle_type_id)); // Handle inconsistent ID usage if any
@@ -90,29 +90,17 @@ export default function BusesPage() {
     });
 
     const handleCreate = () => {
-        if (isBusCompany) {
-            Swal.fire("Không có quyền", "Bạn không được phép tạo xe.", "error");
-            return;
-        }
         setSelectedBus(null);
         setOpenModal(true);
     };
 
     const handleEdit = (bus: Bus) => {
-        if (isBusCompany) {
-            Swal.fire("Không có quyền", "Bạn không được phép sửa xe.", "error");
-            return;
-        }
         // bus from table might have extra props, but we pass it as initialData which is compatible
         setSelectedBus(bus);
         setOpenModal(true);
     };
 
     const handleDelete = async (bus: Bus) => {
-        if (isBusCompany) {
-            Swal.fire("Không có quyền", "Bạn không được phép xóa xe.", "error");
-            return;
-        }
         const result = await Swal.fire({
             title: "Xác nhận xóa?",
             text: `Bạn có chắc muốn xóa xe "${bus.name}"?`,
@@ -137,10 +125,6 @@ export default function BusesPage() {
     };
 
     const handleSubmit = async (data: Partial<Bus>, thumbnailFile?: File) => {
-        if (isBusCompany) {
-            Swal.fire("Không có quyền", "Bạn không được phép lưu xe.", "error");
-            return;
-        }
         try {
             let uploadedThumbnail = "";
 
@@ -207,7 +191,6 @@ export default function BusesPage() {
                             </p>
                         </div>
 
-                        {!isBusCompany && (
                             <button
                                 onClick={handleCreate}
                                 className="
@@ -224,7 +207,6 @@ export default function BusesPage() {
                                 <AddIcon sx={{ fontSize: 18 }} />
                                 Thêm xe
                             </button>
-                        )}
                     </div>
 
                     {/* ===== SEARCH ===== */}
@@ -241,8 +223,8 @@ export default function BusesPage() {
                         <>
                             <BusTable
                                 data={paginatedData}
-                                onEdit={isBusCompany ? undefined : handleEdit}
-                                onDelete={isBusCompany ? undefined : handleDelete}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
                             />
                              {/* PAGINATION */}
                             {totalPages > 1 && (
