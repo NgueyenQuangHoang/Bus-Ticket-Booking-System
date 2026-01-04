@@ -6,10 +6,14 @@ import { Pagination, Paper } from '@mui/material'
 import CitySearch from './components/CitySearch'
 import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { addNewCity, deleteCity, fetchCities, updateCity } from '../../../../slices/citySlice'
+import { removeRoute } from '../../../../slices/routesSlice'
+import { removeStation } from '../../../../slices/stationSlice'
 
 export default function CitiesPage() {
     const itemsPerPage = 10
     const {cities} = useAppSelector(state => state.city)
+    const {routes} = useAppSelector(state=>state.routes)
+    const {stations} = useAppSelector(state=>state.station)
     const dispatch = useAppDispatch()
     const [searchCity, setSearchCity] = useState<string>('')
     useEffect(() => {
@@ -22,13 +26,22 @@ export default function CitiesPage() {
         setCurrentPage(value);
     }
 
-    const handleDelete = ((id: string) => {
-        dispatch(deleteCity(id))
+    const handleDelete = ((city: City) => {
+        stations.forEach(station => {
+            if (station.city_id === city.id){
+                routes.forEach(route => {
+                    if(route.arrival_station_id === station.id || route.departure_station_id == station.id){
+                        dispatch(removeRoute(route.id))
+                    }
+                })
+                dispatch(removeStation(station.id))
+            }
+        })
+        dispatch(deleteCity(city.id))
     })
 
     const updateCities = ((city: City) => {
         if (cities){
-            //
             dispatch(updateCity(city))
         }
     })

@@ -7,7 +7,7 @@ import CityAction from './CityAction';
 
 interface PropType {
     cities: City[],
-    onDelete: (id: string) => void
+    onDelete: (city: City) => void
     onUpdateCities: (city: City) => void
 }
 
