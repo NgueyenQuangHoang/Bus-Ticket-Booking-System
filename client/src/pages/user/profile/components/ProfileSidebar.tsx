@@ -6,6 +6,8 @@ import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import HelpIcon from "@mui/icons-material/Help";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { authService } from "../../../../services/authService";
+import Swal from "sweetalert2";
 
 export default function ProfileSidebar() {
   const navigate = useNavigate();
@@ -13,6 +15,22 @@ export default function ProfileSidebar() {
 
   const isActive = (path: string) => {
     return location.pathname === path;
+  };
+
+  const handleLogout = () => {
+    authService.logout();
+    
+    Swal.fire({
+      title: "Đã đăng xuất",
+      text: "Đang chuyển về trang chủ...",
+      timer: 1500,
+      showConfirmButton: false,
+      position: 'top-end',
+      toast: true,
+      icon: 'success'
+    }).then(() => {
+       window.location.href = '/'; 
+    });
   };
 
   return (
@@ -53,7 +71,10 @@ export default function ProfileSidebar() {
           <span className="text-xs text-red-500 ml-1">Mới</span>
         </li>
 
-        <li className="flex items-center gap-2 text-red-500 cursor-pointer hover:text-red-600 transition-colors">
+        <li 
+          onClick={handleLogout}
+          className="flex items-center gap-2 text-red-500 cursor-pointer hover:text-red-600 transition-colors"
+        >
           <LogoutIcon sx={{ fontSize: 18 }} />
           Đăng xuất
         </li>

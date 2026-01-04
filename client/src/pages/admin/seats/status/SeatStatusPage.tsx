@@ -9,6 +9,7 @@ import {
 } from "../../../../services/seatStatusService";
 import { stationService } from "../../../../services/stationService";
 import type { Station } from "../../../../types/station";
+import { getStoredBusCompanyId, getStoredRole } from "../../../../utils/authStorage";
 
 // --- Types ---
 type SeatStatus = "AVAILABLE" | "BOOKED" | "HELD";
@@ -118,6 +119,9 @@ function SelectField({
 // --- Main Component ---
 
 export default function SeatStatusPage() {
+  const isBusCompany = getStoredRole() === "BUS_COMPANY";
+  const busCompanyId = getStoredBusCompanyId();
+
   const [allBusCompanies, setAllBusCompanies] = useState<BusCompany[]>([]);
   const [allBuses, setAllBuses] = useState<Bus[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
@@ -160,9 +164,23 @@ export default function SeatStatusPage() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (isBusCompany && busCompanyId) {
+      setSelectedCompanyId(busCompanyId);
+    }
+  }, [isBusCompany, busCompanyId]);
+
   // 2. Compute Filtered Options
   const { validCompanyOptions, validBusOptions, scheduleOptions } = useMemo(() => {
+      if (isBusCompany && !busCompanyId) {
+        return {
+          validCompanyOptions: [],
+          validBusOptions: [],
+          scheduleOptions: [],
+        };
+      }
       const now = new Date();
+      const companyFilterId = isBusCompany && busCompanyId ? busCompanyId : selectedCompanyId;
       
       // Filter Active Schedules
       const activeSchedules = allSchedules.filter(s => new Date(s.departure_time) >= now);
@@ -171,7 +189,12 @@ export default function SeatStatusPage() {
       const activeBusIds = new Set(activeSchedules.map(s => s.bus_id));
 
       // Filtered Buses (must have active schedule)
-      const validBuses = allBuses.filter(b => activeBusIds.has(b.id));
+      const validBuses = allBuses
+        .filter(b => activeBusIds.has(b.id))
+        .filter(b => {
+          if (!companyFilterId) return true;
+          return String(b.bus_company_id) === String(companyFilterId);
+        });
       
       // Unique Company IDs from valid buses
       const activeCompanyIds = new Set(validBuses.map(b => b.bus_company_id));
@@ -179,11 +202,15 @@ export default function SeatStatusPage() {
       // 1. Company Options
       const companyOpts = allBusCompanies
           .filter(c => activeCompanyIds.has(c.id))
+          .filter(c => {
+            if (!companyFilterId) return true;
+            return String(c.id) === String(companyFilterId);
+          })
           .map(c => ({ value: c.id, label: c.company_name }));
 
       // 2. Bus Options (Dependent on selected Company)
       const busOpts = validBuses
-          .filter(b => !selectedCompanyId || b.bus_company_id === selectedCompanyId)
+          .filter(b => !companyFilterId || String(b.bus_company_id) === String(companyFilterId))
           .map(b => ({ value: b.id, label: b.name }));
 
       // 3. Schedule Options (Dependent on selected Bus)
@@ -223,11 +250,12 @@ export default function SeatStatusPage() {
           scheduleOptions: scheduleOpts
       };
 
-  }, [allSchedules, allBuses, allBusCompanies, selectedCompanyId, selectedBusId, stations, routes]);
+  }, [allSchedules, allBuses, allBusCompanies, selectedCompanyId, selectedBusId, stations, routes, isBusCompany, busCompanyId]);
 
 
   // Handlers
   const handleCompanyChange = (companyId: string) => {
+      if (isBusCompany) return;
       setSelectedCompanyId(companyId);
       setSelectedBusId("");
       setSelectedScheduleId("");
@@ -289,6 +317,7 @@ export default function SeatStatusPage() {
               value={selectedCompanyId}
               onChange={handleCompanyChange}
               options={[{ value: "", label: "-- Chọn Nhà xe --" }, ...validCompanyOptions]}
+              disabled={isBusCompany}
             />
             <SelectField
               ariaLabel="Chọn loại xe"

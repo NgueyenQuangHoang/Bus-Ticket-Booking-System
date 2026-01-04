@@ -12,6 +12,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import BookingTicket from "../pages/user/booking/BookingTicket";
 import AboutPage from "../pages/user/about/AboutPage";
 import DashboardPage from "../pages/admin/dashboard/DashboardPage";
+import BusCompanyDashboardPage from "../pages/admin/dashboard/BusCompanyDashBoardPage";
 import BusCompanyPage from "../pages/user/bus_company/BusCompanyPage";
 import BusCompanyDetailPage from "../pages/user/bus_company/[slug]/BusCompanyDetailPage";
 import HomePage from "../pages/user/home/HomePage";
@@ -45,6 +46,7 @@ import TransactionsPage from "../pages/admin/payments/Transactions/TransactionsP
 import CancellationPoliciesPage from "../pages/admin/policies/CancellationPoliciesPage";
 import ReviewsPage from "../pages/admin/reviews/ReviewsPage";
 import BannersPage from "../pages/admin/banners/BannersPage";
+import BusStationDetailPage from "../pages/user/bus_station/[slug]/BusStationDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,8 +59,9 @@ export const router = createBrowserRouter([
       { path: "busCompany", element: <BusCompanyPage /> },
       { path: "busStation", element: <BusStationPage /> },
       { path: "routes", element: <RoutesPage /> },
-      { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
-      { path: "detailRoute", element: <RouteDetailPage /> },
+      { path: "detailBusCompany/:id", element: <BusCompanyDetailPage /> },
+      { path: "detailRoute/:id", element: <RouteDetailPage /> },
+      { path: "detailStation/:id", element: <BusStationDetailPage /> },
       { path: "bookingConfirmation", element: <BookingConfirmation /> },
       { path: "check-ticket", element: <CheckTicket /> },
       { path: "accountProfile", element: <AccountProfile /> },
@@ -67,7 +70,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/customer",
-    element: <ProtectedRoute requiredRole="CUSTOMER" />,
+    element: <ProtectedRoute requiredRoles={["CUSTOMER"]} />,
     children: [
       {
         element: <CustomerLayout />,
@@ -87,7 +90,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <ProtectedRoute requiredRole="ADMIN" />,
+    element: <ProtectedRoute requiredRoles={["ADMIN", "BUS_COMPANY"]} />,
     children: [
       {
         element: <AdminLayout />,
@@ -117,6 +120,18 @@ export const router = createBrowserRouter([
           { path: "banners", element: <BannersPage /> },
 
         ],
+      },
+    ],
+  },
+  {
+    path: "/bus-company",
+    element: (
+      <ProtectedRoute requiredRoles={["BUS_COMPANY"]} redirectTo="/admin" />
+    ),
+    children: [
+      {
+        element: <AdminLayout />,
+        children: [{ index: true, element: <BusCompanyDashboardPage /> }],
       },
     ],
   },

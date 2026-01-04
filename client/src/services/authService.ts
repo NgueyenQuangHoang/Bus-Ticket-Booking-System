@@ -60,6 +60,8 @@ export const authService = {
     logout: () => {
         localStorage.removeItem('user');
         localStorage.removeItem('isLogin')
+        localStorage.removeItem('role');
+        localStorage.removeItem('bus_company_id');
         return false
     },
 
@@ -67,7 +69,7 @@ export const authService = {
         try {
             const userRoles: UserRole[] = await api.get(`/user_role?user_id=${id}`)
             const roles: Role[] = await api.get('/roles')
-            
+
             return userRoles.map(ur => {
                 const role = roles.find(r => r.id == ur.role_id)
                 return {
@@ -97,30 +99,7 @@ export const authService = {
             return []
         }
     },
-    getRoleUser: async (user_id: number | string): Promise<Role[] | undefined> => {
-        try {
-            const responseGetRole: Role[] = await api.get('http://localhost:8080/roles')
-            const responseGetUserRole: UserRole[] = await api.get('http://localhost:8080/user_role?user_id=' + user_id)
 
-            const dataUser = responseGetUserRole.filter((item) => item.user_id == user_id)
-            const roleMap = responseGetRole.reduce((acc, current) => {
-                acc[current.id] = current
-                return acc
-            }, {} as Record<string, Role>)
-
-
-            const dataReturn = dataUser.reduce((acc, item) => {
-                acc.push(roleMap[item.role_id])
-                return acc
-            }, [] as Role[])
-            localStorage.setItem('role', JSON.stringify(dataReturn))
-
-
-            return dataReturn
-        } catch (error) {
-            console.log(error);
-            return []
-        }},
 
     deleteUser: async (id: number | string): Promise<void> => {
         try {
@@ -185,18 +164,56 @@ export const authService = {
             console.log(error);
         }
     },
-    
+
     createRole: async (role: Role) => {
         await api.post('/roles', role)
         return role
     },
     updateRole: async (role: Role) => {
-        await api.put('/roles/'+role.id, role)
+        await api.put('/roles/' + role.id, role)
         return role
     },
     deleteRole: async (role: Role) => {
-        await api.delete('/roles/'+role.id)
+        await api.delete('/roles/' + role.id)
         return role
-    }
+    },
+    loginAdmin: async (
+        credentials: Pick<User, 'email' | 'password'>
+    ): Promise<Omit<User, 'password'> | undefined> => {
+        try {
+            const { email, password } = credentials
 
+            //  Tìm user
+            const users: User[] = await api.get('/users')
+            const foundUser = users.find(
+                (u) => u.email === email && u.password === password
+            )
+
+            if (!foundUser) return undefined
+
+            // Lấy role của user
+            const userRoles: UserRole[] = await api.get(
+                `/user_role?user_id=${foundUser.id}`
+            )
+            if (!userRoles.length) return undefined
+
+            const role: Role = await api.get(`/roles/${userRoles[0].role_id}`)
+
+            //  Chặn USER thường
+            if (role.role_name === 'USER') return undefined
+
+            // Bỏ password trước khi return
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { password: _pw, ...safeUser } = foundUser
+
+            // localStorage.setItem('user', JSON.stringify(foundUser))
+            localStorage.setItem('isLogin', JSON.stringify(true))
+            localStorage.setItem('role', JSON.stringify(role.role_name))
+
+            return safeUser
+        } catch (error) {
+            console.error(error)
+            return undefined
+        }
+    }
 };

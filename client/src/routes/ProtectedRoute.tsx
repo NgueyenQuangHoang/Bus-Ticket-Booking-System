@@ -1,22 +1,37 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { getStoredIsLogin, getStoredRole } from '../utils/authStorage';
+import {
+  DEFAULT_BUS_COMPANY_ADMIN_PATH,
+  isBusCompanyAdminPath,
+  type RoleName,
+} from '../utils/roleAccess';
 
 interface ProtectedRouteProps {
-  requiredRole?: 'ADMIN' | 'CUSTOMER';
+  requiredRoles?: RoleName[];
+  redirectTo?: string;
 }
 
-const ProtectedRoute = ({ requiredRole }: ProtectedRouteProps) => {
-  // TODO: Implement actual authentication and role checking logic here.
-  // For now, we allow access to everything to proceed with development.
-  const isAuthenticated = true; 
-  const userRole = requiredRole; // Mock role matching
+const ProtectedRoute = ({ requiredRoles, redirectTo }: ProtectedRouteProps) => {
+  const location = useLocation();
+  const isAuthenticated = getStoredIsLogin();
+  const userRole = getStoredRole() as RoleName | null;
 
   if (!isAuthenticated) {
-    return <Navigate to="/auth/login" replace />;
+    const isAdminArea = (requiredRoles || []).some(
+      (role) => role === "ADMIN" || role === "BUS_COMPANY"
+    );
+    return <Navigate to={isAdminArea ? "/admin/auth" : "/"} replace />;
   }
 
-  if (requiredRole && userRole !== requiredRole) {
+  if (requiredRoles && (!userRole || !requiredRoles.includes(userRole))) {
     // return <Navigate to="/unauthorized" replace />; // Or home
-    return <Navigate to="/" replace />;
+    return <Navigate to={redirectTo ?? "/"} replace />;
+  }
+
+  if (userRole === "BUS_COMPANY" && location.pathname.startsWith("/admin")) {
+    if (!isBusCompanyAdminPath(location.pathname)) {
+      return <Navigate to={DEFAULT_BUS_COMPANY_ADMIN_PATH} replace />;
+    }
   }
 
   return <Outlet />;

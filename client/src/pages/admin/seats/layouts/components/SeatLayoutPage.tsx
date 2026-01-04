@@ -9,8 +9,12 @@ import type { BusLayout, SeatPosition, SeatType } from '../../../../../types/sea
 import type { Bus } from '../../../../../types/bus';
 import seatService from '../../../../../services/admin/seatService';
 import busService from '../../../../../services/admin/busService';
+import { getStoredBusCompanyId, getStoredRole } from '../../../../../utils/authStorage';
 
 export default function SeatLayoutPage() {
+  const isBusCompany = getStoredRole() === "BUS_COMPANY";
+  const busCompanyId = getStoredBusCompanyId();
+
   const [buses, setBuses] = useState<Bus[]>([]);
   const [seatTypes, setSeatTypes] = useState<SeatType[]>([]);
   const [templates, setTemplates] = useState<BusLayout[]>([]);
@@ -22,7 +26,17 @@ export default function SeatLayoutPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    busService.getAllBuses().then(setBuses);
+    busService.getAllBuses().then((data) => {
+      const scopedBuses = isBusCompany
+        ? (busCompanyId
+            ? (data || []).filter((bus) => {
+                const companyId = bus.bus_company_id ?? bus.company_id;
+                return companyId && String(companyId) === String(busCompanyId);
+              })
+            : [])
+        : (data || []);
+      setBuses(scopedBuses);
+    });
     seatService.getAllSeatTypes().then(setSeatTypes);
     seatService.getAllTemplates().then(setTemplates);
   }, []);
@@ -41,6 +55,14 @@ export default function SeatLayoutPage() {
       setLayout(null);
       setPositions([]);
       return;
+    }
+    if (isBusCompany && busCompanyId) {
+      const companyId = bus.bus_company_id ?? bus.company_id;
+      if (!companyId || String(companyId) !== String(busCompanyId)) {
+        setLayout(null);
+        setPositions([]);
+        return;
+      }
     }
 
     const details = await seatService.getLayoutDetails(bus.layout_id);

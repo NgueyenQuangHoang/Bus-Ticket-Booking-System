@@ -9,8 +9,12 @@ import BusImageTable from "./components/BusImageTable";
 import BusImageUploadModal from "./components/BusImageUploadModal";
 import busService from "../../../../services/admin/busService";
 import { busImageService } from "../../../../services/admin/busImageService";
+import { getStoredBusCompanyId, getStoredRole } from "../../../../utils/authStorage";
 
 export default function BusImagesPage() {
+  const isBusCompany = getStoredRole() === "BUS_COMPANY";
+  const busCompanyId = getStoredBusCompanyId();
+
   const [buses, setBuses] = useState<Bus[]>([]);
   const [selectedBusId, setSelectedBusId] = useState<string | number>("");
   const [images, setImages] = useState<BusImage[]>([]);
@@ -22,8 +26,16 @@ export default function BusImagesPage() {
     const fetchBuses = async () => {
         try {
             const data = await busService.getAllBuses();
-            setBuses(data || []);
-            if (data && data.length > 0) {
+            const scopedBuses = isBusCompany
+                ? (busCompanyId
+                    ? (data || []).filter((bus) => {
+                        const companyId = bus.bus_company_id ?? bus.company_id;
+                        return companyId && String(companyId) === String(busCompanyId);
+                      })
+                    : [])
+                : (data || []);
+            setBuses(scopedBuses);
+            if (scopedBuses.length > 0) {
                  // Optionally select first bus if needed, or leave empty
                  // setSelectedBusId(data[0].id || data[0].bus_id); 
             }
@@ -107,19 +119,21 @@ export default function BusImagesPage() {
             </p>
           </div>
            
-          <button
-            onClick={() => {
-                if (!selectedBusId) {
-                    Swal.fire("Thông báo", "Vui lòng chọn xe trước khi tải ảnh", "info");
-                    return;
-                }
-                setOpenModal(true);
-            }}
-            className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm disabled:opacity-50 hover:cursor-pointer"
-          >
-            <AddIcon sx={{ fontSize: 18 }} />
-            Tải ảnh lên
-          </button>
+          {!isBusCompany && (
+            <button
+              onClick={() => {
+                  if (!selectedBusId) {
+                      Swal.fire("Thông báo", "Vui lòng chọn xe trước khi tải ảnh", "info");
+                      return;
+                  }
+                  setOpenModal(true);
+              }}
+              className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm disabled:opacity-50 hover:cursor-pointer"
+            >
+              <AddIcon sx={{ fontSize: 18 }} />
+              Tải ảnh lên
+            </button>
+          )}
         </div>
 
         {/* SELECT BUS */}
@@ -136,7 +150,7 @@ export default function BusImagesPage() {
             <>
                 <BusImageTable
                     data={paginatedImages}
-                    onDelete={handleDelete}
+                    onDelete={isBusCompany ? undefined : handleDelete}
                 />
                  {/* PAGINATION */}
                 {totalPages > 1 && (
@@ -155,12 +169,14 @@ export default function BusImagesPage() {
        
 
         {/* MODAL */}
-        <BusImageUploadModal
-          open={openModal}
-          onClose={() => setOpenModal(false)}
-          busId={selectedBusId}
-          onUploadSuccess={() => selectedBusId && fetchImages(selectedBusId)}
-        />
+        {!isBusCompany && (
+          <BusImageUploadModal
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+            busId={selectedBusId}
+            onUploadSuccess={() => selectedBusId && fetchImages(selectedBusId)}
+          />
+        )}
       </div>
     </section>
   );

@@ -4,8 +4,11 @@ import { Delete as DeleteIcon } from "@mui/icons-material";
 import seatService from "../../../../../services/admin/seatService";
 import Swal from "sweetalert2";
 import type { BusLayout } from "../../../../../types/seat";
+import { getStoredRole } from "../../../../../utils/authStorage";
 
 export default function SeatLayoutTemplatePage() {
+  const isBusCompany = getStoredRole() === "BUS_COMPANY";
+
   const [layoutName, setLayoutName] = useState("");
   const [rows, setRows] = useState(7);
   const [cols, setCols] = useState(5);
@@ -170,38 +173,40 @@ export default function SeatLayoutTemplatePage() {
                     <td className="px-4 py-3">{t.total_rows} x {t.total_columns}</td>
                     <td className="px-4 py-3">{t.floor_count} tầng</td>
                     <td className="px-4 py-3 text-right">
-                       <Tooltip title="Xóa mẫu">
-                         <IconButton 
-                           color="error"
-                           onClick={() => {
-                             Swal.fire({
-                               title: "Are you sure?",
-                               text: "You won't be able to revert this!",
-                               icon: "warning",
-                               showCancelButton: true,
-                               confirmButtonColor: "#3085d6",
-                               cancelButtonColor: "#d33",
-                               confirmButtonText: "Yes, delete it!"
-                             }).then(async (result) => {
-                               if (result.isConfirmed) {
-                                 const success = await seatService.deleteTemplate(t.id!);
-                                 if (success) {
-                                  triggerRefresh();
-                                  Swal.fire({
-                                    title: "Deleted!",
-                                    text: "Your file has been deleted.",
-                                    icon: "success"
-                                  });
-                                 } else {
-                                  Swal.fire("Lỗi!", "Không thể xóa mẫu này.", "error");
-                                 }
-                               }
-                             });
-                           }}
-                         >
-                           <DeleteIcon />
-                         </IconButton>
-                       </Tooltip>
+                      {!isBusCompany && (
+                        <Tooltip title="Xóa mẫu">
+                          <IconButton 
+                            color="error"
+                            onClick={() => {
+                              Swal.fire({
+                                title: "Are you sure?",
+                                text: "You won't be able to revert this!",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Yes, delete it!"
+                              }).then(async (result) => {
+                                if (result.isConfirmed) {
+                                  const success = await seatService.deleteTemplate(t.id!);
+                                  if (success) {
+                                    triggerRefresh();
+                                    Swal.fire({
+                                      title: "Deleted!",
+                                      text: "Your file has been deleted.",
+                                      icon: "success"
+                                    });
+                                  } else {
+                                    Swal.fire("Lỗi!", "Không thể xóa mẫu này.", "error");
+                                  }
+                                }
+                              });
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      )}
                     </td>
                   </tr>
                 ))

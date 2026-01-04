@@ -12,9 +12,13 @@ import { busCompanyService } from "../../../../services/busCompanyService";
 import { vehicleTypeService } from "../../../../services/vehicleTypeService";
 import { busImageService } from "../../../../services/admin/busImageService";
 import type { VehicleType } from "../../../../services/vehicleTypeService";
+import { getStoredBusCompanyId, getStoredRole } from "../../../../utils/authStorage";
 
 
 export default function BusesPage() {
+    const isBusCompany = getStoredRole() === "BUS_COMPANY";
+    const busCompanyId = getStoredBusCompanyId();
+
     const [buses, setBuses] = useState<Bus[]>([]);
     const [companies, setCompanies] = useState<BusCompany[]>([]);
     const [layouts, setLayouts] = useState<BusLayout[]>([]);
@@ -33,8 +37,26 @@ export default function BusesPage() {
                 vehicleTypeService.getAllVehicleTypes()
             ]);
 
-            setBuses(busesData || []);
-            setCompanies(companiesData || []);
+            const scopedBuses = isBusCompany
+                ? (busCompanyId
+                    ? (busesData || []).filter((bus) => {
+                        const companyId = bus.bus_company_id ?? bus.company_id;
+                        return companyId && String(companyId) === String(busCompanyId);
+                      })
+                    : [])
+                : (busesData || []);
+
+            const scopedCompanies = isBusCompany
+                ? (busCompanyId
+                    ? (companiesData || []).filter((company) => {
+                        const companyId = company.id ?? company.bus_company_id;
+                        return companyId && String(companyId) === String(busCompanyId);
+                      })
+                    : [])
+                : (companiesData || []);
+
+            setBuses(scopedBuses);
+            setCompanies(scopedCompanies);
             setLayouts(layoutsData || []);
             setVehicleTypes(typesData || []);
         } catch (error) {
@@ -68,17 +90,29 @@ export default function BusesPage() {
     });
 
     const handleCreate = () => {
+        if (isBusCompany) {
+            Swal.fire("Không có quyền", "Bạn không được phép tạo xe.", "error");
+            return;
+        }
         setSelectedBus(null);
         setOpenModal(true);
     };
 
     const handleEdit = (bus: Bus) => {
+        if (isBusCompany) {
+            Swal.fire("Không có quyền", "Bạn không được phép sửa xe.", "error");
+            return;
+        }
         // bus from table might have extra props, but we pass it as initialData which is compatible
         setSelectedBus(bus);
         setOpenModal(true);
     };
 
     const handleDelete = async (bus: Bus) => {
+        if (isBusCompany) {
+            Swal.fire("Không có quyền", "Bạn không được phép xóa xe.", "error");
+            return;
+        }
         const result = await Swal.fire({
             title: "Xác nhận xóa?",
             text: `Bạn có chắc muốn xóa xe "${bus.name}"?`,
@@ -103,6 +137,10 @@ export default function BusesPage() {
     };
 
     const handleSubmit = async (data: Partial<Bus>, thumbnailFile?: File) => {
+        if (isBusCompany) {
+            Swal.fire("Không có quyền", "Bạn không được phép lưu xe.", "error");
+            return;
+        }
         try {
             let uploadedThumbnail = "";
 
@@ -169,22 +207,24 @@ export default function BusesPage() {
                             </p>
                         </div>
 
-                        <button
-                            onClick={handleCreate}
-                            className="
-                flex items-center gap-1
-                bg-blue-600 text-white
-                px-4 py-2 text-sm
-                rounded-xl
-                border border-blue-700
-                hover:bg-blue-700
-                transition
-                hover:cursor-pointer
-              "
-                        >
-                            <AddIcon sx={{ fontSize: 18 }} />
-                            Thêm xe
-                        </button>
+                        {!isBusCompany && (
+                            <button
+                                onClick={handleCreate}
+                                className="
+                  flex items-center gap-1
+                  bg-blue-600 text-white
+                  px-4 py-2 text-sm
+                  rounded-xl
+                  border border-blue-700
+                  hover:bg-blue-700
+                  transition
+                  hover:cursor-pointer
+                "
+                            >
+                                <AddIcon sx={{ fontSize: 18 }} />
+                                Thêm xe
+                            </button>
+                        )}
                     </div>
 
                     {/* ===== SEARCH ===== */}
@@ -201,8 +241,8 @@ export default function BusesPage() {
                         <>
                             <BusTable
                                 data={paginatedData}
-                                onEdit={handleEdit}
-                                onDelete={handleDelete}
+                                onEdit={isBusCompany ? undefined : handleEdit}
+                                onDelete={isBusCompany ? undefined : handleDelete}
                             />
                              {/* PAGINATION */}
                             {totalPages > 1 && (

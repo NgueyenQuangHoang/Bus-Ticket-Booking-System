@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import TicketHeader from "./components/TicketHeader";
@@ -6,6 +6,9 @@ import TicketSearch from "./components/TicketSearch";
 import TicketTable, { type TicketUI } from "./components/TicketTable";
 import TicketDetailModal from "./components/TicketDetailModal";
 import Swal from "sweetalert2";
+import { scheduleService } from "../../../services/scheduleService";
+import busService from "../../../services/admin/busService";
+import { getStoredBusCompanyId, getStoredRole } from "../../../utils/authStorage";
 
 // --- MOCK DATA ---
 const CUSTOMERS = [
@@ -37,20 +40,92 @@ const generateMockData = (count: number): TicketUI[] => {
 const INITIAL_DATA = generateMockData(100);
 
 export default function TicketsPage() {
+  const isBusCompany = getStoredRole() === "BUS_COMPANY";
+  const busCompanyId = getStoredBusCompanyId();
+
   const [data, setData] = useState<TicketUI[]>(INITIAL_DATA);
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [selectedTicket, setSelectedTicket] = useState<TicketUI | null>(null);
+  const [companyFilterReady, setCompanyFilterReady] = useState(
+    !isBusCompany || !busCompanyId
+  );
+  const [scheduleBusMap, setScheduleBusMap] = useState<Record<string, string>>({});
+  const [busCompanyMap, setBusCompanyMap] = useState<Record<string, string>>({});
   const ROWS_PER_PAGE = 10;
+
+  useEffect(() => {
+    if (!isBusCompany || !busCompanyId) {
+      setCompanyFilterReady(true);
+      return;
+    }
+    let isMounted = true;
+    setCompanyFilterReady(false);
+    Promise.all([scheduleService.getAllSchedules(), busService.getAllBuses()])
+      .then(([schedules, buses]) => {
+        const nextScheduleBusMap: Record<string, string> = {};
+        (schedules || []).forEach((schedule: any) => {
+          const scheduleId = schedule?.id ?? schedule?.schedule_id;
+          if (scheduleId && schedule?.bus_id) {
+            nextScheduleBusMap[String(scheduleId)] = String(schedule.bus_id);
+          }
+        });
+
+        const nextBusCompanyMap: Record<string, string> = {};
+        (buses || []).forEach((bus: any) => {
+          const busId = bus?.id ?? bus?.bus_id;
+          const companyId = bus?.bus_company_id ?? bus?.company_id;
+          if (busId && companyId) {
+            nextBusCompanyMap[String(busId)] = String(companyId);
+          }
+        });
+
+        if (isMounted) {
+          setScheduleBusMap(nextScheduleBusMap);
+          setBusCompanyMap(nextBusCompanyMap);
+          setCompanyFilterReady(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to build ticket scope filters", error);
+        if (isMounted) {
+          setCompanyFilterReady(true);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isBusCompany, busCompanyId]);
+
+  const scopedData = useMemo(() => {
+    if (isBusCompany) {
+      if (!busCompanyId || !companyFilterReady) return [];
+      return data.filter((item) => {
+        const busId = scheduleBusMap[String(item.schedule_id)];
+        if (!busId) return false;
+        const companyId = busCompanyMap[busId];
+        return companyId && String(companyId) === String(busCompanyId);
+      });
+    }
+    return data;
+  }, [
+    data,
+    isBusCompany,
+    busCompanyId,
+    companyFilterReady,
+    scheduleBusMap,
+    busCompanyMap,
+  ]);
 
   // Filter
   const filteredData = useMemo(() => {
-    return data.filter(item => 
+    return scopedData.filter(item => 
       (item.customer_name && item.customer_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
       item.ticket_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
       String(item.ticket_id).includes(searchTerm)
     );
-  }, [data, searchTerm]);
+  }, [scopedData, searchTerm]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / ROWS_PER_PAGE);
@@ -91,6 +166,14 @@ export default function TicketsPage() {
       }
     });
   };
+
+  if (isBusCompany && busCompanyId && !companyFilterReady) {
+    return (
+      <div className="flex items-center justify-center min-h-[320px] text-slate-500">
+        Đang tải dữ liệu...
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

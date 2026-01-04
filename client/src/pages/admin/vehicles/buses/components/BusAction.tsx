@@ -12,18 +12,23 @@ export default function BusAction<T>({
   onEdit,
   onDelete,
 }: Props<T>) {
+  if (!onEdit && !onDelete) return null;
   return (
     <div className="p-3 flex justify-center gap-3">
-      <EditIcon
-        onClick={() => onEdit?.(item)}
-        className="text-green-600 cursor-pointer hover:scale-110 transition"
-        sx={{ fontSize: 20 }}
-      />
-      <DeleteIcon
-        onClick={() => onDelete?.(item)}
-        className="text-red-500 cursor-pointer hover:scale-110 transition"
-        sx={{ fontSize: 20 }}
-      />
+      {onEdit && (
+        <EditIcon
+          onClick={() => onEdit(item)}
+          className="text-green-600 cursor-pointer hover:scale-110 transition"
+          sx={{ fontSize: 20 }}
+        />
+      )}
+      {onDelete && (
+        <DeleteIcon
+          onClick={() => onDelete(item)}
+          className="text-red-500 cursor-pointer hover:scale-110 transition"
+          sx={{ fontSize: 20 }}
+        />
+      )}
     </div>
   );
 }

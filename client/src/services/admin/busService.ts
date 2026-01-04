@@ -12,6 +12,16 @@ const busService = {
     }
   },
 
+  getBusesByCompanyId: async (companyId: string): Promise<Bus[]> => {
+    try {
+      const response = await api.get(`/buses?bus_company_id=${companyId}`);
+      return response as unknown as Bus[];
+    } catch (error) {
+      console.error(`Error fetching buses for company ${companyId}:`, error);
+      return [];
+    }
+  },
+
   getAllBusLayouts: async (): Promise<import('../../types/bus').BusLayout[]> => {
     try {
       const response = await api.get('/bus_layouts');

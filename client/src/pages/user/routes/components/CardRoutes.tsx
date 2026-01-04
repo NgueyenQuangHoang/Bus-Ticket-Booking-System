@@ -1,5 +1,8 @@
-import logo1 from "../../../../assets/td2.png";
+import { useNavigate } from "react-router-dom";
 import type { routesInfomation } from "../RoutesPage";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { useEffect } from "react";
+import { fetchStations } from "../../../../slices/stationSlice";
 
 
 interface PropInterface {
@@ -9,7 +12,17 @@ interface PropInterface {
 }
 
 export default function CardRoutes({ listRoutes, currentPage, itemPerPage }: PropInterface) {
-
+    const {stations} = useAppSelector(state => state.station)
+    const dispatch = useAppDispatch()
+    const navigate=useNavigate()
+    useEffect(() => {
+        dispatch(fetchStations())
+    }, [dispatch])
+    const stationIMGMapping = stations.reduce((acc, item) => {
+        acc[item.id] = item.image
+        return acc
+    }, {} as {[key: string] : string | undefined})
+    
     return (
         <div
             className="
@@ -35,9 +48,10 @@ export default function CardRoutes({ listRoutes, currentPage, itemPerPage }: Pro
     hover:-translate-y-1 hover:shadow-xl
     overflow-hidden cursor-pointer
   "
+                            onClick={() => { navigate('/detailRoute/' + item.route_id)}}
                         >
                             <img
-                                src={logo1}
+                                src={stationIMGMapping[item.departure_station_id]}
                                 alt="Nhà xe Thanh Nhung"
                                 className="
       w-full object-cover
@@ -54,9 +68,9 @@ export default function CardRoutes({ listRoutes, currentPage, itemPerPage }: Pro
 
                                 <div className="flex items-start gap-2 text-xs [@media(min-width:391px)]:text-sm text-gray-600">
 
-                                    <p>
+                                    {/* <p>
                                         {item.description}
-                                    </p>
+                                    </p> */}
                                 </div>
                             </div>
 

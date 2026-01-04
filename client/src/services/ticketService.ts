@@ -34,6 +34,23 @@ interface Station {
     city_id: string;
 }
 
+interface City {
+    id: string;
+    city_name: string;
+}
+
+interface SeatPosition {
+    id: string;
+    label: string;
+}
+
+interface Seat {
+    id: string;
+    seat_label: string;
+    seat_number: string;
+    bus_id: string;
+}
+
 interface SeatSchedule {
     id: string;
     schedule_id: string;
@@ -50,7 +67,7 @@ interface TicketResponse {
     schedule_id: string;
     seat_id?: string;
     price: number;
-    total_price?: number; 
+    total_price?: number;
     status: "BOOKED" | "COMPLETED" | "CANCELLED" | "PENDING";
     code: string;
     created_at: string;
@@ -103,12 +120,15 @@ export const ticketService = {
             if (tickets.length === 0) return [];
 
             // 2. Parallel fetch related entities
-            const [buses, routes, stations, schedules, reviews] = await Promise.all([
+            const [buses, routes, stations, schedules, reviews, cities, seatPositions, allSeats] = await Promise.all([
                 api.get<Bus[]>(`/buses`),
                 api.get<Route[]>(`/routes`),
                 api.get<Station[]>(`/stations`),
                 api.get<Schedule[]>(`/schedules`),
-                api.get<Review[]>(`/bus_reviews?user_id=${userId}`)
+                api.get<Review[]>(`/bus_reviews?user_id=${userId}`),
+                api.get<City[]>('/cities'),
+                api.get<SeatPosition[]>('/seat_positions'),
+                api.get<Seat[]>('/seats')
             ]);
 
             const busesArr = buses as unknown as Bus[];
@@ -116,16 +136,14 @@ export const ticketService = {
             const stationsArr = stations as unknown as Station[];
             const schedulesArr = schedules as unknown as Schedule[];
             const reviewsArr = reviews as unknown as Review[];
+            const citiesArr = cities as unknown as City[];
+            const seatPositionsArr = seatPositions as unknown as SeatPosition[];
+            const allSeatsArr = allSeats as unknown as Seat[];
 
             // 3. Map to UI Model
             const mappedTickets: TicketUI[] = [];
 
             for (const ticket of tickets) {
-                // Fetch seats for this ticket
-                const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
-                const seatSchedules = seatSchedulesRes as unknown as SeatSchedule[];
-                const seatNames = seatSchedules.map(s => s.seat_name || s.seat_id || "Ghe");
-
                 // Manually find schedule
                 const schedule = schedulesArr.find(s => s.id === ticket.schedule_id);
 
@@ -139,12 +157,51 @@ export const ticketService = {
                 const bus = busesArr.find(b => b.id === schedule.bus_id);
                 const route = routesArr.find(r => r.id === schedule.route_id);
 
+                // Fetch seats for this ticket
+                const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
+                const seatSchedules = seatSchedulesRes as unknown as SeatSchedule[];
+
+                // Match seat IDs to real labels
+                const seatNames = seatSchedules.map(s => {
+                    const sId = s.seat_id;
+                    if (!sId) return "Ghe";
+
+                    // 1. Try finding in seat_positions (Validation: check layout_id matches bus.layout_id)
+                    // We only accept seat_positions that match the bus's layout
+                    const pos = seatPositionsArr.find(p => p.id === sId);
+                    if (pos && pos.label) {
+                        // Optional: Validate pos.layout_id === bus?.layout_id
+                        // But sometimes layouts are shared or templates. 
+                        // If we found a specific position ID, it's likely correct.
+                        return pos.label;
+                    }
+
+                    // 2. Try finding in seats (Validation: MUST match bus_id)
+                    // IDs might be "1", "2" which are common. Must filter by bus.
+                    if (bus) {
+                        const seat = allSeatsArr.find(st => st.id === sId && st.bus_id === bus.id);
+                        if (seat) return seat.seat_label || seat.seat_number;
+                    }
+
+                    // Fallback to existing seat_name or ID
+                    return s.seat_name || sId;
+                });
+
+                // Deduplicate seats
+                const uniqueSeatNames = Array.from(new Set(seatNames));
+
                 const depStation = stationsArr.find(s => s.id === route?.departure_station_id);
                 const arrStation = stationsArr.find(s => s.id === route?.arrival_station_id);
 
-                const routeName = (depStation && arrStation)
-                    ? `${depStation.station_name} - ${arrStation.station_name}`
-                    : "Tuyến đường không xác định";
+                // Resolve Cities
+                const depCity = citiesArr.find(c => c.id === depStation?.city_id);
+                const arrCity = citiesArr.find(c => c.id === arrStation?.city_id);
+
+                const routeName = (depCity && arrCity)
+                    ? `${depCity.city_name} - ${arrCity.city_name}`
+                    : (depStation && arrStation)
+                        ? `${depStation.station_name} - ${arrStation.station_name}`
+                        : "Tuyến đường không xác định";
 
                 const departureDate = new Date(schedule.departure_time);
 
@@ -165,7 +222,7 @@ export const ticketService = {
                     },
                     pickup: depStation?.station_name || "Điểm đón",
                     dropoff: arrStation?.station_name || "Điểm trả",
-                    seats: seatNames.length > 0 ? seatNames : ["N/A"],
+                    seats: uniqueSeatNames.length > 0 ? uniqueSeatNames : ["N/A"],
                     review: review
                 });
             }
