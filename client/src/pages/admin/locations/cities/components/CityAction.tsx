@@ -1,9 +1,11 @@
 import { Delete, Edit, Close, Business, Public, Description, Save } from '@mui/icons-material';
 import { IconButton, Modal, Box, Typography, Divider, TextField, MenuItem, Button } from '@mui/material';
 import Swal from 'sweetalert2';
-import { useState, type ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import type { City } from '../../../../../types';
 import ReactQuill from 'react-quill-new';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks';
+import { fetchStations } from '../../../../../slices/stationSlice';
 
 
 const modalStyle = {
@@ -20,16 +22,15 @@ const modalStyle = {
 };
 
 interface PropType {
-    onDelete: (id: string) => void
+    onDelete: (city: City) => void
     updateCitiesOnFix: (city: City) => void
     city: City
 }
 
-export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropType) {    
-    const {id} = city
+export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropType) {  
+    const {stations} = useAppSelector(state => state.station)  
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState<City>(city);
-    
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -43,9 +44,17 @@ export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropT
     };
     
     const handleDeleteClick = () => {
+        const stationsDelete = stations.reduce((acc, item) => {
+            if(item.city_id == city.id){
+                acc+= item.station_name+' ,'
+            }else{
+                acc+=''
+            }
+            return acc
+        }, '')
         Swal.fire({
             title: "Xác nhận xóa?",
-            text: `Bạn có chắc chắn muốn xóa thành phố ${formData.city_name}?`,
+            text: `Bạn có chắc chắn muốn xóa thành phố ${formData.city_name} và danh sách thành phố ${stationsDelete} chứ cùng các tuyến đường liên quan tới bến xe này chứ?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -54,10 +63,10 @@ export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropT
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                onDelete(id)
+                onDelete(city)
                 Swal.fire(
                     "Đã xóa!",
-                    `Thành phố ${formData.city_name} đã được xóa.`,
+                    `Thành phố ${formData.city_name} và các nhà xe cùng với các tuyến đường liên quan đã được xoá.`,
                     "success"
                 );
             }
@@ -75,7 +84,10 @@ export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropT
         });
         handleClose();
     };
-    
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(fetchStations())
+    }, [dispatch])
 
     return (
         <>
