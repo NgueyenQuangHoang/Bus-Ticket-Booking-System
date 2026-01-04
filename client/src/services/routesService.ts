@@ -41,7 +41,9 @@ export const routesService = {
                     route_id: item.id,
                     departure_station_name: departure_name ? departure_name : '',
                     arrival_station_name: arrival_name ? arrival_name : '',
-                    description: item.description
+                    description: item.description,
+                    departure_station_id: item.departure_station_id,
+                    arrival_station_id: item.arrival_station_id
                 }
             })
 
@@ -85,5 +87,9 @@ export const routesService = {
             console.log(error);
             return error as Route
         }
+    },
+    getParticularRoute: async (id: string): Promise<Route> => {
+        const response : Route= await api.get('routes/'+id)
+        return response
     }
 }
