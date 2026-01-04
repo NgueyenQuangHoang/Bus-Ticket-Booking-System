@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useEffect ,useState } from 'react'
 import CardBusStation from './components/CardBusStation';
 import PaginationStation from './components/PaginationStation';
-import { stationService } from '../../../services/stationService';
-import type { Station } from '../../../types';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { fetchStations } from '../../../slices/stationSlice';
 
 
 export default function BusStationPage() {
-    const responseGetAllStation = stationService.getAllStations()
-    const [dataStations, setDataStation] = useState<Station[]>([])
+    const {stations: dataStations} = useAppSelector(state => state.station)
+    const dispatch = useAppDispatch()
     const itemPerPage = 8
     const totalPage = Math.ceil(dataStations.length / itemPerPage)
     const [currentPage, setCurrentPage] = useState(1)
@@ -24,16 +24,12 @@ export default function BusStationPage() {
     const clickPage = (page: number) => {
         setCurrentPage(page)
     }
-    responseGetAllStation.then((data) => {
-        if (data) {
-            setDataStation(data)
-        }
-    })
+    useEffect(() => {
+        dispatch(fetchStations())
+    }, [dispatch])
 
     return (
-
         <section
-
             className=" max-w-7xl mx-auto py-8 px-3 [@media(min-width:391px)]:px-4 [@media(min-width:769px)]:px-0">
             {/* Title */}
             <div className="flex items-center justify-center gap-3 mb-6">
@@ -53,7 +49,6 @@ export default function BusStationPage() {
                 prevPage={prevPage}
                 totalPage={totalPage}
             />
-
             <p
                 className="
     text-left text-gray-500 mt-4

@@ -1,10 +1,12 @@
 import { Add, Close, Business, Image as ImageIcon, Wallpaper, Description, Map, Save, RestartAlt, LocationOn } from '@mui/icons-material'
 import { Box, Button, Divider, IconButton, MenuItem, Modal, TextField, Typography } from '@mui/material'
-import { useState, type ChangeEvent, useMemo } from 'react';
+import { useState, type ChangeEvent, useMemo, useEffect } from 'react';
 import type { Station } from '../../../../../types';
 import { v4 as uuidv4 } from "uuid";
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import { useAppDispatch, useAppSelector } from '../../../../../hooks';
+import { fetchCities } from '../../../../../slices/citySlice';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -47,6 +49,7 @@ export default function StationFormModal({ onAdd }: PropType) {
             ['clean']
         ],
     }), []);
+    const {cities } = useAppSelector(state => state.city)
 
     const [formData, setFormData] = useState<Station>({
         station_name: '',
@@ -118,6 +121,8 @@ export default function StationFormModal({ onAdd }: PropType) {
             handleClose();
         }
     };
+    const dispatch = useAppDispatch()
+    useEffect(() => {dispatch(fetchCities())}, [dispatch])
 
     return (
         <div className='flex justify-between items-center mb-6'>
@@ -172,11 +177,15 @@ export default function StationFormModal({ onAdd }: PropType) {
                                 value={formData.city_id} onChange={handleChange}
                                 error={!!errors.city_id} helperText={errors.city_id}
                             >
-                                <MenuItem value={0}>Chọn thành phố</MenuItem>
-                                <MenuItem value={1}>Hà Nội</MenuItem>
+                                {
+                                    cities.map(item => (
+                                        <MenuItem value={item.id}>{item.city_name}</MenuItem>
+                                    ))
+                                }
+                                {/* <MenuItem value={0}>Chọn thành phố</MenuItem>
                                 <MenuItem value={2}>TP. Hồ Chí Minh</MenuItem>
                                 <MenuItem value={3}>Đà Nẵng</MenuItem>
-                                <MenuItem value={4}>Hải Phòng</MenuItem>
+                                <MenuItem value={4}>Hải Phòng</MenuItem> */}
                             </TextField>
                         </div>
 
