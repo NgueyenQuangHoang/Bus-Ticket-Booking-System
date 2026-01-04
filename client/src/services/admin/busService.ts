@@ -70,6 +70,22 @@ const busService = {
       console.error('Error deleting bus:', error);
       throw error;
     }
+  },
+
+  getBusSeatStats: async (busId: string): Promise<{ total: number; available: number }> => {
+    try {
+      // Query physical seats for this bus
+      const response = await api.get(`/seats?bus_id=${busId}`);
+      const seats = response as unknown as any[]; // Using any temporarily as imported Seat type might be tricky path-wise here without checking imports
+      
+      const total = seats.length;
+      const available = seats.filter(s => s.is_available_for_booking).length;
+      
+      return { total, available };
+    } catch (error) {
+      console.error(`Error fetching seat stats for bus ${busId}:`, error);
+      return { total: 0, available: 0 };
+    }
   }
 };
 
