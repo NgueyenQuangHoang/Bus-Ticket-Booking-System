@@ -1,13 +1,34 @@
 import { Close } from '@mui/icons-material';
 import type { User } from '../../../../types';
+import { useState, useEffect } from 'react';
+import { busCompanyService } from '../../../../services/busCompanyService';
 
 interface ViewUserModalProps {
   isOpen: boolean;
   onClose: () => void;
   user: User | null;
+  roleName?: string;
 }
 
-export default function ViewUserModal({ isOpen, onClose, user }: ViewUserModalProps) {
+export default function ViewUserModal({ isOpen, onClose, user, roleName }: ViewUserModalProps) {
+  const [busCompanyName, setBusCompanyName] = useState<string>('');
+
+  useEffect(() => {
+    const fetchBusCompany = async () => {
+      if (user?.bus_company_id) {
+        try {
+          const company = await busCompanyService.getBusCompanyById(user.bus_company_id);
+          if (company) setBusCompanyName(company.company_name);
+        } catch (error) {
+          console.error("Failed to fetch bus company", error);
+        }
+      } else {
+        setBusCompanyName('');
+      }
+    };
+    fetchBusCompany();
+  }, [user]);
+
   if (!isOpen || !user) return null;
 
   return (
@@ -22,10 +43,6 @@ export default function ViewUserModal({ isOpen, onClose, user }: ViewUserModalPr
 
         <div className="p-6 space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-500 mb-1">ID</label>
-              <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.id}</div>
-            </div>
             <div>
               <label className="block text-sm font-medium text-slate-500 mb-1">User ID</label>
               <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.id}</div>
@@ -53,9 +70,27 @@ export default function ViewUserModal({ isOpen, onClose, user }: ViewUserModalPr
             <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.phone}</div>
           </div>
 
+
           <div>
             <label className="block text-sm font-medium text-slate-500 mb-1">Mật khẩu</label>
             <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.password}</div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-500 mb-1">Vai trò</label>
+              <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">
+                {roleName || 'N/A'}
+              </div>
+            </div>
+            {busCompanyName && (
+              <div>
+                <label className="block text-sm font-medium text-slate-500 mb-1">Nhà xe</label>
+                <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">
+                  {busCompanyName}
+                </div>
+              </div>
+            )}
           </div>
 
           <div>

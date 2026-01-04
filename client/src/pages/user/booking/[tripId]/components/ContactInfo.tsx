@@ -12,6 +12,7 @@ import { green } from "@mui/material/colors";
 import AreaCodeSelect from "./AreaCodeSelect";
 import ContactLoginBanner from "./ContactLoginBanner";
 import type { User } from "../../../../../types";
+import { useEffect } from "react";
 
 interface ContactInfoProps {
   onValidationChange?: (isValid: boolean) => void;
@@ -19,9 +20,10 @@ interface ContactInfoProps {
   changeLoginState: (login: boolean) => void;
   setUser: (user: User) => void;
   notify: (notifycation: string, status: boolean) => void;
+  user?: User | null;
 }
 
-export default function ContactInfo({ onValidationChange, onDataChange, changeLoginState, setUser, notify }: ContactInfoProps) {
+export default function ContactInfo({ onValidationChange, onDataChange, changeLoginState, setUser, notify, user }: ContactInfoProps) {
   const {
     formData,
     errors,
@@ -30,7 +32,20 @@ export default function ContactInfo({ onValidationChange, onDataChange, changeLo
     handleBlur,
     handleCountryCodeChange,
     validate,
+    setFormData,
   } = useContactForm(onValidationChange, onDataChange);
+
+  // Auto-fill when user login
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: user.first_name + " " + user.last_name,
+        phone: user.phone || "",
+        email: user.email || ""
+      }));
+    }
+  }, [user, setFormData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +57,7 @@ export default function ContactInfo({ onValidationChange, onDataChange, changeLo
   return (
     <div className="w-full bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       {/* 1. Phần Đăng nhập */}
-      <ContactLoginBanner changeLoginState={changeLoginState} setUser={setUser} notify={notify} />
+      {!user && <ContactLoginBanner changeLoginState={changeLoginState} setUser={setUser} notify={notify} />}
 
       {/* 2. Tiêu đề */}
       <h2 className="text-xl font-bold text-gray-900 mb-6">

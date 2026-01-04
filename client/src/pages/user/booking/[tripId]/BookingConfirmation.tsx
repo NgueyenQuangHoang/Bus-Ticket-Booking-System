@@ -8,7 +8,7 @@
  *  - Truyền dữ liệu chuyến đi (`tripData`) xuống các component con.
  */
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Stepper, Step, StepLabel } from "@mui/material";
 import ContactInfo from "./components/ContactInfo";
 import TripDetails from "./components/TripDetails";
@@ -49,8 +49,14 @@ export default function BookingConfirmation() {
     }
   };
 
-  const setUser = (user: User) => {
-    console.log("User set:", user);
+  const [user, setUserState] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const setUser = (userData: User) => {
+    console.log("User set:", userData);
+    setUserState(userData);
   };
   const [isContactValid, setIsContactValid] = useState(false);
   const [contactData, setContactData] = useState<ContactFormData>({
@@ -64,7 +70,29 @@ export default function BookingConfirmation() {
 
   const location = useLocation();
   const tripData = location.state?.trip as TripData || SHARED_TRIP;
-  // const selectedSeats = location.state?.selectedSeats || [];
+  const selectedSeats = useMemo(() => location.state?.selectedSeats || [], [location.state]);
+
+  // Session ID for seat holding
+  const [sessionId] = useState(() => {
+      let id = sessionStorage.getItem("booking_session_id");
+      if (!id) {
+          id = `sess_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          sessionStorage.setItem("booking_session_id", id);
+      }
+      return id;
+  });
+
+  useEffect(() => {
+     if (tripData.id && selectedSeats.length > 0) {
+        bookingService.holdSeats(tripData.id, selectedSeats, sessionId)
+          .then(success => {
+             if (!success) {
+               toast.error("Ghế bạn chọn đã hết hạn hoặc bị người khác đặt.");
+               navigate(-1);
+             }
+          });
+     }
+  }, [tripData.id, selectedSeats, sessionId, navigate]);
 
   // Handlers
   const handleContinue = () => {
@@ -88,10 +116,11 @@ export default function BookingConfirmation() {
         totalPrice: tripData.totalPrice,
         status: 'CONFIRMED',
         createdAt: new Date().toISOString(),
-        paymentMethod: 'QR_PAYMENT'
+        paymentMethod: 'QR_PAYMENT',
+        userId: user?.id
       };
 
-      const result = await bookingService.createBooking(bookingData);
+      const result = await bookingService.createBooking(bookingData, selectedSeats);
 
       if (result) {
         notify("Thanh toán và lưu vé thành công!", true);
@@ -159,6 +188,7 @@ export default function BookingConfirmation() {
                   notify={notify}
                   changeLoginState={changeLoginState}
                   setUser={setUser}
+                  user={user}
                 />
               </section>
             </div>

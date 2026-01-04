@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Close } from '@mui/icons-material';
 import { validateUserForm, type UserFormData } from './validation';
-import type { User } from '../../../../types';
+import type { User, BusCompany } from '../../../../types';
 import { v4 as uuidv4 } from "uuid";
 import { useAppSelector } from '../../../../hooks';
+import { busCompanyService } from '../../../../services/busCompanyService';
 
 interface AddUserModalProps {
   isOpen: boolean;
@@ -22,10 +23,24 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
     phone: '',
     password: '',
     status: 'ACTIVE',
+    bus_company_id: ''
   });
   const {roles} = useAppSelector(state => state.user)
   const [errors, setErrors] = useState<Partial<Record<keyof UserFormData, string>>>({});
   const [role_id, setRole] = useState<string>('1')
+  const [busCompanies, setBusCompanies] = useState<BusCompany[]>([]);
+
+  useEffect(() => {
+    const fetchBusCompanies = async () => {
+      try {
+        const res = await busCompanyService.getAllBusCompanies();
+        if (res) setBusCompanies(res);
+      } catch (error) {
+        console.error("Failed to fetch bus companies", error);
+      }
+    };
+    fetchBusCompanies();
+  }, []);
   useEffect(() => {
     if (user) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -35,8 +50,10 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
         email: user.email,
         phone: user.phone || '',
         password: '',
-        status: user.status || 'ACTIVE'
+        status: user.status || 'ACTIVE',
+        bus_company_id: user.bus_company_id || ''
       });
+      setRole((user as any).role_id || '1'); // Assuming we have role_id available or passed, if not default to '1'. Ideally we should get role from props or user object.
     } else {
       setFormData({
         first_name: '',
@@ -44,8 +61,10 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
         email: '',
         phone: '',
         password: '',
-        status: 'ACTIVE'
+        status: 'ACTIVE',
+        bus_company_id: ''
       });
+      setRole('2'); // Default to USER (ID: 2) when adding new
     }
     setErrors({});
   }, [user, isOpen]);
@@ -54,7 +73,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(user);
+
     
     // Validate
     // If editing, password is optional
@@ -68,6 +87,11 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
       return;
     }
 
+    if (role_id === '3' && !formData.bus_company_id) {
+        setErrors(prev => ({...prev, bus_company_id: "Vui lòng chọn nhà xe"}));
+        return;
+    }
+
     // Split fullName to first/last
     const lastName = formData.last_name
     const firstName = formData.first_name
@@ -79,6 +103,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
       email: formData.email,
       phone: formData.phone,
       password: formData.password,
+      bus_company_id: role_id === '3' ? formData.bus_company_id : undefined
     };
 
     if (user) {
@@ -95,6 +120,7 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
         email: formData.email,
         phone: formData.phone || '',
         password: formData.password ? formData.password : user.password,
+        bus_company_id: role_id === '3' ? formData.bus_company_id : undefined,
         updated_at: (new Date()).toString()
       }
       
@@ -217,8 +243,33 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
                   <option value={item.id}>{item.role_name}</option>
                 ))}
             </select>
-
           </div>
+
+          {/* Bus Company Selection - Show only if Role is BUS_COMPANY (ID: 3) */}
+          {role_id === '3' && (
+            <div className="animate-fade-in-down">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Chọn nhà xe
+              </label>
+              <select
+                className={`w-full px-3 py-2 border rounded-lg focus:ring-2 outline-none transition-all ${
+                  errors.bus_company_id
+                    ? 'border-red-500 focus:ring-red-200 focus:border-red-500'
+                    : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'
+                }`}
+                value={formData.bus_company_id}
+                onChange={(e) => handleChange('bus_company_id', e.target.value)}
+              >
+                <option value="">-- Chọn nhà xe --</option>
+                {busCompanies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.company_name}
+                  </option>
+                ))}
+              </select>
+               {errors.bus_company_id && <p className="mt-1 text-xs text-red-500">{errors.bus_company_id}</p>}
+            </div>
+          )}
 
           <div className="flex items-center gap-3 pt-4">
             <button

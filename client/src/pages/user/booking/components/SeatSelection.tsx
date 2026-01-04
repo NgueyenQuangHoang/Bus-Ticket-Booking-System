@@ -293,7 +293,7 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
            const pos = floorPositions.find(p => p.row_index === r + 1 && p.column_index === c + 1);
            if (pos && !pos.is_aisle && !pos.is_driver_seat && !pos.is_door && !pos.is_stair) {
              const isBooked = bookedSeats.some(s => 
-               String(s.seat_id) === String(pos.id) && s.status === 'BOOKED'
+               String(s.seat_id) === String(pos.id) && (s.status === 'BOOKED' || s.status === 'HOLD')
              );
              grid.push({
                id: String(pos.id || pos.position_id),

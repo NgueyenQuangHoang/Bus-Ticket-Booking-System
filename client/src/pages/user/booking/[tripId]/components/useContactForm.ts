@@ -148,5 +148,6 @@ export function useContactForm(
         handleBlur,
         handleCountryCodeChange,
         validate,
+        setFormData,
     };
 }
