@@ -778,6 +778,17 @@
       "location": "192 Nam Kỳ Khởi Nghĩa, Phường 3",
       "created_at": "2026-01-01",
       "updated_at": "2026-01-01"
+    },
+    {
+      "id": "8119b259-ddec-4572-bcfa-2f7b6fb7fa16",
+      "station_name": "Bến xe đông hải",
+      "city_id": 7,
+      "image": "https//",
+      "wallpaper": "alkjsdf",
+      "description": "<p><strong>mô&nbsp;tả&nbsp;gì&nbsp;đâu</strong></p>",
+      "location": "phường xuân thuỷ tp vũng tàu",
+      "created_at": "2026-01-04T03:56:36.362Z",
+      "updated_at": "2026-01-04T03:56:36.362Z"
     }
   ],
   "routes": [
@@ -865,25 +876,37 @@
       "updated_at": "2025-01-01"
     },
     {
-      "id": "9",
-      "departure_station_id": "5",
-      "arrival_station_id": "1",
-      "distance": 800,
-      "duration": 720,
-      "base_price": 250000,
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "id": "9d29c4f1-771c-4a6f-84e0-5eacdf5cda5b",
+      "departure_station_id": "1",
+      "arrival_station_id": "3",
+      "base_price": 199000,
+      "duration": 100,
+      "distance": 200,
+      "description": "<p></p>",
+      "created_at": "Sun Jan 04 2026 10:25:10 GMT+0700 (GMT+07:00)",
+      "updated_at": "Sun Jan 04 2026 10:25:10 GMT+0700 (GMT+07:00)"
     },
     {
-      "id": "10",
-      "departure_station_id": "8",
-      "arrival_station_id": "3",
+      "id": "b2c134b7-e8eb-47b4-a6da-c9bca97c3260",
+      "departure_station_id": "3",
+      "arrival_station_id": "1",
+      "base_price": 120,
+      "duration": 1900,
       "distance": 120,
-      "duration": 150,
+      "description": "<p>chang&nbsp;co&nbsp;gi&nbsp;dac&nbsp;biet</p>",
+      "created_at": "Sun Jan 04 2026 10:26:46 GMT+0700 (GMT+07:00)",
+      "updated_at": "Sun Jan 04 2026 10:26:46 GMT+0700 (GMT+07:00)"
+    },
+    {
+      "id": "de827ac1-ce97-43fc-a973-e1c578320893",
+      "departure_station_id": "2",
+      "arrival_station_id": "3",
       "base_price": 100000,
-      "created_at": "2026-01-01",
-      "updated_at": "2026-01-01",
-      "description": "Tuyến xe từ Bà Rịa Vũng Tàu đến Hồ Chí Minh, thời gian di chuyển khoảng 2.5 giờ"
+      "duration": 200,
+      "distance": 1500,
+      "description": "<p>AKSDFLKKAJSF</p>",
+      "created_at": "Sun Jan 04 2026 10:29:54 GMT+0700 (GMT+07:00)",
+      "updated_at": "Sun Jan 04 2026 10:29:54 GMT+0700 (GMT+07:00)"
     }
   ],
   "bus_companies": [

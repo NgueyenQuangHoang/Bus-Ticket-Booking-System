@@ -4,10 +4,12 @@ import PaginationRoutes from "./components/PaginationRoutes";
 import { routesService } from "../../../services/routesService";
 
 export type routesInfomation = {
-  route_id: number | string;
+  route_id: string;
   departure_station_name: string;
   arrival_station_name: string;
   description: string;
+  departure_station_id: string;
+  arrival_station_id: string;
 }
 
 
@@ -34,7 +36,7 @@ export default function RoutesPage() {
 
     routesService.getInformationRoutes().then((res) => {
       if (res) {
-        setInforRoutes(() => [...res])
+        setInforRoutes(res)
       }
     })
   }, [])

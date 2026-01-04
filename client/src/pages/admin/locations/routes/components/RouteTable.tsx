@@ -8,7 +8,7 @@ import type { Route } from '../../../../../types';
 
 interface PropType {
     routes: Route[],
-    stationMapping: {[key: string]: string}
+    stationMapping: {[key: string]: string},
 }
 
 export default function RouteTable({routes, stationMapping: stations} : PropType) {

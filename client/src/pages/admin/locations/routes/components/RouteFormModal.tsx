@@ -24,10 +24,10 @@ const modalStyle = {
 
 interface PropType {
     stationMapping: {[key: string] : string},
-
+    length: number
 }
 
-export default function RouteFormModal({stationMapping: stations}: PropType) {
+export default function RouteFormModal({stationMapping: stations, length}: PropType) {
 
     const modules = useMemo(() => ({
         toolbar: [
@@ -91,7 +91,7 @@ const dispatch = useAppDispatch()
         <div className='flex justify-between items-center mb-6'>
             <div>
                 <h1 className="text-2xl font-bold text-gray-800">Quản lý tuyến đường</h1>
-                <p className="text-gray-500 text-sm">Hiện có 5 tuyến đường</p>
+                <p className="text-gray-500 text-sm">Hiện có {length} tuyến đường</p>
             </div>
 
             <Button

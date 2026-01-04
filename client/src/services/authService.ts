@@ -63,23 +63,23 @@ export const authService = {
         return false
     },
 
-    getRoleUser: async (id: number | string): Promise<(UserRole & { role_name: string })[]> => {
-        try {
-            const userRoles: UserRole[] = await api.get(`/user_role?user_id=${id}`)
-            const roles: Role[] = await api.get('/roles')
+    // getRoleUser: async (id: number | string): Promise<(UserRole & { role_name: string })[]> => {
+    //     try {
+    //         const userRoles: UserRole[] = await api.get(`/user_role?user_id=${id}`)
+    //         const roles: Role[] = await api.get('/roles')
             
-            return userRoles.map(ur => {
-                const role = roles.find(r => r.id == ur.role_id)
-                return {
-                    ...ur,
-                    role_name: role ? role.role_name : ''
-                }
-            })
-        } catch (error) {
-            console.log(error);
-            return []
-        }
-    },
+    //         return userRoles.map(ur => {
+    //             const role = roles.find(r => r.id == ur.role_id)
+    //             return {
+    //                 ...ur,
+    //                 role_name: role ? role.role_name : ''
+    //             }
+    //         })
+    //     } catch (error) {
+    //         console.log(error);
+    //         return []
+    //     }
+    // },
 
     getCurrentUser: async (): Promise<User> => {
         // Assuming there is an endpoint /me or logic to get current user

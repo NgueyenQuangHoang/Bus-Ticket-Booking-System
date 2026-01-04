@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import logo from "../../../../assets/OIP.png";
 import logo1 from "../../../../assets/Symbol.png";
 import type { BusCompany } from "../../../../types";
@@ -9,6 +10,7 @@ interface propType {
 }
 
 export default function CardBus({ busCompanies, itemPerPage, currentPage }: propType) {
+  const navigate = useNavigate()
   return (
     <div
       className="
@@ -33,6 +35,7 @@ export default function CardBus({ busCompanies, itemPerPage, currentPage }: prop
     hover:-translate-y-1 hover:shadow-xl
     overflow-hidden cursor-pointer
   "
+              onClick={() => { navigate('/detailBusCompany/'+item.id) }}
             >
               <img
                 src={logo}

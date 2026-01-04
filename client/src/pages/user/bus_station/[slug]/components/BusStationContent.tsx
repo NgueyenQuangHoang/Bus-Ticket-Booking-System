@@ -1,8 +1,18 @@
-import img1 from "../../../../../assets/bus.png";
-import img2 from "../../../../../assets/bus.png";
-import img3 from "../../../../../assets/bus.png";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks";
+import type { Station } from "../../../../../types";
+import { fetchCities } from "../../../../../slices/citySlice";
 
-export default function BusStationContent() {
+export default function BusStationContent({station} : {station?: Station}) {
+  const {cities} = useAppSelector(state => state.city)
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(fetchCities())
+  }, [dispatch])
+  const cityMapping = cities.reduce((acc, item) => {
+    acc[item.id] = item.city_name;
+    return acc;
+  }, {} as { [key: string]: string });
   return (
     <div
       className="
@@ -16,11 +26,12 @@ export default function BusStationContent() {
     >
       {/* INFO */}
       <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-4">
-        <strong>Điện thoại:</strong> 0243 827 1529 <br />
-        <strong>Địa chỉ:</strong> Số 9 Ngô Gia Khảm, Q. Long Biên, Hà Nội
+        <strong>Địa chỉ:</strong> {station?.location} <br />
+        <strong>Thành phố:</strong> {station?.city_id && cityMapping[station.city_id]}
       </p>
 
-      <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
+    {station?.description && <div dangerouslySetInnerHTML={{__html: station?.description}} className="text-center"></div>}
+      {/* <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
         Bến xe Gia Lâm thuộc quận Long Biên, nằm về phía Đông Bắc và cách
         trung tâm thành phố Hà Nội 1,4km. Đây cũng là bến lâu đời cùng với
         nhiều nhà xe vận hành thường xuyên như Chiến Thắng, Hồng Hà,
@@ -28,7 +39,6 @@ export default function BusStationContent() {
         phía Bắc.
       </p>
 
-      {/* IMAGE 1 */}
       <img src={img1} alt="Khu vực bến xe Gia Lâm" className="w-full rounded mb-6" />
 
       <p className="text-xs [@media(min-width:391px)]:text-sm text-gray-700 leading-relaxed mb-6">
@@ -44,12 +54,10 @@ export default function BusStationContent() {
 
       <img src={img1} alt="Bến xe Gia Lâm" className="w-full rounded mb-6" />
 
-      {/* SECTION TITLE */}
       <h2 className="font-bold text-sm [@media(min-width:391px)]:text-base mb-2">
         *Các tuyến đường và nhà xe hoạt động chính tại bến
       </h2>
 
-      {/* ROUTE 1 */}
       <p className="font-semibold mt-4 text-sm">
         + Bến xe Gia Lâm Hà Nội đi Hải Phòng
       </p>
@@ -68,7 +76,6 @@ export default function BusStationContent() {
         </figcaption>
       </figure>
 
-      {/* ROUTE 2 */}
       <p className="font-semibold mt-10 text-sm">
         + Bến xe Gia Lâm Hà Nội đi Lào Cai
       </p>
@@ -85,7 +92,7 @@ export default function BusStationContent() {
         <figcaption className="text-xs text-center text-gray-500 mt-2">
           Nhà xe Nam Thắng Hà Nội Lào Cai
         </figcaption>
-      </figure>
+      </figure> */}
     </div>
   );
 }

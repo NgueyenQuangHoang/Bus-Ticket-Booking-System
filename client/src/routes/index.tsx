@@ -45,6 +45,7 @@ import TransactionsPage from "../pages/admin/payments/Transactions/TransactionsP
 import CancellationPoliciesPage from "../pages/admin/policies/CancellationPoliciesPage";
 import ReviewsPage from "../pages/admin/reviews/ReviewsPage";
 import BannersPage from "../pages/admin/banners/BannersPage";
+import BusStationDetailPage from "../pages/user/bus_station/[slug]/BusStationDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -57,8 +58,9 @@ export const router = createBrowserRouter([
       { path: "busCompany", element: <BusCompanyPage /> },
       { path: "busStation", element: <BusStationPage /> },
       { path: "routes", element: <RoutesPage /> },
-      { path: "detailBusCompany", element: <BusCompanyDetailPage /> },
-      { path: "detailRoute", element: <RouteDetailPage /> },
+      { path: "detailBusCompany/:id", element: <BusCompanyDetailPage /> },
+      { path: "detailRoute/:id", element: <RouteDetailPage /> },
+      { path: "detailStation/:id", element: <BusStationDetailPage /> },
       { path: "bookingConfirmation", element: <BookingConfirmation /> },
       { path: "check-ticket", element: <CheckTicket /> },
       { path: "accountProfile", element: <AccountProfile /> },
