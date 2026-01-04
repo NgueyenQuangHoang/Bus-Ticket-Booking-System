@@ -9,7 +9,62 @@
       "status": "BOOKED",
       "price": 100000,
       "created_at": "2026-01-03T18:42:33.345Z",
-      "updated_at": "2026-01-03T18:42:33.345Z"
+      "updated_at": "2026-01-04T02:28:12.161Z"
+    },
+    {
+      "id": "ticket_01",
+      "user_id": "bba5",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "seat_01",
+      "price": 320000,
+      "status": "COMPLETED",
+      "code": "VX-204912",
+      "created_at": "2025-12-20T10:00:00Z",
+      "updated_at": "2025-12-20T10:00:00Z"
+    },
+    {
+      "id": "ticket_02",
+      "user_id": "bba5",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "seat_02",
+      "price": 280000,
+      "status": "BOOKED",
+      "code": "VX-204913",
+      "created_at": "2026-01-01T08:00:00Z",
+      "updated_at": "2026-01-01T08:00:00Z"
+    },
+    {
+      "id": "ticket_03",
+      "user_id": "bba5",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "seat_03",
+      "price": 150000,
+      "status": "CANCELLED",
+      "code": "VX-204914",
+      "created_at": "2026-01-02T09:00:00Z",
+      "updated_at": "2026-01-02T10:00:00Z"
+    },
+    {
+      "id": "ticket_04",
+      "user_id": "bba5",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "seat_05",
+      "price": 300000,
+      "status": "COMPLETED",
+      "code": "VX-204915",
+      "created_at": "2025-12-25T10:00:00Z",
+      "updated_at": "2025-12-25T10:00:00Z"
+    },
+    {
+      "id": "1767498502272_8w2p1",
+      "user_id": "bba5",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "608d",
+      "code": "TICKET__8W2P1",
+      "status": "BOOKED",
+      "price": 100000,
+      "created_at": "2026-01-04T03:48:22.272Z",
+      "updated_at": "2026-01-04T03:48:22.272Z"
     }
   ],
   "seat_schedules": [
@@ -18,6 +73,30 @@
       "schedule_id": "SCH_MQ_001",
       "seat_id": "ff4c",
       "ticket_id": "1767465753345_95pgf",
+      "status": "BOOKED",
+      "price": 100000
+    },
+    {
+      "id": "1767498498562_608d_HOLD",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "608d",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-04T04:03:18.484Z",
+      "user_id": "sess_1767498498454_c4zcpkqti"
+    },
+    {
+      "id": "1767498498562_608d_HOLD",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "608d",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-04T04:03:18.485Z",
+      "user_id": "sess_1767498498454_c4zcpkqti"
+    },
+    {
+      "id": "1767498502393_608d_S",
+      "schedule_id": "SCH_MQ_001",
+      "seat_id": "608d",
+      "ticket_id": "1767498502272_8w2p1",
       "status": "BOOKED",
       "price": 100000
     }
@@ -30,6 +109,14 @@
       "method": "QR_PAYMENT",
       "status": "COMPLETED",
       "transaction_date": "2026-01-03T18:42:33.345Z"
+    },
+    {
+      "id": "PAY_1767498502402",
+      "ticket_id": "1767498502272_8w2p1",
+      "amount": 100000,
+      "method": "QR_PAYMENT",
+      "status": "COMPLETED",
+      "transaction_date": "2026-01-04T03:48:22.272Z"
     }
   ],
   "users": [
@@ -90,6 +177,19 @@
       "created_at": "Sat Jan 03 2026 22:57:12 GMT+0700 (GMT+07:00)",
       "updated_at": "Sat Jan 03 2026 23:04:14 GMT+0700 (GMT+07:00)",
       "role_id": "1"
+    },
+    {
+      "id": "bba5",
+      "first_name": "Hoàng",
+      "last_name": "Nguyễn",
+      "email": "nguyenquanghoang1080@gmail.com",
+      "password": "15122004",
+      "phone": "0338470809",
+      "created_at": "2026-01-01T04:47:12.552Z",
+      "updated_at": "Sun Jan 04 2026 10:21:45 GMT+0700 (GMT+07:00)",
+      "status": "ACTIVE",
+      "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9",
+      "role_id": "2"
     }
   ],
   "roles": [
@@ -136,6 +236,11 @@
       "user_id": "f370588b-abcd-4162-866c-86d7f62fec7c",
       "role_id": "3",
       "id": "3743"
+    },
+    {
+      "user_id": "bba5",
+      "role_id": "1",
+      "id": "fec7c"
     }
   ],
   "cities": [
@@ -710,314 +815,335 @@
       "updated_at": "2025-01-01"
     },
     {
-    "id": "2",
-    "station_name": "Bến xe Giáp Bát",
-    "city_id": "1",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg",
-    "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Giáp Bát là một trong những bến xe lâu đời và quan trọng nhất tại Hà Nội, nằm ở cửa ngõ phía Nam thành phố. Đây là điểm tập kết của hàng trăm tuyến xe khách đi các tỉnh miền Bắc, miền Trung và một số tuyến đường dài vào miền Nam.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg' alt='Khu vực sảnh bến xe Giáp Bát' style='width: 100%; border-radius: 4px; margin-bottom: 24px;' /><p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe có lịch sử hình thành lâu đời, hệ thống hạ tầng được nâng cấp thường xuyên để phục vụ hành khách. Xung quanh bến xe là khu vực sầm uất với đầy đủ dịch vụ ăn uống, nghỉ ngơi.</p><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Tuyến đường và nhà xe tiêu biểu</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Tuyến Hà Nội đi Ninh Bình - Thanh Hóa</p><div style='margin-top: 12px; font-size: 14px; background: #f3f4f6; padding: 12px; border-radius: 6px;'><p style='font-weight: 600; color: #1e40af;'>1. Nhà xe Hải Thắng</p><p>Chuyên tuyến Giáp Bát đi Nho Quan (Ninh Bình) với tần suất 30 phút/chuyến.</p><p>Dòng xe ghế ngồi và giường nằm sạch sẽ, dịch vụ tận tâm.</p></div><p style='font-weight: 600; margin-top: 24px; font-size: 14px;'>+ Tuyến Hà Nội đi Nghệ An - Hà Tĩnh</p><div style='margin-top: 12px; font-size: 14px; background: #f3f4f6; padding: 12px; border-radius: 6px;'><p style='font-weight: 600; color: #1e40af;'>2. Nhà xe Văn Minh</p><p>Được khách hàng đánh giá cao về độ đúng giờ và không bắt khách dọc đường.</p><p>Giá vé ổn định, có hỗ trợ xe trung chuyển tại địa phương.</p></div>",
-    "location": "Giải Phóng, Hoàng Mai",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "3",
-    "station_name": "Bến xe Miền Đông",
-    "city_id": "2",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-    "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Miền Đông (Quận Bình Thạnh) là biểu tượng vận tải của TP. Hồ Chí Minh trong nhiều thập kỷ. Đây là cầu nối giao thông cực kỳ quan trọng giữa Sài Gòn với các tỉnh Miền Trung, Tây Nguyên và các tỉnh phía Bắc.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg' alt='Bến xe Miền Đông nhộn nhịp' style='width: 100%; border-radius: 4px; margin-bottom: 24px;' /><p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Với quy mô rộng lớn, bến xe được chia thành nhiều khu vực quầy vé riêng biệt cho từng hãng xe. Hành khách có thể tìm thấy mọi loại hình vận tải từ xe ghế ngồi, giường nằm đến xe phòng VIP limousine.</p><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Các hãng xe lớn đang hoạt động</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Tuyến Sài Gòn đi Đà Lạt - Lâm Đồng</p><div style='margin-top: 12px; font-size: 14px; border-left: 4px solid #ef4444; padding-left: 12px; margin-bottom: 20px;'><p style='font-weight: 600; color: #b91c1c;'>1. Nhà xe Thành Bưởi</p><p>Nổi tiếng với dịch vụ cao cấp, dòng xe giường đôi và cabin riêng biệt.</p><p>Phục vụ khăn lạnh, nước uống và có hệ thống giải trí cá nhân trên xe.</p></div><p style='font-weight: 600; margin-top: 24px; font-size: 14px;'>+ Tuyến Sài Gòn đi Bình Định - Quảng Ngãi</p><div style='margin-top: 12px; font-size: 14px; border-left: 4px solid #ef4444; padding-left: 12px;'><p style='font-weight: 600; color: #b91c1c;'>2. Nhà xe Thuận Thảo</p><p>Đơn vị lâu đời chuyên tuyến miền Trung với dàn xe giường nằm đời mới.</p><p>Thái độ nhân viên chuyên nghiệp, lái xe an toàn, nhiều chuyến trong ngày.</p></div>",
-    "location": "292 Đinh Bộ Lĩnh, Bình Thạnh",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
+      "id": "2",
+      "station_name": "Bến xe Giáp Bát",
+      "city_id": "1",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg",
+      "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Giáp Bát là một trong những bến xe lâu đời và quan trọng nhất tại Hà Nội, nằm ở cửa ngõ phía Nam thành phố. Đây là điểm tập kết của hàng trăm tuyến xe khách đi các tỉnh miền Bắc, miền Trung và một số tuyến đường dài vào miền Nam.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg' alt='Khu vực sảnh bến xe Giáp Bát' style='width: 100%; border-radius: 4px; margin-bottom: 24px;' /><p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe có lịch sử hình thành lâu đời, hệ thống hạ tầng được nâng cấp thường xuyên để phục vụ hành khách. Xung quanh bến xe là khu vực sầm uất với đầy đủ dịch vụ ăn uống, nghỉ ngơi.</p><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Tuyến đường và nhà xe tiêu biểu</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Tuyến Hà Nội đi Ninh Bình - Thanh Hóa</p><div style='margin-top: 12px; font-size: 14px; background: #f3f4f6; padding: 12px; border-radius: 6px;'><p style='font-weight: 600; color: #1e40af;'>1. Nhà xe Hải Thắng</p><p>Chuyên tuyến Giáp Bát đi Nho Quan (Ninh Bình) với tần suất 30 phút/chuyến.</p><p>Dòng xe ghế ngồi và giường nằm sạch sẽ, dịch vụ tận tâm.</p></div><p style='font-weight: 600; margin-top: 24px; font-size: 14px;'>+ Tuyến Hà Nội đi Nghệ An - Hà Tĩnh</p><div style='margin-top: 12px; font-size: 14px; background: #f3f4f6; padding: 12px; border-radius: 6px;'><p style='font-weight: 600; color: #1e40af;'>2. Nhà xe Văn Minh</p><p>Được khách hàng đánh giá cao về độ đúng giờ và không bắt khách dọc đường.</p><p>Giá vé ổn định, có hỗ trợ xe trung chuyển tại địa phương.</p></div>",
+      "location": "Giải Phóng, Hoàng Mai",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
     {
-  "id": "4",
-  "station_name": "Bến xe Miền Tây",
-  "city_id": "2",
-  "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410846/bxBG_dzhqh5.jpg",
-  "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Miền Tây nằm tại cửa ngõ phía Tây của TP. Hồ Chí Minh, là điểm trung chuyển hành khách lớn nhất từ Sài Gòn đi các tỉnh Đồng bằng sông Cửu Long (Lục tỉnh Nam Kỳ). Với diện tích rộng lớn và quy trình quản lý hiện đại, đây là bến xe có lượng khách ổn định và chất lượng dịch vụ được đánh giá rất cao.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410846/bxBG_dzhqh5.jpg' alt='Toàn cảnh bến xe Miền Tây' style='width: 100%; border-radius: 4px; margin-bottom: 24px;' /><p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Hệ thống phòng chờ tại bến xe được trang bị đầy đủ máy lạnh, wifi miễn phí và khu vực ẩm thực đa dạng, phục vụ đầy đủ đặc sản các vùng miền Tây Nam Bộ ngay tại sảnh chờ.</p><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Các tuyến đường và nhà xe hoạt động chính</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Tuyến TP.HCM đi Cần Thơ - Kiên Giang</p><div style='margin-top: 12px; font-size: 14px; background: #f9fafb; padding: 12px; border-radius: 8px;'><p style='font-weight: 600; color: #d97706;'>1. Nhà xe Phương Trang (FUTA Bus Lines)</p><p>Đơn vị vận tải lớn nhất tại bến với dòng xe giường nằm chất lượng cao đi khắp các tỉnh miền Tây.</p><p>Xe chạy liên tục mỗi 15-30 phút/chuyến, có xe trung chuyển tận nơi nội thành.</p></div><figure style='margin-top: 24px;'><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg' alt='Xe Phương Trang tại bến' style='width: 100%; border-radius: 4px;' /><figcaption style='font-size: 12px; text-align: center; color: #6b7280; margin-top: 8px;'>Hãng xe Phương Trang phục vụ hành khách đi miền Tây</figcaption></figure><p style='font-weight: 600; margin-top: 40px; font-size: 14px;'>+ Tuyến TP.HCM đi An Giang - Đồng Tháp</p><div style='margin-top: 12px; font-size: 14px; background: #f9fafb; padding: 12px; border-radius: 8px;'><p style='font-weight: 600; color: #1d4ed8;'>2. Nhà xe Hùng Cường</p><p>Chuyên dòng xe giường nằm đời mới đi Châu Đốc, Long Xuyên.</p><p>Giá vé cạnh tranh, dịch vụ chu đáo với nước uống và khăn lạnh suốt hành trình.</p></div>",
-  "location": "395 Kinh Dương Vương, Q6",
-  "created_at": "2025-01-01",
-  "updated_at": "2025-01-01"
-},
-  {
-    "id": "5",
-    "station_name": "Bến xe Đà Nẵng",
-    "city_id": "3",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg",
-    "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe trung tâm Đà Nẵng là đầu mối giao thông lớn nhất khu vực Miền Trung. Với vị trí chiến lược, bến xe không chỉ phục vụ vận tải hành khách mà còn là trung tâm logistics quan trọng kết nối hai đầu đất nước.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg' alt='Bến xe Đà Nẵng' style='width: 100%; border-radius: 4px; margin-bottom: 24px;' /><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Tuyến đường tiêu biểu</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Đà Nẵng đi Huế - Quảng Bình</p><div style='margin-top: 12px; font-size: 14px; background: #eff6ff; padding: 12px; border-radius: 8px;'><p style='font-weight: 600; color: #1e40af;'>1. Nhà xe HAV Limousine</p><p>Dòng xe hạng sang chuyên tuyến Đà Nẵng - Huế với tần suất 1 tiếng/chuyến.</p></div>",
-    "location": "Tôn Đức Thắng, Liên Chiểu",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "6",
-    "station_name": "Bến xe Niệm Nghĩa",
-    "city_id": "4",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-    "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Niệm Nghĩa là bến xe biểu tượng của thành phố Hải Phòng. Tại đây, hành khách có thể dễ dàng bắt các chuyến xe chất lượng cao đi Hà Nội qua đường cao tốc 5B với thời gian di chuyển cực ngắn.</p><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Hãng xe hoạt động chính</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Hải Phòng đi Hà Nội (Bến xe Gia Lâm/Mỹ Đình)</p><div style='margin-top: 12px; font-size: 14px; background: #fff7ed; padding: 12px; border-left: 4px solid #f97316;'><p style='font-weight: 600; color: #c2410c;'>1. Nhà xe Hải Âu</p><p>Thương hiệu vận tải hàng đầu Hải Phòng, cam kết dịch vụ chuyên nghiệp, xe chạy cao tốc không bắt khách dọc đường.</p></div>",
-    "location": "Trần Nguyên Hãn",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "7",
-    "station_name": "Bến xe Cần Thơ",
-    "city_id": "5",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-    "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe trung tâm Cần Thơ được đầu tư bài bản, sạch sẽ và hiện đại. Đây là điểm tập kết cho các hành trình đi khắp các tỉnh miền Tây sông nước và lên TP. Hồ Chí Minh.</p><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Cần Thơ đi Sài Gòn (Bến xe Miền Tây)</p><div style='margin-top: 12px; font-size: 14px; background: #f0fdf4; padding: 12px; border-radius: 8px;'><p style='font-weight: 600; color: #15803d;'>1. Nhà xe Vũ Linh</p><p>Hệ thống xe giường nằm và limousine phục vụ tận tâm, có xe trung chuyển trong nội thành Cần Thơ.</p></div>",
-    "location": "Nguyễn Trãi, Ninh Kiều",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "8",
-    "station_name": "Bến xe Vũng Tàu",
-    "city_id": "7",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-    "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Vũng Tàu là cửa ngõ đón hàng triệu lượt khách du lịch mỗi năm. Bến xe phục vụ chủ yếu là các dòng xe Limousine cao cấp chạy tuyến Vũng Tàu - Sài Gòn và các tỉnh lân cận.</p><div style='margin-top: 12px; font-size: 14px; background: #fafafa; padding: 12px; border: 1px solid #e5e7eb;'><p style='font-weight: 600; color: #111827;'>Hãng xe VIP tiêu biểu: Hoa Mai, Toàn Thắng</p><p>Dịch vụ đưa đón tận nơi trong nội thành thành phố biển Vũng Tàu.</p></div>",
-    "location": "192 Nam Kỳ Khởi Nghĩa, Phường 3",
-    "created_at": "2026-01-01",
-    "updated_at": "2026-01-01"
-  },
-  {
-    "id": "8119b259-ddec-4572-bcfa-2f7b6fb7fa16",
-    "station_name": "Bến xe đông hải",
-    "city_id": 7,
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
-    "wallpaper": "alkjsdf",
-    "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Đông Hải là dự án quy hoạch mới nhằm phục vụ nhu cầu di chuyển ngày càng cao của cư dân địa phương và giảm tải cho khu vực trung tâm Vũng Tàu. Hiện tại, bến xe chủ yếu phục vụ các tuyến xe nội tỉnh và liên tỉnh tầm ngắn.</p><p style='font-style: italic; color: #6b7280;'>Dữ liệu hoạt động đang được cập nhật liên tục để phục vụ hành khách tốt hơn.</p>",
-    "location": "phường xuân thuỷ tp vũng tàu",
-    "created_at": "2026-01-04T03:56:36.362Z",
-    "updated_at": "2026-01-04T03:56:36.362Z"
-  }
+      "id": "3",
+      "station_name": "Bến xe Miền Đông",
+      "city_id": "2",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
+      "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Miền Đông (Quận Bình Thạnh) là biểu tượng vận tải của TP. Hồ Chí Minh trong nhiều thập kỷ. Đây là cầu nối giao thông cực kỳ quan trọng giữa Sài Gòn với các tỉnh Miền Trung, Tây Nguyên và các tỉnh phía Bắc.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg' alt='Bến xe Miền Đông nhộn nhịp' style='width: 100%; border-radius: 4px; margin-bottom: 24px;' /><p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Với quy mô rộng lớn, bến xe được chia thành nhiều khu vực quầy vé riêng biệt cho từng hãng xe. Hành khách có thể tìm thấy mọi loại hình vận tải từ xe ghế ngồi, giường nằm đến xe phòng VIP limousine.</p><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Các hãng xe lớn đang hoạt động</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Tuyến Sài Gòn đi Đà Lạt - Lâm Đồng</p><div style='margin-top: 12px; font-size: 14px; border-left: 4px solid #ef4444; padding-left: 12px; margin-bottom: 20px;'><p style='font-weight: 600; color: #b91c1c;'>1. Nhà xe Thành Bưởi</p><p>Nổi tiếng với dịch vụ cao cấp, dòng xe giường đôi và cabin riêng biệt.</p><p>Phục vụ khăn lạnh, nước uống và có hệ thống giải trí cá nhân trên xe.</p></div><p style='font-weight: 600; margin-top: 24px; font-size: 14px;'>+ Tuyến Sài Gòn đi Bình Định - Quảng Ngãi</p><div style='margin-top: 12px; font-size: 14px; border-left: 4px solid #ef4444; padding-left: 12px;'><p style='font-weight: 600; color: #b91c1c;'>2. Nhà xe Thuận Thảo</p><p>Đơn vị lâu đời chuyên tuyến miền Trung với dàn xe giường nằm đời mới.</p><p>Thái độ nhân viên chuyên nghiệp, lái xe an toàn, nhiều chuyến trong ngày.</p></div>",
+      "location": "292 Đinh Bộ Lĩnh, Bình Thạnh",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "4",
+      "station_name": "Bến xe Miền Tây",
+      "city_id": "2",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410846/bxBG_dzhqh5.jpg",
+      "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Miền Tây nằm tại cửa ngõ phía Tây của TP. Hồ Chí Minh, là điểm trung chuyển hành khách lớn nhất từ Sài Gòn đi các tỉnh Đồng bằng sông Cửu Long (Lục tỉnh Nam Kỳ). Với diện tích rộng lớn và quy trình quản lý hiện đại, đây là bến xe có lượng khách ổn định và chất lượng dịch vụ được đánh giá rất cao.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410846/bxBG_dzhqh5.jpg' alt='Toàn cảnh bến xe Miền Tây' style='width: 100%; border-radius: 4px; margin-bottom: 24px;' /><p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Hệ thống phòng chờ tại bến xe được trang bị đầy đủ máy lạnh, wifi miễn phí và khu vực ẩm thực đa dạng, phục vụ đầy đủ đặc sản các vùng miền Tây Nam Bộ ngay tại sảnh chờ.</p><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Các tuyến đường và nhà xe hoạt động chính</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Tuyến TP.HCM đi Cần Thơ - Kiên Giang</p><div style='margin-top: 12px; font-size: 14px; background: #f9fafb; padding: 12px; border-radius: 8px;'><p style='font-weight: 600; color: #d97706;'>1. Nhà xe Phương Trang (FUTA Bus Lines)</p><p>Đơn vị vận tải lớn nhất tại bến với dòng xe giường nằm chất lượng cao đi khắp các tỉnh miền Tây.</p><p>Xe chạy liên tục mỗi 15-30 phút/chuyến, có xe trung chuyển tận nơi nội thành.</p></div><figure style='margin-top: 24px;'><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMT_ldxsxj.jpg' alt='Xe Phương Trang tại bến' style='width: 100%; border-radius: 4px;' /><figcaption style='font-size: 12px; text-align: center; color: #6b7280; margin-top: 8px;'>Hãng xe Phương Trang phục vụ hành khách đi miền Tây</figcaption></figure><p style='font-weight: 600; margin-top: 40px; font-size: 14px;'>+ Tuyến TP.HCM đi An Giang - Đồng Tháp</p><div style='margin-top: 12px; font-size: 14px; background: #f9fafb; padding: 12px; border-radius: 8px;'><p style='font-weight: 600; color: #1d4ed8;'>2. Nhà xe Hùng Cường</p><p>Chuyên dòng xe giường nằm đời mới đi Châu Đốc, Long Xuyên.</p><p>Giá vé cạnh tranh, dịch vụ chu đáo với nước uống và khăn lạnh suốt hành trình.</p></div>",
+      "location": "395 Kinh Dương Vương, Q6",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "5",
+      "station_name": "Bến xe Đà Nẵng",
+      "city_id": "3",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg",
+      "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe trung tâm Đà Nẵng là đầu mối giao thông lớn nhất khu vực Miền Trung. Với vị trí chiến lược, bến xe không chỉ phục vụ vận tải hành khách mà còn là trung tâm logistics quan trọng kết nối hai đầu đất nước.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410847/bxM%C4%90_uvnazz.jpg' alt='Bến xe Đà Nẵng' style='width: 100%; border-radius: 4px; margin-bottom: 24px;' /><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Tuyến đường tiêu biểu</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Đà Nẵng đi Huế - Quảng Bình</p><div style='margin-top: 12px; font-size: 14px; background: #eff6ff; padding: 12px; border-radius: 8px;'><p style='font-weight: 600; color: #1e40af;'>1. Nhà xe HAV Limousine</p><p>Dòng xe hạng sang chuyên tuyến Đà Nẵng - Huế với tần suất 1 tiếng/chuyến.</p></div>",
+      "location": "Tôn Đức Thắng, Liên Chiểu",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "6",
+      "station_name": "Bến xe Niệm Nghĩa",
+      "city_id": "4",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
+      "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Niệm Nghĩa là bến xe biểu tượng của thành phố Hải Phòng. Tại đây, hành khách có thể dễ dàng bắt các chuyến xe chất lượng cao đi Hà Nội qua đường cao tốc 5B với thời gian di chuyển cực ngắn.</p><h2 style='font-weight: bold; font-size: 16px; margin-bottom: 8px;'>* Hãng xe hoạt động chính</h2><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Hải Phòng đi Hà Nội (Bến xe Gia Lâm/Mỹ Đình)</p><div style='margin-top: 12px; font-size: 14px; background: #fff7ed; padding: 12px; border-left: 4px solid #f97316;'><p style='font-weight: 600; color: #c2410c;'>1. Nhà xe Hải Âu</p><p>Thương hiệu vận tải hàng đầu Hải Phòng, cam kết dịch vụ chuyên nghiệp, xe chạy cao tốc không bắt khách dọc đường.</p></div>",
+      "location": "Trần Nguyên Hãn",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "7",
+      "station_name": "Bến xe Cần Thơ",
+      "city_id": "5",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
+      "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe trung tâm Cần Thơ được đầu tư bài bản, sạch sẽ và hiện đại. Đây là điểm tập kết cho các hành trình đi khắp các tỉnh miền Tây sông nước và lên TP. Hồ Chí Minh.</p><p style='font-weight: 600; margin-top: 16px; font-size: 14px;'>+ Cần Thơ đi Sài Gòn (Bến xe Miền Tây)</p><div style='margin-top: 12px; font-size: 14px; background: #f0fdf4; padding: 12px; border-radius: 8px;'><p style='font-weight: 600; color: #15803d;'>1. Nhà xe Vũ Linh</p><p>Hệ thống xe giường nằm và limousine phục vụ tận tâm, có xe trung chuyển trong nội thành Cần Thơ.</p></div>",
+      "location": "Nguyễn Trãi, Ninh Kiều",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "8",
+      "station_name": "Bến xe Vũng Tàu",
+      "city_id": "7",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
+      "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Vũng Tàu là cửa ngõ đón hàng triệu lượt khách du lịch mỗi năm. Bến xe phục vụ chủ yếu là các dòng xe Limousine cao cấp chạy tuyến Vũng Tàu - Sài Gòn và các tỉnh lân cận.</p><div style='margin-top: 12px; font-size: 14px; background: #fafafa; padding: 12px; border: 1px solid #e5e7eb;'><p style='font-weight: 600; color: #111827;'>Hãng xe VIP tiêu biểu: Hoa Mai, Toàn Thắng</p><p>Dịch vụ đưa đón tận nơi trong nội thành thành phố biển Vũng Tàu.</p></div>",
+      "location": "192 Nam Kỳ Khởi Nghĩa, Phường 3",
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01"
+    },
+    {
+      "id": "8119b259-ddec-4572-bcfa-2f7b6fb7fa16",
+      "station_name": "Bến xe đông hải",
+      "city_id": 7,
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
+      "wallpaper": "alkjsdf",
+      "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Đông Hải là dự án quy hoạch mới nhằm phục vụ nhu cầu di chuyển ngày càng cao của cư dân địa phương và giảm tải cho khu vực trung tâm Vũng Tàu. Hiện tại, bến xe chủ yếu phục vụ các tuyến xe nội tỉnh và liên tỉnh tầm ngắn.</p><p style='font-style: italic; color: #6b7280;'>Dữ liệu hoạt động đang được cập nhật liên tục để phục vụ hành khách tốt hơn.</p>",
+      "location": "phường xuân thuỷ tp vũng tàu",
+      "created_at": "2026-01-04T03:56:36.362Z",
+      "updated_at": "2026-01-04T03:56:36.362Z"
+    }
   ],
   "routes": [
-  {
-    "id": "1",
-    "departure_station_id": "1",
-    "arrival_station_id": "3",
-    "distance": 1700,
-    "duration": 1800,
-    "base_price": 350000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h2>Tuyến đường huyết mạch Bắc – Nam: Hà Nội → TP.HCM</h2><img src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da' style='width:100%;border-radius:8px;margin:12px 0'/><p>Hành trình xuyên Việt kết nối <strong>Bến xe Mỹ Đình</strong> và <strong>Bến xe Miền Đông</strong>, phục vụ nhu cầu đi lại, công tác và về quê của hàng ngàn hành khách mỗi ngày.</p><ul><li><strong>Chiều dài:</strong> ~1.700km</li><li><strong>Thời gian:</strong> 30 – 36 tiếng</li><li><strong>Lộ trình:</strong> Quốc lộ 1A / Cao tốc Bắc – Nam</li></ul><h3>Dịch vụ trên xe</h3><ul><li>Xe giường nằm 40 chỗ hoặc Cabin VIP</li><li>Điều hòa, chăn gối sạch sẽ</li><li>Wifi, nước uống miễn phí</li><li>Phục vụ 3 bữa ăn chính</li></ul><div style='background:#ecfeff;padding:12px;border-left:4px solid #06b6d4'><strong>Phù hợp:</strong> Hành khách đi đường dài, mang nhiều hành lý, tiết kiệm chi phí.</div>"
-  },
-  {
-    "id": "2",
-    "departure_station_id": "3",
-    "arrival_station_id": "1",
-    "distance": 1700,
-    "duration": 1800,
-    "base_price": 350000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h2>Hành trình TP.HCM → Hà Nội</h2><img src='https://images.unsplash.com/photo-1503376780353-7e6692767b70' style='width:100%;border-radius:8px;margin:12px 0'/><p>Tuyến xe ngược Bắc – Nam từ <strong>Bến xe Miền Đông</strong> ra <strong>Mỹ Đình</strong>, phục vụ nhu cầu học tập, làm việc và đoàn tụ gia đình.</p><ul><li>Xe giường nằm cao cấp, giảm xóc hơi</li><li>Thay tài xế liên tục đảm bảo an toàn</li><li>Dừng nghỉ tại các thành phố lớn</li></ul><div style='background:#fffbeb;padding:12px;border-left:4px solid #f59e0b'><strong>Lưu ý:</strong> Hành khách nên mang giấy tờ tùy thân và đồ dùng cá nhân.</div>"
-  },
-  {
-    "id": "3",
-    "departure_station_id": "1",
-    "arrival_station_id": "6",
-    "distance": 120,
-    "duration": 150,
-    "base_price": 120000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h2>Hà Nội → Hải Phòng</h2><img src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e' style='width:100%;border-radius:8px;margin:12px 0'/><p>Tuyến đường cao tốc hiện đại, kết nối Thủ đô với thành phố Cảng Hải Phòng.</p><ul><li><strong>Thời gian:</strong> 2 – 2.5 giờ</li><li><strong>Tuyến:</strong> Cao tốc 5B</li><li>Xe Limousine 9 chỗ / ghế ngồi cao cấp</li><li>Wifi, nước uống miễn phí</li></ul><p>Phù hợp cho khách đi công tác, du lịch hoặc trong ngày.</p>"
-  },
-  {
-    "id": "4",
-    "departure_station_id": "6",
-    "arrival_station_id": "1",
-    "distance": 120,
-    "duration": 150,
-    "base_price": 120000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h2>Hải Phòng → Hà Nội</h2><img src='https://images.unsplash.com/photo-1529070538774-1843cb3265df' style='width:100%;border-radius:8px;margin:12px 0'/><p>Xe xuất phát từ <strong>Bến xe Niệm Nghĩa</strong> về <strong>Mỹ Đình</strong>, thuận tiện cho hành khách đi sân bay Nội Bài hoặc công tác.</p><ul><li>Chạy liên tục trong ngày</li><li>Xe sạch sẽ, tài xế kinh nghiệm</li><li>Thời gian di chuyển nhanh</li></ul>"
-  },
-  {
-    "id": "5",
-    "departure_station_id": "3",
-    "arrival_station_id": "5",
-    "distance": 960,
-    "duration": 960,
-    "base_price": 280000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h2>TP.HCM → Đà Nẵng</h2><img src='https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' style='width:100%;border-radius:8px;margin:12px 0'/><p>Tuyến xe đường dài kết nối miền Nam với thành phố đáng sống nhất Việt Nam.</p><ul><li>Xe giường nằm đời mới</li><li>Cổng sạc tại mỗi giường</li><li>Chạy đêm, tiết kiệm thời gian</li></ul><p>Phù hợp cho khách du lịch và lao động dài ngày.</p>"
-  },
-  {
-    "id": "6",
-    "departure_station_id": "5",
-    "arrival_station_id": "3",
-    "distance": 960,
-    "duration": 960,
-    "base_price": 280000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h2>Đà Nẵng → TP.HCM</h2><img src='https://images.unsplash.com/photo-1505765050516-f72dcac9c60b' style='width:100%;border-radius:8px;margin:12px 0'/><p>Hành trình xuyên miền Trung – Nam với đội ngũ tài xế thay ca liên tục.</p><ul><li>An toàn – đúng giờ</li><li>Dừng nghỉ hợp lý</li><li>Xe sạch sẽ, thoải mái</li></ul>"
-  },
-  {
-    "id": "7",
-    "departure_station_id": "4",
-    "arrival_station_id": "7",
-    "distance": 200,
-    "duration": 180,
-    "base_price": 150000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h2>Sài Gòn → Cần Thơ</h2><img src='https://images.unsplash.com/photo-1589187155478-8c3f7f2b7c4b' style='width:100%;border-radius:8px;margin:12px 0'/><p>Kết nối Bến xe Miền Tây với trung tâm Đồng bằng Sông Cửu Long.</p><ul><li>Tần suất: 15–30 phút/chuyến</li><li>Xe trung chuyển miễn phí 10km</li><li>Thời gian: ~3 giờ</li></ul>"
-  },
-  {
-    "id": "8",
-    "departure_station_id": "1",
-    "arrival_station_id": "5",
-    "distance": 800,
-    "duration": 720,
-    "base_price": 250000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h2>Hà Nội → Đà Nẵng</h2><img src='https://images.unsplash.com/photo-1501785888041-af3ef285b470' style='width:100%;border-radius:8px;margin:12px 0'/><p>Tuyến xe đêm giúp hành khách nghỉ ngơi và đến Đà Nẵng vào sáng sớm.</p><ul><li>Xe giường nằm chất lượng cao</li><li>Phù hợp du lịch và công tác</li></ul>"
-  },
-
-  {
-    "id": "8",
-    "departure_station_id": "1",
-    "arrival_station_id": "5",
-    "distance": 800,
-    "duration": 720,
-    "base_price": 250000,
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01",
-    "description": "<h3>Tuyến Hà Nội - Đà Nẵng</h3><p>Hành trình từ Mỹ Đình vào Đà Nẵng. Xe thường chạy vào buổi chiều tối để hành khách có thể ngủ một giấc và đến nơi vào sáng sớm hôm sau.</p>"
-  },
-  {
-    "id": "9d29c4f1-771c-4a6f-84e0-5eacdf5cda5b",
-    "departure_station_id": "1",
-    "arrival_station_id": "3",
-    "base_price": 199000,
-    "duration": 100,
-    "distance": 200,
-    "description": "<h3>Chương trình ưu đãi vé Bắc - Nam</h3><p>Tuyến Mỹ Đình - Miền Đông với mức giá khuyến mãi đặc biệt. Số lượng ghế có hạn cho các khung giờ thấp điểm.</p>",
-    "created_at": "Sun Jan 04 2026 10:25:10",
-    "updated_at": "Sun Jan 04 2026 10:25:10"
-  },
-  {
-    "id": "b2c134b7-e8eb-47b4-a6da-c9bca97c3260",
-    "departure_station_id": "3",
-    "arrival_station_id": "1",
-    "base_price": 120,
-    "duration": 1900,
-    "distance": 120,
-    "description": "<h3>Thông tin tuyến Miền Đông đi Mỹ Đình</h3><p>Hành trình dành cho hành khách ưu tiên tiết kiệm chi phí với lộ trình dừng đón khách linh hoạt tại các tỉnh dọc đường.</p>",
-    "created_at": "Sun Jan 04 2026 10:26:46",
-    "updated_at": "Sun Jan 04 2026 10:26:46"
-  },
-  {
-    "id": "de827ac1-ce97-43fc-a973-e1c578320893",
-    "departure_station_id": "2",
-    "arrival_station_id": "3",
-    "base_price": 100000,
-    "duration": 200,
-    "distance": 1500,
-    "description": "<h3>Tuyến Giáp Bát - Sài Gòn (Miền Đông)</h3><p>Dịch vụ xe khách đường dài từ khu vực phía Nam Hà Nội vào TP.HCM. Giá vé cực kỳ cạnh tranh, phù hợp cho học sinh, sinh viên và lao động tự do.</p>",
-    "created_at": "Sun Jan 04 2026 10:29:54",
-    "updated_at": "Sun Jan 04 2026 10:29:54"
-  }
-],
+    {
+      "id": "1",
+      "departure_station_id": "1",
+      "arrival_station_id": "3",
+      "distance": 1700,
+      "duration": 1800,
+      "base_price": 350000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h2>Tuyến đường huyết mạch Bắc – Nam: Hà Nội → TP.HCM</h2><img src='https://images.unsplash.com/photo-1524492412937-b28074a5d7da' style='width:100%;border-radius:8px;margin:12px 0'/><p>Hành trình xuyên Việt kết nối <strong>Bến xe Mỹ Đình</strong> và <strong>Bến xe Miền Đông</strong>, phục vụ nhu cầu đi lại, công tác và về quê của hàng ngàn hành khách mỗi ngày.</p><ul><li><strong>Chiều dài:</strong> ~1.700km</li><li><strong>Thời gian:</strong> 30 – 36 tiếng</li><li><strong>Lộ trình:</strong> Quốc lộ 1A / Cao tốc Bắc – Nam</li></ul><h3>Dịch vụ trên xe</h3><ul><li>Xe giường nằm 40 chỗ hoặc Cabin VIP</li><li>Điều hòa, chăn gối sạch sẽ</li><li>Wifi, nước uống miễn phí</li><li>Phục vụ 3 bữa ăn chính</li></ul><div style='background:#ecfeff;padding:12px;border-left:4px solid #06b6d4'><strong>Phù hợp:</strong> Hành khách đi đường dài, mang nhiều hành lý, tiết kiệm chi phí.</div>"
+    },
+    {
+      "id": "2",
+      "departure_station_id": "3",
+      "arrival_station_id": "1",
+      "distance": 1700,
+      "duration": 1800,
+      "base_price": 350000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h2>Hành trình TP.HCM → Hà Nội</h2><img src='https://images.unsplash.com/photo-1503376780353-7e6692767b70' style='width:100%;border-radius:8px;margin:12px 0'/><p>Tuyến xe ngược Bắc – Nam từ <strong>Bến xe Miền Đông</strong> ra <strong>Mỹ Đình</strong>, phục vụ nhu cầu học tập, làm việc và đoàn tụ gia đình.</p><ul><li>Xe giường nằm cao cấp, giảm xóc hơi</li><li>Thay tài xế liên tục đảm bảo an toàn</li><li>Dừng nghỉ tại các thành phố lớn</li></ul><div style='background:#fffbeb;padding:12px;border-left:4px solid #f59e0b'><strong>Lưu ý:</strong> Hành khách nên mang giấy tờ tùy thân và đồ dùng cá nhân.</div>"
+    },
+    {
+      "id": "3",
+      "departure_station_id": "1",
+      "arrival_station_id": "6",
+      "distance": 120,
+      "duration": 150,
+      "base_price": 120000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h2>Hà Nội → Hải Phòng</h2><img src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e' style='width:100%;border-radius:8px;margin:12px 0'/><p>Tuyến đường cao tốc hiện đại, kết nối Thủ đô với thành phố Cảng Hải Phòng.</p><ul><li><strong>Thời gian:</strong> 2 – 2.5 giờ</li><li><strong>Tuyến:</strong> Cao tốc 5B</li><li>Xe Limousine 9 chỗ / ghế ngồi cao cấp</li><li>Wifi, nước uống miễn phí</li></ul><p>Phù hợp cho khách đi công tác, du lịch hoặc trong ngày.</p>"
+    },
+    {
+      "id": "4",
+      "departure_station_id": "6",
+      "arrival_station_id": "1",
+      "distance": 120,
+      "duration": 150,
+      "base_price": 120000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h2>Hải Phòng → Hà Nội</h2><img src='https://images.unsplash.com/photo-1529070538774-1843cb3265df' style='width:100%;border-radius:8px;margin:12px 0'/><p>Xe xuất phát từ <strong>Bến xe Niệm Nghĩa</strong> về <strong>Mỹ Đình</strong>, thuận tiện cho hành khách đi sân bay Nội Bài hoặc công tác.</p><ul><li>Chạy liên tục trong ngày</li><li>Xe sạch sẽ, tài xế kinh nghiệm</li><li>Thời gian di chuyển nhanh</li></ul>"
+    },
+    {
+      "id": "5",
+      "departure_station_id": "3",
+      "arrival_station_id": "5",
+      "distance": 960,
+      "duration": 960,
+      "base_price": 280000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h2>TP.HCM → Đà Nẵng</h2><img src='https://images.unsplash.com/photo-1500530855697-b586d89ba3ee' style='width:100%;border-radius:8px;margin:12px 0'/><p>Tuyến xe đường dài kết nối miền Nam với thành phố đáng sống nhất Việt Nam.</p><ul><li>Xe giường nằm đời mới</li><li>Cổng sạc tại mỗi giường</li><li>Chạy đêm, tiết kiệm thời gian</li></ul><p>Phù hợp cho khách du lịch và lao động dài ngày.</p>"
+    },
+    {
+      "id": "6",
+      "departure_station_id": "5",
+      "arrival_station_id": "3",
+      "distance": 960,
+      "duration": 960,
+      "base_price": 280000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h2>Đà Nẵng → TP.HCM</h2><img src='https://images.unsplash.com/photo-1505765050516-f72dcac9c60b' style='width:100%;border-radius:8px;margin:12px 0'/><p>Hành trình xuyên miền Trung – Nam với đội ngũ tài xế thay ca liên tục.</p><ul><li>An toàn – đúng giờ</li><li>Dừng nghỉ hợp lý</li><li>Xe sạch sẽ, thoải mái</li></ul>"
+    },
+    {
+      "id": "7",
+      "departure_station_id": "4",
+      "arrival_station_id": "7",
+      "distance": 200,
+      "duration": 180,
+      "base_price": 150000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h2>Sài Gòn → Cần Thơ</h2><img src='https://images.unsplash.com/photo-1589187155478-8c3f7f2b7c4b' style='width:100%;border-radius:8px;margin:12px 0'/><p>Kết nối Bến xe Miền Tây với trung tâm Đồng bằng Sông Cửu Long.</p><ul><li>Tần suất: 15–30 phút/chuyến</li><li>Xe trung chuyển miễn phí 10km</li><li>Thời gian: ~3 giờ</li></ul>"
+    },
+    {
+      "id": "8",
+      "departure_station_id": "1",
+      "arrival_station_id": "5",
+      "distance": 800,
+      "duration": 720,
+      "base_price": 250000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h2>Hà Nội → Đà Nẵng</h2><img src='https://images.unsplash.com/photo-1501785888041-af3ef285b470' style='width:100%;border-radius:8px;margin:12px 0'/><p>Tuyến xe đêm giúp hành khách nghỉ ngơi và đến Đà Nẵng vào sáng sớm.</p><ul><li>Xe giường nằm chất lượng cao</li><li>Phù hợp du lịch và công tác</li></ul>"
+    },
+    {
+      "id": "8",
+      "departure_station_id": "1",
+      "arrival_station_id": "5",
+      "distance": 800,
+      "duration": 720,
+      "base_price": 250000,
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01",
+      "description": "<h3>Tuyến Hà Nội - Đà Nẵng</h3><p>Hành trình từ Mỹ Đình vào Đà Nẵng. Xe thường chạy vào buổi chiều tối để hành khách có thể ngủ một giấc và đến nơi vào sáng sớm hôm sau.</p>"
+    },
+    {
+      "id": "9d29c4f1-771c-4a6f-84e0-5eacdf5cda5b",
+      "departure_station_id": "1",
+      "arrival_station_id": "3",
+      "base_price": 199000,
+      "duration": 100,
+      "distance": 200,
+      "description": "<h3>Chương trình ưu đãi vé Bắc - Nam</h3><p>Tuyến Mỹ Đình - Miền Đông với mức giá khuyến mãi đặc biệt. Số lượng ghế có hạn cho các khung giờ thấp điểm.</p>",
+      "created_at": "Sun Jan 04 2026 10:25:10",
+      "updated_at": "Sun Jan 04 2026 10:25:10"
+    },
+    {
+      "id": "b2c134b7-e8eb-47b4-a6da-c9bca97c3260",
+      "departure_station_id": "3",
+      "arrival_station_id": "1",
+      "base_price": 120,
+      "duration": 1900,
+      "distance": 120,
+      "description": "<h3>Thông tin tuyến Miền Đông đi Mỹ Đình</h3><p>Hành trình dành cho hành khách ưu tiên tiết kiệm chi phí với lộ trình dừng đón khách linh hoạt tại các tỉnh dọc đường.</p>",
+      "created_at": "Sun Jan 04 2026 10:26:46",
+      "updated_at": "Sun Jan 04 2026 10:26:46"
+    },
+    {
+      "id": "de827ac1-ce97-43fc-a973-e1c578320893",
+      "departure_station_id": "2",
+      "arrival_station_id": "3",
+      "base_price": 100000,
+      "duration": 200,
+      "distance": 1500,
+      "description": "<h3>Tuyến Giáp Bát - Sài Gòn (Miền Đông)</h3><p>Dịch vụ xe khách đường dài từ khu vực phía Nam Hà Nội vào TP.HCM. Giá vé cực kỳ cạnh tranh, phù hợp cho học sinh, sinh viên và lao động tự do.</p>",
+      "created_at": "Sun Jan 04 2026 10:29:54",
+      "updated_at": "Sun Jan 04 2026 10:29:54"
+    },
+    {
+      "id": "10",
+      "departure_station_id": "1",
+      "arrival_station_id": "3",
+      "distance": 1000,
+      "duration": 1200,
+      "base_price": 300000,
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01",
+      "description": "<h3>Tuyến khôi phục 10</h3><p>Tuyến đường này được khôi phục tự động do thiếu dữ liệu.</p>"
+    },
+    {
+      "id": "11",
+      "departure_station_id": "3",
+      "arrival_station_id": "1",
+      "distance": 1000,
+      "duration": 1200,
+      "base_price": 300000,
+      "created_at": "2026-01-01",
+      "updated_at": "2026-01-01",
+      "description": "<h3>Tuyến khôi phục 11</h3><p>Tuyến đường này được khôi phục tự động do thiếu dữ liệu.</p>"
+    }
+  ],
   "bus_companies": [
-  {
-    "id": "1",
-    "company_name": "Nhà xe An Hòa Hiệp",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
-    "description": "<h3>Nhà xe An Hòa Hiệp - Sự lựa chọn hàng đầu cho chuyến đi an toàn</h3><p>An Hòa Hiệp tự hào là đơn vị vận tải hành khách uy tín, chuyên cung cấp dịch vụ xe giường nằm chất lượng cao. Với phương châm 'Khách hàng là người thân', chúng tôi không ngừng cải thiện dịch vụ để mang lại trải nghiệm tốt nhất.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg' style='width:100%; border-radius:8px; margin:16px 0;'/><h4 style='color: #2563eb;'>Tại sao nên chọn An Hòa Hiệp?</h4><ul><li><strong>Xe đời mới:</strong> Hệ thống xe giường nằm 40 chỗ hiện đại, sạch sẽ.</li><li><strong>Tiện nghi:</strong> Tivi, wifi tốc độ cao, khăn lạnh và nước suối miễn phí.</li><li><strong>Tài xế:</strong> Đội ngũ lái xe giàu kinh nghiệm, tận tâm và an toàn.</li></ul>",
-    "rating": 4.8,
-    "license_number": "GX123",
-    "contact_phone": "0909333444",
-    "contact_email": "anhoahiep@gmail.com",
-    "address": "TP.HCM",
-    "status": "ACTIVE",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "2",
-    "company_name": "Nhà xe Futa Hà Sơn",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
-    "description": "<h3>Futa Hà Sơn - Chuyên gia tuyến đường Hà Nội - Lào Cai</h3><p>Kết hợp giữa sự chuyên nghiệp của Futa và kinh nghiệm địa phương của Hà Sơn, chúng tôi mang đến dịch vụ vận chuyển đẳng cấp trên tuyến cao tốc Nội Bài - Lào Cai.</p><div style='background: #f0f9ff; padding: 15px; border-radius: 8px;'><strong>Dịch vụ đặc biệt:</strong> Dòng xe Cabin đôi 'Cung điện di động' cực kỳ sang trọng và riêng tư cho các cặp đôi hoặc gia đình.</div><p>Hành trình từ Thủ đô đến Sa Pa chưa bao giờ dễ dàng và thoải mái đến thế với hệ thống điều hòa đa vùng và ghế massage tích hợp.</p>",
-    "rating": 4.9,
-    "license_number": "GX124",
-    "contact_phone": "0909444555",
-    "contact_email": "futahason@gmail.com",
-    "address": "Hà Nội",
-    "status": "ACTIVE",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "3",
-    "company_name": "Nhà xe Vũ Linh",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
-    "description": "<h3>Nhà xe Vũ Linh - Đẳng cấp xe Limousine miền Tây</h3><p>Vũ Linh Bus Lines là thương hiệu quen thuộc của người dân miền Tây Nam Bộ. Chúng tôi chuyên phục vụ các tuyến Cần Thơ - Sài Gòn - Rạch Giá với dàn xe Limousine 9 chỗ và 15 chỗ hiện đại.</p><ul><li>Hỗ trợ đưa đón tận nơi trong nội ô thành phố.</li><li>Ghế bọc da cao cấp, có cổng sạc USB tại mỗi vị trí.</li><li>Không bắt khách dọc đường, cam kết đúng giờ.</li></ul>",
-    "rating": 4.7,
-    "license_number": "GX125",
-    "contact_phone": "0909555666",
-    "contact_email": "vulinh@gmail.com",
-    "address": "Cần Thơ",
-    "status": "ACTIVE",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "4",
-    "company_name": "Nhà xe Toàn Thắng",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
-    "description": "<h3>Nhà xe Toàn Thắng - Kết nối Sài Gòn và Thành phố Biển</h3><p>Toàn Thắng là hãng xe Limousine uy tín nhất trên tuyến đường TP.HCM - Vũng Tàu. Với tần suất 15 phút một chuyến, khách hàng có thể linh hoạt sắp xếp thời gian cho chuyến du lịch hoặc công tác của mình.</p><p><strong>Tiện ích nổi bật:</strong> Xe trang bị ghế massage, hệ thống âm thanh sống động và đội ngũ nhân viên hỗ trợ nhiệt tình tại cả hai đầu bến.</p>",
-    "rating": 4.6,
-    "license_number": "GX126",
-    "contact_phone": "0909666777",
-    "contact_email": "toanthang@gmail.com",
-    "address": "Vũng Tàu",
-    "status": "ACTIVE",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "5",
-    "company_name": "Nhà xe Phương Trang",
-    "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
-    "description": "<h3>Phương Trang FUTA Bus Lines - Chất lượng là danh dự</h3><p>Với màu cam đặc trưng trải dài khắp các nẻo đường Việt Nam, Phương Trang là hãng xe khách lớn nhất cả nước. Chúng tôi cam kết mang đến dịch vụ vận chuyển văn minh, lịch sự và đúng giờ.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg' style='width:100%; border-radius:8px; margin:16px 0;'/><p>Hệ thống trạm dừng chân sạch sẽ, đồ ăn ngon và dịch vụ xe trung chuyển miễn phí là những điểm mạnh mà không hãng xe nào có được.</p>",
-    "rating": 4.9,
-    "license_number": "GX127",
-    "contact_phone": "0909777888",
-    "contact_email": "phuongtrang@gmail.com",
-    "address": "TP.HCM",
-    "status": "ACTIVE",
-    "created_at": "2025-01-01",
-    "updated_at": "2025-01-01"
-  },
-  {
-    "id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
-    "company_name": "Nhà xe Cúc Phương",
-    "license_number": "123456789",
-    "contact_phone": "9090900990",
-    "contact_email": "cucphuong123@gmail.com",
-    "address": "97 Nguyễn Duy Dương",
-    "status": "ACTIVE",
-    "description": "<h3>Nhà xe Cúc Phương - Kết nối mọi miền Tổ quốc</h3><p>Cúc Phương là đơn vị vận tải lâu đời chuyên cung cấp các chuyến xe đường dài xuyên Việt. Chúng tôi mang đến giải pháp di chuyển kinh tế nhưng vẫn đảm bảo sự thoải mái tuyệt đối cho hành khách.</p><ul><li>Lịch trình linh hoạt từ Nam ra Bắc.</li><li>Giá vé cạnh tranh nhất thị trường.</li><li>Hỗ trợ đặt vé trực tuyến nhanh chóng qua hotline.</li></ul>"
-  },
-  {
-    "id": "32e41e08-dc9b-48b6-b9b0-fedd6f013259",
-    "company_name": "Nhà xe Minh Quốc",
-    "license_number": "GX-MQ-001",
-    "contact_phone": "0909 111 222",
-    "contact_email": "contact@minhquoc.vn",
-    "address": "Bến xe Miền Tây, TP.HCM",
-    "status": "ACTIVE",
-    "description": "<h3>Nhà xe Minh Quốc - Chuyên tuyến miền Tây sông nước</h3><p>Minh Quốc tập trung khai thác các tuyến đường từ TP.HCM đi các tỉnh Đồng bằng sông Cửu Long. Dịch vụ của chúng tôi hướng tới sự bình dân, ổn định nhưng không kém phần chu đáo.</p><p><strong>Cam kết:</strong> Không nhồi nhét khách, mỗi hành khách một giường/ghế riêng biệt, lái xe an toàn trên mọi nẻo đường.</p>"
-  }
-],
+    {
+      "id": "1",
+      "company_name": "Nhà xe An Hòa Hiệp",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
+      "description": "<h3>Nhà xe An Hòa Hiệp - Sự lựa chọn hàng đầu cho chuyến đi an toàn</h3><p>An Hòa Hiệp tự hào là đơn vị vận tải hành khách uy tín, chuyên cung cấp dịch vụ xe giường nằm chất lượng cao. Với phương châm 'Khách hàng là người thân', chúng tôi không ngừng cải thiện dịch vụ để mang lại trải nghiệm tốt nhất.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg' style='width:100%; border-radius:8px; margin:16px 0;'/><h4 style='color: #2563eb;'>Tại sao nên chọn An Hòa Hiệp?</h4><ul><li><strong>Xe đời mới:</strong> Hệ thống xe giường nằm 40 chỗ hiện đại, sạch sẽ.</li><li><strong>Tiện nghi:</strong> Tivi, wifi tốc độ cao, khăn lạnh và nước suối miễn phí.</li><li><strong>Tài xế:</strong> Đội ngũ lái xe giàu kinh nghiệm, tận tâm và an toàn.</li></ul>",
+      "rating": 4.8,
+      "license_number": "GX123",
+      "contact_phone": "0909333444",
+      "contact_email": "anhoahiep@gmail.com",
+      "address": "TP.HCM",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "2",
+      "company_name": "Nhà xe Futa Hà Sơn",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
+      "description": "<h3>Futa Hà Sơn - Chuyên gia tuyến đường Hà Nội - Lào Cai</h3><p>Kết hợp giữa sự chuyên nghiệp của Futa và kinh nghiệm địa phương của Hà Sơn, chúng tôi mang đến dịch vụ vận chuyển đẳng cấp trên tuyến cao tốc Nội Bài - Lào Cai.</p><div style='background: #f0f9ff; padding: 15px; border-radius: 8px;'><strong>Dịch vụ đặc biệt:</strong> Dòng xe Cabin đôi 'Cung điện di động' cực kỳ sang trọng và riêng tư cho các cặp đôi hoặc gia đình.</div><p>Hành trình từ Thủ đô đến Sa Pa chưa bao giờ dễ dàng và thoải mái đến thế với hệ thống điều hòa đa vùng và ghế massage tích hợp.</p>",
+      "rating": 4.9,
+      "license_number": "GX124",
+      "contact_phone": "0909444555",
+      "contact_email": "futahason@gmail.com",
+      "address": "Hà Nội",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "3",
+      "company_name": "Nhà xe Vũ Linh",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
+      "description": "<h3>Nhà xe Vũ Linh - Đẳng cấp xe Limousine miền Tây</h3><p>Vũ Linh Bus Lines là thương hiệu quen thuộc của người dân miền Tây Nam Bộ. Chúng tôi chuyên phục vụ các tuyến Cần Thơ - Sài Gòn - Rạch Giá với dàn xe Limousine 9 chỗ và 15 chỗ hiện đại.</p><ul><li>Hỗ trợ đưa đón tận nơi trong nội ô thành phố.</li><li>Ghế bọc da cao cấp, có cổng sạc USB tại mỗi vị trí.</li><li>Không bắt khách dọc đường, cam kết đúng giờ.</li></ul>",
+      "rating": 4.7,
+      "license_number": "GX125",
+      "contact_phone": "0909555666",
+      "contact_email": "vulinh@gmail.com",
+      "address": "Cần Thơ",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "4",
+      "company_name": "Nhà xe Toàn Thắng",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
+      "description": "<h3>Nhà xe Toàn Thắng - Kết nối Sài Gòn và Thành phố Biển</h3><p>Toàn Thắng là hãng xe Limousine uy tín nhất trên tuyến đường TP.HCM - Vũng Tàu. Với tần suất 15 phút một chuyến, khách hàng có thể linh hoạt sắp xếp thời gian cho chuyến du lịch hoặc công tác của mình.</p><p><strong>Tiện ích nổi bật:</strong> Xe trang bị ghế massage, hệ thống âm thanh sống động và đội ngũ nhân viên hỗ trợ nhiệt tình tại cả hai đầu bến.</p>",
+      "rating": 4.6,
+      "license_number": "GX126",
+      "contact_phone": "0909666777",
+      "contact_email": "toanthang@gmail.com",
+      "address": "Vũng Tàu",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "5",
+      "company_name": "Nhà xe Phương Trang",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
+      "description": "<h3>Phương Trang FUTA Bus Lines - Chất lượng là danh dự</h3><p>Với màu cam đặc trưng trải dài khắp các nẻo đường Việt Nam, Phương Trang là hãng xe khách lớn nhất cả nước. Chúng tôi cam kết mang đến dịch vụ vận chuyển văn minh, lịch sự và đúng giờ.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg' style='width:100%; border-radius:8px; margin:16px 0;'/><p>Hệ thống trạm dừng chân sạch sẽ, đồ ăn ngon và dịch vụ xe trung chuyển miễn phí là những điểm mạnh mà không hãng xe nào có được.</p>",
+      "rating": 4.9,
+      "license_number": "GX127",
+      "contact_phone": "0909777888",
+      "contact_email": "phuongtrang@gmail.com",
+      "address": "TP.HCM",
+      "status": "ACTIVE",
+      "created_at": "2025-01-01",
+      "updated_at": "2025-01-01"
+    },
+    {
+      "id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
+      "company_name": "Nhà xe Cúc Phương",
+      "license_number": "123456789",
+      "contact_phone": "9090900990",
+      "contact_email": "cucphuong123@gmail.com",
+      "address": "97 Nguyễn Duy Dương",
+      "status": "ACTIVE",
+      "description": "<h3>Nhà xe Cúc Phương - Kết nối mọi miền Tổ quốc</h3><p>Cúc Phương là đơn vị vận tải lâu đời chuyên cung cấp các chuyến xe đường dài xuyên Việt. Chúng tôi mang đến giải pháp di chuyển kinh tế nhưng vẫn đảm bảo sự thoải mái tuyệt đối cho hành khách.</p><ul><li>Lịch trình linh hoạt từ Nam ra Bắc.</li><li>Giá vé cạnh tranh nhất thị trường.</li><li>Hỗ trợ đặt vé trực tuyến nhanh chóng qua hotline.</li></ul>"
+    },
+    {
+      "id": "32e41e08-dc9b-48b6-b9b0-fedd6f013259",
+      "company_name": "Nhà xe Minh Quốc",
+      "license_number": "GX-MQ-001",
+      "contact_phone": "0909 111 222",
+      "contact_email": "contact@minhquoc.vn",
+      "address": "Bến xe Miền Tây, TP.HCM",
+      "status": "ACTIVE",
+      "description": "<h3>Nhà xe Minh Quốc - Chuyên tuyến miền Tây sông nước</h3><p>Minh Quốc tập trung khai thác các tuyến đường từ TP.HCM đi các tỉnh Đồng bằng sông Cửu Long. Dịch vụ của chúng tôi hướng tới sự bình dân, ổn định nhưng không kém phần chu đáo.</p><p><strong>Cam kết:</strong> Không nhồi nhét khách, mỗi hành khách một giường/ghế riêng biệt, lái xe an toàn trên mọi nẻo đường.</p>"
+    }
+  ],
   "vehicle_types": [
     {
       "id": "1",
@@ -2640,7 +2766,7 @@
       "departure_time": "2026-01-05T07:30",
       "arrival_time": "2026-01-05T10:00",
       "total_seats": 70,
-      "available_seats": 67,
+      "available_seats": 66,
       "status": "AVAILABLE",
       "created_at": "2026-01-01",
       "updated_at": "2026-01-01"
@@ -2699,6 +2825,13 @@
     {
       "id": "1767465753401_P_z77z7",
       "ticket_id": "1767465753345_95pgf",
+      "full_name": "Hoàng Nguyễn",
+      "phone": "0338470809",
+      "email": "nguyenquanghoang1080@gmail.com"
+    },
+    {
+      "id": "1767498502282_P_mpn7x",
+      "ticket_id": "1767498502272_8w2p1",
       "full_name": "Hoàng Nguyễn",
       "phone": "0338470809",
       "email": "nguyenquanghoang1080@gmail.com"
@@ -2784,6 +2917,32 @@
       "status": "VISIBLE",
       "created_at": "2025-01-05",
       "updated_at": "2025-01-05"
+    },
+    {
+      "id": "cb8a",
+      "bus_id": "80a0525f-078a-457c-a546-cd931e143e02",
+      "user_id": "bba5",
+      "booking_id": "ticket_04",
+      "ticket_id": "ticket_04",
+      "rating": 4,
+      "review": "test 2",
+      "created_at": "2026-01-04T02:44:47.660Z",
+      "is_verified": true,
+      "status": "VISIBLE",
+      "updated_at": "2026-01-04T02:44:47.660Z"
+    },
+    {
+      "id": "536b",
+      "bus_id": "80a0525f-078a-457c-a546-cd931e143e02",
+      "user_id": "bba5",
+      "booking_id": "ticket_01",
+      "ticket_id": "ticket_01",
+      "rating": 5,
+      "review": "Xe chạy êm, đúng giờ, nhân viên thân thiện.",
+      "created_at": "2026-01-04T06:17:46.477Z",
+      "is_verified": true,
+      "status": "VISIBLE",
+      "updated_at": "2026-01-04T06:17:46.477Z"
     }
   ],
   "banners": [

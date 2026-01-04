@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import Swal from "sweetalert2";
 import { authService } from "../../../../services/authService";
 import type { User } from "../../../../types/user";
 import { useNavigate } from "react-router-dom";
@@ -6,13 +7,12 @@ import { useNavigate } from "react-router-dom";
 interface UserDropdownProps {
     user?: User;
     onLogout: (check: boolean) => void;
-    notify: (alert: string, status: boolean) => void
 }
 
-export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProps) {
+export default function AvatarLogin({ user, onLogout }: UserDropdownProps) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     
     const [checkRole, setCheckRole] = useState<string>('User')
     useEffect(() => {
@@ -105,12 +105,21 @@ export default function AvatarLogin({ user, onLogout, notify }: UserDropdownProp
                     <div className="py-1 border-t border-gray-100">
                         <button
                             onClick={() => {
-                                console.log('log out');
-
                                 onLogout(false);
-                                notify("Đăng xuất thành công", true)
-                                authService.logout()
+                                authService.logout();
                                 setIsOpen(false);
+                                
+                                Swal.fire({
+                                    title: "Đã đăng xuất",
+                                    text: "Đang chuyển về trang chủ...",
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                    position: 'top-end',
+                                    toast: true,
+                                    icon: 'success'
+                                }).then(() => {
+                                    window.location.href = '/';
+                                });
                             }}
                             className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:cursor-pointer"
                         >

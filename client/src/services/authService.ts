@@ -63,23 +63,23 @@ export const authService = {
         return false
     },
 
-    // getRoleUser: async (id: number | string): Promise<(UserRole & { role_name: string })[]> => {
-    //     try {
-    //         const userRoles: UserRole[] = await api.get(`/user_role?user_id=${id}`)
-    //         const roles: Role[] = await api.get('/roles')
-            
-    //         return userRoles.map(ur => {
-    //             const role = roles.find(r => r.id == ur.role_id)
-    //             return {
-    //                 ...ur,
-    //                 role_name: role ? role.role_name : ''
-    //             }
-    //         })
-    //     } catch (error) {
-    //         console.log(error);
-    //         return []
-    //     }
-    // },
+    getRoleUser: async (id: number | string): Promise<(UserRole & { role_name: string })[]> => {
+        try {
+            const userRoles: UserRole[] = await api.get(`/user_role?user_id=${id}`)
+            const roles: Role[] = await api.get('/roles')
+
+            return userRoles.map(ur => {
+                const role = roles.find(r => r.id == ur.role_id)
+                return {
+                    ...ur,
+                    role_name: role ? role.role_name : ''
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            return []
+        }
+    },
 
     getCurrentUser: async (): Promise<User> => {
         // Assuming there is an endpoint /me or logic to get current user
@@ -97,30 +97,7 @@ export const authService = {
             return []
         }
     },
-    getRoleUser: async (user_id: number | string): Promise<Role[] | undefined> => {
-        try {
-            const responseGetRole: Role[] = await api.get('http://localhost:8080/roles')
-            const responseGetUserRole: UserRole[] = await api.get('http://localhost:8080/user_role?user_id=' + user_id)
 
-            const dataUser = responseGetUserRole.filter((item) => item.user_id == user_id)
-            const roleMap = responseGetRole.reduce((acc, current) => {
-                acc[current.id] = current
-                return acc
-            }, {} as Record<string, Role>)
-
-
-            const dataReturn = dataUser.reduce((acc, item) => {
-                acc.push(roleMap[item.role_id])
-                return acc
-            }, [] as Role[])
-            localStorage.setItem('role', JSON.stringify(dataReturn))
-
-
-            return dataReturn
-        } catch (error) {
-            console.log(error);
-            return []
-        }},
 
     deleteUser: async (id: number | string): Promise<void> => {
         try {
@@ -185,17 +162,17 @@ export const authService = {
             console.log(error);
         }
     },
-    
+
     createRole: async (role: Role) => {
         await api.post('/roles', role)
         return role
     },
     updateRole: async (role: Role) => {
-        await api.put('/roles/'+role.id, role)
+        await api.put('/roles/' + role.id, role)
         return role
     },
     deleteRole: async (role: Role) => {
-        await api.delete('/roles/'+role.id)
+        await api.delete('/roles/' + role.id)
         return role
     }
 

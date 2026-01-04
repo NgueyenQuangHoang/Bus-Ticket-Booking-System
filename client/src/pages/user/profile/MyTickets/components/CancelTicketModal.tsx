@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import type { TicketUI } from "../../../../../services/ticketService";
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -20,16 +19,7 @@ export default function CancelTicketModal({ isOpen, onClose, onConfirm, ticket }
   const refundAmount = (originalPrice * REFUND_PERCENT) / 100;
   const feeAmount = originalPrice - refundAmount;
 
-  // Mock Seat (use code suffix or random if not available)
-  const mockSeat = useMemo(() => {
-    // Try to extract seat from code if it looks like "TICKET-A5"
-    const parts = ticket.code.split('-');
-    if (parts.length > 1 && parts[parts.length - 1].length <= 3) {
-      return parts[parts.length - 1]; 
-    }
-    // Else random seat
-    return `A${Math.floor(Math.random() * 20) + 1}`;
-  }, [ticket.id]);
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 font-sans backdrop-blur-sm transition-all duration-300">
@@ -66,7 +56,7 @@ export default function CancelTicketModal({ isOpen, onClose, onConfirm, ticket }
 
                 <div className="text-gray-500">Vị trí ghế</div>
                 <div className="text-right">
-                    <span className="font-bold text-[#1295DB] bg-blue-50 px-2.5 py-0.5 rounded border border-blue-100">{mockSeat}</span>
+                    <span className="font-bold text-[#1295DB] bg-blue-50 px-2.5 py-0.5 rounded border border-blue-100">{ticket.seats.join(', ')}</span>
                 </div>
              </div>
           </div>
