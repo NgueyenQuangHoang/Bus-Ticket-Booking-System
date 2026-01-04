@@ -4,8 +4,50 @@ import type { ScheduleUI } from '../pages/admin/schedules/components/ScheduleTab
 export const scheduleService = {
     getAllSchedules: async (): Promise<ScheduleUI[]> => {
         try {
-            const response = await api.get<ScheduleUI[]>('/schedules');
-            return response as unknown as ScheduleUI[];
+            // Fetch schedules with related data
+            const schedulesRes = await api.get<any[]>('/schedules?_expand=bus&_expand=route&_embed=seat_schedules');
+            // Fetch all seats to calculate capacity
+            const seatsRes = await api.get<any[]>('/seats');
+
+            const schedules = schedulesRes as unknown as any[];
+            const allSeats = seatsRes as unknown as any[];
+
+            const data = schedules.map(schedule => {
+                // Calculate Total Seats (Bookable) for this bus
+                // Filter seats by bus_id and check availability flag
+                const busSeats = allSeats.filter(s =>
+                    String(s.bus_id) === String(schedule.bus_id) &&
+                    s.is_available_for_booking === true
+                );
+                // Fallback to schedule.total_seats if no physical seats found (e.g. mock data or missing bus)
+                const totalSeats = busSeats.length > 0 ? busSeats.length : (schedule.total_seats || 0);
+
+                // Calculate Busy Seats from seat_schedules
+                // Filter out entries that are explicitly 'AVAILABLE' (if any)
+                // Assuming presence in seat_schedules usually means interaction (booked/held),
+                // but checking status is safer as user requested.
+                // Common busy statuses: BOOKED, SOLD, HOLD, PENDING, COMPLETED, etc.
+                const busySeats = schedule.seat_schedules ? schedule.seat_schedules.filter((ss: any) =>
+                    ss.status !== 'AVAILABLE' && ss.status !== 'CANCELLED'
+                ).length : 0;
+
+                const availableSeats = Math.max(0, totalSeats - busySeats);
+
+                return {
+                    ...schedule,
+                    route_name: schedule.route ? schedule.route.route_name : `Route #${schedule.route_id}`,
+                    bus_name: schedule.bus ? schedule.bus.name : `Bus #${schedule.bus_id}`,
+                    bus_license: schedule.bus ? schedule.bus.license_plate : '',
+                    departure_time_str: new Date(schedule.departure_time).toLocaleString('vi-VN', {
+                        hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric'
+                    }),
+                    total_seats: totalSeats,
+                    available_seats: availableSeats,
+                    available_seat: availableSeats // For backward compatibility if needed
+                };
+            });
+
+            return data as ScheduleUI[];
         } catch (error) {
             console.error('Error fetching schedules:', error);
             throw error;

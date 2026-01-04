@@ -29,24 +29,17 @@ export const validateSchedule = (
         newErrors.total_seats = "Vui lòng nhập số";
     } else if (isNaN(total)) {
         newErrors.total_seats = "Vui lòng nhập số";
-    } else if (total < 20 || total > 60) {
-        newErrors.total_seats = "Tổng số ghế phải lớn hơn 20 và bé hơn 60";
+    } else if (total < 1 || total > 100) {
+        newErrors.total_seats = "Tổng số ghế phải lớn hơn 0 và bé hơn 100";
     }
 
-    // Available Seats: < Total Seats
-    const available = Number(formData.available_seat);
-    if (formData.available_seat === undefined || formData.available_seat === null || String(formData.available_seat) === "") {
-        newErrors.available_seat = "Vui lòng nhập số";
-    } else if (isNaN(available)) {
-        newErrors.available_seat = "Vui lòng nhập số";
-    } else if (!isNaN(total) && available > total) {
-        newErrors.available_seat = "Ghế trống phải nhỏ hơn tổng số ghế";
-    }
+    // Available Seats: Validation removed as it is now auto-calculated or hidden
+    /* 
+     * Removed manual validation for available_seat as per user request to hide the field.
+     * Logic should ensure available_seat <= total_seats internally.
+     */
 
-    // If Status is FULL, Available seats must be 0
-    if (formData.status === 'FULL' && Number(formData.available_seat) !== 0) {
-        newErrors.available_seat = "Trạng thái Đã đầy thì ghế trống phải bằng 0";
-    }
+    // If Status is FULL, we assume logic handles it, or ignoring the check for hidden field
 
     // 3. Duplicate Check
     // Rule: Cannot have same Bus at Start Time

@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import logo1 from "../../../assets/datve.png";
+import { ticketService, type TicketUI } from "../../../services/ticketService";
+import PublicTicketDetailModal from "./components/PublicTicketDetailModal";
+import Swal from "sweetalert2";
 
 export default function CheckTicket() {
     const [ticketCode, setTicketCode] = useState("");
@@ -8,8 +11,11 @@ export default function CheckTicket() {
         ticketCode: "",
         phone: "",
     });
+    const [loading, setLoading] = useState(false);
+    const [foundTicket, setFoundTicket] = useState<TicketUI | null>(null);
+    const [modalOpen, setModalOpen] = useState(false);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const newErrors = {
             ticketCode: "",
             phone: "",
@@ -25,6 +31,33 @@ export default function CheckTicket() {
 
         setErrors(newErrors);
 
+        if (!newErrors.ticketCode && !newErrors.phone) {
+            setLoading(true);
+            try {
+                const ticket = await ticketService.findTicket(ticketCode, phone);
+                if (ticket) {
+                    setFoundTicket(ticket);
+                    setModalOpen(true);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Không tìm thấy vé',
+                        text: 'Mã vé hoặc số điện thoại không chính xác. Vui lòng kiểm tra lại.',
+                        confirmButtonColor: '#0b6fb3'
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Đã có lỗi xảy ra',
+                    text: 'Vui lòng thử lại sau.',
+                    confirmButtonColor: '#0b6fb3'
+                });
+            } finally {
+                setLoading(false);
+            }
+        }
     };
 
     return (
@@ -36,7 +69,7 @@ export default function CheckTicket() {
                         <h2 className="font-bold text-[#0b6fb3] text-2xl mb-3">
                             Nhập thông tin vé xe
                         </h2>
- {/* hello met wa */}
+                        {/* hello met wa */}
                         <div className="max-w-[334px] mx-auto w-full">
                             <div className="p-4 bg-white rounded">
                                 <input
@@ -80,9 +113,10 @@ export default function CheckTicket() {
 
                                 <button
                                     onClick={handleSubmit}
-                                    className="w-full bg-[#0b6fb3] text-white py-2 text-sm rounded font-medium mt-4"
+                                    disabled={loading}
+                                    className={`w-full bg-[#0b6fb3] text-white py-2 text-sm rounded font-medium mt-4 hover:cursor-pointer ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                                 >
-                                    Kiểm tra vé
+                                    {loading ? 'Đang kiểm tra...' : 'Kiểm tra vé'}
                                 </button>
 
 
@@ -134,6 +168,12 @@ export default function CheckTicket() {
                     </div>
                 </div>
             </div>
+
+            <PublicTicketDetailModal 
+                open={modalOpen} 
+                onClose={() => setModalOpen(false)} 
+                ticket={foundTicket} 
+            />
         </section>
     );
 }

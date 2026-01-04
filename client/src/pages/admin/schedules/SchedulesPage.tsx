@@ -136,13 +136,41 @@ export default function SchedulesPage() {
     fetchSchedules();
   }, []);
 
+  // Filter State
+  const [filterStatus, setFilterStatus] = useState<'ALL' | 'DEPARTED' | 'NOT_DEPARTED'>('ALL');
+
+  // ... (existing fetchSchedules)
+
   // --- DERIVED DATA ---
   const filteredData = useMemo(() => {
-    return data.filter(item => 
-      item.route_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.bus_name?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [data, searchTerm]);
+    const now = new Date();
+    return data.filter(item => {
+      // 1. Search Term
+      const matchesSearch = 
+        item.route_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.bus_name?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      if (!matchesSearch) return false;
+
+      // 2. Status Filter
+      if (filterStatus === 'ALL') return true;
+
+      // Safe date parsing
+      const timeStr = item.departure_time; 
+      if (!timeStr) return false;
+
+      const depTime = new Date(timeStr);
+      // Check for Invalid Date
+      if (isNaN(depTime.getTime())) return false; 
+
+      if (filterStatus === 'DEPARTED') {
+          return depTime <= now;
+      } else {
+          // NOT_DEPARTED (Pending)
+          return depTime > now;
+      }
+    });
+  }, [data, searchTerm, filterStatus]);
 
   const totalPages = Math.ceil(filteredData.length / ROWS_PER_PAGE) || 1;
   
@@ -194,15 +222,15 @@ export default function SchedulesPage() {
             }
         }
 
-        // 2. Prepare payload for API (remove UI fields, map to DB schema)
+        // 2. Prepare payload for API needs to be complete
         const submitData = {
             route_id: formData.route_id,
             bus_id: formData.bus_id,
             total_seats: formData.total_seats,
-            available_seats: formData.available_seat, // Map UI -> API
+            available_seats: formData.available_seat, 
             status: formData.status,
             departure_time: isoDate,
-            arrival_time: arrivalIsoDate, // Calculated field
+            arrival_time: arrivalIsoDate,
              updated_at: new Date().toISOString(),
         };
 
@@ -212,7 +240,7 @@ export default function SchedulesPage() {
             Swal.fire("Thành công!", "Đã cập nhật lịch trình.", "success");
         } else {
             // Create new
-             const createPayload = {
+            const createPayload = {
                 ...submitData,
                 created_at: new Date().toISOString(),
             };
@@ -259,10 +287,27 @@ export default function SchedulesPage() {
          onAddClick={handleOpenCreate} 
        />
 
-       <ScheduleSearch 
-         value={searchTerm} 
-         onChange={setSearchTerm} 
-       />
+       <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div className="w-full md:w-1/2">
+                <ScheduleSearch 
+                    value={searchTerm} 
+                    onChange={setSearchTerm} 
+                />
+            </div>
+            
+            <div className="w-full md:w-auto flex items-center gap-2">
+                <span className="text-sm font-medium text-slate-700 whitespace-nowrap">Trạng thái:</span>
+                <select
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value as any)}
+                    className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white hover:cursor-pointer"
+                >
+                    <option value="ALL">Tất cả chuyến</option>
+                    <option value="NOT_DEPARTED">Sắp khởi hành (Chưa đi)</option>
+                    <option value="DEPARTED">Đã khởi hành (Đã đi)</option>
+                </select>
+            </div>
+       </div>
 
        {/* Loading State or Table */}
         {loading ? (

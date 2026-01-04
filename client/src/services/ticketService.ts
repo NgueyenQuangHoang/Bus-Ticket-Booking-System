@@ -61,6 +61,15 @@ interface SeatSchedule {
     seat_id?: string;
 }
 
+interface Passenger {
+    id: string;
+    ticket_id: string;
+    full_name: string;
+    phone: string;
+    email?: string;
+    identity_number?: string;
+}
+
 interface TicketResponse {
     id: string;
     user_id?: string;
@@ -92,6 +101,11 @@ export interface TicketUI {
     dropoff: string;
     seats: string[]; // Added seats array
     review?: Review;
+    passengerInfo?: {
+        fullName: string;
+        phone: string;
+        email: string;
+    };
 }
 
 export const ticketService = {
@@ -232,6 +246,120 @@ export const ticketService = {
         } catch (error) {
             console.error("Error fetching my tickets:", error);
             return [];
+        }
+    },
+
+    findTicket: async (code: string, phone: string): Promise<TicketUI | null> => {
+        try {
+            // 1. Find ticket by Code
+            const ticketRes = await api.get<TicketResponse[]>(`/tickets?code=${code}`);
+            const tickets = ticketRes as unknown as TicketResponse[];
+
+            if (!tickets || tickets.length === 0) {
+                return null;
+            }
+
+            const ticket = tickets[0];
+
+            // 2. Verify Phone in Passengers
+            const passengerRes = await api.get<Passenger[]>(`/passengers?ticket_id=${ticket.id}&phone=${phone}`);
+            const passengers = passengerRes as unknown as Passenger[];
+
+            const passenger = passengers.find(p => p.phone === phone);
+
+            if (!passenger) {
+                // Return null if phone doesn't match
+                return null;
+            }
+
+            // 3. Fetch related data to build UI model
+            // For a single ticket, we can fetch specific items or just fetch all like getMyTickets for simplicity 
+            // given the mock DB structure. To ensure consistency with the display logic, we'll fetch necessary lists.
+            // Optimization: In a real app, we'd have specific endpoints/joins.
+            const [buses, routes, stations, schedules, cities, seatPositions, allSeats] = await Promise.all([
+                api.get<Bus[]>(`/buses`),
+                api.get<Route[]>(`/routes`),
+                api.get<Station[]>(`/stations`),
+                api.get<Schedule[]>(`/schedules`),
+                api.get<City[]>('/cities'),
+                api.get<SeatPosition[]>('/seat_positions'),
+                api.get<Seat[]>('/seats')
+            ]);
+
+            const busesArr = buses as unknown as Bus[];
+            const routesArr = routes as unknown as Route[];
+            const stationsArr = stations as unknown as Station[];
+            const schedulesArr = schedules as unknown as Schedule[];
+            const citiesArr = cities as unknown as City[];
+            const seatPositionsArr = seatPositions as unknown as SeatPosition[];
+            const allSeatsArr = allSeats as unknown as Seat[];
+
+            // 4. Map Data
+            const schedule = schedulesArr.find(s => s.id === ticket.schedule_id);
+            if (!schedule) return null;
+
+            const bus = busesArr.find(b => b.id === schedule.bus_id);
+            const route = routesArr.find(r => r.id === schedule.route_id);
+
+            // Fetch seats
+            const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
+            const seatSchedules = seatSchedulesRes as unknown as SeatSchedule[];
+
+            const seatNames = seatSchedules.map(s => {
+                const sId = s.seat_id;
+                if (!sId) return "Ghe";
+
+                const pos = seatPositionsArr.find(p => p.id === sId);
+                if (pos && pos.label) return pos.label;
+
+                if (bus) {
+                    const seat = allSeatsArr.find(st => st.id === sId && st.bus_id === bus.id);
+                    if (seat) return seat.seat_label || seat.seat_number;
+                }
+                return s.seat_name || sId;
+            });
+            const uniqueSeatNames = Array.from(new Set(seatNames));
+
+            const depStation = stationsArr.find(s => String(s.id) === String(route?.departure_station_id));
+            const arrStation = stationsArr.find(s => String(s.id) === String(route?.arrival_station_id));
+
+            const depCity = citiesArr.find(c => String(c.id) === String(depStation?.city_id));
+            const arrCity = citiesArr.find(c => String(c.id) === String(arrStation?.city_id));
+
+            const routeName = (depCity && arrCity)
+                ? `${depCity.city_name} - ${arrCity.city_name}`
+                : (depStation && arrStation)
+                    ? `${depStation.station_name} - ${arrStation.station_name}`
+                    : "Tuyến đường không xác định";
+
+            const departureDate = new Date(schedule.departure_time);
+
+            return {
+                id: ticket.id,
+                code: ticket.code || ticket.id,
+                status: ticket.status,
+                busInfo: {
+                    id: bus?.id || "",
+                    time: departureDate.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+                    date: departureDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+                    name: bus?.name || "Xe khách",
+                    route: routeName,
+                    price: ticket.total_price || ticket.price,
+                    type: "Giường nằm" // Should ideally fetch from vehicle_types
+                },
+                pickup: depStation?.station_name || "Điểm đón",
+                dropoff: arrStation?.station_name || "Điểm trả",
+                seats: uniqueSeatNames.length > 0 ? uniqueSeatNames : ["N/A"],
+                passengerInfo: {
+                    fullName: passenger.full_name,
+                    phone: passenger.phone,
+                    email: passenger.email || ""
+                }
+            };
+
+        } catch (error) {
+            console.error("Error finding ticket:", error);
+            return null;
         }
     }
 };
