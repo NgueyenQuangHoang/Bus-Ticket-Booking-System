@@ -164,6 +164,15 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
 
   // --- Handlers ---
 
+  const handleBusChange = (val: string | number) => {
+      handleChange("bus_id", val);
+      // Auto-populate total_seats based on bus capacity
+      const selectedBus = buses.find(b => String(b.id) === String(val));
+      if (selectedBus && selectedBus.capacity) {
+          setFormData(prev => ({ ...prev, total_seats: selectedBus.capacity }));
+      }
+  };
+
   const handleCityFromChange = async (val: string | number) => {
       setSelectedCityFrom(val);
       setSelectedStationFrom(null);
@@ -330,7 +339,7 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
                     label="Xe"
                     options={buses.map(b => ({ label: `${b.name} - ${b.license_plate}`, value: b.id || "" }))}
                     value={formData.bus_id || 0}
-                    onChange={(val) => handleChange("bus_id", val)}
+                    onChange={(val) => handleBusChange(val)}
                     placeholder="Chọn xe"
                 />
                 {errors.bus_id && <p className="text-red-500 text-xs mt-1 ml-1">{errors.bus_id}</p>}
@@ -359,26 +368,18 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
 
              {/* Seats - Standard Inputs */}
              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Tổng ghế</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Tổng ghế (Tự động)</label>
                 <input
                     type="text"
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${errors.total_seats ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
+                    className={`w-full px-3 py-2 border rounded-lg bg-slate-100 text-slate-500 cursor-not-allowed outline-none transition-all border-slate-300`}
                     value={formData.total_seats}
-                    onChange={(e) => handleChange("total_seats",e.target.value)}
+                    readOnly
+                    disabled
                 />
                  {errors.total_seats && <p className="text-red-500 text-xs mt-1 ml-1">{errors.total_seats}</p>}
             </div>
 
-             <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Ghế trống</label>
-                <input
-                    type="text"
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all ${errors.available_seat ? 'border-red-500 bg-red-50' : 'border-slate-300'}`}
-                    value={formData.available_seat}
-                    onChange={(e) => handleChange("available_seat",e.target.value)}
-                />
-                 {errors.available_seat && <p className="text-red-500 text-xs mt-1 ml-1">{errors.available_seat}</p>}
-            </div>
+            {/* Available Seat Removed as per request */}
           </div>
 
           <div className="flex items-center gap-3 pt-4 border-t border-slate-100 mt-4">
