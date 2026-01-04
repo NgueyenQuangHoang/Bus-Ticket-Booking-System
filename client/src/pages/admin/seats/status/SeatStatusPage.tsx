@@ -3,8 +3,12 @@ import {
     seatStatusService, 
     type Route, 
     type Schedule, 
-    type SeatStatusData 
+    type SeatStatusData,
+    type Bus,
+    type BusCompany
 } from "../../../../services/seatStatusService";
+import { stationService } from "../../../../services/stationService";
+import type { Station } from "../../../../types/station";
 
 // --- Types ---
 type SeatStatus = "AVAILABLE" | "BOOKED" | "HELD";
@@ -72,31 +76,25 @@ function SelectField({
   onChange,
   options,
   ariaLabel,
-  disabled = false,
-  placeholder
 }: {
   value: string;
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
   ariaLabel: string;
-  disabled?: boolean;
-  placeholder?: string;
 }) {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <select
         aria-label={ariaLabel}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
         className={[
-          "w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 py-3",
-          "text-sm text-slate-700 shadow-sm outline-none",
-          "focus:border-slate-300 focus:ring-2 focus:ring-slate-200 transition-all",
-          disabled ? "bg-slate-100 text-slate-400 cursor-not-allowed" : ""
+          "w-full appearance-none rounded-xl border border-slate-200 bg-white",
+          "px-4 py-3 pr-10 text-sm text-slate-700",
+          "outline-none",
+          "focus:border-slate-300 focus:ring-4 focus:ring-slate-100",
         ].join(" ")}
       >
-        {placeholder && <option value="" disabled>{placeholder}</option>}
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
@@ -104,13 +102,9 @@ function SelectField({
         ))}
       </select>
 
-      {/* caret */}
       <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-        <svg width="18" height="18" viewBox="0 0 24 24" className={`text-slate-400 ${disabled ? 'opacity-50' : ''}`}>
-          <path
-            fill="currentColor"
-            d="M7 10l5 5l5-5H7z"
-          />
+        <svg width="18" height="18" viewBox="0 0 24 24" className="text-slate-400">
+          <path fill="currentColor" d="M7 10l5 5l5-5H7z" />
         </svg>
       </div>
     </div>
@@ -120,9 +114,14 @@ function SelectField({
 // --- Main Component ---
 
 export default function SeatStatusPage() {
+  const [busCompanies, setBusCompanies] = useState<BusCompany[]>([]);
+  const [buses, setBuses] = useState<Bus[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
+  const [stations, setStations] = useState<Station[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
 
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>("");
+  const [selectedBusId, setSelectedBusId] = useState<string>("");
   const [selectedRouteId, setSelectedRouteId] = useState<string>("");
   const [selectedScheduleId, setSelectedScheduleId] = useState<string>("");
 
@@ -135,24 +134,66 @@ export default function SeatStatusPage() {
       available: number;
   } | null>(null);
 
-  // 1. Fetch Routes on Mount
+  // 1. Fetch Companies and Routes on Mount
   useEffect(() => {
-    seatStatusService.getRoutes().then((data) => {
-        setRoutes(data);
-    });
+    const fetchData = async () => {
+        try {
+            const [routesData, companiesData, stationsData] = await Promise.all([
+                seatStatusService.getRoutes(),
+                seatStatusService.getBusCompanies(),
+                stationService.getAllStations()
+            ]);
+            setRoutes(routesData);
+            setBusCompanies(companiesData);
+            setStations(stationsData);
+        } catch (error) {
+            console.error("Error fetching initial data", error);
+        }
+    };
+    fetchData();
   }, []);
 
-  const handleRouteChange = (routeId: string) => {
-      setSelectedRouteId(routeId);
-      // Reset dependent states
+  // Handlers
+  const handleCompanyChange = (companyId: string) => {
+      setSelectedCompanyId(companyId);
+      // Reset dependents
+      setBuses([]);
+      setSelectedBusId("");
       setSchedules([]);
       setSelectedScheduleId("");
       setSeatData(null);
-      
-      if (routeId) {
-          seatStatusService.getSchedulesByRoute(routeId).then((data) => {
-              setSchedules(data);
+
+      if (companyId) {
+          seatStatusService.getBusesByCompany(companyId).then(setBuses);
+      }
+  };
+
+  const handleBusChange = (busId: string) => {
+      setSelectedBusId(busId);
+      updateSchedules(busId, selectedRouteId);
+      setSelectedScheduleId("");
+      setSeatData(null);
+  };
+
+  const handleRouteChange = (routeId: string) => {
+      setSelectedRouteId(routeId);
+      updateSchedules(selectedBusId, routeId);
+      setSelectedScheduleId("");
+      setSeatData(null);
+  };
+
+  const updateSchedules = (busId: string, routeId: string) => {
+      setSchedules([]);
+      if (busId && routeId) {
+          // If both selected, fetch by Bus and filter by Route (or vice versa)
+          seatStatusService.getSchedulesByBus(busId).then(data => {
+              const filtered = data.filter(s => s.route_id === routeId);
+              setSchedules(filtered);
           });
+      } else if (busId) {
+          seatStatusService.getSchedulesByBus(busId).then(setSchedules);
+      } else if (routeId) {
+          seatStatusService.getSchedulesByRoute(routeId).then(setSchedules);
       }
   };
 
@@ -182,10 +223,26 @@ export default function SeatStatusPage() {
     };
   }, [seatData]);
 
-  // Prepare Options for Selects
-  const routeOptions = useMemo(() => 
-      routes.map(r => ({ value: r.id, label: `Tuyến ${r.id}: ${r.description}` })), 
-  [routes]);
+  // Options
+  const companyOptions = useMemo(() => 
+    busCompanies.map(c => ({ value: c.id, label: c.company_name })), 
+  [busCompanies]);
+
+  const busOptions = useMemo(() => 
+    buses.map(b => ({ value: b.id, label: b.name })), 
+  [buses]);
+
+  const routeOptions = useMemo(() => {
+    const stationMap = new Map(stations.map(s => [String(s.id), s.station_name]));
+    return routes.map((r, i) => {
+        const from = stationMap.get(String(r.departure_station_id)) || "?";
+        const to = stationMap.get(String(r.arrival_station_id)) || "?";
+        return { 
+            value: r.id, 
+            label: `Tuyến ${i + 1}: ${from} → ${to}` 
+        };
+    });
+  }, [routes, stations]);
 
   const scheduleOptions = useMemo(() => 
       schedules.map(s => ({ 
@@ -210,22 +267,31 @@ export default function SeatStatusPage() {
         </div>
 
         {/* Filters */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm mb-6">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4 mb-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            <SelectField
+              ariaLabel="Chọn nhà xe"
+              value={selectedCompanyId}
+              onChange={handleCompanyChange}
+              options={[{ value: "", label: "-- Chọn Nhà xe --" }, ...companyOptions]}
+            />
+            <SelectField
+              ariaLabel="Chọn loại xe"
+              value={selectedBusId}
+              onChange={handleBusChange}
+              options={[{ value: "", label: "-- Chọn Xe --" }, ...busOptions]}
+            />
             <SelectField
               ariaLabel="Chọn tuyến đường"
               value={selectedRouteId}
               onChange={handleRouteChange}
-              options={routeOptions}
-              placeholder="-- Chọn Tuyến đường --"
+              options={[{ value: "", label: "-- Chọn Tuyến đường --" }, ...routeOptions]}
             />
-            <SelectField
+             <SelectField
               ariaLabel="Chọn chuyến xe"
               value={selectedScheduleId}
               onChange={handleScheduleChange}
-              options={scheduleOptions}
-              disabled={!selectedRouteId}
-              placeholder="-- Chọn Chuyến xe --"
+              options={[{ value: "", label: "-- Chọn Chuyến xe --" }, ...scheduleOptions]}
             />
           </div>
         </div>
@@ -249,23 +315,27 @@ export default function SeatStatusPage() {
                 {/* Table */}
                 <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
                     <div className="border-b border-slate-200 bg-slate-50 px-6 py-3">
-                        <div className="grid grid-cols-2 text-sm font-semibold text-slate-700">
-                        <div>Ghế</div>
-                        <div>Trạng thái</div>
+                        <div className="grid grid-cols-12 text-sm font-semibold text-slate-700">
+                            <div className="col-span-3">Ghế</div>
+                            <div className="col-span-3">Trạng thái</div>
+                            <div className="col-span-6">Ghi chú</div>
                         </div>
                     </div>
 
                     <ul className="divide-y divide-slate-100 max-h-[600px] overflow-y-auto">
                         {seatData.seats.filter(s => !!s.position.label).map((s) => (
                         <li key={s.position.id} className="px-6 py-4">
-                            <div className="grid grid-cols-2 items-center">
-                            <div className="text-sm font-medium text-slate-800">
-                                {s.position.label}
-                                {s.position.is_driver_seat && " (Tài xế)"}
-                            </div>
-                            <div>
-                                <StatusPill status={mapStatus(s.status)} />
-                            </div>
+                            <div className="grid grid-cols-12 items-center">
+                                <div className="col-span-3 text-sm font-medium text-slate-800">
+                                    {s.position.label}
+                                    {s.position.is_driver_seat && " (Tài xế)"}
+                                </div>
+                                <div className="col-span-3">
+                                    <StatusPill status={mapStatus(s.status)} />
+                                </div>
+                                <div className="col-span-6 text-sm text-slate-500 break-words">
+                                    {s.note || "-"}
+                                </div>
                             </div>
                         </li>
                         ))}
