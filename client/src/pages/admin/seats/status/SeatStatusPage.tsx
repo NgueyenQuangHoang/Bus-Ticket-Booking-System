@@ -76,11 +76,13 @@ function SelectField({
   onChange,
   options,
   ariaLabel,
+  disabled = false,
 }: {
   value: string;
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
   ariaLabel: string;
+  disabled?: boolean;
 }) {
   return (
     <div className="relative w-full">
@@ -88,11 +90,13 @@ function SelectField({
         aria-label={ariaLabel}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
         className={[
           "w-full appearance-none rounded-xl border border-slate-200 bg-white",
           "px-4 py-3 pr-10 text-sm text-slate-700",
           "outline-none",
           "focus:border-slate-300 focus:ring-4 focus:ring-slate-100",
+          "disabled:bg-slate-100 disabled:text-slate-400"
         ].join(" ")}
       >
         {options.map((opt) => (
@@ -114,15 +118,14 @@ function SelectField({
 // --- Main Component ---
 
 export default function SeatStatusPage() {
-  const [busCompanies, setBusCompanies] = useState<BusCompany[]>([]);
-  const [buses, setBuses] = useState<Bus[]>([]);
+  const [allBusCompanies, setAllBusCompanies] = useState<BusCompany[]>([]);
+  const [allBuses, setAllBuses] = useState<Bus[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [stations, setStations] = useState<Station[]>([]);
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [allSchedules, setAllSchedules] = useState<Schedule[]>([]);
 
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>("");
   const [selectedBusId, setSelectedBusId] = useState<string>("");
-  const [selectedRouteId, setSelectedRouteId] = useState<string>("");
   const [selectedScheduleId, setSelectedScheduleId] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
@@ -134,18 +137,22 @@ export default function SeatStatusPage() {
       available: number;
   } | null>(null);
 
-  // 1. Fetch Companies and Routes on Mount
+  // 1. Fetch All Data on Mount
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const [routesData, companiesData, stationsData] = await Promise.all([
+            const [routesData, companiesData, stationsData, schedulesData, busesData] = await Promise.all([
                 seatStatusService.getRoutes(),
                 seatStatusService.getBusCompanies(),
-                stationService.getAllStations()
+                stationService.getAllStations(),
+                seatStatusService.getAllSchedules(),
+                seatStatusService.getAllBuses()
             ]);
             setRoutes(routesData);
-            setBusCompanies(companiesData);
+            setAllBusCompanies(companiesData);
             setStations(stationsData);
+            setAllSchedules(schedulesData);
+            setAllBuses(busesData);
         } catch (error) {
             console.error("Error fetching initial data", error);
         }
@@ -153,48 +160,84 @@ export default function SeatStatusPage() {
     fetchData();
   }, []);
 
+  // 2. Compute Filtered Options
+  const { validCompanyOptions, validBusOptions, scheduleOptions } = useMemo(() => {
+      const now = new Date();
+      
+      // Filter Active Schedules
+      const activeSchedules = allSchedules.filter(s => new Date(s.departure_time) >= now);
+
+      // Unique Bus IDs with active schedules
+      const activeBusIds = new Set(activeSchedules.map(s => s.bus_id));
+
+      // Filtered Buses (must have active schedule)
+      const validBuses = allBuses.filter(b => activeBusIds.has(b.id));
+      
+      // Unique Company IDs from valid buses
+      const activeCompanyIds = new Set(validBuses.map(b => b.bus_company_id));
+
+      // 1. Company Options
+      const companyOpts = allBusCompanies
+          .filter(c => activeCompanyIds.has(c.id))
+          .map(c => ({ value: c.id, label: c.company_name }));
+
+      // 2. Bus Options (Dependent on selected Company)
+      const busOpts = validBuses
+          .filter(b => !selectedCompanyId || b.bus_company_id === selectedCompanyId)
+          .map(b => ({ value: b.id, label: b.name }));
+
+      // 3. Schedule Options (Dependent on selected Bus)
+      // Showing active schedules for the selected bus
+      const busSchedules = activeSchedules.filter(s => s.bus_id === selectedBusId);
+      
+      // Helper maps for labels
+      const stationMap = new Map(stations.map(s => [String(s.id), s.station_name]));
+      const routeMap = new Map(routes.map(r => [String(r.id), r]));
+
+      const scheduleOpts = busSchedules.map(s => {
+          const route = routeMap.get(String(s.route_id));
+          
+          let routeLabel = "Unknown Route";
+          if (route) {
+              const from = stationMap.get(String(route.departure_station_id)) || "?";
+              const to = stationMap.get(String(route.arrival_station_id)) || "?";
+              routeLabel = `${from} → ${to}`;
+          }
+
+          const time = new Date(s.departure_time).toLocaleString('vi-VN', {
+              hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric'
+          });
+
+          return {
+              value: s.id,
+              label: `${time} | ${routeLabel}`
+          };
+      });
+
+      // Sort schedules by time
+      scheduleOpts.sort((a, b) => a.label.localeCompare(b.label));
+
+      return {
+          validCompanyOptions: companyOpts,
+          validBusOptions: busOpts,
+          scheduleOptions: scheduleOpts
+      };
+
+  }, [allSchedules, allBuses, allBusCompanies, selectedCompanyId, selectedBusId, stations, routes]);
+
+
   // Handlers
   const handleCompanyChange = (companyId: string) => {
       setSelectedCompanyId(companyId);
-      // Reset dependents
-      setBuses([]);
       setSelectedBusId("");
-      setSchedules([]);
       setSelectedScheduleId("");
       setSeatData(null);
-
-      if (companyId) {
-          seatStatusService.getBusesByCompany(companyId).then(setBuses);
-      }
   };
 
   const handleBusChange = (busId: string) => {
       setSelectedBusId(busId);
-      updateSchedules(busId, selectedRouteId);
       setSelectedScheduleId("");
       setSeatData(null);
-  };
-
-  const handleRouteChange = (routeId: string) => {
-      setSelectedRouteId(routeId);
-      updateSchedules(selectedBusId, routeId);
-      setSelectedScheduleId("");
-      setSeatData(null);
-  };
-
-  const updateSchedules = (busId: string, routeId: string) => {
-      setSchedules([]);
-      if (busId && routeId) {
-          // If both selected, fetch by Bus and filter by Route (or vice versa)
-          seatStatusService.getSchedulesByBus(busId).then(data => {
-              const filtered = data.filter(s => s.route_id === routeId);
-              setSchedules(filtered);
-          });
-      } else if (busId) {
-          seatStatusService.getSchedulesByBus(busId).then(setSchedules);
-      } else if (routeId) {
-          seatStatusService.getSchedulesByRoute(routeId).then(setSchedules);
-      }
   };
 
   const handleScheduleChange = (scheduleId: string) => {
@@ -223,38 +266,10 @@ export default function SeatStatusPage() {
     };
   }, [seatData]);
 
-  // Options
-  const companyOptions = useMemo(() => 
-    busCompanies.map(c => ({ value: c.id, label: c.company_name })), 
-  [busCompanies]);
-
-  const busOptions = useMemo(() => 
-    buses.map(b => ({ value: b.id, label: b.name })), 
-  [buses]);
-
-  const routeOptions = useMemo(() => {
-    const stationMap = new Map(stations.map(s => [String(s.id), s.station_name]));
-    return routes.map((r, i) => {
-        const from = stationMap.get(String(r.departure_station_id)) || "?";
-        const to = stationMap.get(String(r.arrival_station_id)) || "?";
-        return { 
-            value: r.id, 
-            label: `Tuyến ${i + 1}: ${from} → ${to}` 
-        };
-    });
-  }, [routes, stations]);
-
-  const scheduleOptions = useMemo(() => 
-      schedules.map(s => ({ 
-          value: s.id, 
-          label: `${new Date(s.departure_time).toLocaleString('vi-VN')} (${s.available_seats} chỗ trống)` 
-      })), 
-  [schedules]);
-
   // Map service status to UI Status
   const mapStatus = (status: 'AVAILABLE' | 'BOOKED' | 'HOLD'): SeatStatus => {
       if (status === 'HOLD') return 'HELD';
-      return status; // 'AVAILABLE' | 'BOOKED' match
+      return status;
   };
 
   return (
@@ -268,30 +283,27 @@ export default function SeatStatusPage() {
 
         {/* Filters */}
         <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4 mb-6">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <SelectField
               ariaLabel="Chọn nhà xe"
               value={selectedCompanyId}
               onChange={handleCompanyChange}
-              options={[{ value: "", label: "-- Chọn Nhà xe --" }, ...companyOptions]}
+              options={[{ value: "", label: "-- Chọn Nhà xe --" }, ...validCompanyOptions]}
             />
             <SelectField
               ariaLabel="Chọn loại xe"
               value={selectedBusId}
               onChange={handleBusChange}
-              options={[{ value: "", label: "-- Chọn Xe --" }, ...busOptions]}
+              options={[{ value: "", label: "-- Chọn Xe --" }, ...validBusOptions]}
+              disabled={!selectedCompanyId && validCompanyOptions.length > 0} 
             />
-            <SelectField
-              ariaLabel="Chọn tuyến đường"
-              value={selectedRouteId}
-              onChange={handleRouteChange}
-              options={[{ value: "", label: "-- Chọn Tuyến đường --" }, ...routeOptions]}
-            />
+              {/* Note: I removed disabled check for just company selected, allowing to see all valid buses if no company selected is also an option, but typical flow is hierarchical. Actually my filter logic allows specific bus select even if filtering by company. But let's keep it simple. */}
              <SelectField
               ariaLabel="Chọn chuyến xe"
               value={selectedScheduleId}
               onChange={handleScheduleChange}
               options={[{ value: "", label: "-- Chọn Chuyến xe --" }, ...scheduleOptions]}
+              disabled={!selectedBusId}
             />
           </div>
         </div>
