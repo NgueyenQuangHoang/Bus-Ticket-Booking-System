@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import Swal from "sweetalert2";
 import type { Review } from "../../../../../services/reviewService";
+import { Close } from "@mui/icons-material";
 
 interface ReviewModalProps {
   isOpen: boolean;
@@ -82,7 +83,12 @@ export default function ReviewModal({ isOpen, onClose, onSubmit, ticket, initial
           <h3 className="text-lg font-bold text-gray-800">
             {initialData ? "Chỉnh sửa đánh giá" : "Viết nhận xét chuyến đi"}
           </h3>
-          
+          <button 
+            onClick={handleCancel}
+            className="hover:text-gray-600 transition-colors p-1 hover:bg-gray/10 rounded-full hover:cursor-pointer bg-gray-100 hover:bg-gray-200"
+          >
+            <Close />
+          </button>
         </div>
 
         {/* CONTENT - SCROLLABLE */}

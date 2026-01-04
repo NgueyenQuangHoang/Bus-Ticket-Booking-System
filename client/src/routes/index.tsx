@@ -61,13 +61,8 @@ export const router = createBrowserRouter([
       { path: "detailRoute", element: <RouteDetailPage /> },
       { path: "bookingConfirmation", element: <BookingConfirmation /> },
       { path: "check-ticket", element: <CheckTicket /> },
-      { 
-        element: <ProtectedRoute requiredRole="CUSTOMER" />,
-        children: [
-          { path: "accountProfile", element: <AccountProfile /> },
-          { path: "my-tickets", element: <MyTicketsPage /> },
-        ]
-      },
+      { path: "accountProfile", element: <AccountProfile /> },
+      { path: "my-tickets", element: <MyTicketsPage /> },
     ],
   },
   {

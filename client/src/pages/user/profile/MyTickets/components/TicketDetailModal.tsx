@@ -22,7 +22,7 @@ export default function TicketDetailModal({ isOpen, onClose, ticket }: TicketDet
           <h2 className="text-lg font-bold">Chi tiết vé xe</h2>
           <button 
             onClick={onClose}
-            className="text-white/80 hover:text-white transition-colors p-1 hover:bg-white/10 rounded-full"
+            className="text-white/80 hover:text-white transition-colors p-1 hover:bg-white/10 rounded-full hover:cursor-pointer"
           >
             <Close />
           </button>
@@ -100,7 +100,7 @@ export default function TicketDetailModal({ isOpen, onClose, ticket }: TicketDet
         <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-center">
             <button 
                 onClick={onClose}
-                className="px-6 py-2 bg-white border border-gray-200 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors shadow-sm text-sm"
+                className="px-6 py-2 bg-white border border-gray-200 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors shadow-sm text-sm hover:cursor-pointer"
             >
                 Đóng
             </button>

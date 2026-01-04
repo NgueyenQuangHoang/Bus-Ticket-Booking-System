@@ -12,6 +12,12 @@ export default function AccountProfile() {
   const [phone] = useState("0349***"); // KHÓA SỐ ĐIỆN THOẠI
   const [birthday, setBirthday] = useState("");
 
+  // Get User from LocalStorage
+  const userString = localStorage.getItem("user");
+  const currentUser = userString ? JSON.parse(userString) : null;
+
+
+
   const [errors, setErrors] = useState({
     name: "",
     birthday: "",
@@ -38,6 +44,25 @@ export default function AccountProfile() {
       alert("Lưu thông tin thành công!");
     }
   };
+
+  if (!currentUser) {
+    return (
+      <section className="bg-[#f5f7fa]">
+        <div className="max-w-[1024px] mx-auto px-3 py-6 [@media(min-width:391px)]:px-4 [@media(min-width:769px)]:px-0">
+          <div className="grid gap-6 grid-cols-1 [@media(min-width:391px)]:grid-cols-[260px_1fr] items-start">
+            <ProfileSidebar />
+            <div className="bg-white rounded p-12 text-center shadow-sm">
+                <div className="mx-auto w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-4">
+                    <AccountCircleIcon sx={{ fontSize: 32 }} />
+                </div>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">Vui lòng đăng nhập</h3>
+                <p className="text-gray-500 mb-6">Bạn cần đăng nhập để xem và chỉnh sửa thông tin tài khoản.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-[#f5f7fa]">
