@@ -12,23 +12,27 @@ export interface RegisterResponse {
 }
 
 export const authService = {
-    login: async (credentials: Pick<User, 'email' | 'password'>): Promise<User | undefined> => {
+    login: async (credentials: Pick<User, 'email' | 'password'>): Promise<Omit<User, 'password'> | undefined> => {
         try {
-            const { email, password } = credentials
+            const { email, password: pass } = credentials
             const response: User[] = await api.get('/users')
-            const data = response.find((item) => item.email === email && item.password === password)
+            const data = response.find((item) => item.email === email && item.password === pass)
+            
             if (data) {
-                localStorage.setItem('user', JSON.stringify(data))
+                const {password, ...dataReturn} = data
+                console.log(password);
+                localStorage.setItem('user', JSON.stringify(dataReturn))
                 localStorage.setItem('isLogin', JSON.stringify(true))
+                return dataReturn
             }
-            return data
+            return undefined
         } catch (error) {
             console.error(error);
             return undefined
         }
     },
 
-    register: async (userData: Omit<User, 'status' | 'user_id' | 'created_at' | 'updated_at'>): Promise<User | undefined> => {
+    register: async (userData: Omit<User, 'status' |  'created_at' | 'updated_at'>): Promise<User | undefined> => {
         try {
             const getUser: User[] = await api.get('users')
             const { email } = userData
@@ -37,16 +41,15 @@ export const authService = {
                 alert('Da ton tai email')
                 return undefined
             }
-            const user_id = uuidv4()
+            const {id: user_id}= userData 
             const response: User = await api.post('users', {
                 ...userData,
                 created_at: new Date(),
                 updated_at: new Date(),
                 status: "ACTIVE",
-                user_id,
             })
             const newId = uuidv4()
-            await api.post('user_role', { user_id, role_id: 1, id: newId })
+            await api.post('user_role', { user_id, role_id: '1', id: newId })
             localStorage.setItem('user', JSON.stringify(response))
             localStorage.setItem('isLogin', JSON.stringify(true))
             return response
