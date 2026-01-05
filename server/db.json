@@ -1210,7 +1210,7 @@
       "id": "3",
       "bus_company_id": "3",
       "vehicle_type_id": "3",
-      "layout_id": "c9c8",
+      "layout_id": "349d",
       "name": "Vũ Linh – Limousine 9 chỗ VIP",
       "license_plate": "51C-99999",
       "capacity": 9,
@@ -1444,7 +1444,8 @@
       "total_columns": 4,
       "floor_count": 2,
       "created_at": "2025-01-10T08:00:00",
-      "updated_at": "2025-01-10T08:00:00"
+      "updated_at": "2025-01-10T08:00:00",
+      "bus_company_id": "1"
     },
     {
       "id": "102",
@@ -1453,7 +1454,8 @@
       "total_columns": 2,
       "floor_count": 2,
       "created_at": "2025-01-11T08:00:00",
-      "updated_at": "2025-01-11T08:00:00"
+      "updated_at": "2025-01-11T08:00:00",
+      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c"
     },
     {
       "id": "103",
@@ -1462,7 +1464,8 @@
       "total_columns": 5,
       "floor_count": 1,
       "created_at": "2025-01-12T08:00:00",
-      "updated_at": "2025-01-12T08:00:00"
+      "updated_at": "2025-01-12T08:00:00",
+      "bus_company_id": "4"
     },
     {
       "id": "104",
@@ -1480,7 +1483,8 @@
       "total_columns": 4,
       "floor_count": 1,
       "created_at": "2025-01-14T08:00:00",
-      "updated_at": "2025-01-14T08:00:00"
+      "updated_at": "2025-01-14T08:00:00",
+      "bus_company_id": "2"
     },
     {
       "id": "fd4b",
@@ -1528,7 +1532,8 @@
       "layout_name": "Giường nằm 40 chỗ",
       "total_rows": 10,
       "total_columns": 4,
-      "floor_count": 2
+      "floor_count": 2,
+      "bus_company_id": "32e41e08-dc9b-48b6-b9b0-fedd6f013259"
     },
     {
       "id": "2a63",
@@ -1544,7 +1549,8 @@
       "layout_name": "Limousine 34 Phòng Đơn",
       "total_rows": 7,
       "total_columns": 5,
-      "floor_count": 2
+      "floor_count": 2,
+      "bus_company_id": "5"
     },
     {
       "id": "9338",
@@ -1552,7 +1558,8 @@
       "total_rows": 10,
       "total_columns": 4,
       "floor_count": 2,
-      "is_template": false
+      "is_template": false,
+      "bus_company_id": "2"
     },
     {
       "id": "c9c8",
@@ -1560,6 +1567,15 @@
       "total_rows": 10,
       "total_columns": 4,
       "floor_count": 2,
+      "is_template": false,
+      "bus_company_id": "3"
+    },
+    {
+      "id": "349d",
+      "layout_name": "vip 9 chỗ",
+      "total_rows": 5,
+      "total_columns": 2,
+      "floor_count": 1,
       "is_template": false
     }
   ],
@@ -1648,6 +1664,158 @@
       "is_stair": false,
       "label": "B2",
       "seat_type_id": ""
+    },
+    {
+      "id": "c97f",
+      "position_id": "175686b0-55fb-4f9d-844a-79e2888a16fe",
+      "layout_id": "9338",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B3",
+      "seat_type_id": "0364"
+    },
+    {
+      "id": "d0c5",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 2,
+      "is_door": true,
+      "label": "Cửa",
+      "layout_id": "349d"
+    },
+    {
+      "id": "56f8",
+      "position_id": "07f64f50-fca9-4182-afef-96c6db9bb859",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": true,
+      "is_door": false,
+      "is_stair": false,
+      "label": "",
+      "seat_type_id": ""
+    },
+    {
+      "id": "4620",
+      "position_id": "21b59e97-a496-4608-813f-f805351e55fe",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": true,
+      "is_stair": false,
+      "label": "",
+      "seat_type_id": ""
+    },
+    {
+      "id": "bc26",
+      "position_id": "d2c57ea9-501e-4814-bf25-341657fb546a",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A1",
+      "seat_type_id": "05b2"
+    },
+    {
+      "id": "8454",
+      "position_id": "debd8f3e-dfd7-475c-9ea3-b2905b2b04fa",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B2",
+      "seat_type_id": "05b2"
+    },
+    {
+      "id": "8a32",
+      "position_id": "3ecf5b19-6644-4faf-810f-5f888c1bb9cd",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A2",
+      "seat_type_id": "05b2"
+    },
+    {
+      "id": "bad0",
+      "position_id": "b42c9e5a-9f88-4d49-b17e-c9aa28bb2ad9",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B2",
+      "seat_type_id": "05b2"
+    },
+    {
+      "id": "7255",
+      "position_id": "67429773-8d1b-4004-84bd-45859a7c3329",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A3",
+      "seat_type_id": "05b2"
+    },
+    {
+      "id": "3d00",
+      "position_id": "7a5d25e8-9038-4fee-bea2-4bfdff8fb5e6",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B3",
+      "seat_type_id": "05b2"
+    },
+    {
+      "id": "73dd",
+      "position_id": "1faa1fe0-35a5-4485-bbfd-6f250a06042e",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A4",
+      "seat_type_id": "05b2"
+    },
+    {
+      "id": "86d5",
+      "position_id": "014388e8-8419-4680-9025-d2b91debd9f0",
+      "layout_id": "349d",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 2,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "B4",
+      "seat_type_id": "05b2"
     }
   ],
   "schedules": [
@@ -1904,28 +2072,26 @@
       "updated_at": "2026-01-01"
     },
     {
-      "id": "SCH_MQ_001",
       "route_id": "10",
       "bus_id": "80a0525f-078a-457c-a546-cd931e143e02",
-      "departure_time": "2026-01-05T07:30",
-      "arrival_time": "2026-01-05T10:00",
-      "total_seats": 70,
-      "available_seats": 66,
+      "total_seats": 34,
+      "available_seats": 34,
       "status": "AVAILABLE",
-      "created_at": "2026-01-01",
-      "updated_at": "2026-01-01"
+      "departure_time": "2026-01-05T07:30",
+      "arrival_time": "2026-01-06T03:30",
+      "updated_at": "2026-01-04T13:34:07.960Z",
+      "id": "SCH_MQ_001"
     },
     {
-      "id": "schedule_hcm_vt_20260105",
       "route_id": "11",
-      "bus_id": "4",
-      "departure_time": "2026-01-05T09:00",
-      "arrival_time": "2026-01-05T11:30",
-      "total_seats": 45,
+      "bus_id": "5",
+      "total_seats": 34,
       "available_seats": 45,
       "status": "AVAILABLE",
-      "created_at": "2026-01-03T12:00:00.000Z",
-      "updated_at": "2026-01-03T12:00:00.000Z"
+      "departure_time": "2026-01-05T09:00",
+      "arrival_time": "2026-01-06T05:00",
+      "updated_at": "2026-01-04T13:33:28.305Z",
+      "id": "schedule_hcm_vt_20260105"
     },
     {
       "id": "schedule_vt_hcm_20260105_1530",
@@ -1950,6 +2116,30 @@
       "status": "AVAILABLE",
       "created_at": "2026-01-04T12:00:00.000Z",
       "updated_at": "2026-01-04T12:00:00.000Z"
+    },
+    {
+      "id": "2515",
+      "route_id": "5",
+      "bus_id": "2",
+      "total_seats": 34,
+      "available_seats": 40,
+      "status": "AVAILABLE",
+      "departure_time": "2026-01-07T00:00",
+      "arrival_time": "2026-01-07T16:00",
+      "updated_at": "2026-01-05T02:07:42.663Z",
+      "created_at": "2026-01-05T02:07:42.663Z"
+    },
+    {
+      "id": "a3a5",
+      "route_id": "1",
+      "bus_id": "3",
+      "total_seats": 9,
+      "available_seats": 40,
+      "status": "AVAILABLE",
+      "departure_time": "2026-01-07T01:00",
+      "arrival_time": "2026-01-08T07:00",
+      "updated_at": "2026-01-05T02:36:44.700Z",
+      "created_at": "2026-01-05T02:36:44.700Z"
     }
   ],
   "seat_schedule": [
@@ -2000,6 +2190,34 @@
     {
       "id": "1767498502282_P_mpn7x",
       "ticket_id": "1767498502272_8w2p1",
+      "full_name": "Hoàng Nguyễn",
+      "phone": "0338470809",
+      "email": "nguyenquanghoang1080@gmail.com"
+    },
+    {
+      "id": "p_ticket_01",
+      "ticket_id": "ticket_01",
+      "full_name": "Hoàng Nguyễn",
+      "phone": "0338470809",
+      "email": "nguyenquanghoang1080@gmail.com"
+    },
+    {
+      "id": "p_ticket_02",
+      "ticket_id": "ticket_02",
+      "full_name": "Hoàng Nguyễn",
+      "phone": "0338470809",
+      "email": "nguyenquanghoang1080@gmail.com"
+    },
+    {
+      "id": "p_ticket_03",
+      "ticket_id": "ticket_03",
+      "full_name": "Hoàng Nguyễn",
+      "phone": "0338470809",
+      "email": "nguyenquanghoang1080@gmail.com"
+    },
+    {
+      "id": "p_ticket_04",
+      "ticket_id": "ticket_04",
       "full_name": "Hoàng Nguyễn",
       "phone": "0338470809",
       "email": "nguyenquanghoang1080@gmail.com"

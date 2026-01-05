@@ -4,8 +4,12 @@ import {
     CreditCardOutlined, 
     DirectionsBusOutlined 
 } from '@mui/icons-material';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { useEffect } from 'react';
+import { fetchUsers } from '../../../slices/userSlice';
 
 const StatCard = ({ title, value, icon: Icon, color }: { title: string, value: string, icon: any, color: string }) => {
+    
     return (
         <div className="bg-white p-6 rounded-xl shadow-sm flex flex-col justify-between h-32 relative overflow-hidden">
             <div className="flex justify-between items-start">
@@ -62,6 +66,11 @@ const DashboardPage = () => {
         { id: 'TXN00000006', time: '09:52:13 6/12/2025', price: '450.000 đ', status: 'FAILED' },
     ];
 
+    const { users } = useAppSelector(state => state.user)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(fetchUsers())
+    }, [])
     return (
         <div className="space-y-6">
             {/* Header */}
@@ -74,7 +83,7 @@ const DashboardPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard 
                     title="Người dùng" 
-                    value="50" 
+                    value={users.length+''}
                     icon={PeopleOutline} 
                     color="text-blue-600" 
                 />

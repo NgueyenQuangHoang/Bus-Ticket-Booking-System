@@ -23,7 +23,7 @@ const modalStyle = {
 
 interface PropType {
     station: Station
-    onDelete: (id: string) => void
+    onDelete: (station: Station) => void
     onEdit: (station: Station) => void
     cities: City[]
 }
@@ -70,7 +70,7 @@ export default function StationAction({ station, onDelete, onEdit, cities }: Pro
     const handleDeleteClick = () => {
         Swal.fire({
             title: "Xác nhận xóa?",
-            text: `Bạn có chắc chắn muốn xóa ga ${station.station_name}?`,
+            text: `Bạn có chắc chắn muốn xóa ga ${station.station_name} cùng với các tuyến đường của các nhà ga này chứ?`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -79,7 +79,7 @@ export default function StationAction({ station, onDelete, onEdit, cities }: Pro
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                onDelete(station.id)
+                onDelete(station)
                 Swal.fire("Đã xóa!", "Dữ liệu đã được cập nhật.", "success");
             }
         });

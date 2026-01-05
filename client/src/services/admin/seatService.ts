@@ -94,9 +94,10 @@ const seatService = {
       const existingPositions = await api.get(`/seat_positions?layout_id=${layoutId}`) as unknown as SeatPosition[];
       
       // 2. Delete all existing positions
-      const deletePromises = existingPositions.map(pos => 
-        api.delete(`/seat_positions/${pos.position_id || pos.id}`)
-      );
+      const deletePromises = existingPositions
+        .map(pos => pos.id ?? pos.position_id)
+        .filter((id): id is string | number => id !== undefined && id !== null)
+        .map(id => api.delete(`/seat_positions/${id}`));
       await Promise.all(deletePromises);
       
       // 3. Create new positions

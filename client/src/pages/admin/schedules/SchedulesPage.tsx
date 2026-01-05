@@ -11,6 +11,7 @@ import { scheduleService } from "../../../services/scheduleService";
 import { routesService } from "../../../services/routesService";
 import busService from "../../../services/admin/busService";
 import { stationService } from "../../../services/stationService";
+import { seatStatusService } from "../../../services/seatStatusService";
 import { getStoredBusCompanyId, getStoredRole } from "../../../utils/authStorage";
 
 export default function SchedulesPage() {
@@ -21,6 +22,7 @@ export default function SchedulesPage() {
   const [data, setData] = useState<ScheduleUI[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [allRoutes, setAllRoutes] = useState<any[]>([]); // Store routes for duration lookup
 
   // Pagination State
@@ -60,57 +62,65 @@ export default function SchedulesPage() {
             ? schedules.filter((item) => {
                 const bus = busMap.get(String(item.bus_id));
                 const companyId =
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   (bus as any)?.bus_company_id ?? (bus as any)?.company_id;
                 return companyId && String(companyId) === String(busCompanyId);
               })
             : [])
         : schedules;
 
-      // Enrich Data
-      const enrichedData = scopedSchedules.map(item => {
+        // Enrich Data + pull live seat status per schedule to get accurate available/total
+        const enrichedData = await Promise.all(scopedSchedules.map(async item => {
         const route = routeMap.get(String(item.route_id));
         const bus = busMap.get(String(item.bus_id));
         
         let routeName = "Tuyến chưa xác định";
         if (route) {
-            // Try to construct descriptive name if available, else description
-            if (route.departure_station_id && route.arrival_station_id) {
-                 const dep = stationMap.get(String(route.departure_station_id));
-                 const arr = stationMap.get(String(route.arrival_station_id));
-                 if (dep && arr) {
-                     routeName = `${dep} → ${arr}`;
-                 } else {
-                     routeName = route.description || `Route #${item.route_id}`;
-                 }
-            } else {
-                 routeName = route.description || `Route #${item.route_id}`;
-            }
+          if (route.departure_station_id && route.arrival_station_id) {
+             const dep = stationMap.get(String(route.departure_station_id));
+             const arr = stationMap.get(String(route.arrival_station_id));
+             if (dep && arr) {
+               routeName = `${dep} → ${arr}`;
+             } else {
+               routeName = route.description || `Route #${item.route_id}`;
+             }
+          } else {
+             routeName = route.description || `Route #${item.route_id}`;
+          }
         }
         
-        // Format date: 2025-12-25T08:00 -> 08:00 25/12/2025
-        // Or any format the user prefers. Let's start with HH:mm dd/MM/yyyy
         let timeStr = "";
         if (item.departure_time) {
-            try {
-                const dateObj = new Date(item.departure_time);
-                if (!isNaN(dateObj.getTime())) {
-                    // Manual formatting to ensure no library issues, or use date-fns if available
-                    // Using basic JS for safety if date-fns import is tricky in replace
-                    const hh = String(dateObj.getHours()).padStart(2, '0');
-                    const mm = String(dateObj.getMinutes()).padStart(2, '0');
-                    const dd = String(dateObj.getDate()).padStart(2, '0');
-                    const Mo = String(dateObj.getMonth() + 1).padStart(2, '0');
-                    const yyyy = dateObj.getFullYear();
-                    timeStr = `${hh}:${mm} ${dd}/${Mo}/${yyyy}`;
-                }
-            } catch (e) {
-                console.warn("Invalid date", item.departure_time);
+          try {
+            const dateObj = new Date(item.departure_time);
+            if (!isNaN(dateObj.getTime())) {
+              const hh = String(dateObj.getHours()).padStart(2, '0');
+              const mm = String(dateObj.getMinutes()).padStart(2, '0');
+              const dd = String(dateObj.getDate()).padStart(2, '0');
+              const Mo = String(dateObj.getMonth() + 1).padStart(2, '0');
+              const yyyy = dateObj.getFullYear();
+              timeStr = `${hh}:${mm} ${dd}/${Mo}/${yyyy}`;
             }
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          } catch (e) {
+            console.warn("Invalid date", item.departure_time);
+          }
         }
 
-        // Map API fields to UI fields
-        // API: available_seats -> UI: available_seat
-        const availableSeat = (item as any).available_seats !== undefined ? (item as any).available_seats : item.available_seat;
+        // Default from API fields
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let availableSeat = (item as any).available_seats !== undefined ? (item as any).available_seats : item.available_seat;
+        let totalSeats = item.total_seats;
+
+        // Fetch live seat status; fallback gracefully on error
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const stats = await seatStatusService.getSeatStatusBySchedule(String((item as any).id ?? item.schedule_id ?? item.id));
+          availableSeat = stats.available;
+          totalSeats = stats.totalSeats;
+        } catch (err) {
+          console.warn("Failed to fetch seat status for schedule", item.id, err);
+        }
 
         return {
           ...item,
@@ -119,9 +129,11 @@ export default function SchedulesPage() {
           bus_license: bus ? bus.license_plate : "",
           departure_time_str: timeStr,
           available_seat: availableSeat,
-          schedule_id: (item as any).id, // Fix ID Display
+          total_seats: totalSeats,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          schedule_id: (item as any).id,
         };
-      });
+        }));
 
       setData(enrichedData);
     } catch (error) {
@@ -136,13 +148,41 @@ export default function SchedulesPage() {
     fetchSchedules();
   }, []);
 
+  // Filter State
+  const [filterStatus, setFilterStatus] = useState<'ALL' | 'DEPARTED' | 'NOT_DEPARTED'>('ALL');
+
+  // ... (existing fetchSchedules)
+
   // --- DERIVED DATA ---
   const filteredData = useMemo(() => {
-    return data.filter(item => 
-      item.route_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.bus_name?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [data, searchTerm]);
+    const now = new Date();
+    return data.filter(item => {
+      // 1. Search Term
+      const matchesSearch = 
+        item.route_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.bus_name?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      if (!matchesSearch) return false;
+
+      // 2. Status Filter
+      if (filterStatus === 'ALL') return true;
+
+      // Safe date parsing
+      const timeStr = item.departure_time; 
+      if (!timeStr) return false;
+
+      const depTime = new Date(timeStr);
+      // Check for Invalid Date
+      if (isNaN(depTime.getTime())) return false; 
+
+      if (filterStatus === 'DEPARTED') {
+          return depTime <= now;
+      } else {
+          // NOT_DEPARTED (Pending)
+          return depTime > now;
+      }
+    });
+  }, [data, searchTerm, filterStatus]);
 
   const totalPages = Math.ceil(filteredData.length / ROWS_PER_PAGE) || 1;
   
@@ -194,15 +234,15 @@ export default function SchedulesPage() {
             }
         }
 
-        // 2. Prepare payload for API (remove UI fields, map to DB schema)
+        // 2. Prepare payload for API needs to be complete
         const submitData = {
             route_id: formData.route_id,
             bus_id: formData.bus_id,
             total_seats: formData.total_seats,
-            available_seats: formData.available_seat, // Map UI -> API
+            available_seats: formData.available_seat, 
             status: formData.status,
             departure_time: isoDate,
-            arrival_time: arrivalIsoDate, // Calculated field
+            arrival_time: arrivalIsoDate,
              updated_at: new Date().toISOString(),
         };
 
@@ -212,7 +252,7 @@ export default function SchedulesPage() {
             Swal.fire("Thành công!", "Đã cập nhật lịch trình.", "success");
         } else {
             // Create new
-             const createPayload = {
+            const createPayload = {
                 ...submitData,
                 created_at: new Date().toISOString(),
             };
@@ -259,10 +299,28 @@ export default function SchedulesPage() {
          onAddClick={handleOpenCreate} 
        />
 
-       <ScheduleSearch 
-         value={searchTerm} 
-         onChange={setSearchTerm} 
-       />
+       <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+            <div className="w-full md:w-1/2">
+                <ScheduleSearch 
+                    value={searchTerm} 
+                    onChange={setSearchTerm} 
+                />
+            </div>
+            
+            <div className="w-full md:w-auto flex items-center gap-2">
+                <span className="text-sm font-medium text-slate-700 whitespace-nowrap">Trạng thái:</span>
+                <select
+                    value={filterStatus}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    onChange={(e) => setFilterStatus(e.target.value as any)}
+                    className="px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white hover:cursor-pointer"
+                >
+                    <option value="ALL">Tất cả chuyến</option>
+                    <option value="NOT_DEPARTED">Sắp khởi hành (Chưa đi)</option>
+                    <option value="DEPARTED">Đã khởi hành (Đã đi)</option>
+                </select>
+            </div>
+       </div>
 
        {/* Loading State or Table */}
         {loading ? (

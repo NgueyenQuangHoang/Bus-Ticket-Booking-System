@@ -43,6 +43,21 @@ export const fetchPopularStations = createAsyncThunk(
     }
   );
 
+export const addStation = createAsyncThunk('station/addStation', async (station: Station) => {
+  await stationService.createStation(station)
+  return station
+})
+
+export const removeStation = createAsyncThunk('station/removestation', async (id: string) => {
+  await stationService.deleteStation(id)
+  return id
+})
+
+export const updateStation = createAsyncThunk('station/updateStation', async (station: Station) => {
+  await stationService.updataStation(station)
+  return station
+} )
+
 const stationSlice = createSlice({
   name: 'station',
   initialState,
@@ -77,6 +92,22 @@ const stationSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       });
+
+      builder
+        .addCase(removeStation.fulfilled, (state, action) => {
+          state.stations = state.stations.filter(item => item.id != action.payload)
+        })
+
+      builder
+        .addCase(updateStation.fulfilled, (state, action) => {
+          const station = action.payload
+          state.stations = state.stations.map(item => item.id == station.id ? station : item)
+        })
+
+      builder
+        .addCase(addStation.fulfilled, (state, action) => {
+          state.stations = [...state.stations, action.payload]
+        })
   },
 
 });

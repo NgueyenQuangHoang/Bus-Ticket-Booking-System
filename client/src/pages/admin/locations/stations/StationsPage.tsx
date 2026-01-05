@@ -4,12 +4,17 @@ import StationTable from "./components/StationTable";
 import StationFormModal from "./components/StationFormModal";
 import { useEffect, useState, type ChangeEvent } from "react";
 import type { Station } from "../../../../types";
-import { stationService } from "../../../../services/stationService";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { addStation, fetchStations, removeStation, updateStation } from "../../../../slices/stationSlice";
+import { removeRoute } from "../../../../slices/routesSlice";
 
 export type StationsCity = (Station & { city_name?: string })
 
 export default function StationAdminPage() {
-    const [stations, setStations] = useState<StationsCity[]>([])
+    const {stations} = useAppSelector(state => state.station)
+    const {routes} = useAppSelector(state => state.routes)
+    const dispatch = useAppDispatch()
+    // const [stations, setStations] = useState<StationsCity[]>([])
     const itemPerPage = 10
     const [inputData, setInputData] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
@@ -19,35 +24,28 @@ export default function StationAdminPage() {
         setCurrentPage(page)
     }
 
-    const handleDelete = (id : string) => {
-        setStations(prev => {
-            return prev.filter(item => item.id != id)
+    const handleDelete = (station: Station) => {
+        dispatch(removeStation(station.id))
+        routes.forEach(item => {
+            if (item.arrival_station_id == station.id || item.departure_station_id === station.id) {
+                dispatch(removeRoute(item.id))
+            }
         })
-        stationService.deleteStation(id)
     }
 
     const handleEdit = (station: Station) => {
-        setStations((prev) => {
-            return prev.map(item => {
-                if (item.id == station.id){
-                    return station
-                }
-                return item
-            })
-        })
-        stationService.updataStation(station)
+        dispatch(updateStation(station))
     }
 
     const handleAdd = (station: Station) => {
-        console.log(station);
-        stationService.createStation(station)
-        setStations(prev => [...prev, station])
+        dispatch(addStation(station))
     }
 
     useEffect(() => { 
-        stationService.getAllStationWithCity().then((res) => {
-            setStations(res)
-        })
+        // stationService.getAllStationWithCity().then((res) => {
+        //     setStations(res)
+        // })
+        dispatch(fetchStations())
     }, [])
 
     const stationsRender = stations.filter((item) => {

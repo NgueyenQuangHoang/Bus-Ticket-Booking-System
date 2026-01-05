@@ -10,7 +10,7 @@ import { cityService } from '../../../../../services/cityService';
 
 interface PropType {
   stations: (Station & { city_name?: string })[]
-  onDelete: (id: string) => void
+  onDelete: (station: Station) => void
   onEdit: (station: Station) => void
 }
 
