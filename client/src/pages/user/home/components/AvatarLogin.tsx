@@ -5,7 +5,7 @@ import type { User } from "../../../../types/user";
 import { useNavigate } from "react-router-dom";
 
 interface UserDropdownProps {
-    user?: User;
+    user?: Omit<User, 'password'>;
     onLogout: (check: boolean) => void;
 }
 
