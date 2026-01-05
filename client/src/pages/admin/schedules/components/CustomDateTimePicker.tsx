@@ -23,7 +23,7 @@ export default function CustomDateTimePicker({ label, value, onChange }: Props) 
   useEffect(() => {
     if (value) {
       try {
-        const parsedDate = parse(value, "HH:mm:ss dd/MM/yyyy", new Date());
+        const parsedDate = parse(value, "HH:mm dd/MM/yyyy", new Date());
         if (isValid(parsedDate)) {
             setSelectedDate(parsedDate);
             setTimeValue(format(parsedDate, "HH:mm"));
