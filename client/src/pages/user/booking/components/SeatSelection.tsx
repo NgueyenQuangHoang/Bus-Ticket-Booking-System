@@ -394,6 +394,13 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
        return `T${date.getDay() + 1 === 1 ? 8 : date.getDay() + 1}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     };
     
+    const seatPriceMap: Record<string, number> = {};
+    selected.forEach(id => {
+      const seat = seatLookup.get(id);
+      const multiplier = seat?.priceMultiplier ?? 1;
+      seatPriceMap[id] = price * multiplier;
+    });
+
     const selectedLabels: string[] = [];
     const lower = positions.filter(p => p.floor === 1);
     const upper = positions.filter(p => p.floor === 2);
@@ -437,7 +444,7 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
       price: price.toLocaleString("vi-VN") + "đ"
     };
 
-    navigate('/bookingConfirmation', { state: { trip: tripData, selectedSeats: Array.from(selected) } });
+    navigate('/bookingConfirmation', { state: { trip: tripData, selectedSeats: Array.from(selected), seatPriceMap } });
   };
 
   if (loading) return <div className="p-8 text-center text-gray-500">Đang tải sơ đồ ghế...</div>;

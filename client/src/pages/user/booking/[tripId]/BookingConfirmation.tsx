@@ -71,6 +71,7 @@ export default function BookingConfirmation() {
   const location = useLocation();
   const [tripData, setTripData] = useState<TripData>(location.state?.trip as TripData || SHARED_TRIP);
   const selectedSeats = useMemo(() => location.state?.selectedSeats || [], [location.state]);
+  const seatPriceMap = useMemo<Record<string, number>>(() => location.state?.seatPriceMap || {}, [location.state]);
 
   // Session ID for seat holding
   const [sessionId] = useState(() => {
@@ -120,7 +121,7 @@ export default function BookingConfirmation() {
         userId: user?.id
       };
 
-      const result = await bookingService.createBooking(bookingData, selectedSeats);
+      const result = await bookingService.createBooking(bookingData, selectedSeats, seatPriceMap);
 
       if (result) {
         if (result.ticketCodes && result.ticketCodes.length > 0) {
