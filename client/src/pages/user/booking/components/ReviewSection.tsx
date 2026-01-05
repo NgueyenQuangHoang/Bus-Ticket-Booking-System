@@ -47,31 +47,37 @@ export default function ReviewSection({ busId }: ReviewSectionProps) {
     const fetchStats = async () => {
         try {
             const response = await reviewService.getAllReviewsForStats(busId);
-            const allReviews = response.filter((r: any) => r.status === "VISIBLE");
+            // Relaxed filter: allow if status is VISIBLE or undefined (legacy/manual data)
+            const allReviews = response.filter((r: any) => !r.status || r.status === "VISIBLE");
             const total = allReviews.length;
             
             if (total === 0) {
+              const defaultDetails: Record<string, { score: number; percent: number }> = {};
+              Object.keys(RATING_LABELS).forEach(key => {
+                   defaultDetails[key] = { score: 5, percent: 100 };
+              });
+
               setStats({
-                averageRating: 0,
+                averageRating: 5, 
                 totalReviews: 0,
-                details: {},
+                details: defaultDetails,
               });
               return;
             }
 
-            const sumRating = allReviews.reduce((acc, curr) => acc + curr.rating, 0);
+            const sumRating = allReviews.reduce((acc, curr: any) => {
+                // Handle both 'rating' and 'rating_count' fields
+                const score = curr.rating !== undefined ? curr.rating : (curr.rating_count !== undefined ? curr.rating_count : 5);
+                return acc + Number(score);
+            }, 0);
             const avg = (sumRating / total).toFixed(1);
 
-            /* Removed detailed stats calculation loop */
-
-            // MOCK DETAILS STATS FOR UI ONLY
+            // Set detailed stats to follow the average
             const detailsStats: Record<string, { score: number; percent: number }> = {};
             Object.keys(RATING_LABELS).forEach(key => {
-               // Randomize slightly between 4.5 and 5.0 for a good look, or just static 5.0
-               // User asked for UI only, no calculation
                detailsStats[key] = {
-                 score: 4.8,
-                 percent: 96
+                 score: Number(avg),
+                 percent: (Number(avg) / 5) * 100
                };
             });
             
@@ -93,11 +99,16 @@ export default function ReviewSection({ busId }: ReviewSectionProps) {
       setLoading(true);
       try {
         const response = await reviewService.getReviewsByBusId(busId, currentPage, limit, filterRating);
-        // Filter only VISIBLE reviews from the fetched data
-        const fetchedReviews = response.data.filter((r: any) => r.status === "VISIBLE");
+        // Filter only VISIBLE reviews from the fetched data (or undefined)
+        const fetchedReviews = response.data.filter((r: any) => !r.status || r.status === "VISIBLE");
         
         // Enrich reviews with Route and Vehicle Info
-        const enrichedReviews = await Promise.all(fetchedReviews.map(async (review) => {
+        const enrichedReviews = await Promise.all(fetchedReviews.map(async (review: any) => {
+             // Normalize rating for display if needed
+             if (review.rating === undefined && review.rating_count !== undefined) {
+                 review.rating = review.rating_count;
+             }
+             
              try {
                  let routeName = "";
                  let vehicleType = "";

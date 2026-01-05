@@ -159,7 +159,7 @@ export default function BusCompanyFormModal({ open, onClose, onSubmit, initialDa
             
             // Auto-fields
             updated_at: now,
-            ...(initialData ? {} : { rating: 5, created_at: now }),
+            ...(initialData ? {} : { rating_avg: 0, rating_count: 0, created_at: now }),
             
             ...(initialData?.id ? { id: initialData.id } : { id: uuidv4() })
         };

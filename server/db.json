@@ -1,45 +1,12 @@
 {
   "tickets": [
     {
-      "id": "1767465753345_95pgf",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "ff4c",
-      "code": "TICKET__95PGF",
+      "id": "1767615002873_12hpl",
+      "user_id": "c8ee",
+      "schedule_id": "46c5",
+      "seat_id": "78f4",
+      "code": "TICKET__12HPL",
       "status": "COMPLETED",
-      "price": 100000,
-      "created_at": "2026-01-03T18:42:33.345Z",
-      "updated_at": "2026-01-05T01:46:28.763Z"
-    },
-    {
-      "id": "1767498502272_8w2p1",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "608d",
-      "code": "TICKET__8W2P1",
-      "status": "COMPLETED",
-      "price": 100000,
-      "created_at": "2026-01-04T03:48:22.272Z",
-      "updated_at": "2026-01-04T03:48:22.272Z"
-    },
-    {
-      "id": "1767604617852_djks0",
-      "user_id": "bba5",
-      "schedule_id": "795a",
-      "seat_id": "6ddc",
-      "code": "TICKET__DJKS0",
-      "status": "BOOKED",
-      "price": 525000,
-      "created_at": "2026-01-05T09:16:57.852Z",
-      "updated_at": "2026-01-05T09:16:57.852Z"
-    },
-    {
-      "id": "1767606416753_koxo6",
-      "user_id": "bba5",
-      "schedule_id": "795a",
-      "seat_id": "d8c0",
-      "code": "TICKET__KOXO6",
-      "status": "BOOKED",
       "price": 350000,
       "created_at": "2026-01-05T09:46:56.752Z",
       "updated_at": "2026-01-05T09:46:56.753Z"
@@ -58,79 +25,107 @@
   ],
   "seat_schedules": [
     {
-      "id": "1767465753418_ff4c_S",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "ff4c",
-      "ticket_id": "1767465753345_95pgf",
-      "status": "BOOKED",
-      "price": 100000
-    },
-    {
-      "id": "1767498498562_608d_HOLD",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "608d",
+      "id": "1767614970691_78f4_HOLD",
+      "schedule_id": "46c5",
+      "seat_id": "78f4",
       "status": "HOLD",
-      "hold_expired_at": "2026-01-04T04:03:18.484Z",
-      "user_id": "sess_1767498498454_c4zcpkqti"
+      "hold_expired_at": "2026-01-05T12:24:30.661Z",
+      "user_id": "sess_1767614970594_6kecrpc2s"
     },
     {
-      "id": "1767498498562_608d_HOLD",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "608d",
+      "id": "1767614970691_78f4_HOLD",
+      "schedule_id": "46c5",
+      "seat_id": "78f4",
       "status": "HOLD",
-      "hold_expired_at": "2026-01-04T04:03:18.485Z",
-      "user_id": "sess_1767498498454_c4zcpkqti"
+      "hold_expired_at": "2026-01-05T12:24:30.662Z",
+      "user_id": "sess_1767614970594_6kecrpc2s"
     },
     {
-      "id": "1767498502393_608d_S",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "608d",
-      "ticket_id": "1767498502272_8w2p1",
+      "id": "1767615003009_78f4_S",
+      "schedule_id": "46c5",
+      "seat_id": "78f4",
+      "ticket_id": "1767615002873_12hpl",
       "status": "BOOKED",
-      "price": 100000
+      "price": 350000
     },
     {
-      "id": "SCH_CP_TEST_001_69_BOOKED",
-      "schedule_id": "SCH_CP_TEST_001",
-      "seat_id": "69",
-      "status": "BOOKED",
-      "price": 200000
-    },
-    {
-      "id": "SCH_CP_TEST_001_70_BOOKED",
-      "schedule_id": "SCH_CP_TEST_001",
-      "seat_id": "70",
-      "status": "BOOKED",
-      "price": 200000
-    },
-    {
-      "id": "1767604587258_6ddc_HOLD",
-      "schedule_id": "795a",
-      "seat_id": "6ddc",
+      "id": "1767615480761_9547_HOLD",
+      "schedule_id": "46c5",
+      "seat_id": "9547",
       "status": "HOLD",
-      "hold_expired_at": "2026-01-05T09:31:27.169Z",
-      "user_id": "sess_1767604587125_417pcgc54"
+      "hold_expired_at": "2026-01-05T12:33:00.739Z",
+      "user_id": "sess_1767614970594_6kecrpc2s"
     },
     {
-      "id": "1767604587259_6ddc_HOLD",
-      "schedule_id": "795a",
-      "seat_id": "6ddc",
+      "id": "1767615480761_9547_HOLD",
+      "schedule_id": "46c5",
+      "seat_id": "9547",
       "status": "HOLD",
-      "hold_expired_at": "2026-01-05T09:31:27.169Z",
-      "user_id": "sess_1767604587125_417pcgc54"
+      "hold_expired_at": "2026-01-05T12:33:00.739Z",
+      "user_id": "sess_1767614970594_6kecrpc2s"
     },
     {
-      "id": "1767604617888_6ddc_S",
-      "schedule_id": "795a",
-      "seat_id": "6ddc",
-      "ticket_id": "1767604617852_djks0",
+      "id": "1767615480781_2cc8_HOLD",
+      "schedule_id": "46c5",
+      "seat_id": "2cc8",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T12:33:00.739Z",
+      "user_id": "sess_1767614970594_6kecrpc2s"
+    },
+    {
+      "id": "1767615480782_2cc8_HOLD",
+      "schedule_id": "46c5",
+      "seat_id": "2cc8",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T12:33:00.739Z",
+      "user_id": "sess_1767614970594_6kecrpc2s"
+    },
+    {
+      "id": "1767615550346_9547_S",
+      "schedule_id": "46c5",
+      "seat_id": "9547",
+      "ticket_id": "1767615550196_lnqw1",
       "status": "BOOKED",
+      "price": 437500
+    },
+    {
+      "id": "1767615550411_2cc8_S",
+      "schedule_id": "46c5",
+      "seat_id": "2cc8",
+      "ticket_id": "1767615550393_mge6l",
+      "status": "BOOKED",
+      "price": 437500
+    },
+    {
+      "id": "1767616407805_1cf8_HOLD",
+      "schedule_id": "46c5",
+      "seat_id": "1cf8",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T12:48:27.771Z",
+      "user_id": "sess_1767614970594_6kecrpc2s"
+    },
+    {
+      "id": "1767616407806_1cf8_HOLD",
+      "schedule_id": "46c5",
+      "seat_id": "1cf8",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T12:48:27.772Z",
+      "user_id": "sess_1767614970594_6kecrpc2s"
+    },
+    {
+      "id": "46c5_5d94",
+      "schedule_id": "46c5",
+      "seat_id": "5d94",
+      "status": "BOOKED",
+      "hold_expired_at": null,
+      "user_id": "c8ee",
+      "ticket_id": "1767635308290_zupue",
       "price": 525000
     },
     {
-      "id": "1767606412011_d8c0_HOLD",
-      "schedule_id": "795a",
-      "seat_id": "d8c0",
+      "id": "46c5_5d94",
+      "schedule_id": "46c5",
+      "seat_id": "5d94",
       "status": "HOLD",
       "hold_expired_at": "2026-01-05T10:01:51.955Z",
       "user_id": "sess_1767604587125_417pcgc54"
@@ -173,32 +168,8 @@
   ],
   "payments": [
     {
-      "id": "PAY_1767465753432",
-      "ticket_id": "1767465753345_95pgf",
-      "amount": 100000,
-      "method": "QR_PAYMENT",
-      "status": "COMPLETED",
-      "transaction_date": "2026-01-03T18:42:33.345Z"
-    },
-    {
-      "id": "PAY_1767498502402",
-      "ticket_id": "1767498502272_8w2p1",
-      "amount": 100000,
-      "method": "QR_PAYMENT",
-      "status": "COMPLETED",
-      "transaction_date": "2026-01-04T03:48:22.272Z"
-    },
-    {
-      "id": "PAY_1767604617904",
-      "ticket_id": "1767604617852_djks0",
-      "amount": 525000,
-      "method": "QR_PAYMENT",
-      "status": "COMPLETED",
-      "transaction_date": "2026-01-05T09:16:57.852Z"
-    },
-    {
-      "id": "PAY_1767606416786",
-      "ticket_id": "1767606416753_koxo6",
+      "id": "PAY_1767615003036",
+      "ticket_id": "1767615002873_12hpl",
       "amount": 350000,
       "method": "QR_PAYMENT",
       "status": "COMPLETED",
@@ -220,82 +191,34 @@
       "last_name": "System",
       "email": "admin@gmail.com",
       "phone": "0909000000",
-      "password": "Admin123",
+      "password": "admin123",
       "status": "ACTIVE",
       "created_at": "2025-01-01",
       "updated_at": "Sat Jan 03 2026 19:14:42 GMT+0700 (GMT+07:00)"
     },
     {
-      "id": "2",
-      "first_name": "ho va ten",
-      "last_name": "jkl,",
-      "email": "doi_thatday@gmail.com",
-      "phone": "0812912031",
-      "password": "1231223",
-      "status": "LOCKED",
-      "created_at": "Sat Dec 27 2025 19:15:34 GMT+0700 (GMT+07:00)",
-      "updated_at": "Sat Dec 27 2025 20:42:42 GMT+0700 (GMT+07:00)"
+      "id": "7c060b99-e29f-4e85-b8bf-297bd82ed96d",
+      "first_name": "Quản lí nhà xe",
+      "last_name": "Vinh Chung",
+      "email": "vinhchung@gmail.com",
+      "phone": "0987654321",
+      "password": "123456",
+      "bus_company_id": "a8efae43-4d84-4f9b-951d-add2b4a13040",
+      "status": "ACTIVE",
+      "created_at": "Mon Jan 05 2026 18:23:28 GMT+0700 (Giờ Đông Dương)",
+      "updated_at": "Mon Jan 05 2026 18:23:28 GMT+0700 (Giờ Đông Dương)"
     },
     {
-      "id": "49b3fd55-121c-4ff9-8428-9d7989871434",
-      "first_name": "lslkdjf",
-      "last_name": "alskdjf",
-      "email": "nkasjdjf@gmail.com",
-      "phone": "0812719014",
-      "password": "123123",
+      "id": "c8ee",
+      "first_name": "Người dùng",
+      "last_name": "1",
+      "email": "namvan@gmail.com",
+      "password": "123456",
+      "phone": "0939488557",
+      "created_at": "2026-01-05T11:59:51.640Z",
+      "updated_at": "Tue Jan 06 2026 00:45:30 GMT+0700 (GMT+07:00)",
       "status": "ACTIVE",
-      "created_at": "Sat Jan 03 2026 19:26:04 GMT+0700 (GMT+07:00)",
-      "updated_at": "Sat Jan 03 2026 19:26:10 GMT+0700 (GMT+07:00)"
-    },
-    {
-      "id": "f6fbd897-9a07-4f8b-a840-8a427dd568f1",
-      "first_name": "Nhà xe cúc phương",
-      "last_name": "User 1",
-      "email": "cucphuong1@gmail.com",
-      "phone": "0992099338",
-      "password": "12345678",
-      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
-      "status": "ACTIVE",
-      "created_at": "Sat Jan 03 2026 22:20:41 GMT+0700 (GMT+07:00)",
-      "updated_at": "Sat Jan 03 2026 22:51:04 GMT+0700 (GMT+07:00)"
-    },
-    {
-      "id": "f370588b-abcd-4162-866c-86d7f62fec7c",
-      "first_name": "Nguyễn văn",
-      "last_name": "A",
-      "email": "a123@gmail.com",
-      "phone": "0938588445",
-      "password": "111111",
-      "bus_company_id": "5",
-      "status": "ACTIVE",
-      "created_at": "Sat Jan 03 2026 22:57:12 GMT+0700 (GMT+07:00)",
-      "updated_at": "Sat Jan 03 2026 23:04:14 GMT+0700 (GMT+07:00)",
-      "role_id": "1"
-    },
-    {
-      "id": "bba5",
-      "first_name": "Hoàng",
-      "last_name": "Nguyễn",
-      "email": "nguyenquanghoang1080@gmail.com",
-      "password": "15122004",
-      "phone": "0338470809",
-      "created_at": "2026-01-01T04:47:12.552Z",
-      "updated_at": "Sun Jan 04 2026 10:21:45 GMT+0700 (GMT+07:00)",
-      "status": "ACTIVE",
-      "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9",
-      "role_id": "2"
-    },
-    {
-      "id": "48c693ec-3793-49e1-a5c6-140423aaa0ec",
-      "first_name": "nhà xe",
-      "last_name": "Toàn Thắng",
-      "email": "toanthang1@gmail.com",
-      "phone": "0909888999",
-      "password": "toanthang1",
-      "bus_company_id": "4",
-      "status": "ACTIVE",
-      "created_at": "Mon Jan 05 2026 15:41:29 GMT+0700 (Indochina Time)",
-      "updated_at": "Mon Jan 05 2026 15:41:29 GMT+0700 (Indochina Time)"
+      "user_id": "d9a11ccb-4f75-4d9d-9e53-08873fb6b102"
     }
   ],
   "roles": [
@@ -314,44 +237,19 @@
   ],
   "user_role": [
     {
+      "id": "1",
       "user_id": "1",
-      "role_id": "2",
-      "id": "1"
+      "role_id": "2"
     },
     {
-      "id": "9c59",
-      "user_id": "2",
-      "role_id": "1"
+      "id": "6901",
+      "role_id": "3",
+      "user_id": "7c060b99-e29f-4e85-b8bf-297bd82ed96d"
     },
     {
-      "id": "a2eb1e12-3c0e-41f7-9f6d-13b5ca7d2982",
-      "user_id": "cbe3ec6f-57fa-4a5f-8351-253d8d2c9aa9",
+      "id": "13dba357-2359-47b6-a929-bddef71f62b9",
+      "user_id": "d9a11ccb-4f75-4d9d-9e53-08873fb6b102",
       "role_id": 1
-    },
-    {
-      "user_id": "49b3fd55-121c-4ff9-8428-9d7989871434",
-      "role_id": "1",
-      "id": "f9fb"
-    },
-    {
-      "user_id": "f6fbd897-9a07-4f8b-a840-8a427dd568f1",
-      "role_id": "3",
-      "id": "e961"
-    },
-    {
-      "user_id": "f370588b-abcd-4162-866c-86d7f62fec7c",
-      "role_id": "3",
-      "id": "3743"
-    },
-    {
-      "user_id": "bba5",
-      "role_id": "1",
-      "id": "fec7c"
-    },
-    {
-      "id": "4b9d",
-      "role_id": "3",
-      "user_id": "48c693ec-3793-49e1-a5c6-140423aaa0ec"
     }
   ],
   "cities": [
@@ -912,6 +810,13 @@
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01",
       "description": "<p>eaalskjdflasldjlksljdfljsaljflsjadf</p>"
+    },
+    {
+      "id": "8fb7cb48-89f1-4636-8be3-051b40c096f2",
+      "city_name": "Bắc Giang",
+      "region": "Bắc",
+      "image_city": "",
+      "description": "<p></p>"
     }
   ],
   "stations": [
@@ -998,7 +903,7 @@
     {
       "id": "8119b259-ddec-4572-bcfa-2f7b6fb7fa16",
       "station_name": "Bến xe đông hải",
-      "city_id": 7,
+      "city_id": "7",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/bxMD_vcw8iq.jpg",
       "wallpaper": "alkjsdf",
       "description": "<p style='font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 24px;'>Bến xe Đông Hải là dự án quy hoạch mới nhằm phục vụ nhu cầu di chuyển ngày càng cao của cư dân địa phương và giảm tải cho khu vực trung tâm Vũng Tàu. Hiện tại, bến xe chủ yếu phục vụ các tuyến xe nội tỉnh và liên tỉnh tầm ngắn.</p><p style='font-style: italic; color: #6b7280;'>Dữ liệu hoạt động đang được cập nhật liên tục để phục vụ hành khách tốt hơn.</p>",
@@ -1169,7 +1074,8 @@
       "company_name": "Nhà xe An Hòa Hiệp",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
       "description": "<h3>Nhà xe An Hòa Hiệp - Sự lựa chọn hàng đầu cho chuyến đi an toàn</h3><p>An Hòa Hiệp tự hào là đơn vị vận tải hành khách uy tín, chuyên cung cấp dịch vụ xe giường nằm chất lượng cao. Với phương châm 'Khách hàng là người thân', chúng tôi không ngừng cải thiện dịch vụ để mang lại trải nghiệm tốt nhất.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg' style='width:100%; border-radius:8px; margin:16px 0;'/><h4 style='color: #2563eb;'>Tại sao nên chọn An Hòa Hiệp?</h4><ul><li><strong>Xe đời mới:</strong> Hệ thống xe giường nằm 40 chỗ hiện đại, sạch sẽ.</li><li><strong>Tiện nghi:</strong> Tivi, wifi tốc độ cao, khăn lạnh và nước suối miễn phí.</li><li><strong>Tài xế:</strong> Đội ngũ lái xe giàu kinh nghiệm, tận tâm và an toàn.</li></ul>",
-      "rating": 4.8,
+      "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX123",
       "contact_phone": "0909333444",
       "contact_email": "anhoahiep@gmail.com",
@@ -1183,7 +1089,8 @@
       "company_name": "Nhà xe Futa Hà Sơn",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
       "description": "<h3>Futa Hà Sơn - Chuyên gia tuyến đường Hà Nội - Lào Cai</h3><p>Kết hợp giữa sự chuyên nghiệp của Futa và kinh nghiệm địa phương của Hà Sơn, chúng tôi mang đến dịch vụ vận chuyển đẳng cấp trên tuyến cao tốc Nội Bài - Lào Cai.</p><div style='background: #f0f9ff; padding: 15px; border-radius: 8px;'><strong>Dịch vụ đặc biệt:</strong> Dòng xe Cabin đôi 'Cung điện di động' cực kỳ sang trọng và riêng tư cho các cặp đôi hoặc gia đình.</div><p>Hành trình từ Thủ đô đến Sa Pa chưa bao giờ dễ dàng và thoải mái đến thế với hệ thống điều hòa đa vùng và ghế massage tích hợp.</p>",
-      "rating": 4.9,
+      "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX124",
       "contact_phone": "0909444555",
       "contact_email": "futahason@gmail.com",
@@ -1197,7 +1104,8 @@
       "company_name": "Nhà xe Vũ Linh",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
       "description": "<h3>Nhà xe Vũ Linh - Đẳng cấp xe Limousine miền Tây</h3><p>Vũ Linh Bus Lines là thương hiệu quen thuộc của người dân miền Tây Nam Bộ. Chúng tôi chuyên phục vụ các tuyến Cần Thơ - Sài Gòn - Rạch Giá với dàn xe Limousine 9 chỗ và 15 chỗ hiện đại.</p><ul><li>Hỗ trợ đưa đón tận nơi trong nội ô thành phố.</li><li>Ghế bọc da cao cấp, có cổng sạc USB tại mỗi vị trí.</li><li>Không bắt khách dọc đường, cam kết đúng giờ.</li></ul>",
-      "rating": 4.7,
+      "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX125",
       "contact_phone": "0909555666",
       "contact_email": "vulinh@gmail.com",
@@ -1211,7 +1119,8 @@
       "company_name": "Nhà xe Toàn Thắng",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
       "description": "<h3>Nhà xe Toàn Thắng - Kết nối Sài Gòn và Thành phố Biển</h3><p>Toàn Thắng là hãng xe Limousine uy tín nhất trên tuyến đường TP.HCM - Vũng Tàu. Với tần suất 15 phút một chuyến, khách hàng có thể linh hoạt sắp xếp thời gian cho chuyến du lịch hoặc công tác của mình.</p><p><strong>Tiện ích nổi bật:</strong> Xe trang bị ghế massage, hệ thống âm thanh sống động và đội ngũ nhân viên hỗ trợ nhiệt tình tại cả hai đầu bến.</p>",
-      "rating": 4.6,
+      "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX126",
       "contact_phone": "0909666777",
       "contact_email": "toanthang@gmail.com",
@@ -1225,7 +1134,8 @@
       "company_name": "Nhà xe Phương Trang",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
       "description": "<h3>Phương Trang FUTA Bus Lines - Chất lượng là danh dự</h3><p>Với màu cam đặc trưng trải dài khắp các nẻo đường Việt Nam, Phương Trang là hãng xe khách lớn nhất cả nước. Chúng tôi cam kết mang đến dịch vụ vận chuyển văn minh, lịch sự và đúng giờ.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg' style='width:100%; border-radius:8px; margin:16px 0;'/><p>Hệ thống trạm dừng chân sạch sẽ, đồ ăn ngon và dịch vụ xe trung chuyển miễn phí là những điểm mạnh mà không hãng xe nào có được.</p>",
-      "rating": 4.9,
+      "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX127",
       "contact_phone": "0909777888",
       "contact_email": "phuongtrang@gmail.com",
@@ -1235,24 +1145,19 @@
       "updated_at": "2025-01-01"
     },
     {
-      "id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
-      "company_name": "Nhà xe Cúc Phương",
-      "license_number": "123456789",
-      "contact_phone": "9090900990",
-      "contact_email": "cucphuong123@gmail.com",
-      "address": "97 Nguyễn Duy Dương",
+      "id": "a8efae43-4d84-4f9b-951d-add2b4a13040",
+      "company_name": "Nhà xe Vinh Chung",
+      "license_number": "79-VC-2026-001",
+      "contact_phone": "0909123456",
+      "contact_email": "vinhchung.bus@gmail.com",
+      "address": "Bến xe Miền Đông, TP. Hồ Chí Minh",
       "status": "ACTIVE",
-      "description": "<h3>Nhà xe Cúc Phương - Kết nối mọi miền Tổ quốc</h3><p>Cúc Phương là đơn vị vận tải lâu đời chuyên cung cấp các chuyến xe đường dài xuyên Việt. Chúng tôi mang đến giải pháp di chuyển kinh tế nhưng vẫn đảm bảo sự thoải mái tuyệt đối cho hành khách.</p><ul><li>Lịch trình linh hoạt từ Nam ra Bắc.</li><li>Giá vé cạnh tranh nhất thị trường.</li><li>Hỗ trợ đặt vé trực tuyến nhanh chóng qua hotline.</li></ul>"
-    },
-    {
-      "id": "32e41e08-dc9b-48b6-b9b0-fedd6f013259",
-      "company_name": "Nhà xe Minh Quốc",
-      "license_number": "GX-MQ-001",
-      "contact_phone": "0909 111 222",
-      "contact_email": "contact@minhquoc.vn",
-      "address": "Bến xe Miền Tây, TP.HCM",
-      "status": "ACTIVE",
-      "description": "<h3>Nhà xe Minh Quốc - Chuyên tuyến miền Tây sông nước</h3><p>Minh Quốc tập trung khai thác các tuyến đường từ TP.HCM đi các tỉnh Đồng bằng sông Cửu Long. Dịch vụ của chúng tôi hướng tới sự bình dân, ổn định nhưng không kém phần chu đáo.</p><p><strong>Cam kết:</strong> Không nhồi nhét khách, mỗi hành khách một giường/ghế riêng biệt, lái xe an toàn trên mọi nẻo đường.</p>"
+      "description": "<p><strong>Vinh Chung</strong> chuyên tuyến TP.HCM ↔ miền Tây. Xe sạch sẽ, tài xế nhiều kinh nghiệm.</p>",
+      "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1767611775/qjgf4bzpfrtbeisvch7n.jpg",
+      "updated_at": "2026-01-05T11:16:15.792Z",
+      "rating_avg": 4.5,
+      "rating_count": 2,
+      "created_at": "2026-01-05T11:16:15.792Z"
     }
   ],
   "vehicle_types": [
@@ -1401,14 +1306,26 @@
       "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767264654/g1d32nmotv1v01wg5auk.jpg"
     },
     {
-      "id": "e18e1123-e60f-4dff-830d-e49a647aa269",
-      "name": "Vip 9 chỗ",
-      "license_plate": "50A-99999",
-      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
-      "vehicle_type_id": "4",
+      "id": "56025555-4f1b-4110-8068-d32c587705ba",
+      "name": "Vinh Chung Limousine 34 Giường",
+      "license_plate": "51B-123.45",
+      "bus_company_id": "a8efae43-4d84-4f9b-951d-add2b4a13040",
+      "vehicle_type_id": "1",
       "capacity": 0,
       "status": "ACTIVE",
-      "layout_id": "945e"
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767612418/dav3pxigg8awu8hez03n.jpg",
+      "layout_id": "a046"
+    },
+    {
+      "id": "46203c90-ff42-4cbf-ae4b-dbd6bb33e422",
+      "name": "Vinh Chung Ghế Ngồi 45 Chỗ",
+      "license_plate": "51B-678.90",
+      "bus_company_id": "a8efae43-4d84-4f9b-951d-add2b4a13040",
+      "vehicle_type_id": "1",
+      "capacity": 0,
+      "status": "ACTIVE",
+      "thumbnail_image": "https://res.cloudinary.com/domyfnxuk/image/upload/v1767612768/gfbtmkvxxaymskuf47d0.jpg",
+      "layout_id": "de7d"
     }
   ],
   "bus_images": [
@@ -1545,183 +1462,39 @@
   ],
   "bus_layouts": [
     {
-      "id": "101",
+      "id": "a043",
       "layout_name": "Giường nằm 40 chỗ",
-      "total_rows": 10,
-      "total_columns": 4,
+      "total_rows": 5,
+      "total_columns": 5,
       "floor_count": 2,
-      "created_at": "2025-01-10T08:00:00",
-      "updated_at": "2025-01-10T08:00:00",
-      "bus_company_id": "1"
+      "created_at": "2026-01-05T11:21:59.598Z",
+      "is_template": true
     },
     {
-      "id": "102",
+      "id": "dfd9",
       "layout_name": "Giường nằm 34 chỗ – Limousine",
-      "total_rows": 12,
-      "total_columns": 2,
-      "floor_count": 2,
-      "created_at": "2025-01-11T08:00:00",
-      "updated_at": "2025-01-11T08:00:00",
-      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c"
-    },
-    {
-      "id": "103",
-      "layout_name": "Ghế ngồi 45 chỗ",
-      "total_rows": 9,
-      "total_columns": 5,
-      "floor_count": 1,
-      "created_at": "2025-01-12T08:00:00",
-      "updated_at": "2025-01-12T08:00:00",
-      "bus_company_id": "4"
-    },
-    {
-      "id": "104",
-      "layout_name": "Limousine 9 chỗ VIP",
-      "total_rows": 3,
-      "total_columns": 3,
-      "floor_count": 1,
-      "created_at": "2025-01-13T08:00:00",
-      "updated_at": "2025-01-13T08:00:00"
-    },
-    {
-      "id": "105",
-      "layout_name": "Ghế ngồi 29 chỗ",
-      "total_rows": 7,
-      "total_columns": 4,
-      "floor_count": 1,
-      "created_at": "2025-01-14T08:00:00",
-      "updated_at": "2025-01-14T08:00:00",
-      "bus_company_id": "2"
-    },
-    {
-      "id": "fd4b",
-      "layout_name": "vip 9 chỗ",
-      "total_rows": 5,
-      "total_columns": 2,
-      "floor_count": 1,
-      "is_template": true,
-      "created_at": "2025-12-29T00:59:02.016Z"
-    },
-    {
-      "id": "5374",
-      "layout_name": "test",
       "total_rows": 7,
       "total_columns": 5,
       "floor_count": 2,
-      "created_at": "2025-12-30T00:52:32.531Z",
+      "created_at": "2026-01-05T11:22:11.852Z",
       "is_template": true
     },
     {
-      "id": "840b",
-      "layout_name": "test",
+      "id": "a046",
+      "layout_name": "Giường nằm 35 chỗ (nhà xe vinh chung)",
       "total_rows": 7,
-      "total_columns": 5,
-      "floor_count": 2
-    },
-    {
-      "id": "e104",
-      "layout_name": "Limousine 34 Phòng Đơn",
-      "total_rows": 7,
-      "total_columns": 5,
-      "floor_count": 2,
-      "created_at": "2026-01-01T10:43:34.320Z",
-      "is_template": true
-    },
-    {
-      "id": "f853",
-      "layout_name": "Limousine 9 chỗ VIP",
-      "total_rows": 3,
-      "total_columns": 3,
-      "floor_count": 1
-    },
-    {
-      "id": "01ac",
-      "layout_name": "Giường nằm 40 chỗ",
-      "total_rows": 10,
       "total_columns": 4,
       "floor_count": 2,
-      "bus_company_id": "32e41e08-dc9b-48b6-b9b0-fedd6f013259"
-    },
-    {
-      "id": "2a63",
-      "layout_name": "vip vũng tàu",
-      "total_rows": 6,
-      "total_columns": 5,
-      "floor_count": 1,
-      "created_at": "2026-01-04T11:04:48.667Z",
-      "is_template": true
-    },
-    {
-      "id": "b760",
-      "layout_name": "Limousine 34 Phòng Đơn",
-      "total_rows": 7,
-      "total_columns": 5,
-      "floor_count": 2,
-      "bus_company_id": "5"
-    },
-    {
-      "id": "9338",
-      "layout_name": "Giường nằm 40 chỗ",
-      "total_rows": 10,
-      "total_columns": 4,
-      "floor_count": 2,
-      "is_template": false,
-      "bus_company_id": "2"
-    },
-    {
-      "id": "c9c8",
-      "layout_name": "Giường nằm 40 chỗ",
-      "total_rows": 10,
-      "total_columns": 4,
-      "floor_count": 2,
-      "is_template": false,
-      "bus_company_id": "3"
-    },
-    {
-      "id": "349d",
-      "layout_name": "vip 9 chỗ",
-      "total_rows": 5,
-      "total_columns": 2,
-      "floor_count": 1,
+      "bus_company_id": "a8efae43-4d84-4f9b-951d-add2b4a13040",
       "is_template": false
     },
     {
-      "id": "1a5e",
-      "layout_name": "cúc phương",
-      "total_rows": 7,
+      "id": "de7d",
+      "layout_name": "Giường nằm 40 chỗ",
+      "total_rows": 5,
       "total_columns": 5,
-      "floor_count": 1,
-      "created_at": "2026-01-05T08:21:33.934Z",
-      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
-      "is_template": true
-    },
-    {
-      "id": "76cb",
-      "layout_name": "xe toàn thắng",
-      "total_rows": 7,
-      "total_columns": 5,
-      "floor_count": 1,
-      "created_at": "2026-01-05T08:42:28.050Z",
-      "bus_company_id": "4",
-      "is_template": true
-    },
-    {
-      "id": "a0df",
-      "layout_name": "Vip 9 chỗ cp",
-      "total_rows": 9,
-      "total_columns": 5,
-      "floor_count": 1,
-      "created_at": "2026-01-05T09:00:47.978Z",
-      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
-      "is_template": true
-    },
-    {
-      "id": "945e",
-      "layout_name": "Vip 9 chỗ cp",
-      "total_rows": 9,
-      "total_columns": 5,
-      "floor_count": 1,
-      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
+      "floor_count": 2,
+      "bus_company_id": "a8efae43-4d84-4f9b-951d-add2b4a13040",
       "is_template": false
     }
   ],
@@ -1755,50 +1528,14 @@
       "description": "",
       "price_multiplier": 1.5,
       "color": "#f6ef13"
-    },
-    {
-      "id": "d660",
-      "layout_name": "layou 1 Phuong trang",
-      "total_rows": 7,
-      "total_columns": 3,
-      "floor_count": 2,
-      "created_at": "2026-01-05T07:09:59.975Z",
-      "is_template": true
-    },
-    {
-      "id": "578a",
-      "layout_name": "layout 2 phương cúc",
-      "total_rows": 7,
-      "total_columns": 4,
-      "floor_count": 2,
-      "created_at": "2026-01-05T07:11:24.438Z",
-      "is_template": true
-    },
-    {
-      "id": "72b6",
-      "layout_name": "layout 3 Admin",
-      "total_rows": 7,
-      "total_columns": 5,
-      "floor_count": 1,
-      "created_at": "2026-01-05T07:12:21.998Z",
-      "is_template": true
-    },
-    {
-      "id": "3806",
-      "layout_name": "layou 1 Phuong trang",
-      "total_rows": 7,
-      "total_columns": 3,
-      "floor_count": 2,
-      "bus_company_id": "25b5cdd8-6e5a-44a2-ae42-54005cbb024c",
-      "is_template": false
     }
   ],
   "seats": [],
   "seat_positions": [
     {
-      "id": "cd34",
-      "position_id": "c4c8c437-ef56-43bd-a1dc-e0e6a7834daf",
-      "layout_id": "945e",
+      "id": "b8ff",
+      "position_id": "af473b92-b7d4-4388-a8b5-781818b8e3d3",
+      "layout_id": "a046",
       "floor": 1,
       "row_index": 1,
       "column_index": 1,
@@ -1809,134 +1546,9 @@
       "seat_type_id": ""
     },
     {
-      "id": "2586",
-      "position_id": "44bd563d-3eb1-4ed1-80e6-707af47c3d09",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 1,
-      "column_index": 2,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "4184",
-      "position_id": "5e864c33-6297-4f9f-9b6b-93aee803198d",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 1,
-      "column_index": 4,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "edd7",
-      "position_id": "1f3c57c6-cfac-46b7-9eb7-304f99766acf",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 2,
-      "column_index": 2,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "5d3b",
-      "position_id": "187910ec-03b2-43e0-842d-abffac212ad8",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 2,
-      "column_index": 4,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "a501",
-      "position_id": "7234ff77-07bf-43ab-83d7-825cb8361330",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 3,
-      "column_index": 4,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "cb9c",
-      "position_id": "a77450ec-7008-4a4a-9dac-2e7cf60224ce",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 1,
-      "column_index": 5,
-      "is_driver_seat": false,
-      "is_door": true,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": ""
-    },
-    {
-      "id": "c9cf",
-      "position_id": "79143482-a5c5-48eb-98d5-bd2b5785afbb",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 3,
-      "column_index": 2,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "be64",
-      "position_id": "7d54c93a-12dc-4305-b157-3eb9cabf70ed",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 4,
-      "column_index": 2,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "7ab4",
-      "position_id": "0fcf6011-d645-41f2-b8c3-d6934b97bb03",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 4,
-      "column_index": 4,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "6ddc",
-      "position_id": "4d79f56e-39d5-43cd-8e0f-665961c6b842",
-      "layout_id": "945e",
+      "id": "e728",
+      "position_id": "5e63442a-fac5-4fe7-a55d-0cdd3fd5c3e5",
+      "layout_id": "a046",
       "floor": 1,
       "row_index": 2,
       "column_index": 1,
@@ -1944,12 +1556,90 @@
       "is_door": false,
       "is_stair": false,
       "label": "A1",
+      "seat_type_id": "0364"
+    },
+    {
+      "id": "5bb3",
+      "position_id": "621310b9-cada-43b0-b740-6a898894db81",
+      "layout_id": "a046",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A3",
+      "seat_type_id": "1fc2"
+    },
+    {
+      "id": "6e76",
+      "position_id": "531f3d34-3728-4af2-a630-2d7e5a90040c",
+      "layout_id": "a046",
+      "floor": 1,
+      "row_index": 3,
+      "column_index": 4,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A4",
       "seat_type_id": "05b2"
     },
     {
-      "id": "aeda",
-      "position_id": "e55206d5-34c6-4449-b4ca-f76d47689b02",
-      "layout_id": "945e",
+      "id": "a248",
+      "position_id": "3ee77a0d-7b7b-4a92-ad26-124b1c7c091d",
+      "layout_id": "a046",
+      "floor": 1,
+      "row_index": 4,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A1",
+      "seat_type_id": "0364"
+    },
+    {
+      "id": "4c8f",
+      "position_id": "6553d11a-01a3-44e4-999f-93e50ef05544",
+      "layout_id": "a046",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 4,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A2",
+      "seat_type_id": "b271"
+    },
+    {
+      "id": "9e3d",
+      "position_id": "6de9fae2-38e2-444d-a7bd-ab858a4c5ab6",
+      "layout_id": "de7d",
+      "floor": 1,
+      "row_index": 1,
+      "column_index": 1,
+      "is_driver_seat": true,
+      "is_door": false,
+      "is_stair": false,
+      "label": "",
+      "seat_type_id": ""
+    },
+    {
+      "id": "78f4",
+      "position_id": "0c61d938-3911-4363-b103-e275b0a353a6",
+      "layout_id": "de7d",
+      "floor": 1,
+      "row_index": 2,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A1",
+      "seat_type_id": "0364"
+    },
+    {
+      "id": "9547",
+      "position_id": "588af3dc-d949-4ed4-a2e2-391a6b733a0e",
+      "layout_id": "de7d",
       "floor": 1,
       "row_index": 3,
       "column_index": 1,
@@ -1957,12 +1647,12 @@
       "is_door": false,
       "is_stair": false,
       "label": "A2",
-      "seat_type_id": "05b2"
+      "seat_type_id": "b271"
     },
     {
-      "id": "fbf1",
-      "position_id": "d9540ac4-dd0d-491d-83c1-0aab2afae21f",
-      "layout_id": "945e",
+      "id": "2cc8",
+      "position_id": "6ab9b252-c964-4fbf-b06c-b7a580d2771a",
+      "layout_id": "de7d",
       "floor": 1,
       "row_index": 4,
       "column_index": 1,
@@ -1970,110 +1660,54 @@
       "is_door": false,
       "is_stair": false,
       "label": "A3",
+      "seat_type_id": "1fc2"
+    },
+    {
+      "id": "6f41",
+      "position_id": "e2e0d8ca-86f8-405f-be7b-7bf0332c666c",
+      "layout_id": "de7d",
+      "floor": 1,
+      "row_index": 5,
+      "column_index": 1,
+      "is_driver_seat": false,
+      "is_door": false,
+      "is_stair": false,
+      "label": "A4",
       "seat_type_id": "05b2"
     },
     {
-      "id": "4e36",
-      "position_id": "3264bec8-a0eb-4215-87a1-7c6dbb7ed6db",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 1,
-      "column_index": 3,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "",
-      "seat_type_id": "",
-      "is_aisle": true
-    },
-    {
-      "id": "d8c0",
-      "position_id": "7fa57faf-ea87-4af6-9e65-de7ec62b60a8",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 2,
-      "column_index": 3,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "B1",
-      "seat_type_id": "1fc2"
-    },
-    {
-      "id": "947f",
-      "position_id": "1eb2fd2a-2e7d-4588-a29e-479b406b8fe4",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 3,
-      "column_index": 3,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "B2",
-      "seat_type_id": "1fc2"
-    },
-    {
-      "id": "f2cb",
-      "position_id": "64a30f2c-49b6-4afb-a9f6-5e91d3d4514a",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 4,
-      "column_index": 3,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "B3",
-      "seat_type_id": "1fc2"
-    },
-    {
-      "id": "38e1",
-      "position_id": "2f7ab8e4-8a9c-49a6-bcbd-cc0748d6cf67",
-      "layout_id": "945e",
+      "id": "1cf8",
+      "position_id": "ca1084f6-94d1-41f8-8e0e-b2b9f5871444",
+      "layout_id": "de7d",
       "floor": 1,
       "row_index": 2,
       "column_index": 5,
       "is_driver_seat": false,
       "is_door": false,
       "is_stair": false,
-      "label": "C1",
+      "label": "A5",
       "seat_type_id": "0364"
     },
     {
-      "id": "2f36",
-      "position_id": "06ff42a1-7912-44c1-8417-df79676b5528",
-      "layout_id": "945e",
+      "id": "5d94",
+      "position_id": "074271f2-0ead-46e5-aa33-ad0455ad9078",
+      "layout_id": "de7d",
       "floor": 1,
       "row_index": 3,
       "column_index": 5,
       "is_driver_seat": false,
       "is_door": false,
       "is_stair": false,
-      "label": "C2",
-      "seat_type_id": "0364"
-    },
-    {
-      "id": "b8fb",
-      "position_id": "5472aabe-35f2-4aec-975b-b02dfcac49d2",
-      "layout_id": "945e",
-      "floor": 1,
-      "row_index": 4,
-      "column_index": 5,
-      "is_driver_seat": false,
-      "is_door": false,
-      "is_stair": false,
-      "label": "C3",
+      "label": "A6",
       "seat_type_id": "b271"
     }
   ],
   "schedules": [
     {
-      "id": "1",
       "route_id": "1",
-      "bus_id": "1",
-      "departure_time": "2025-12-25T08:00",
-      "arrival_time": "2025-12-26T14:00",
-      "total_seats": 34,
-      "available_seats": 20,
+      "bus_id": "46203c90-ff42-4cbf-ae4b-dbd6bb33e422",
+      "total_seats": 6,
+      "available_seats": 2,
       "status": "AVAILABLE",
       "created_at": "2025-01-01",
       "updated_at": "2025-01-01"
@@ -2595,6 +2229,32 @@
       "is_verified": true,
       "status": "VISIBLE",
       "updated_at": "2026-01-05T02:23:12.475Z"
+    },
+    {
+      "id": "d4ee",
+      "bus_id": "46203c90-ff42-4cbf-ae4b-dbd6bb33e422",
+      "user_id": "c8ee",
+      "booking_id": "1767615550393_mge6l",
+      "ticket_id": "1767615550393_mge6l",
+      "rating": 5,
+      "review": "ấdf",
+      "created_at": "2026-01-05T17:49:11.548Z",
+      "is_verified": true,
+      "status": "VISIBLE",
+      "updated_at": "2026-01-05T17:49:11.548Z"
+    },
+    {
+      "id": "a161",
+      "bus_id": "46203c90-ff42-4cbf-ae4b-dbd6bb33e422",
+      "user_id": "c8ee",
+      "booking_id": "1767635308290_zupue",
+      "ticket_id": "1767635308290_zupue",
+      "rating": 4,
+      "review": "fasdf",
+      "created_at": "2026-01-05T17:49:27.963Z",
+      "is_verified": true,
+      "status": "VISIBLE",
+      "updated_at": "2026-01-05T17:49:27.963Z"
     }
   ],
   "banners": [

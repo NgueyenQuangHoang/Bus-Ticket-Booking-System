@@ -10,14 +10,15 @@ export interface Route {
   total_bookings?: number;
   created_at?: Timestamp;
   updated_at?: Timestamp;
-  description: string
+  description: string;
+  image?: string;
 }
 
 export interface PopularRoute {
-    popular_route_id: number;
-    route_id: number;
-    image_url: string;
-    priority: number;
+  popular_route_id: number;
+  route_id: number;
+  image_url: string;
+  priority: number;
 }
 
 export type ScheduleStatus = 'AVAILABLE' | 'FULL' | 'CANCELLED' | string;

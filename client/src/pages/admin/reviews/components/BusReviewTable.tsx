@@ -45,8 +45,8 @@ export default function BusReviewTable({ data, onEdit, onDelete }: Props) {
           </div>
           <div className="hidden sm:block p-4 font-medium text-gray-800">{getUserName(item.user)}</div>
           <div className="hidden sm:block p-4 text-xs space-y-1">
-             <div className="text-gray-900 font-medium truncate" title={item.booking_id}>
-                <span className="text-gray-500">Vé:</span> {item.booking_id}
+             <div className="text-gray-900 font-medium truncate" title={item.ticket?.code || item.booking_id}>
+                <span className="text-gray-500">Vé:</span> {item.ticket?.code || item.booking_id}
              </div>
              <div className="text-gray-500 truncate" title={item.bus?.name || item.bus_id}>
                 <span className="text-gray-500">Xe:</span> {item.bus?.name || (item.bus_id && item.bus_id.length > 8 ? `${item.bus_id.substring(0,8)}...` : item.bus_id)}

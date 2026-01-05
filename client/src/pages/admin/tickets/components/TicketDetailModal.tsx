@@ -1,5 +1,5 @@
 import { Close, Print, Cancel } from "@mui/icons-material";
-import type { TicketUI } from "./TicketTable";
+import type { TicketUI } from "../../../../services/ticketService";
 
 type Props = {
   open: boolean;
@@ -13,14 +13,14 @@ const getDetailMock = (ticket: TicketUI | null | undefined) => {
     if (!ticket) return null;
     return {
         ...ticket,
-        phone: "0901234567",
-        email: "customer@example.com",
-        seat_number: `A${(ticket.ticket_id % 40) + 1}`,
-        payment_method: "Momo",
-        payment_status: "PAID",
-        bus_license: "51B-123.45",
-        route_details: "Bến xe Miền Đông -> Bến xe Đà Lạt",
-        departure_time: "22:00",
+        phone: ticket.passengerInfo?.phone || "0901234567",
+        email: ticket.passengerInfo?.email || "customer@example.com",
+        seat_number: ticket.seats.join(', '),
+        payment_method: "Momo", // Placeholder or fetch if available
+        payment_status: ticket.status === 'BOOKED' ? 'PAID' : 'REFUNDED',
+        bus_license: ticket.busInfo.name, // Using bus name/license if available
+        route_details: ticket.busInfo.route,
+        departure_time: ticket.busInfo.time,
     };
 };
 
@@ -40,7 +40,7 @@ export default function TicketDetailModal({ open, onClose, ticket,  onCancel }: 
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-3">
              <div className="bg-blue-100 p-2 rounded-lg text-blue-600">
-                 <span className="font-bold text-lg">#{ticket.ticket_id}</span>
+                 <span className="font-bold text-lg">#{ticket.code}</span>
              </div>
              <div>
                 <h2 className="text-lg font-bold text-slate-800">Chi tiết vé</h2>
@@ -62,7 +62,7 @@ export default function TicketDetailModal({ open, onClose, ticket,  onCancel }: 
                 <div className="space-y-3">
                     <div>
                         <label className="text-xs text-slate-500 block">Họ và tên</label>
-                        <p className="font-medium text-slate-800">{ticket.customer_name}</p>
+                        <p className="font-medium text-slate-800">{ticket.passengerInfo?.fullName}</p>
                     </div>
                     <div>
                         <label className="text-xs text-slate-500 block">Số điện thoại</label>
@@ -103,13 +103,13 @@ export default function TicketDetailModal({ open, onClose, ticket,  onCancel }: 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
                             <label className="text-xs text-slate-500 block">Giá vé</label>
-                            <p className="font-bold text-lg text-slate-800">{formatCurrency(ticket.price)}</p>
+                            <p className="font-bold text-lg text-slate-800">{formatCurrency(ticket.busInfo.price)}</p>
                         </div>
                         <div>
                             <label className="text-xs text-slate-500 block">Ghế</label>
                             <div className="flex flex-col">
                                 <span className="font-bold text-lg text-slate-800">{detailData?.seat_number}</span>
-                                <span className="text-xs text-slate-500">{ticket.seat_type}</span>
+                                <span className="text-xs text-slate-500">{ticket.busInfo.type}</span>
                             </div>
                         </div>
                         <div>

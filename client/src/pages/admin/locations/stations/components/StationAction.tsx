@@ -5,6 +5,8 @@ import { useState, type ChangeEvent, useMemo } from 'react';
 import type { City, Station } from '../../../../../types';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import { busImageService } from '../../../../../services/admin/busImageService';
+import { Image as ImageIcon } from '@mui/icons-material';
 
 const modalStyle = {
     position: 'absolute' as const,
@@ -67,6 +69,18 @@ export default function StationAction({ station, onDelete, onEdit, cities }: Pro
         }));
     };
 
+    // Image State
+    const [thumbnailPreview, setThumbnailPreview] = useState("");
+    const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
+
+    const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setThumbnailFile(file);
+            setThumbnailPreview(URL.createObjectURL(file));
+        }
+    };
+
     const handleDeleteClick = () => {
         Swal.fire({
             title: "Xác nhận xóa?",
@@ -85,10 +99,22 @@ export default function StationAction({ station, onDelete, onEdit, cities }: Pro
         });
     };
 
-    const handleSave = () => {
-        onEdit(formData)
-        Swal.fire("Thành công", "Đã cập nhật thông tin nhà ga", "success");
-        handleClose();
+    const handleSave = async () => {
+        try {
+            const submitData = { ...formData };
+            if (thumbnailFile) {
+                const url = await busImageService.uploadFileToCloudinary(thumbnailFile);
+                submitData.image = url;
+                submitData.wallpaper = url; // Use same image for both per requirement
+            }
+
+            onEdit(submitData);
+            Swal.fire("Thành công", "Đã cập nhật thông tin nhà ga", "success");
+            handleClose();
+        } catch (error) {
+            console.error("Update station failed", error);
+            Swal.fire("Lỗi", "Cập nhật thất bại", "error");
+        }
     };
 
     return (
@@ -154,20 +180,35 @@ export default function StationAction({ station, onDelete, onEdit, cities }: Pro
                             />
                         </div>
 
-                        <div className="space-y-1">
-                            <label className="text-xs font-bold text-gray-600 uppercase">Ảnh đại diện (URL)</label>
-                            <TextField
-                                fullWidth size="small" name="image"
-                                value={formData.image} onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className="space-y-1">
-                            <label className="text-xs font-bold text-gray-600 uppercase">Ảnh nền (URL)</label>
-                            <TextField
-                                fullWidth size="small" name="wallpaper"
-                                value={formData.wallpaper} onChange={handleChange}
-                            />
+                        <div className="space-y-1 md:col-span-2">
+                           <label className="text-xs font-bold text-gray-600 uppercase flex items-center gap-1">
+                                <ImageIcon className="text-[16px] text-blue-500" /> Hình ảnh nhà ga (Đại diện & Nền)
+                            </label>
+                            
+                            <div className="flex items-start gap-4">
+                                <div className="w-32 h-24 border border-gray-300 rounded overflow-hidden flex items-center justify-center bg-gray-50">
+                                {thumbnailPreview || formData.image ? (
+                                    <img 
+                                    src={thumbnailPreview || formData.image} 
+                                    alt="thumbnail" 
+                                    className="w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    <span className="text-gray-400 text-xs">Chưa có ảnh</span>
+                                )}
+                                </div>
+                                <div>
+                                    <label className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded cursor-pointer hover:bg-blue-100 transition text-sm font-medium">
+                                        Thay đổi ảnh
+                                        <input 
+                                        type="file" 
+                                        accept="image/*" 
+                                        hidden 
+                                        onChange={handleThumbnailChange}
+                                        />
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="col-span-1 md:col-span-2 space-y-1">
