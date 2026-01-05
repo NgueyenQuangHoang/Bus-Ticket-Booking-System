@@ -22,6 +22,7 @@ interface QRPaymentPageProps {
 export default function QRPaymentPage({ onBack, onSuccess, tripData }: QRPaymentPageProps) {
   // Countdown timer (15 minutes = 900 seconds)
   const [timeLeft, setTimeLeft] = useState(15 * 60 - 5); // Start at 14:55
+  const ticketCode = tripData.ticketCode || tripData.ticketCodes?.[0] || "VE1234567890";
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -44,7 +45,7 @@ export default function QRPaymentPage({ onBack, onSuccess, tripData }: QRPayment
   };
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText(tripData.ticketCode || "VE1234567890");
+    navigator.clipboard.writeText(ticketCode);
   };
 
   return (
@@ -83,7 +84,7 @@ export default function QRPaymentPage({ onBack, onSuccess, tripData }: QRPayment
                   {/* VietQR Image */}
                   <div className="w-64 md:w-56 h-auto bg-white border border-gray-200 rounded-lg flex items-center justify-center mb-2 p-2 shadow-sm">
                     <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${tripData.ticketCode || "VE1234567890"}`}
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${ticketCode}`}
                       alt="QR Code"
                       className="w-full h-full object-contain"
                     />
@@ -115,7 +116,7 @@ export default function QRPaymentPage({ onBack, onSuccess, tripData }: QRPayment
                     </p>
                     <div className="flex items-center justify-center gap-2">
                       <span className="text-xl font-bold text-blue-600 tracking-wider">
-                        {tripData.ticketCode || "VÉ1234567890"}
+                        {ticketCode}
                       </span>
                       <button
                         onClick={handleCopyCode}

@@ -87,7 +87,10 @@ export default function BusesPage() {
 
     // Enrich bus data with names
     const enrichedBuses = buses.map(bus => {
-        const company = companies.find(c => String(c.id) === String(bus.company_id));
+        const company = companies.find(c => {
+            const busCoId = bus.company_id ?? bus.bus_company_id;
+            return busCoId && String(c.id) === String(busCoId);
+        });
         // Compare with both string and number representations just in case
         const layout = layouts.find(l => String(l.layout_id) === String(bus.layout_id) || String(l.id) === String(bus.layout_id));
         const type = vehicleTypes.find(v => String(v.id) === String(bus.vehicle_type_id) || String(v.code) === String(bus.vehicle_type_id)); // Handle inconsistent ID usage if any
@@ -266,6 +269,8 @@ export default function BusesPage() {
                 busCompanies={companies}
                 vehicleTypes={vehicleTypes}
                 layouts={layouts}
+                isBusCompany={isBusCompany}
+                busCompanyId={busCompanyId}
             />
         </>
     );

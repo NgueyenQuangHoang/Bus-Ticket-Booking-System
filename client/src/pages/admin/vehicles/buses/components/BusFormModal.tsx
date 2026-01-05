@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { Bus, BusCompany, BusLayout } from "../../../../../types";
 import { v4 as uuidv4 } from 'uuid';
 import type { VehicleType } from "../../../../../services/vehicleTypeService";
@@ -11,9 +11,11 @@ type Props = {
   busCompanies: BusCompany[];
   vehicleTypes: VehicleType[];
   layouts: BusLayout[];
+  isBusCompany?: boolean;
+  busCompanyId?: string | number | null;
 };
 
-export default function BusFormModal({ open, onClose, onSubmit, initialData, busCompanies, vehicleTypes, layouts }: Props) {
+export default function BusFormModal({ open, onClose, onSubmit, initialData, busCompanies, vehicleTypes, layouts, isBusCompany = false, busCompanyId }: Props) {
   if (!open) return null;
 
   /* ===== STATE ===== */
@@ -31,32 +33,35 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
   const [thumbnailPreview, setThumbnailPreview] = useState("");
   const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
 
-  useEffect(() => {
+    useEffect(() => {
     if (initialData) {
-        setForm({
-            name: initialData.name || "",
-            plate: initialData.license_plate || "",
-            company: initialData.company_id ? String(initialData.company_id) : (initialData.bus_company_id ? String(initialData.bus_company_id) : ""),
-            status: initialData.status || "ACTIVE",
-            type: initialData.vehicle_type_id ? String(initialData.vehicle_type_id) : "",
-            layout: initialData.layout_id ? String(initialData.layout_id) : "",
-            capacity: initialData.capacity || 0,
-        });
-        setThumbnailPreview(initialData.thumbnail_image || "");
+      setForm({
+        name: initialData.name || "",
+        plate: initialData.license_plate || "",
+        company: initialData.company_id ? String(initialData.company_id) : (initialData.bus_company_id ? String(initialData.bus_company_id) : ""),
+        status: initialData.status || "ACTIVE",
+        type: initialData.vehicle_type_id ? String(initialData.vehicle_type_id) : "",
+        layout: initialData.layout_id ? String(initialData.layout_id) : "",
+        capacity: initialData.capacity || 0,
+      });
+      setThumbnailPreview(initialData.thumbnail_image || "");
     } else {
-        setForm({
-            name: "",
-            plate: "",
-            company: "",
-            status: "ACTIVE",
-            type: "",
-            layout: "",
-            capacity: 0,
-        });
-        setThumbnailPreview("");
+      const autoCompany = isBusCompany
+        ? (busCompanyId ? String(busCompanyId) : (busCompanies[0]?.id ? String(busCompanies[0].id) : ""))
+        : "";
+      setForm({
+        name: "",
+        plate: "",
+        company: autoCompany,
+        status: "ACTIVE",
+        type: "",
+        layout: "",
+        capacity: 0,
+      });
+      setThumbnailPreview("");
     }
     setThumbnailFile(undefined);
-  }, [initialData, open]);
+    }, [initialData, open, isBusCompany, busCompanyId, busCompanies]);
 
   const [errors, setErrors] = useState({
     name: "",
@@ -65,6 +70,27 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
     type: "",
     layout: "",
   });
+
+  // Layouts that belong to the selected company or are global (admin-created)
+  const filteredLayouts = useMemo(() => {
+    return layouts.filter((l) => {
+      const ownerId = l.bus_company_id ?? l.company_id;
+      if (!ownerId) return true; // global layout
+      if (!form.company) return false;
+      return String(ownerId) === String(form.company);
+    });
+  }, [layouts, form.company]);
+
+  // Ensure layout stays valid when company changes
+  useEffect(() => {
+    if (!form.layout) return;
+    const stillAllowed = filteredLayouts.some(
+      (l) => String(l.id || l.layout_id) === String(form.layout)
+    );
+    if (!stillAllowed) {
+      setForm((prev) => ({ ...prev, layout: "", capacity: 0 }));
+    }
+  }, [filteredLayouts, form.layout]);
 
   /* ===== HANDLER ===== */
   const handleChange = (
@@ -76,7 +102,9 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
   };
 
   const handleLayoutChange = (layoutId: string) => {
-    const selectedLayout = layouts.find(l => String(l.id) === layoutId || String(l.layout_id) === layoutId);
+    const selectedLayout = filteredLayouts.find(
+      (l) => String(l.id) === layoutId || String(l.layout_id) === layoutId
+    );
     let calculatedCapacity = 0;
     
     if (selectedLayout) {
@@ -120,14 +148,12 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
     if (!form.plate.trim())
       newErrors.plate = "Vui lòng nhập biển số";
 
-    if (!form.company)
+    const companyValue = form.company || (isBusCompany && busCompanyId ? String(busCompanyId) : "");
+    if (!companyValue)
       newErrors.company = "Vui lòng chọn nhà xe";
 
     if (!form.type)
       newErrors.type = "Vui lòng chọn loại xe";
-
-    if (!form.layout)
-      newErrors.layout = "Vui lòng chọn layout ghế";
 
     setErrors(newErrors);
     const hasError = Object.values(newErrors).some(Boolean);
@@ -136,8 +162,8 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
       onSubmit({
         name: form.name,
         license_plate: form.plate,
-        bus_company_id: form.company,
-        layout_id: form.layout, 
+        bus_company_id: companyValue,
+        layout_id: form.layout || undefined,
         vehicle_type_id: form.type,
         capacity: form.capacity,
         status: form.status as 'ACTIVE' | 'INACTIVE' | 'PENDING' | 'MAINTENANCE',
@@ -208,6 +234,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 value={form.company}
                 error={errors.company}
                 options={busCompanies.map(c => ({ value: String(c.id || c.bus_company_id), label: c.company_name, }))}
+                disabled={isBusCompany}
                 onChange={(v) =>
                   handleChange("company", v)
                 }
@@ -243,7 +270,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 error={errors.layout}
                 options={[
                   { value: "", label: "-- Chọn layout --" },
-                  ...layouts.map((l) => ({
+                  ...filteredLayouts.map((l) => ({
                     value: String(l.id || l.layout_id),
                     label: `${l.layout_name} (Hàng: ${l.total_rows || 0}, Cột: ${l.total_columns || 0}, Tầng: ${l.floor_count || 1})`,
                   })),
@@ -257,7 +284,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                   value={
                     form.layout
                       ? String(
-                          layouts.find(
+                          filteredLayouts.find(
                             (l) =>
                               String(l.id) === form.layout ||
                               String(l.layout_id) === form.layout
@@ -273,7 +300,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                   value={
                     form.layout
                       ? String(
-                          layouts.find(
+                          filteredLayouts.find(
                             (l) =>
                               String(l.id) === form.layout ||
                               String(l.layout_id) === form.layout
@@ -289,7 +316,7 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                   value={
                     form.layout
                       ? String(
-                          layouts.find(
+                          filteredLayouts.find(
                             (l) =>
                               String(l.id) === form.layout ||
                               String(l.layout_id) === form.layout
@@ -422,6 +449,7 @@ type SelectProps = {
   options: { value: string; label: string }[] | string[];
   onChange: (v: string) => void;
   error?: string;
+  disabled?: boolean;
 };
 
 function Select({
@@ -430,6 +458,7 @@ function Select({
   options,
   onChange,
   error,
+  disabled,
 }: SelectProps) {
   return (
     <div>
@@ -437,13 +466,16 @@ function Select({
         {label}
       </label>
       <select
+        disabled={disabled}
         value={value}
         onChange={(e) =>
           onChange(e.target.value)
         }
         className={`w-full border rounded px-3 py-2 text-sm
           ${
-            error
+            disabled
+              ? "bg-gray-100 cursor-not-allowed"
+              : error
               ? "border-red-500"
               : "border-gray-300"
           }`}
