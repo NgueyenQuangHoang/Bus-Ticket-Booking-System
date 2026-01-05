@@ -14,6 +14,7 @@ export interface Review {
     id: string;
     user_id: string;
     bus_id: string;
+    bus_company_id?: string; // Add company ID for company-level aggregation
     ticket_id?: string;
     booking_id?: string;
     rating: number;
@@ -35,6 +36,46 @@ export interface Review {
 }
 
 export const reviewService = {
+    getReviewsByCompanyId: async (companyId: string, page: number = 1, limit: number = 5, rating?: number | null) => {
+        try {
+            let url = `${API_URL}/bus_reviews?bus_company_id=${companyId}&_expand=user&_sort=created_at&_order=desc`;
+
+            if (page && limit) {
+                url += `&_page=${page}&_limit=${limit}`;
+            }
+
+            if (rating) {
+                url += `&rating=${rating}`;
+            }
+
+            const response = await axios.get(url);
+
+            const totalHeader = response.headers['x-total-count'] || response.headers['X-Total-Count'];
+            const totalCount = parseInt(totalHeader || '0', 10);
+
+            const reviews = response.data as Review[];
+            const reviewsWithUser = await Promise.all(reviews.map(async (review) => {
+                if (!review.user && review.user_id) {
+                    try {
+                        const userRes = await axios.get(`${API_URL}/users/${review.user_id}`);
+                        review.user = userRes.data;
+                    } catch (e) {
+                        console.warn(`Could not fetch user ${review.user_id} for review ${review.id}`);
+                    }
+                }
+                return review;
+            }));
+
+            return {
+                data: reviewsWithUser,
+                total: totalCount
+            };
+        } catch (error) {
+            console.error('Error fetching reviews by company:', error);
+            throw error;
+        }
+    },
+
     getReviewsByBusId: async (busId: string, page: number = 1, limit: number = 5, rating?: number | null) => {
         try {
             let url = `${API_URL}/bus_reviews?bus_id=${busId}&_expand=user&_sort=created_at&_order=desc`;
@@ -76,7 +117,19 @@ export const reviewService = {
         }
     },
 
+    // Helper to fetch all reviews for stats (Company level)
+    getAllReviewsForCompanyStats: async (companyId: string) => {
+        try {
+            const response = await axios.get(`${API_URL}/bus_reviews?bus_company_id=${companyId}`);
+            return response.data as Review[];
+        } catch (error) {
+            console.error('Error fetching all reviews for company stats:', error);
+            throw error;
+        }
+    },
+
     // Helper to calculate average rating (optional, if not provided by backend)
+    // Legacy: by Bus ID
     getAllReviewsForStats: async (busId: string) => {
         try {
             const response = await axios.get(`${API_URL}/bus_reviews?bus_id=${busId}`);
