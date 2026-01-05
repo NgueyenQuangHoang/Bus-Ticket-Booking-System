@@ -1747,7 +1747,7 @@
       "total_seats": 6,
       "available_seats": 1,
       "status": "AVAILABLE",
-      "departure_time": "2026-01-10T07:00",
+      "departure_time": "2026-01-2T07:00",
       "arrival_time": "2026-01-11T13:00",
       "updated_at": "2026-01-05T14:09:22.229Z",
       "id": "46c5"

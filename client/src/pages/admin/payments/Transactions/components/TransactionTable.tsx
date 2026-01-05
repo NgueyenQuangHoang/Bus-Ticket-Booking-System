@@ -1,10 +1,10 @@
 import { Visibility, ChevronLeft, ChevronRight } from '@mui/icons-material';
 
 export interface Transaction {
-    payment_id: number;
-    ticket_id: number;
-    user_id: number;
-    payment_provider_id: number;
+    payment_id: string | number;
+    ticket_id: string | number;
+    user_id: string | number;
+    payment_provider_id: string | number;
     payment_method: string;
     amount: number;
     transaction_code: string;
@@ -15,6 +15,7 @@ export interface Transaction {
     id: string;
     // Helper fields for display mapping
     provider_name?: string; 
+    ticket_code?: string;
 }
 
 interface TransactionTableProps {
@@ -83,8 +84,8 @@ export default function TransactionTable({
                 <tr key={t.id} className='hover:bg-slate-50 transition-colors'>
                   <td className='px-6 py-4 text-sm text-slate-600 font-medium'>{(currentPage - 1) * 10 + index + 1}</td>
                   <td className='px-6 py-4 text-sm font-medium text-slate-900'>{t.transaction_code}</td>
-                  <td className='px-6 py-4 text-sm text-slate-600'>#{t.ticket_id}</td>
-                  <td className='px-6 py-4 text-sm text-slate-900'>{t.provider_name || getProviderName(t.payment_provider_id)}</td>
+                  <td className='px-6 py-4 text-sm text-slate-600'>{t.ticket_code || 'N/A'}</td>
+                  <td className='px-6 py-4 text-sm text-slate-900'>{t.provider_name || getProviderName(Number(t.payment_provider_id))}</td>
                   <td className='px-6 py-4 text-sm text-slate-900 font-medium'>{formatCurrency(t.amount)}</td>
                    <td className='px-6 py-4 text-center'>
                     <span className={`px-2 py-1 rounded-full text-xs font-bold ${getStatusStyle(t.status)}`}>
