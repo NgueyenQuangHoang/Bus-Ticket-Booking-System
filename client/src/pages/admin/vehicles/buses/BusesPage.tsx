@@ -55,9 +55,23 @@ export default function BusesPage() {
                     : [])
                 : (companiesData || []);
 
+            const nonTemplateLayouts = (layoutsData || []).filter((layout) => !layout.is_template);
+            const scopedLayouts = isBusCompany
+                ? (busCompanyId
+                    ? nonTemplateLayouts.filter((layout) => {
+                        const layoutCompanyId = layout.bus_company_id ?? layout.company_id;
+                        if (layoutCompanyId) {
+                            return String(layoutCompanyId) === String(busCompanyId);
+                        }
+                        const layoutId = String(layout.id || layout.layout_id);
+                        return scopedBuses.some((bus) => String(bus.layout_id) === layoutId);
+                      })
+                    : [])
+                : nonTemplateLayouts;
+
             setBuses(scopedBuses);
             setCompanies(scopedCompanies);
-            setLayouts(layoutsData || []);
+            setLayouts(scopedLayouts);
             setVehicleTypes(typesData || []);
         } catch (error) {
             console.error("Failed to fetch data", error);
