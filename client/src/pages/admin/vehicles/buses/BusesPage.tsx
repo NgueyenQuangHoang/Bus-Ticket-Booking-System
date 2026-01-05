@@ -55,10 +55,10 @@ export default function BusesPage() {
                     : [])
                 : (companiesData || []);
 
-            const nonTemplateLayouts = (layoutsData || []).filter((layout) => !layout.is_template);
+            // Include both templates and non-templates so bus companies can also use admin-created/global layouts
             const scopedLayouts = isBusCompany
                 ? (busCompanyId
-                    ? nonTemplateLayouts.filter((layout) => {
+                    ? (layoutsData || []).filter((layout) => {
                         const layoutCompanyId = layout.bus_company_id ?? layout.company_id;
                         if (!layoutCompanyId) {
                             return true; // admin/global layout available to all bus companies
@@ -66,7 +66,7 @@ export default function BusesPage() {
                         return String(layoutCompanyId) === String(busCompanyId);
                       })
                     : [])
-                : nonTemplateLayouts;
+                : (layoutsData || []);
 
             setBuses(scopedBuses);
             setCompanies(scopedCompanies);
