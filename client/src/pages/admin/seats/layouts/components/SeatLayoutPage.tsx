@@ -38,8 +38,16 @@ export default function SeatLayoutPage() {
       setBuses(scopedBuses);
     });
     seatService.getAllSeatTypes().then(setSeatTypes);
-    seatService.getAllTemplates().then(setTemplates);
-  }, []);
+    seatService.getAllTemplates().then((data) => {
+      const filteredTemplates = !isBusCompany || !busCompanyId
+        ? (data || [])
+        : (data || []).filter((t) => {
+            const ownerId = t.bus_company_id ?? t.company_id;
+            return !ownerId || String(ownerId) === String(busCompanyId);
+          });
+      setTemplates(filteredTemplates);
+    });
+  }, [isBusCompany, busCompanyId]);
 
   const handleBusChange = async (busId: string) => {
     setSelectedBusId(busId);

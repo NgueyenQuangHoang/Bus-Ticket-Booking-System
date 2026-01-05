@@ -31,6 +31,8 @@ export default function PaymentSuccessPage({
   tripData,
   onHome,
 }: PaymentSuccessPageProps) {
+  const ticketCode = tripData.ticketCode || tripData.ticketCodes?.[0] || "VÉ123456789";
+
   return (
     <div className="min-h-screen bg-[#f2f4f7] pb-12">
       <main className="max-w-6xl mx-auto px-4 pt-6">
@@ -46,7 +48,7 @@ export default function PaymentSuccessPage({
             Thanh toán thành công
           </h1>
           <p className="text-lg font-medium text-gray-800 mb-1">
-            Mã vé: <span className="font-bold">{tripData.ticketCode || "VÉ123456789"}</span>
+            Mã vé: <span className="font-bold">{ticketCode}</span>
           </p>
           <p className="text-sm text-gray-500">
             Vé điện tử đã được gửi qua SMS & Email.

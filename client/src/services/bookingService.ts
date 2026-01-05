@@ -2,6 +2,7 @@ import api from '../api/api';
 
 export interface SeatSchedule {
   id: string;
+  ticketCodes?: string[];
   seat_id: string | number;
   schedule_id: string | number;
   ticket_id?: string;
@@ -165,13 +166,14 @@ const bookingService = {
     }
   },
 
-  createBooking: async (bookingData: Booking, selectedSeats: string[] = []): Promise<Booking | null> => {
+  createBooking: async (bookingData: Booking, selectedSeats: string[] = []): Promise<(Booking & { ticketCodes: string[] }) | null> => {
     try {
       const now = new Date().toISOString();
       const scheduleId = bookingData.tripInfo.id;
       const pricePerSeat = selectedSeats.length > 0 ? bookingData.totalPrice / selectedSeats.length : 0;
       
       const ticketsCreated: string[] = [];
+      const ticketCodes: string[] = [];
 
       // Loop through each seat to create individual tickets
       for (const seatId of selectedSeats) {
@@ -179,18 +181,20 @@ const bookingService = {
         ticketsCreated.push(ticketId);
 
         // 1. Create Ticket
+        const code = `TICKET_${ticketId.slice(-6).toUpperCase()}`;
         const ticket: Ticket = {
           id: ticketId,
           user_id: bookingData.userId,
           schedule_id: scheduleId,
           seat_id: seatId,
-          code: `TICKET_${ticketId.slice(-6).toUpperCase()}`,
+          code,
           status: bookingData.status === 'CONFIRMED' ? 'BOOKED' : 'PENDING',
           price: pricePerSeat,
           created_at: bookingData.createdAt,
           updated_at: now,
         };
         await api.post('/tickets', ticket);
+        ticketCodes.push(code);
 
         // 2. Create Passenger
         const passenger: Passenger = {
@@ -247,7 +251,7 @@ const bookingService = {
         console.error('Error updating schedule availability:', scheduleError);
       }
 
-      return bookingData;
+      return { ...bookingData, ticketCodes };
     } catch (error) {
       console.error('Error creating booking:', error);
       return null;
