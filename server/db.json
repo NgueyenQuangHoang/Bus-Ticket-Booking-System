@@ -43,6 +43,17 @@
       "price": 350000,
       "created_at": "2026-01-05T09:46:56.752Z",
       "updated_at": "2026-01-05T09:46:56.753Z"
+    },
+    {
+      "id": "1767638317885_ifrcr",
+      "user_id": "bba5",
+      "schedule_id": "795a",
+      "seat_id": "38e1",
+      "code": "TICKET__IFRCR",
+      "status": "BOOKED",
+      "price": 350000,
+      "created_at": "2026-01-05T18:38:37.879Z",
+      "updated_at": "2026-01-05T18:38:37.879Z"
     }
   ],
   "seat_schedules": [
@@ -139,6 +150,25 @@
       "ticket_id": "1767606416753_koxo6",
       "status": "BOOKED",
       "price": 350000
+    },
+    {
+      "id": "795a_38e1",
+      "schedule_id": "795a",
+      "seat_id": "38e1",
+      "status": "BOOKED",
+      "hold_expired_at": null,
+      "user_id": "bba5",
+      "ticket_id": "1767638317885_ifrcr",
+      "price": 350000
+    },
+    {
+      "id": "795a_38e1",
+      "schedule_id": "795a",
+      "seat_id": "38e1",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T18:53:32.211Z",
+      "user_id": "sess_1767638312159_ax9sjh8o1",
+      "ticket_id": null
     }
   ],
   "payments": [
@@ -173,6 +203,14 @@
       "method": "QR_PAYMENT",
       "status": "COMPLETED",
       "transaction_date": "2026-01-05T09:46:56.753Z"
+    },
+    {
+      "id": "PAY_1767638317939",
+      "ticket_id": "1767638317885_ifrcr",
+      "amount": 350000,
+      "method": "QR_PAYMENT",
+      "status": "COMPLETED",
+      "transaction_date": "2026-01-05T18:38:37.879Z"
     }
   ],
   "users": [
@@ -2320,7 +2358,8 @@
       "available_seats": 9,
       "status": "AVAILABLE",
       "created_at": "2026-01-04T12:00:00.000Z",
-      "updated_at": "2026-01-04T12:00:00.000Z"
+      "updated_at": "2026-01-04T12:00:00.000Z",
+      "id": "2d8d"
     },
     {
       "id": "SCH_CP_TEST_001",
@@ -2363,7 +2402,7 @@
       "route_id": "1",
       "bus_id": "e18e1123-e60f-4dff-830d-e49a647aa269",
       "total_seats": 40,
-      "available_seats": 38,
+      "available_seats": 37,
       "status": "AVAILABLE",
       "departure_time": "2026-01-07T00:00",
       "arrival_time": "2026-01-08T06:00",
@@ -2461,6 +2500,13 @@
     {
       "id": "1767606416766_P_gmaiy",
       "ticket_id": "1767606416753_koxo6",
+      "full_name": "Hoàng Nguyễn",
+      "phone": "0338470809",
+      "email": "nguyenquanghoang1080@gmail.com"
+    },
+    {
+      "id": "1767638317901_P_l7m0g",
+      "ticket_id": "1767638317885_ifrcr",
       "full_name": "Hoàng Nguyễn",
       "phone": "0338470809",
       "email": "nguyenquanghoang1080@gmail.com"
