@@ -7,7 +7,7 @@ import { removeRoute, updateRoutes } from '../../../../../slices/routesSlice';
 import type { Route } from '../../../../../types';
 import ReactQuill from 'react-quill-new';
 import { busImageService } from '../../../../../services/admin/busImageService';
-import { Image as ImageIcon, RestartAlt } from '@mui/icons-material';
+import { Image as ImageIcon } from '@mui/icons-material';
 import { useAppSelector } from '../../../../../hooks';
 import { fetchCities } from '../../../../../slices/citySlice';
 import { fetchStations } from '../../../../../slices/stationSlice';

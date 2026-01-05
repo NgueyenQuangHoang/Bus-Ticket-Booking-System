@@ -3,7 +3,7 @@ import {
   TableHead, TableRow, Chip
 } from '@mui/material';
 import StationAction from './StationAction';
-import type { City, Station } from '../../../../../types';
+import type { Station } from '../../../../../types';
 import { useAppSelector } from '../../../../../hooks';
 
 interface PropType {
