@@ -53,13 +53,6 @@ export default function BusCompanyTable({
                   </td>
 
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                        <span className="font-bold text-yellow-500">{item.rating_avg || 0}</span>
-                        <span className="text-gray-400 text-xs">({item.rating_count || 0})</span>
-                    </div>
-                  </td>
-
-                  <td className="px-4 py-3">
                     <span
                       className={`
                         inline-block text-xs font-semibold px-3 py-1 rounded-full

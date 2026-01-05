@@ -127,16 +127,11 @@ export const ticketService = {
 
     getMyTickets: async (userId: string): Promise<TicketUI[]> => {
         try {
-            // 1. Fetch tickets
-            const response = await api.get<TicketResponse[]>(
-                `/tickets?user_id=${userId}&_sort=created_at&_order=desc`
-            );
+            const response = await api.get<TicketResponse[]>(`/tickets?user_id=${userId}&_sort=created_at&_order=desc`);
             const tickets = response as unknown as TicketResponse[];
-
             if (tickets.length === 0) return [];
 
-            // 2. Parallel fetch related entities
-            const [buses, routes, stations, schedules, reviews, cities, seatPositions, allSeats, allSeatSchedules, allUser] = await Promise.all([
+            const [buses, routes, stations, schedules, reviews, cities, seatPositions, allSeats, currentUser] = await Promise.all([
                 api.get<Bus[]>(`/buses`),
                 api.get<Route[]>(`/routes`),
                 api.get<Station[]>(`/stations`),
@@ -145,8 +140,7 @@ export const ticketService = {
                 api.get<City[]>('/cities'),
                 api.get<SeatPosition[]>('/seat_positions'),
                 api.get<Seat[]>('/seats'),
-                api.get<SeatSchedule[]>('/seat_schedules'),
-                api.get<User[]>('/users')
+                api.get<User>(`/users/${userId}`)
             ]);
 
             const busesArr = buses as unknown as Bus[];
@@ -157,17 +151,12 @@ export const ticketService = {
             const citiesArr = cities as unknown as City[];
             const seatPositionsArr = seatPositions as unknown as SeatPosition[];
             const allSeatsArr = allSeats as unknown as Seat[];
-            const allSeatSchedulesArr = allSeatSchedules as unknown as SeatSchedule[];
-            const users = allUser as unknown as User[];
+            const user = currentUser as unknown as User;
 
-            // 3. Map to UI Model
             const mappedTickets: TicketUI[] = [];
 
             for (const ticket of tickets) {
-                // Manually find schedule
                 const schedule = schedulesArr.find(s => s.id === ticket.schedule_id);
-
-                // If schedule is missing, we might still want to show the ticket with warning or skip
                 if (!schedule) {
                     console.warn(`Ticket ${ticket.id} missing schedule data`);
                     continue;
@@ -176,12 +165,10 @@ export const ticketService = {
                 const bus = busesArr.find(b => b.id === schedule.bus_id);
                 const route = routesArr.find(r => r.id === schedule.route_id);
 
-                // Filter seats for this ticket from the fetched list
-                const seatSchedules = allSeatSchedulesArr.filter(ss => ss.ticket_id === ticket.id);
+                const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
+                const seatSchedules = (seatSchedulesRes as unknown as SeatSchedule[]).filter(ss => ss.ticket_id === ticket.id);
 
-                // Fallback: If no seat_schedules found but ticket has seat_id (Legacy/Manual data support)
                 if (seatSchedules.length === 0 && ticket.seat_id) {
-                    // Try to finding label directly from seat_positions
                     const pos = seatPositionsArr.find(p => p.id === ticket.seat_id);
                     seatSchedules.push({
                         id: 'temp_' + ticket.id,
@@ -190,38 +177,30 @@ export const ticketService = {
                         status: ticket.status,
                         price: ticket.price,
                         seat_id: ticket.seat_id,
-                        seat_name: pos?.label // Use label from seat_positions if found
+                        seat_name: pos?.label
                     } as SeatSchedule);
                 }
 
-                // Match seat IDs to real labels
                 const seatNames = seatSchedules.map(s => {
                     const sId = s.seat_id;
                     if (!sId) return "Ghe";
 
                     const pos = seatPositionsArr.find(p => p.id === sId);
-                    if (pos && pos.label) {
-                        return pos.label;
-                    }
+                    if (pos?.label) return pos.label;
 
                     if (bus) {
                         const seat = allSeatsArr.find(st => st.id === sId && st.bus_id === bus.id);
                         if (seat) return seat.seat_label || seat.seat_number;
                     }
-
                     return s.seat_name || sId;
                 });
-
-                // Deduplicate seats
                 const uniqueSeatNames = Array.from(new Set(seatNames));
 
                 const depStation = stationsArr.find(s => s.id === route?.departure_station_id);
                 const arrStation = stationsArr.find(s => s.id === route?.arrival_station_id);
-
-                // Resolve Cities
                 const depCity = citiesArr.find(c => c.id === depStation?.city_id);
                 const arrCity = citiesArr.find(c => c.id === arrStation?.city_id);
-                const user = users.find(u => u.id === ticket.user_id);
+                // const user = users.find(u => u.id === ticket.user_id); // Already fetched as 'currentUser'
 
                 const routeName = (depCity && arrCity)
                     ? `${depCity.city_name} - ${arrCity.city_name}`
@@ -230,13 +209,10 @@ export const ticketService = {
                         : "Tuyến đường không xác định";
 
                 const departureDate = new Date(schedule.departure_time);
-
                 const isPast = departureDate < new Date();
                 let uiStatus = ticket.status;
-
                 if (ticket.status === 'BOOKED' && isPast) {
                     uiStatus = 'COMPLETED';
-                    // Auto-update status in DB
                     api.patch(`/tickets/${ticket.id}`, {
                         status: 'COMPLETED',
                         updated_at: new Date().toISOString()
