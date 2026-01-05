@@ -1,5 +1,6 @@
 import api from '../../api/api';
 import type { Bus } from '../../types/bus';
+import type { Seat } from '../../types/seat';
 
 const busService = {
   getAllBuses: async (): Promise<Bus[]> => {
@@ -86,7 +87,7 @@ const busService = {
     try {
       // Query physical seats for this bus
       const response = await api.get(`/seats?bus_id=${busId}`);
-      const seats = response as unknown as any[]; // Using any temporarily as imported Seat type might be tricky path-wise here without checking imports
+      const seats = response as unknown as Seat[];
       
       const total = seats.length;
       const available = seats.filter(s => s.is_available_for_booking).length;

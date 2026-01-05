@@ -8,6 +8,7 @@ export const BUS_COMPANY_ADMIN_PATHS = [
   "/admin/schedules",
   "/admin/seat-status",
   "/admin/tickets",
+  "/admin/reviews",
 ];
 
 export const DEFAULT_BUS_COMPANY_ADMIN_PATH = "/bus-company";

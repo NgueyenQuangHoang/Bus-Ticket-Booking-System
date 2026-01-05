@@ -36,16 +36,17 @@ export const fetchPopularRoutes = createAsyncThunk(
       ]);
 
       const items: PopularRouteView[] = popularRoutes.map((pr) => {
-        const route = routes.find((r) => r.route_id === pr.route_id);
+        // Cast both sides to string to ensure matching (json-server often returns string IDs vs number references)
+        const route = routes.find((r) => String(r.id) === String(pr.route_id));
         if (!route) return null;
 
-        const departureStation = stations.find((s) => s.station_id === route.departure_station_id);
-        const arrivalStation = stations.find((s) => s.station_id === route.arrival_station_id);
+        const departureStation = stations.find((s) => String(s.id) === String(route.departure_station_id));
+        const arrivalStation = stations.find((s) => String(s.id) === String(route.arrival_station_id));
 
         if (!departureStation || !arrivalStation) return null;
 
-        const departureCity = cities.find((c) => c.city_id === departureStation.city_id);
-        const arrivalCity = cities.find((c) => c.city_id === arrivalStation.city_id);
+        const departureCity = cities.find((c) => String(c.id) === String(departureStation.city_id));
+        const arrivalCity = cities.find((c) => String(c.id) === String(arrivalStation.city_id));
 
         if (!departureCity || !arrivalCity) return null;
 
@@ -59,9 +60,9 @@ export const fetchPopularRoutes = createAsyncThunk(
       }).filter((item): item is PopularRouteView => item !== null);
 
       return items;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-        return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch popular routes');
+      return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch popular routes');
     }
   }
 );

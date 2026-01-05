@@ -38,8 +38,16 @@ export default function SeatLayoutPage() {
       setBuses(scopedBuses);
     });
     seatService.getAllSeatTypes().then(setSeatTypes);
-    seatService.getAllTemplates().then(setTemplates);
-  }, []);
+    seatService.getAllTemplates().then((data) => {
+      const filteredTemplates = !isBusCompany || !busCompanyId
+        ? (data || [])
+        : (data || []).filter((t) => {
+            const ownerId = t.bus_company_id ?? t.company_id;
+            return !ownerId || String(ownerId) === String(busCompanyId);
+          });
+      setTemplates(filteredTemplates);
+    });
+  }, [isBusCompany, busCompanyId]);
 
   const handleBusChange = async (busId: string) => {
     setSelectedBusId(busId);
@@ -92,6 +100,11 @@ export default function SeatLayoutPage() {
       alert('Vui lòng chọn xe trước khi tạo sơ đồ.');
       return;
     }
+    const layoutPayload: Partial<BusLayout> = {
+      ...layoutData,
+      ...(isBusCompany && busCompanyId ? { bus_company_id: busCompanyId } : {}),
+      is_template: false,
+    };
 
     // Generate initial positions for Driver and Door
     const initialPositions: Partial<SeatPosition>[] = [];
@@ -115,7 +128,7 @@ export default function SeatLayoutPage() {
       label: 'Cửa'
     });
 
-    const createdLayout = await seatService.createLayout(layoutData, initialPositions);
+    const createdLayout = await seatService.createLayout(layoutPayload, initialPositions);
     if (createdLayout && createdLayout.id) {
       await busService.updateBusLayout(selectedBusId, createdLayout.id);
       
@@ -124,7 +137,15 @@ export default function SeatLayoutPage() {
       setIsModalOpen(false);
 
       const updatedBuses = await busService.getAllBuses();
-      setBuses(updatedBuses);
+      const scopedBuses = isBusCompany
+        ? (busCompanyId
+            ? (updatedBuses || []).filter((bus) => {
+                const companyId = bus.bus_company_id ?? bus.company_id;
+                return companyId && String(companyId) === String(busCompanyId);
+              })
+            : [])
+        : (updatedBuses || []);
+      setBuses(scopedBuses);
 
       alert(`Đã tạo sơ đồ "${layoutData.layout_name}" thành công!`);
     } else {

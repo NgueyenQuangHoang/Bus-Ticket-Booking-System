@@ -101,7 +101,7 @@ export default function PublicTicketDetailModal({ open, onClose, ticket }: Props
                             <label className="text-xs text-slate-500 block">Ghế</label>
                             <div className="flex flex-col">
                                 <span className="font-bold text-lg text-slate-800">
-                                    {ticket.seats.join(', ')}
+                                    {[...new Set(ticket.seats)].join(', ')}
                                 </span>
                                 <span className="text-xs text-slate-500">{ticket.busInfo.type}</span>
                             </div>

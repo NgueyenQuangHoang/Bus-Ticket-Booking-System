@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import seatService from "../../../../services/admin/seatService";
 import bookingService from "../../../../services/bookingService";
-import type { SeatPosition, BusLayout } from "../../../../types/seat";
+import type { SeatPosition, BusLayout, SeatType } from "../../../../types/seat";
 import type { SeatSchedule } from "../../../../services/bookingService";
 import type { TripSearchResult } from "../../../../services/tripSearchService";
 
@@ -102,7 +102,21 @@ function PriceLine({ price }: PriceLineProps) {
   );
 }
 
-function Legend({ basePrice }: { basePrice: number }) {
+const resolveSeatTypeColor = (type: SeatType | undefined): string => {
+  if (!type) return "#6b7280"; // default gray
+  const name = (type.type_name || "").toLowerCase();
+  // Preferred brand colors
+  if (name.includes("giường đôi")) return "#0ea5e9"; // cyan/blue
+  if (name.includes("giường đơn")) return "#7c3aed"; // purple
+  if (name.includes("vip")) return "#f97316"; // orange accent
+  return type.color || "#6b7280";
+};
+
+function Legend({ basePrice, seatTypesUsed, seatTypeMap }: { basePrice: number; seatTypesUsed: Array<string | number>; seatTypeMap: Map<string, SeatType>; }) {
+  const items = seatTypesUsed
+    .map((id) => seatTypeMap.get(String(id)))
+    .filter((t): t is SeatType => Boolean(t));
+
   return (
     <div className="w-full xl:max-w-xs">
       <h2 className="text-lg font-bold text-zinc-800 mb-4">Chú thích</h2>
@@ -117,15 +131,27 @@ function Legend({ basePrice }: { basePrice: number }) {
         />
       </div>
       <div className="space-y-3 border-t pt-3">
-        <div className="flex items-start gap-3">
-          <SeatIcon variant="gray" />
-          <div>
-            <div className="text-sm font-semibold text-zinc-800">
-              Ghế tiêu chuẩn
+        {items.length === 0 ? (
+          <div className="flex items-start gap-3">
+            <SeatIcon variant="gray" />
+            <div>
+              <div className="text-sm font-semibold text-zinc-800">
+                Ghế tiêu chuẩn
+              </div>
+              <PriceLine price={basePrice} />
             </div>
-            <PriceLine price={basePrice} />
           </div>
-        </div>
+        ) : (
+          items.map((t) => (
+            <div key={t.id || t.seat_type_id} className="flex items-start gap-3">
+              <SeatIcon variant="gray" color={resolveSeatTypeColor(t)} />
+              <div>
+                <div className="text-sm font-semibold text-zinc-800">{t.type_name}</div>
+                <PriceLine price={Math.round(basePrice * (t.price_multiplier || 1))} />
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
@@ -252,15 +278,17 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
   const [positions, setPositions] = useState<SeatPosition[]>([]);
   const [bookedSeats, setBookedSeats] = useState<SeatSchedule[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [seatTypes, setSeatTypes] = useState<SeatType[]>([]);
   
   useEffect(() => {
     if (!layoutId || !scheduleId) return;
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [layoutData, scheduleData] = await Promise.all([
+        const [layoutData, scheduleData, seatTypesData] = await Promise.all([
            seatService.getLayoutDetails(layoutId),
-           bookingService.getSeatSchedule(scheduleId)
+           bookingService.getSeatSchedule(scheduleId),
+           seatService.getAllSeatTypes(),
         ]);
         if (layoutData) {
           setLayout(layoutData.layout);
@@ -268,6 +296,9 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
         }
         if (scheduleData) {
           setBookedSeats(scheduleData);
+        }
+        if (seatTypesData) {
+          setSeatTypes(seatTypesData);
         }
       } catch (error) {
         console.error("Error fetching seat data:", error);
@@ -278,8 +309,19 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
     fetchData();
   }, [layoutId, scheduleId]);
 
-  const { lowerFloor, upperFloor } = useMemo(() => {
-    if (!layout || positions.length === 0) return { lowerFloor: [], upperFloor: [] };
+  const seatTypeMap = useMemo(() => {
+    const map = new Map<string, SeatType>();
+    seatTypes.forEach((t) => {
+      map.set(String(t.id ?? t.seat_type_id), t);
+    });
+    return map;
+  }, [seatTypes]);
+
+  const { lowerFloor, upperFloor, seatLookup, seatTypesUsed } = useMemo(() => {
+    if (!layout || positions.length === 0) return { lowerFloor: [], upperFloor: [], seatLookup: new Map<string, SeatData>(), seatTypesUsed: [] };
+
+    const lookup = new Map<string, SeatData>();
+    const usedTypes = new Set<string | number>();
 
     const processFloor = (floorNumber: 1 | 2) => {
       const floorPositions = positions.filter(p => p.floor === floorNumber);
@@ -295,13 +337,19 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
              const isBooked = bookedSeats.some(s => 
                String(s.seat_id) === String(pos.id) && (s.status === 'BOOKED' || s.status === 'HOLD')
              );
-             grid.push({
+             const seatType = pos.seat_type_id ? seatTypeMap.get(String(pos.seat_type_id)) : undefined;
+             if (seatType) usedTypes.add(seatType.id ?? seatType.seat_type_id);
+             const seat: SeatData = {
                id: String(pos.id || pos.position_id),
                status: isBooked ? 'disabled' : 'gray',
                showX: isBooked,
                label: pos.label || `${r+1}-${c+1}`,
-               seatTypeId: pos.seat_type_id
-             });
+               seatTypeId: pos.seat_type_id,
+               color: resolveSeatTypeColor(seatType),
+               priceMultiplier: seatType?.price_multiplier ?? 1,
+             };
+             lookup.set(seat.id, seat);
+             grid.push(seat);
            } else {
              grid.push(null);
            }
@@ -312,9 +360,11 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
 
     return {
       lowerFloor: processFloor(1),
-      upperFloor: processFloor(2)
+      upperFloor: processFloor(2),
+      seatLookup: lookup,
+      seatTypesUsed: Array.from(usedTypes),
     };
-  }, [layout, positions, bookedSeats]);
+  }, [layout, positions, bookedSeats, seatTypeMap]);
 
   const toggleSeat = (id: string, seat: SeatData) => {
     if (seat.status === "disabled") return;
@@ -329,7 +379,15 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
     });
   };
 
-  const totalPrice = selected.size * price;
+  const totalPrice = useMemo(() => {
+    let sum = 0;
+    selected.forEach((id) => {
+      const seat = seatLookup.get(id);
+      const multiplier = seat?.priceMultiplier ?? 1;
+      sum += price * multiplier;
+    });
+    return sum;
+  }, [selected, seatLookup, price]);
 
   const handleContinue = () => {
     const formatDate = (date: Date) => {
@@ -388,7 +446,7 @@ export default function SeatSelection({ layoutId, scheduleId, price = 0, trip }:
   return (
     <div className="w-full bg-white">
       <div className="flex flex-col xl:flex-row gap-8 items-start justify-center">
-        <Legend basePrice={price} />
+        <Legend basePrice={price} seatTypesUsed={seatTypesUsed} seatTypeMap={seatTypeMap} />
         <div className="flex gap-4 md:gap-8 justify-center flex-1 w-full max-w-[500px]">
           <FloorCard
             title="Tầng dưới"

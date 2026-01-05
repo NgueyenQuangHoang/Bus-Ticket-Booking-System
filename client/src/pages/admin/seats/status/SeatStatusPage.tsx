@@ -128,7 +128,9 @@ export default function SeatStatusPage() {
   const [stations, setStations] = useState<Station[]>([]);
   const [allSchedules, setAllSchedules] = useState<Schedule[]>([]);
 
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string>("");
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string>(
+    isBusCompany && busCompanyId ? busCompanyId : ""
+  );
   const [selectedBusId, setSelectedBusId] = useState<string>("");
   const [selectedScheduleId, setSelectedScheduleId] = useState<string>("");
 
@@ -164,11 +166,7 @@ export default function SeatStatusPage() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (isBusCompany && busCompanyId) {
-      setSelectedCompanyId(busCompanyId);
-    }
-  }, [isBusCompany, busCompanyId]);
+
 
   // 2. Compute Filtered Options
   const { validCompanyOptions, validBusOptions, scheduleOptions } = useMemo(() => {
@@ -193,11 +191,11 @@ export default function SeatStatusPage() {
         .filter(b => activeBusIds.has(b.id))
         .filter(b => {
           if (!companyFilterId) return true;
-          return String(b.bus_company_id) === String(companyFilterId);
+          return String(b.bus_company_id || b.company_id) === String(companyFilterId);
         });
       
       // Unique Company IDs from valid buses
-      const activeCompanyIds = new Set(validBuses.map(b => b.bus_company_id));
+      const activeCompanyIds = new Set(validBuses.map(b => b.bus_company_id || b.company_id));
 
       // 1. Company Options
       const companyOpts = allBusCompanies
@@ -210,7 +208,7 @@ export default function SeatStatusPage() {
 
       // 2. Bus Options (Dependent on selected Company)
       const busOpts = validBuses
-          .filter(b => !companyFilterId || String(b.bus_company_id) === String(companyFilterId))
+          .filter(b => !companyFilterId || String(b.bus_company_id || b.company_id) === String(companyFilterId))
           .map(b => ({ value: b.id, label: b.name }));
 
       // 3. Schedule Options (Dependent on selected Bus)

@@ -6,6 +6,7 @@ interface Props {
 }
 
 export default function SeatLegend({ seatTypes }: Props) {
+    const safeSeatTypes = Array.isArray(seatTypes) ? seatTypes : [];
   return (
     <div className='bg-white p-6 rounded-xl shadow-sm border border-gray-100'>
         <h3 className='font-bold mb-6 text-gray-800 text-lg'>Chú thích</h3>
@@ -30,14 +31,14 @@ export default function SeatLegend({ seatTypes }: Props) {
                 </div>
             </div>
 
-            {seatTypes.map(type => (
+            {safeSeatTypes.map(type => (
                 <div key={type.id || type.seat_type_id} className='flex items-start gap-4'>
                     <div 
                         className='w-12 h-12 flex flex-col items-center justify-center rounded-lg border-2 bg-white shrink-0'
-                        style={{ borderColor: type.color }}
+                        style={{ borderColor: type.color || '#d1d5db' }}
                     >
                         {(() => {
-                            const typeName = type.type_name.toLowerCase();
+                            const typeName = (type.type_name || '').toLowerCase();
                             if (typeName.includes('giường đôi')) {
                                 return (
                                     <div className="flex gap-1">
@@ -57,7 +58,7 @@ export default function SeatLegend({ seatTypes }: Props) {
                         })()}
                     </div>
                     <div>
-                        <div className='font-medium text-gray-800'>{type.type_name}</div>
+                        <div className='font-medium text-gray-800'>{type.type_name || 'Loại ghế'}</div>
                         <div className='text-sm text-gray-900 font-bold'>
                             {type.price_multiplier > 0 ? (
                                 <>
