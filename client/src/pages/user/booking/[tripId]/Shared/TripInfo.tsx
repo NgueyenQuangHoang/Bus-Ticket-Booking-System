@@ -46,6 +46,7 @@ export interface TripData {
   };
   totalPrice: number;
   ticketCode?: string;
+  ticketCodes?: string[];
   priceDisplay?: string; // "300.000đ"
   route?: string;
   price?: string;
@@ -81,6 +82,7 @@ export const SHARED_TRIP: TripData = {
   },
   totalPrice: 350000,
   ticketCode: "VÉ987654321",
+  ticketCodes: ["VÉ987654321"],
   priceDisplay: "350.000đ",
   route: "Hồ Chí Minh - Hà Nội",
   price: "350.000đ"

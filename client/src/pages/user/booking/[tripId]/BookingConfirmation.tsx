@@ -69,7 +69,7 @@ export default function BookingConfirmation() {
   const navigate = useNavigate();
 
   const location = useLocation();
-  const tripData = location.state?.trip as TripData || SHARED_TRIP;
+  const [tripData, setTripData] = useState<TripData>(location.state?.trip as TripData || SHARED_TRIP);
   const selectedSeats = useMemo(() => location.state?.selectedSeats || [], [location.state]);
 
   // Session ID for seat holding
@@ -123,6 +123,9 @@ export default function BookingConfirmation() {
       const result = await bookingService.createBooking(bookingData, selectedSeats);
 
       if (result) {
+        if (result.ticketCodes && result.ticketCodes.length > 0) {
+          setTripData((prev) => ({ ...prev, ticketCode: result.ticketCodes[0], ticketCodes: result.ticketCodes }));
+        }
         notify("Thanh toán và lưu vé thành công!", true);
         setActiveStep(2);
         window.scrollTo(0, 0);

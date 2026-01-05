@@ -4,10 +4,11 @@ import { Delete as DeleteIcon } from "@mui/icons-material";
 import seatService from "../../../../../services/admin/seatService";
 import Swal from "sweetalert2";
 import type { BusLayout } from "../../../../../types/seat";
-import { getStoredRole } from "../../../../../utils/authStorage";
+import { getStoredRole, getStoredBusCompanyId } from "../../../../../utils/authStorage";
 
 export default function SeatLayoutTemplatePage() {
   const isBusCompany = getStoredRole() === "BUS_COMPANY";
+  const busCompanyId = getStoredBusCompanyId();
 
   const [layoutName, setLayoutName] = useState("");
   const [rows, setRows] = useState(7);
@@ -20,10 +21,16 @@ export default function SeatLayoutTemplatePage() {
   useEffect(() => {
     const fetchTemplates = async () => {
       const data = await seatService.getAllTemplates();
-      setTemplates(data || []);
+      const filtered = !isBusCompany || !busCompanyId
+        ? (data || [])
+        : (data || []).filter((t) => {
+            const ownerId = t.bus_company_id ?? t.company_id;
+            return !ownerId || String(ownerId) === String(busCompanyId);
+          });
+      setTemplates(filtered);
     };
     fetchTemplates();
-  }, [refreshKey]);
+  }, [refreshKey, isBusCompany, busCompanyId]);
 
   const triggerRefresh = () => setRefreshKey((prev) => prev + 1);
 
@@ -38,7 +45,8 @@ export default function SeatLayoutTemplatePage() {
       total_rows: rows,
       total_columns: cols,
       floor_count: floors,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
+      ...(isBusCompany && busCompanyId ? { bus_company_id: busCompanyId } : {})
     };
 
     const result = await seatService.createTemplate(templateData);
