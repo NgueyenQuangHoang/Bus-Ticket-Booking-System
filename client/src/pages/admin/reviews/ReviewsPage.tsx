@@ -31,7 +31,7 @@ export default function ReviewsPage() {
             const companyId = getStoredBusCompanyId();
             if (companyId) {
                 const buses = await busService.getBusesByCompanyId(companyId);
-                busIds = buses.map(b => String(b.id)); // ensure string id
+                busIds = buses.map(b => String(b.id ?? b.bus_id)).filter(Boolean); // ensure string id
             }
         }
 

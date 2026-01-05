@@ -1,16 +1,25 @@
 import { FormControl, Stack, InputLabel, Select, MenuItem } from '@mui/material';
 import type { Bus, BusCompany } from '../../../../types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   value: string;
   onChange: (value: string) => void;
   bus: Bus[],
-  companies: BusCompany[]
+  companies: BusCompany[],
+  isBusCompany?: boolean,
+  busCompanyId?: string | number,
 };
 
-export default function TicketSearch({ value, onChange, bus, companies }: Props) {
+export default function TicketSearch({ value, onChange, bus, companies, isBusCompany, busCompanyId }: Props) {
   const [idBusCompany, setIdBusCompany] = useState('')
+
+  // Preselect and lock company for bus-company role
+  useEffect(() => {
+    if (isBusCompany && busCompanyId) {
+      setIdBusCompany(String(busCompanyId));
+    }
+  }, [isBusCompany, busCompanyId]);
   return (
     <div className='bg-white p-4 rounded-xl border border-slate-200 shadow-sm'>
       {/* <div className="relative">
@@ -28,12 +37,15 @@ export default function TicketSearch({ value, onChange, bus, companies }: Props)
         <Stack direction="row" spacing={2}>
           <FormControl fullWidth>
             <InputLabel>Chọn nhà xe</InputLabel>
-            <Select value={idBusCompany} label="Tuổi 1" onChange={(e) => setIdBusCompany(e.target.value)}>
-              {
-                companies && companies.map(item => (
-                  <MenuItem value={item.id}>{item.company_name}</MenuItem>
-                ))
-              }
+            <Select
+              value={idBusCompany}
+              label="Chọn nhà xe"
+              onChange={(e) => setIdBusCompany(e.target.value)}
+              disabled={!!isBusCompany}
+            >
+              {companies && companies.map(item => (
+                <MenuItem key={item.id} value={item.id}>{item.company_name}</MenuItem>
+              ))}
             </Select>
           </FormControl>
 

@@ -133,17 +133,16 @@ export const reviewService = {
                 url += `&q=${search}`;
             }
 
-             if (busIds && busIds.length > 0) {
-                busIds.forEach(id => {
-                    url += `&bus_id=${id}`;
-                });
+            if (busIds && busIds.length > 0) {
+                // json-server treats repeated query params as AND; use regex matching for OR semantics
+                url += `&bus_id_like=${busIds.join('|')}`;
             }
 
             const response = await axios.get(url);
             const totalHeader = response.headers['x-total-count'] || response.headers['X-Total-Count'];
             let totalCount = parseInt(totalHeader || '0', 10);
 
-            const reviews = response.data as Review[];
+            let reviews = response.data as Review[];
 
             // Fallback if header is missing but data exists (common in some CORS setups or json-server versions)
             if (totalCount === 0 && reviews.length > 0) {
@@ -154,6 +153,12 @@ export const reviewService = {
                     // If we are on page 1 and length == limit, likely at least limit.
                     totalCount = reviews.length;
                 }
+            }
+
+            // Client-side guard to ensure bus-company only sees its own buses
+            if (busIds && busIds.length > 0) {
+                reviews = reviews.filter(r => busIds.includes(String(r.bus_id)));
+                totalCount = reviews.length;
             }
 
             // Enrich with User and Bus info

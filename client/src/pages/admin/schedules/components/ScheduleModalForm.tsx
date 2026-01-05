@@ -7,9 +7,11 @@ import { validateSchedule } from "./validation";
 import { cityService } from "../../../../services/cityService";
 import { stationService } from "../../../../services/stationService";
 import { routesService } from "../../../../services/routesService";
+import seatService from "../../../../services/admin/seatService";
 import busService from "../../../../services/admin/busService";
 import type { City, Station, Route } from "../../../../types";
 import type { Bus } from "../../../../types/bus";
+import type { SeatPosition } from "../../../../types/seat";
 import { getStoredBusCompanyId, getStoredRole } from "../../../../utils/authStorage";
 
 type Props = {
@@ -170,13 +172,35 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
   };
 
   // --- Handlers ---
+  const countSellableSeats = (positions: SeatPosition[]): number => {
+    return positions.filter(p => !p.is_driver_seat && !p.is_door && !p.is_stair && !p.is_aisle).length;
+  };
 
-  const handleBusChange = (val: string | number) => {
+  const handleBusChange = async (val: string | number) => {
       handleChange("bus_id", val);
-      // Auto-populate total_seats based on bus capacity
+
       const selectedBus = buses.find(b => String(b.id) === String(val));
-      if (selectedBus && selectedBus.capacity) {
-          setFormData(prev => ({ ...prev, total_seats: selectedBus.capacity }));
+      if (!selectedBus) return;
+
+      let totalSeats = selectedBus.capacity;
+
+      // If capacity is missing, derive from layout positions
+      if (!totalSeats && selectedBus.layout_id) {
+        try {
+          const details = await seatService.getLayoutDetails(selectedBus.layout_id);
+          if (details?.positions?.length) {
+            totalSeats = countSellableSeats(details.positions as SeatPosition[]);
+          } else if (details?.layout?.total_rows && details.layout.total_columns) {
+            // Fallback: rough estimate if positions are absent
+            totalSeats = (details.layout.total_rows * details.layout.total_columns) || undefined;
+          }
+        } catch (err) {
+          console.error("Failed to derive seats from layout", err);
+        }
+      }
+
+      if (totalSeats && Number.isFinite(totalSeats)) {
+        setFormData(prev => ({ ...prev, total_seats: totalSeats, available_seat: totalSeats }));
       }
   };
 

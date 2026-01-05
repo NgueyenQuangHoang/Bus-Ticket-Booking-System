@@ -60,11 +60,10 @@ export default function BusesPage() {
                 ? (busCompanyId
                     ? nonTemplateLayouts.filter((layout) => {
                         const layoutCompanyId = layout.bus_company_id ?? layout.company_id;
-                        if (layoutCompanyId) {
-                            return String(layoutCompanyId) === String(busCompanyId);
+                        if (!layoutCompanyId) {
+                            return true; // admin/global layout available to all bus companies
                         }
-                        const layoutId = String(layout.id || layout.layout_id);
-                        return scopedBuses.some((bus) => String(bus.layout_id) === layoutId);
+                        return String(layoutCompanyId) === String(busCompanyId);
                       })
                     : [])
                 : nonTemplateLayouts;
