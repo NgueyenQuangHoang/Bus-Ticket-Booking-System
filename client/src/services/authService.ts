@@ -32,7 +32,7 @@ export const authService = {
         }
     },
 
-    register: async (userData: Omit<User, 'status' | 'user_id' | 'created_at' | 'updated_at'>): Promise<User | undefined> => {
+    register: async (userData: Omit<User, 'status' |  'created_at' | 'updated_at'>): Promise<User | undefined> => {
         try {
             const getUser: User[] = await api.get('users')
             const { email } = userData
@@ -47,10 +47,9 @@ export const authService = {
                 created_at: new Date(),
                 updated_at: new Date(),
                 status: "ACTIVE",
-                user_id,
             })
             const newId = uuidv4()
-            await api.post('user_role', { user_id, role_id: 1, id: newId })
+            await api.post('user_role', { user_id, role_id: '1', id: newId })
             localStorage.setItem('user', JSON.stringify(response))
             localStorage.setItem('isLogin', JSON.stringify(true))
             return response
