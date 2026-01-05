@@ -41,7 +41,7 @@ export const authService = {
                 alert('Da ton tai email')
                 return undefined
             }
-            const user_id = uuidv4()
+            const {id: user_id}= userData 
             const response: User = await api.post('users', {
                 ...userData,
                 created_at: new Date(),
