@@ -1,4 +1,4 @@
-import type { Timestamp, Decimal } from './common';
+import type { Timestamp } from './common';
 
 export type TicketStatus = 'BOOKED' | 'CANCELLED' | string;
 

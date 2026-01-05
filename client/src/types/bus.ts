@@ -5,7 +5,8 @@ export interface BusCompany {
   company_name: string;
   image?: string;
   description?: string;
-  rating?: number;
+  rating_avg?: number;
+  rating_count?: number;
   created_at?: Timestamp;
   updated_at?: Timestamp;
 

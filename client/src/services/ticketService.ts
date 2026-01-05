@@ -131,7 +131,7 @@ export const ticketService = {
             const tickets = response as unknown as TicketResponse[];
             if (tickets.length === 0) return [];
 
-            const [buses, routes, stations, schedules, reviews, cities, seatPositions, allSeats] = await Promise.all([
+            const [buses, routes, stations, schedules, reviews, cities, seatPositions, allSeats, currentUser] = await Promise.all([
                 api.get<Bus[]>(`/buses`),
                 api.get<Route[]>(`/routes`),
                 api.get<Station[]>(`/stations`),
@@ -140,6 +140,7 @@ export const ticketService = {
                 api.get<City[]>('/cities'),
                 api.get<SeatPosition[]>('/seat_positions'),
                 api.get<Seat[]>('/seats'),
+                api.get<User>(`/users/${userId}`)
             ]);
 
             const busesArr = buses as unknown as Bus[];
@@ -150,6 +151,7 @@ export const ticketService = {
             const citiesArr = cities as unknown as City[];
             const seatPositionsArr = seatPositions as unknown as SeatPosition[];
             const allSeatsArr = allSeats as unknown as Seat[];
+            const user = currentUser as unknown as User;
 
             const mappedTickets: TicketUI[] = [];
 
@@ -198,6 +200,7 @@ export const ticketService = {
                 const arrStation = stationsArr.find(s => s.id === route?.arrival_station_id);
                 const depCity = citiesArr.find(c => c.id === depStation?.city_id);
                 const arrCity = citiesArr.find(c => c.id === arrStation?.city_id);
+                // const user = users.find(u => u.id === ticket.user_id); // Already fetched as 'currentUser'
 
                 const routeName = (depCity && arrCity)
                     ? `${depCity.city_name} - ${arrCity.city_name}`
@@ -235,6 +238,11 @@ export const ticketService = {
                     dropoff: arrStation?.station_name || "Điểm trả",
                     seats: uniqueSeatNames.length > 0 ? uniqueSeatNames : ["N/A"],
                     review: review,
+                    passengerInfo: {
+                        email: user?.email || '',
+                        fullName: user ? user.first_name + " " + user.last_name : '',
+                        phone: user?.phone || ""
+                    },
                     created_at: ticket.created_at
                 });
             }

@@ -27,6 +27,10 @@ export interface Review {
         name: string;
         bus_number?: string;
     };
+    ticket?: {
+        id: string;
+        code: string;
+    };
     is_verified?: boolean;
 }
 
@@ -180,6 +184,16 @@ export const reviewService = {
                         review.bus = busRes.data;
                     } catch (e) {
                         // console.warn(`Could not fetch bus ${review.bus_id}`);
+                    }
+                }
+
+                // Fetch Ticket Info
+                if (review.ticket_id) {
+                    try {
+                        const ticketRes = await axios.get(`${API_URL}/tickets/${review.ticket_id}`);
+                        review.ticket = ticketRes.data;
+                    } catch (e) {
+                        // console.warn(`Could not fetch ticket ${review.ticket_id}`);
                     }
                 }
 

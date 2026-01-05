@@ -15,6 +15,7 @@ import Pagination from "@mui/material/Pagination";
 import type { TicketUI } from "../../../../services/ticketService";
 import { ticketService } from "../../../../services/ticketService";
 import { reviewService } from "../../../../services/reviewService";
+import api from "../../../../api/api";
 import ReviewModal from "./components/ReviewModal";
 import CancelTicketModal from "./components/CancelTicketModal";
 import TicketDetailModal from "./components/TicketDetailModal";
@@ -96,6 +97,53 @@ export default function MyTicketsPage() {
           text: "Đã gửi đánh giá thành công!",
           confirmButtonColor: "#1295DB",
         });
+      }
+
+      // --- UPDATE BUS COMPANY RATING LOGIC ---
+      const busId = selectedTicket?.busInfo?.id;
+      if (busId) {
+          try {
+             const busRes = await api.get(`/buses/${busId}`);
+             const bus = busRes as any;
+
+             if (bus && bus.bus_company_id) {
+                 const companyRes = await api.get(`/bus_companies/${bus.bus_company_id}`);
+                 const company = companyRes as any;
+
+                 let oldAvg = Number(company.rating_avg || 0);
+                 let oldCount = Number(company.rating_count || 0);
+                 const newRating = Number(reviewPayload.rating);
+
+                 let newAvg = 0;
+                 let newCount = 0;
+
+                 if (selectedTicket?.review) {
+                     // EDIT MODE
+                     const oldRating = Number(selectedTicket.review.rating);
+                     const oldSum = oldAvg * oldCount;
+                     newCount = oldCount; // Count doesn't change on edit
+
+                     if (newCount > 0) {
+                        newAvg = (oldSum - oldRating + newRating) / newCount;
+                     } else {
+                        newAvg = newRating;
+                        newCount = 1;
+                     }
+
+                 } else {
+                     // CREATE MODE
+                     newCount = oldCount + 1;
+                     newAvg = (oldAvg * oldCount + newRating) / newCount;
+                 }
+
+                 await api.patch(`/bus_companies/${bus.bus_company_id}`, {
+                     rating_avg: Number(newAvg.toFixed(1)),
+                     rating_count: newCount
+                 });
+             }
+          } catch (err) {
+              console.error("Failed to update bus company rating stats", err);
+          }
       }
       
       setIsReviewOpen(false);

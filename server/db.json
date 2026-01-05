@@ -6,10 +6,10 @@
       "schedule_id": "46c5",
       "seat_id": "78f4",
       "code": "TICKET__12HPL",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 350000,
       "created_at": "2026-01-05T12:10:02.873Z",
-      "updated_at": "2026-01-05T12:10:02.873Z"
+      "updated_at": "2026-01-05T17:48:47.851Z"
     },
     {
       "id": "1767615550196_lnqw1",
@@ -17,10 +17,10 @@
       "schedule_id": "46c5",
       "seat_id": "9547",
       "code": "TICKET__LNQW1",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 437500,
       "created_at": "2026-01-05T12:19:10.195Z",
-      "updated_at": "2026-01-05T12:19:10.196Z"
+      "updated_at": "2026-01-05T17:48:47.851Z"
     },
     {
       "id": "1767615550393_mge6l",
@@ -28,32 +28,21 @@
       "schedule_id": "46c5",
       "seat_id": "2cc8",
       "code": "TICKET__MGE6L",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 437500,
       "created_at": "2026-01-05T12:19:10.195Z",
-      "updated_at": "2026-01-05T12:19:10.196Z"
+      "updated_at": "2026-01-05T17:48:47.851Z"
     },
     {
-      "id": "1767621854733_1w7ig",
-      "user_id": "bba5",
-      "schedule_id": "46c5",
-      "seat_id": "1cf8",
-      "code": "TICKET__1W7IG",
-      "status": "COMPLETED",
-      "price": 350000,
-      "created_at": "2026-01-05T14:04:14.733Z",
-      "updated_at": "2026-01-05T14:05:17.373Z"
-    },
-    {
-      "id": "1767622111668_23dg1",
-      "user_id": "bba5",
+      "id": "1767635308290_zupue",
+      "user_id": "c8ee",
       "schedule_id": "46c5",
       "seat_id": "5d94",
-      "code": "TICKET__23DG1",
+      "code": "TICKET__ZUPUE",
       "status": "COMPLETED",
       "price": 525000,
-      "created_at": "2026-01-05T14:08:31.668Z",
-      "updated_at": "2026-01-05T14:09:06.457Z"
+      "created_at": "2026-01-05T17:48:28.285Z",
+      "updated_at": "2026-01-05T17:48:47.851Z"
     }
   ],
   "seat_schedules": [
@@ -146,52 +135,23 @@
       "user_id": "sess_1767614970594_6kecrpc2s"
     },
     {
-      "id": "1767621852792_1cf8_HOLD",
+      "id": "46c5_5d94",
       "schedule_id": "46c5",
-      "seat_id": "1cf8",
-      "status": "HOLD",
-      "hold_expired_at": "2026-01-05T14:19:12.724Z",
-      "user_id": "sess_1767498498454_c4zcpkqti"
-    },
-    {
-      "id": "1767621852793_1cf8_HOLD",
-      "schedule_id": "46c5",
-      "seat_id": "1cf8",
-      "status": "HOLD",
-      "hold_expired_at": "2026-01-05T14:19:12.724Z",
-      "user_id": "sess_1767498498454_c4zcpkqti"
-    },
-    {
-      "id": "1767621854856_1cf8_S",
-      "schedule_id": "46c5",
-      "seat_id": "1cf8",
-      "ticket_id": "1767621854733_1w7ig",
+      "seat_id": "5d94",
       "status": "BOOKED",
-      "price": 350000
-    },
-    {
-      "id": "1767622109784_5d94_HOLD",
-      "schedule_id": "46c5",
-      "seat_id": "5d94",
-      "status": "HOLD",
-      "hold_expired_at": "2026-01-05T14:23:29.731Z",
-      "user_id": "sess_1767577010544_e9mmb2eqb"
-    },
-    {
-      "id": "1767622109785_5d94_HOLD",
-      "schedule_id": "46c5",
-      "seat_id": "5d94",
-      "status": "HOLD",
-      "hold_expired_at": "2026-01-05T14:23:29.731Z",
-      "user_id": "sess_1767577010544_e9mmb2eqb"
-    },
-    {
-      "id": "1767622111693_5d94_S",
-      "schedule_id": "46c5",
-      "seat_id": "5d94",
-      "ticket_id": "1767622111668_23dg1",
-      "status": "BOOKED",
+      "hold_expired_at": null,
+      "user_id": "c8ee",
+      "ticket_id": "1767635308290_zupue",
       "price": 525000
+    },
+    {
+      "id": "46c5_5d94",
+      "schedule_id": "46c5",
+      "seat_id": "5d94",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T18:03:25.724Z",
+      "user_id": "sess_1767498498454_c4zcpkqti",
+      "ticket_id": null
     }
   ],
   "payments": [
@@ -212,20 +172,12 @@
       "transaction_date": "2026-01-05T12:19:10.196Z"
     },
     {
-      "id": "PAY_1767621854866",
-      "ticket_id": "1767621854733_1w7ig",
-      "amount": 350000,
-      "method": "QR_PAYMENT",
-      "status": "COMPLETED",
-      "transaction_date": "2026-01-05T14:04:14.733Z"
-    },
-    {
-      "id": "PAY_1767622111700",
-      "ticket_id": "1767622111668_23dg1",
+      "id": "PAY_1767635308431",
+      "ticket_id": "1767635308290_zupue",
       "amount": 525000,
       "method": "QR_PAYMENT",
       "status": "COMPLETED",
-      "transaction_date": "2026-01-05T14:08:31.668Z"
+      "transaction_date": "2026-01-05T17:48:28.285Z"
     }
   ],
   "users": [
@@ -258,9 +210,9 @@
       "last_name": "1",
       "email": "namvan@gmail.com",
       "password": "123456",
-      "phone": "00998877662",
+      "phone": "0939488557",
       "created_at": "2026-01-05T11:59:51.640Z",
-      "updated_at": "2026-01-05T11:59:51.640Z",
+      "updated_at": "Tue Jan 06 2026 00:45:30 GMT+0700 (GMT+07:00)",
       "status": "ACTIVE",
       "user_id": "d9a11ccb-4f75-4d9d-9e53-08873fb6b102"
     }
@@ -1119,6 +1071,7 @@
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg",
       "description": "<h3>Nhà xe An Hòa Hiệp - Sự lựa chọn hàng đầu cho chuyến đi an toàn</h3><p>An Hòa Hiệp tự hào là đơn vị vận tải hành khách uy tín, chuyên cung cấp dịch vụ xe giường nằm chất lượng cao. Với phương châm 'Khách hàng là người thân', chúng tôi không ngừng cải thiện dịch vụ để mang lại trải nghiệm tốt nhất.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410842/nxAnHoaHiep_hzyhjc.jpg' style='width:100%; border-radius:8px; margin:16px 0;'/><h4 style='color: #2563eb;'>Tại sao nên chọn An Hòa Hiệp?</h4><ul><li><strong>Xe đời mới:</strong> Hệ thống xe giường nằm 40 chỗ hiện đại, sạch sẽ.</li><li><strong>Tiện nghi:</strong> Tivi, wifi tốc độ cao, khăn lạnh và nước suối miễn phí.</li><li><strong>Tài xế:</strong> Đội ngũ lái xe giàu kinh nghiệm, tận tâm và an toàn.</li></ul>",
       "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX123",
       "contact_phone": "0909333444",
       "contact_email": "anhoahiep@gmail.com",
@@ -1133,6 +1086,7 @@
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410843/nxFUTAH%C3%A1on_ryoa0n.jpg",
       "description": "<h3>Futa Hà Sơn - Chuyên gia tuyến đường Hà Nội - Lào Cai</h3><p>Kết hợp giữa sự chuyên nghiệp của Futa và kinh nghiệm địa phương của Hà Sơn, chúng tôi mang đến dịch vụ vận chuyển đẳng cấp trên tuyến cao tốc Nội Bài - Lào Cai.</p><div style='background: #f0f9ff; padding: 15px; border-radius: 8px;'><strong>Dịch vụ đặc biệt:</strong> Dòng xe Cabin đôi 'Cung điện di động' cực kỳ sang trọng và riêng tư cho các cặp đôi hoặc gia đình.</div><p>Hành trình từ Thủ đô đến Sa Pa chưa bao giờ dễ dàng và thoải mái đến thế với hệ thống điều hòa đa vùng và ghế massage tích hợp.</p>",
       "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX124",
       "contact_phone": "0909444555",
       "contact_email": "futahason@gmail.com",
@@ -1147,6 +1101,7 @@
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410849/nxVuLinh_gcrm2q.png",
       "description": "<h3>Nhà xe Vũ Linh - Đẳng cấp xe Limousine miền Tây</h3><p>Vũ Linh Bus Lines là thương hiệu quen thuộc của người dân miền Tây Nam Bộ. Chúng tôi chuyên phục vụ các tuyến Cần Thơ - Sài Gòn - Rạch Giá với dàn xe Limousine 9 chỗ và 15 chỗ hiện đại.</p><ul><li>Hỗ trợ đưa đón tận nơi trong nội ô thành phố.</li><li>Ghế bọc da cao cấp, có cổng sạc USB tại mỗi vị trí.</li><li>Không bắt khách dọc đường, cam kết đúng giờ.</li></ul>",
       "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX125",
       "contact_phone": "0909555666",
       "contact_email": "vulinh@gmail.com",
@@ -1161,6 +1116,7 @@
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
       "description": "<h3>Nhà xe Toàn Thắng - Kết nối Sài Gòn và Thành phố Biển</h3><p>Toàn Thắng là hãng xe Limousine uy tín nhất trên tuyến đường TP.HCM - Vũng Tàu. Với tần suất 15 phút một chuyến, khách hàng có thể linh hoạt sắp xếp thời gian cho chuyến du lịch hoặc công tác của mình.</p><p><strong>Tiện ích nổi bật:</strong> Xe trang bị ghế massage, hệ thống âm thanh sống động và đội ngũ nhân viên hỗ trợ nhiệt tình tại cả hai đầu bến.</p>",
       "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX126",
       "contact_phone": "0909666777",
       "contact_email": "toanthang@gmail.com",
@@ -1175,6 +1131,7 @@
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg",
       "description": "<h3>Phương Trang FUTA Bus Lines - Chất lượng là danh dự</h3><p>Với màu cam đặc trưng trải dài khắp các nẻo đường Việt Nam, Phương Trang là hãng xe khách lớn nhất cả nước. Chúng tôi cam kết mang đến dịch vụ vận chuyển văn minh, lịch sự và đúng giờ.</p><img src='https://res.cloudinary.com/dnvt1jxoe/image/upload/v1766410844/nxToanThang_rjxmkc.jpg' style='width:100%; border-radius:8px; margin:16px 0;'/><p>Hệ thống trạm dừng chân sạch sẽ, đồ ăn ngon và dịch vụ xe trung chuyển miễn phí là những điểm mạnh mà không hãng xe nào có được.</p>",
       "rating_avg": 0,
+      "rating_count": 0,
       "license_number": "GX127",
       "contact_phone": "0909777888",
       "contact_email": "phuongtrang@gmail.com",
@@ -1194,7 +1151,8 @@
       "description": "<p><strong>Vinh Chung</strong> chuyên tuyến TP.HCM ↔ miền Tây. Xe sạch sẽ, tài xế nhiều kinh nghiệm.</p>",
       "image": "https://res.cloudinary.com/dnvt1jxoe/image/upload/v1767611775/qjgf4bzpfrtbeisvch7n.jpg",
       "updated_at": "2026-01-05T11:16:15.792Z",
-      "rating_avg": 0,
+      "rating_avg": 4.5,
+      "rating_count": 2,
       "created_at": "2026-01-05T11:16:15.792Z"
     }
   ],
@@ -1745,11 +1703,11 @@
       "route_id": "1",
       "bus_id": "46203c90-ff42-4cbf-ae4b-dbd6bb33e422",
       "total_seats": 6,
-      "available_seats": 1,
+      "available_seats": 2,
       "status": "AVAILABLE",
-      "departure_time": "2026-01-2T07:00",
+      "departure_time": "2026-01-10T07:00",
       "arrival_time": "2026-01-11T13:00",
-      "updated_at": "2026-01-05T14:09:22.229Z",
+      "updated_at": "2026-01-05T17:49:33.605Z",
       "id": "46c5"
     }
   ],
@@ -1846,18 +1804,11 @@
       "email": "namvan@gmail.com"
     },
     {
-      "id": "1767621854745_P_gmshs",
-      "ticket_id": "1767621854733_1w7ig",
-      "full_name": "Hoàng Nguyễn",
-      "phone": "0338470809",
-      "email": "nguyenquanghoang1080@gmail.com"
-    },
-    {
-      "id": "1767622111684_P_yh6pz",
-      "ticket_id": "1767622111668_23dg1",
-      "full_name": "Hoàng Nguyễn",
-      "phone": "0338470809",
-      "email": "nguyenquanghoang1080@gmail.com"
+      "id": "1767635308299_P_mttgj",
+      "ticket_id": "1767635308290_zupue",
+      "full_name": "Người dùng 1",
+      "phone": "00998877662",
+      "email": "namvan@gmail.com"
     }
   ],
   "payment_providers": [
@@ -1937,7 +1888,7 @@
       "user_id": "bba5",
       "booking_id": "1767465753345_95pgf",
       "ticket_id": "1767465753345_95pgf",
-      "rating_count": 0,
+      "rating": 5,
       "review": "Xe chạy êm, đúng giờ, dịch vụ tốt.",
       "created_at": "2026-01-05T02:23:12.475Z",
       "is_verified": true,
@@ -1945,30 +1896,30 @@
       "updated_at": "2026-01-05T02:23:12.475Z"
     },
     {
-      "id": "c99e",
+      "id": "d4ee",
       "bus_id": "46203c90-ff42-4cbf-ae4b-dbd6bb33e422",
-      "user_id": "bba5",
-      "booking_id": "1767621854733_1w7ig",
-      "ticket_id": "1767621854733_1w7ig",
-      "rating": 4,
-      "review": "test nè",
-      "created_at": "2026-01-05T14:05:25.533Z",
+      "user_id": "c8ee",
+      "booking_id": "1767615550393_mge6l",
+      "ticket_id": "1767615550393_mge6l",
+      "rating": 5,
+      "review": "ấdf",
+      "created_at": "2026-01-05T17:49:11.548Z",
       "is_verified": true,
       "status": "VISIBLE",
-      "updated_at": "2026-01-05T14:05:25.533Z"
+      "updated_at": "2026-01-05T17:49:11.548Z"
     },
     {
-      "id": "0dba",
+      "id": "a161",
       "bus_id": "46203c90-ff42-4cbf-ae4b-dbd6bb33e422",
-      "user_id": "bba5",
-      "booking_id": "1767622111668_23dg1",
-      "ticket_id": "1767622111668_23dg1",
-      "rating": 5,
-      "review": "test test",
-      "created_at": "2026-01-05T14:09:13.868Z",
+      "user_id": "c8ee",
+      "booking_id": "1767635308290_zupue",
+      "ticket_id": "1767635308290_zupue",
+      "rating": 4,
+      "review": "fasdf",
+      "created_at": "2026-01-05T17:49:27.963Z",
       "is_verified": true,
       "status": "VISIBLE",
-      "updated_at": "2026-01-05T14:09:13.868Z"
+      "updated_at": "2026-01-05T17:49:27.963Z"
     }
   ],
   "banners": [
