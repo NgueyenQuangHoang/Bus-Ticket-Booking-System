@@ -7,6 +7,8 @@ import type { Station } from "../../../../types";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { addStation, fetchStations, removeStation, updateStation } from "../../../../slices/stationSlice";
 import { removeRoute } from "../../../../slices/routesSlice";
+import { busImageService } from "../../../../services/admin/busImageService";
+import { fetchCities } from "../../../../slices/citySlice";
 
 export type StationsCity = (Station & { city_name?: string })
 
@@ -37,7 +39,16 @@ export default function StationAdminPage() {
         dispatch(updateStation(station))
     }
 
-    const handleAdd = (station: Station) => {
+    const handleAdd = async (station: Station, file?: File) => {
+        if (file) {
+            try {
+                const url = await busImageService.uploadFileToCloudinary(file);
+                station.image = url;
+                station.wallpaper = url; // Use same image for both per requirement
+            } catch (error) {
+                console.error("Upload failed", error);
+            }
+        }
         dispatch(addStation(station))
     }
 
@@ -46,6 +57,7 @@ export default function StationAdminPage() {
         //     setStations(res)
         // })
         dispatch(fetchStations())
+        dispatch(fetchCities())
     }, [])
 
     const stationsRender = stations.filter((item) => {

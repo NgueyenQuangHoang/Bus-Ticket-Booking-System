@@ -1,4 +1,4 @@
-import { Add, Close, Business, Image as ImageIcon, Wallpaper, Description, Map, Save, RestartAlt, LocationOn } from '@mui/icons-material'
+import { Add, Close, Business, Image as ImageIcon, Description, Map, Save, RestartAlt, LocationOn } from '@mui/icons-material'
 import { Box, Button, Divider, IconButton, MenuItem, Modal, TextField, Typography } from '@mui/material'
 import { useState, type ChangeEvent, useMemo, useEffect } from 'react';
 import type { Station } from '../../../../../types';
@@ -24,7 +24,7 @@ const modalStyle = {
 };
 
 interface PropType {
-    onAdd: (station: Station) => void
+    onAdd: (station: Station, file?: File) => void
 }
 
 interface FormErrors {
@@ -37,6 +37,21 @@ interface FormErrors {
 export default function StationFormModal({ onAdd }: PropType) {
     const [open, setOpen] = useState(false);
     const [errors, setErrors] = useState<FormErrors>({});
+
+    /* ===== IMAGE STATE ===== */
+    const [thumbnailPreview, setThumbnailPreview] = useState("");
+    const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
+
+    const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setThumbnailFile(file);
+            setThumbnailPreview(URL.createObjectURL(file));
+             // Optional: Clear string input if any
+             handleChange({ target: { name: 'image', value: '' } } as any);
+             handleChange({ target: { name: 'wallpaper', value: '' } } as any);
+        }
+    };
 
     // Cấu hình Toolbar cho ReactQuill
     const modules = useMemo(() => ({
@@ -53,7 +68,7 @@ export default function StationFormModal({ onAdd }: PropType) {
 
     const [formData, setFormData] = useState<Station>({
         station_name: '',
-        city_id: 0,
+        city_id: '',
         image: '',
         wallpaper: '',
         description: '',
@@ -76,10 +91,10 @@ export default function StationFormModal({ onAdd }: PropType) {
     const validate = (): boolean => {
         const newErrors: FormErrors = {};
         if (!formData.station_name.trim()) newErrors.station_name = "Tên bến xe là bắt buộc";
-        if (formData.city_id === 0) newErrors.city_id = "Vui lòng chọn thành phố";
+        if (!formData.city_id) newErrors.city_id = "Vui lòng chọn thành phố";
         if (!formData.location) newErrors.location = "Địa chỉ không được để trống";
-        if (formData.image && !formData.image.startsWith('http')) {
-            newErrors.image = "Link ảnh phải bắt đầu bằng http/https";
+        if (formData.location) {
+             // do nothing
         }
 
         setErrors(newErrors);
@@ -88,11 +103,10 @@ export default function StationFormModal({ onAdd }: PropType) {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        const finalValue = name === 'city_id' ? Number(value) : value;
-
+        
         setFormData(prev => ({
             ...prev,
-            [name]: finalValue
+            [name]: value
         }));
 
         if (errors[name as keyof FormErrors]) {
@@ -103,7 +117,7 @@ export default function StationFormModal({ onAdd }: PropType) {
     const handleReset = () => {
         setFormData({
             station_name: '',
-            city_id: 0,
+            city_id: '',
             image: '',
             wallpaper: '',
             description: '',
@@ -113,11 +127,13 @@ export default function StationFormModal({ onAdd }: PropType) {
             updated_at: new Date().toISOString()
         });
         setErrors({});
+        setThumbnailPreview("");
+        setThumbnailFile(undefined);
     };
 
     const handleSubmit = () => {
         if (validate()) {
-            onAdd(formData);
+            onAdd(formData, thumbnailFile);
             handleClose();
         }
     };
@@ -189,29 +205,40 @@ export default function StationFormModal({ onAdd }: PropType) {
                             </TextField>
                         </div>
 
-                        <div className="space-y-1.5">
-                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                        {/* ẢNH ĐẠI DIỆN & WALLPAPER (CHUNG) */}
+                        <div className="space-y-1.5 col-span-1 md:col-span-2">
+                             <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
                                 <ImageIcon fontSize="small" className="text-blue-500" />
-                                Link ảnh đại diện
+                                Hình ảnh bến xe (Đại diện & Hình nền)
                             </label>
-                            <TextField
-                                fullWidth size="small" name="image"
-                                placeholder="https://..."
-                                value={formData.image} onChange={handleChange}
-                                error={!!errors.image} helperText={errors.image}
-                            />
-                        </div>
 
-                        <div className="space-y-1.5">
-                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                                <Wallpaper fontSize="small" className="text-blue-500" />
-                                Link ảnh nền
-                            </label>
-                            <TextField
-                                fullWidth size="small" name="wallpaper"
-                                placeholder="https://..."
-                                value={formData.wallpaper} onChange={handleChange}
-                            />
+                            <div className="flex items-start gap-4">
+                                <div className="w-32 h-24 border border-gray-300 rounded overflow-hidden flex items-center justify-center bg-gray-50">
+                                {thumbnailPreview || formData.image ? (
+                                    <img 
+                                    src={thumbnailPreview || formData.image} 
+                                    alt="thumbnail" 
+                                    className="w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    <span className="text-gray-400 text-xs">Chưa có ảnh</span>
+                                )}
+                                </div>
+                                <div>
+                                <label className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded cursor-pointer hover:bg-blue-100 transition text-sm font-medium">
+                                    Chọn ảnh
+                                    <input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    hidden 
+                                    onChange={handleThumbnailChange}
+                                    />
+                                </label>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    Ảnh này sẽ được dùng làm ảnh đại diện và ảnh nền.
+                                </p>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="col-span-1 md:col-span-2 space-y-1.5">

@@ -107,6 +107,7 @@ export interface TicketUI {
         phone: string;
         email: string;
     };
+    created_at: string;
 }
 
 export const ticketService = {
@@ -233,7 +234,8 @@ export const ticketService = {
                     pickup: depStation?.station_name || "Điểm đón",
                     dropoff: arrStation?.station_name || "Điểm trả",
                     seats: uniqueSeatNames.length > 0 ? uniqueSeatNames : ["N/A"],
-                    review,
+                    review: review,
+                    created_at: ticket.created_at
                 });
             }
 
@@ -379,7 +381,8 @@ export const ticketService = {
                     fullName: passenger.full_name,
                     phone: passenger.phone,
                     email: passenger.email || ""
-                }
+                },
+                created_at: ticket.created_at
             };
 
         } catch (error) {
@@ -521,7 +524,8 @@ export const ticketService = {
                         email: user?.email || '',
                         fullName: user ? user.first_name + " " + user.last_name : '',
                         phone: user?.phone || ""
-                    }
+                    },
+                    created_at: ticket.created_at
                 });
             }
 
