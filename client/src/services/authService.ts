@@ -12,16 +12,20 @@ export interface RegisterResponse {
 }
 
 export const authService = {
-    login: async (credentials: Pick<User, 'email' | 'password'>): Promise<User | undefined> => {
+    login: async (credentials: Pick<User, 'email' | 'password'>): Promise<Omit<User, 'password'> | undefined> => {
         try {
-            const { email, password } = credentials
+            const { email, password: pass } = credentials
             const response: User[] = await api.get('/users')
-            const data = response.find((item) => item.email === email && item.password === password)
+            const data = response.find((item) => item.email === email && item.password === pass)
+            
             if (data) {
-                localStorage.setItem('user', JSON.stringify(data))
+                const {password, ...dataReturn} = data
+                console.log(password);
+                localStorage.setItem('user', JSON.stringify(dataReturn))
                 localStorage.setItem('isLogin', JSON.stringify(true))
+                return dataReturn
             }
-            return data
+            return undefined
         } catch (error) {
             console.error(error);
             return undefined

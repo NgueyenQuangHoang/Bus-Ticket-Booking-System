@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { authService } from "../../../services/authService";
 import type { User } from "../../../types";
+import { v4 as uuidv4 } from "uuid";
 
 // Định nghĩa kiểu dữ liệu cho lỗi form
 interface FormErrors {
@@ -22,6 +23,7 @@ export default function FormAuth({
 
 
   const [formData, setFormData] = useState({
+    id: uuidv4(),
     first_name: "",
     last_name: "",
     email: "",
@@ -42,6 +44,7 @@ export default function FormAuth({
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShouldRender(true);
       // Short delay to ensure DOM is present before triggering fade-in
       const timer = setTimeout(() => setIsVisible(true), 10);
@@ -120,7 +123,7 @@ export default function FormAuth({
         response.then((res) => {
           if (res !== undefined) {
             changeLoginState(true)
-            setUser(res)
+            setUser({...res, password: ''})
             notify("Đăng nhập thành công", true)
             return
           }
@@ -168,6 +171,7 @@ export default function FormAuth({
     setIsLogin(!isLogin);
     // Reset form và lỗi khi chuyển chế độ
     setFormData({
+      id: uuidv4(),
       first_name: "",
       last_name: "",
       email: "",

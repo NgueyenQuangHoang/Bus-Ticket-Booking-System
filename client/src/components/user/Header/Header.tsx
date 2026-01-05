@@ -142,7 +142,7 @@ export default function Header() {
             </button>
 
             <div className="hidden lg:flex items-center">
-              {!isLogin ? <FormAuth notify={notify} changeLoginState={setIsLogin} setUser={setUser} /> : <AvatarLogin notify={notify} user={user} onLogout={setIsLogin} />}
+              {!isLogin ? <FormAuth notify={notify} changeLoginState={setIsLogin} setUser={setUser} /> : <AvatarLogin user={user} onLogout={setIsLogin} />}
             </div>
           </div>
         </div>
