@@ -134,7 +134,7 @@ export const ticketService = {
             if (tickets.length === 0) return [];
 
             // 2. Parallel fetch related entities
-            const [buses, routes, stations, schedules, reviews, cities, seatPositions, allSeats] = await Promise.all([
+            const [buses, routes, stations, schedules, reviews, cities, seatPositions, allSeats, allSeatSchedules] = await Promise.all([
                 api.get<Bus[]>(`/buses`),
                 api.get<Route[]>(`/routes`),
                 api.get<Station[]>(`/stations`),
@@ -142,7 +142,8 @@ export const ticketService = {
                 api.get<Review[]>(`/bus_reviews?user_id=${userId}`),
                 api.get<City[]>('/cities'),
                 api.get<SeatPosition[]>('/seat_positions'),
-                api.get<Seat[]>('/seats')
+                api.get<Seat[]>('/seats'),
+                api.get<SeatSchedule[]>('/seat_schedules')
             ]);
 
             const busesArr = buses as unknown as Bus[];
@@ -153,6 +154,7 @@ export const ticketService = {
             const citiesArr = cities as unknown as City[];
             const seatPositionsArr = seatPositions as unknown as SeatPosition[];
             const allSeatsArr = allSeats as unknown as Seat[];
+            const allSeatSchedulesArr = allSeatSchedules as unknown as SeatSchedule[];
 
             // 3. Map to UI Model
             const mappedTickets: TicketUI[] = [];
@@ -171,9 +173,8 @@ export const ticketService = {
                 const bus = busesArr.find(b => b.id === schedule.bus_id);
                 const route = routesArr.find(r => r.id === schedule.route_id);
 
-                // Fetch seats for this ticket
-                const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
-                const seatSchedules = seatSchedulesRes as unknown as SeatSchedule[];
+                // Filter seats for this ticket from the fetched list
+                const seatSchedules = allSeatSchedulesArr.filter(ss => ss.ticket_id === ticket.id);
 
                 // Match seat IDs to real labels
                 const seatNames = seatSchedules.map(s => {
@@ -219,12 +220,24 @@ export const ticketService = {
 
                 const departureDate = new Date(schedule.departure_time);
 
+                const isPast = departureDate < new Date();
+                let uiStatus = ticket.status;
+
+                if (ticket.status === 'BOOKED' && isPast) {
+                    uiStatus = 'COMPLETED';
+                    // Auto-update status in DB
+                    api.patch(`/tickets/${ticket.id}`, {
+                        status: 'COMPLETED',
+                        updated_at: new Date().toISOString()
+                    }).catch(console.error);
+                }
+
                 const review = reviewsArr.find(r => r.ticket_id === ticket.id);
 
                 mappedTickets.push({
                     id: ticket.id,
                     code: ticket.code || ticket.id,
-                    status: ticket.status,
+                    status: uiStatus,
                     busInfo: {
                         id: bus?.id || "",
                         time: departureDate.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
@@ -303,7 +316,9 @@ export const ticketService = {
 
             // Fetch seats
             const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
-            const seatSchedules = seatSchedulesRes as unknown as SeatSchedule[];
+            const seatSchedulesRaw = seatSchedulesRes as unknown as SeatSchedule[];
+            // Strict filtering to ensure no cross-matching occurs
+            const seatSchedules = seatSchedulesRaw.filter(ss => ss.ticket_id === ticket.id);
 
             const seatNames = seatSchedules.map(s => {
                 const sId = s.seat_id;
@@ -334,10 +349,22 @@ export const ticketService = {
 
             const departureDate = new Date(schedule.departure_time);
 
+            const isPast = departureDate < new Date();
+            let uiStatus = ticket.status;
+
+            if (ticket.status === 'BOOKED' && isPast) {
+                uiStatus = 'COMPLETED';
+                // Auto-update status in DB
+                api.patch(`/tickets/${ticket.id}`, {
+                    status: 'COMPLETED',
+                    updated_at: new Date().toISOString()
+                }).catch(console.error);
+            }
+
             return {
                 id: ticket.id,
                 code: ticket.code || ticket.id,
-                status: ticket.status,
+                status: uiStatus,
                 busInfo: {
                     id: bus?.id || "",
                     time: departureDate.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),

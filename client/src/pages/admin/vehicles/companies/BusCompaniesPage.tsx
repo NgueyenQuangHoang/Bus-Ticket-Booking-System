@@ -58,7 +58,7 @@ export default function BusCompaniesPage() {
         if (result.isConfirmed) {
             try {
                 // Prioritize string ID, fallback to number ID if API supports it or strict string is needed
-                await busCompanyService.deleteBusCompany(String(company.id || company.bus_company_id));
+                await busCompanyService.deleteBusCompany(String(company.id));
                 Swal.fire("Đã xóa!", "Nhà xe đã được xóa.", "success");
                 fetchBusCompanies();
             } catch (error) {
@@ -71,7 +71,7 @@ export default function BusCompaniesPage() {
     const handleSubmit = async (data: Partial<BusCompany>) => {
         try {
             if (selectedCompany) {
-                await busCompanyService.updateBusCompany(String(selectedCompany.id || selectedCompany.bus_company_id), data);
+                await busCompanyService.updateBusCompany(String(selectedCompany.id), data);
                 Swal.fire("Thành công", "Cập nhật nhà xe thành công", "success");
             } else {
                 await busCompanyService.createBusCompany(data as any);

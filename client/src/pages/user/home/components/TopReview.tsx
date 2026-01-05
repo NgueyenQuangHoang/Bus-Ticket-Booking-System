@@ -25,10 +25,11 @@ const LAYOUT_CONFIG = [
 
 const MAX_ITEMS = LAYOUT_CONFIG.length;
 
-const buildPostsLabel = (cityName: string, seed: number) => {
+const buildPostsLabel = (cityName: string, seed: string | number) => {
     const normalizedName = cityName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const hash = normalizedName.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const count = 80 + ((hash + seed * 31) % 600);
+    const seedNum = typeof seed === 'number' ? seed : String(seed).split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const count = 80 + ((hash + seedNum * 31) % 600);
     return `${count} bài viết`;
 };
 
@@ -66,9 +67,9 @@ export default function TopReview() {
 
     const preparedLocations = cities
         .map((city, index) => ({
-            key: city.city_id,
+            key: city.id,
             name: city.city_name,
-            posts: buildPostsLabel(city.city_name, city.city_id),
+            posts: buildPostsLabel(city.city_name, city.id),
             img: city.image_city,
             layout: LAYOUT_CONFIG[index],
         }))
@@ -97,9 +98,9 @@ export default function TopReview() {
                         <div className="col-span-3 text-center text-gray-500 py-12">Đang tải địa điểm...</div>
                     )}
 
-                    {!isLoading && preparedLocations.map((loc) => (
+                    {!isLoading && preparedLocations.map((loc, index) => (
                         <div
-                            key={loc.key}
+                            key={`${loc.key}-${index}`}
                             className={`relative rounded-lg sm:rounded-xl overflow-hidden ${loc.layout?.className}`}
                             style={{ aspectRatio: loc.layout?.aspectRatio }}
                         >

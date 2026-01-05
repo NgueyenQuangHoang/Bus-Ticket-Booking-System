@@ -6,54 +6,10 @@
       "schedule_id": "SCH_MQ_001",
       "seat_id": "ff4c",
       "code": "TICKET__95PGF",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 100000,
       "created_at": "2026-01-03T18:42:33.345Z",
-      "updated_at": "2026-01-04T02:28:12.161Z"
-    },
-    {
-      "id": "ticket_01",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "seat_01",
-      "price": 320000,
-      "status": "COMPLETED",
-      "code": "VX-204912",
-      "created_at": "2025-12-20T10:00:00Z",
-      "updated_at": "2025-12-20T10:00:00Z"
-    },
-    {
-      "id": "ticket_02",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "seat_02",
-      "price": 280000,
-      "status": "BOOKED",
-      "code": "VX-204913",
-      "created_at": "2026-01-01T08:00:00Z",
-      "updated_at": "2026-01-01T08:00:00Z"
-    },
-    {
-      "id": "ticket_03",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "seat_03",
-      "price": 150000,
-      "status": "CANCELLED",
-      "code": "VX-204914",
-      "created_at": "2026-01-02T09:00:00Z",
-      "updated_at": "2026-01-02T10:00:00Z"
-    },
-    {
-      "id": "ticket_04",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "seat_05",
-      "price": 300000,
-      "status": "COMPLETED",
-      "code": "VX-204915",
-      "created_at": "2025-12-25T10:00:00Z",
-      "updated_at": "2025-12-25T10:00:00Z"
+      "updated_at": "2026-01-05T01:46:28.763Z"
     },
     {
       "id": "1767498502272_8w2p1",
@@ -61,10 +17,32 @@
       "schedule_id": "SCH_MQ_001",
       "seat_id": "608d",
       "code": "TICKET__8W2P1",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 100000,
       "created_at": "2026-01-04T03:48:22.272Z",
-      "updated_at": "2026-01-04T03:48:22.272Z"
+      "updated_at": "2026-01-05T02:31:27.641Z"
+    },
+    {
+      "id": "1767577020242_od6my",
+      "user_id": "bba5",
+      "schedule_id": "schedule_vt_hcm_20260105_1530",
+      "seat_id": "1767247870433",
+      "code": "TICKET__OD6MY",
+      "status": "CANCELLED",
+      "price": 350000,
+      "created_at": "2026-01-05T01:37:00.242Z",
+      "updated_at": "2026-01-05T02:33:00.850Z"
+    },
+    {
+      "id": "1767577886423_5znb4",
+      "user_id": "bba5",
+      "schedule_id": "schedule_vt_hcm_20260105_1530",
+      "seat_id": "1767247870432",
+      "code": "TICKET__5ZNB4",
+      "status": "BOOKED",
+      "price": 350000,
+      "created_at": "2026-01-05T01:51:26.423Z",
+      "updated_at": "2026-01-05T02:35:37.334Z"
     }
   ],
   "seat_schedules": [
@@ -99,6 +77,54 @@
       "ticket_id": "1767498502272_8w2p1",
       "status": "BOOKED",
       "price": 100000
+    },
+    {
+      "id": "1767577010684_1767247870433_HOLD",
+      "schedule_id": "schedule_vt_hcm_20260105_1530",
+      "seat_id": "1767247870433",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T01:51:50.587Z",
+      "user_id": "sess_1767577010544_e9mmb2eqb"
+    },
+    {
+      "id": "1767577010685_1767247870433_HOLD",
+      "schedule_id": "schedule_vt_hcm_20260105_1530",
+      "seat_id": "1767247870433",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T01:51:50.588Z",
+      "user_id": "sess_1767577010544_e9mmb2eqb"
+    },
+    {
+      "id": "1767577020263_1767247870433_S",
+      "schedule_id": "schedule_vt_hcm_20260105_1530",
+      "seat_id": "1767247870433",
+      "ticket_id": "1767577020242_od6my",
+      "status": "BOOKED",
+      "price": 350000
+    },
+    {
+      "id": "1767577882733_1767247870432_HOLD",
+      "schedule_id": "schedule_vt_hcm_20260105_1530",
+      "seat_id": "1767247870432",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T02:06:22.637Z",
+      "user_id": "sess_1767577010544_e9mmb2eqb"
+    },
+    {
+      "id": "1767577882735_1767247870432_HOLD",
+      "schedule_id": "schedule_vt_hcm_20260105_1530",
+      "seat_id": "1767247870432",
+      "status": "HOLD",
+      "hold_expired_at": "2026-01-05T02:06:22.637Z",
+      "user_id": "sess_1767577010544_e9mmb2eqb"
+    },
+    {
+      "id": "1767577886449_1767247870432_S",
+      "schedule_id": "schedule_vt_hcm_20260105_1530",
+      "seat_id": "1767247870432",
+      "ticket_id": "1767577886423_5znb4",
+      "status": "BOOKED",
+      "price": 350000
     }
   ],
   "payments": [
@@ -117,6 +143,22 @@
       "method": "QR_PAYMENT",
       "status": "COMPLETED",
       "transaction_date": "2026-01-04T03:48:22.272Z"
+    },
+    {
+      "id": "PAY_1767577020276",
+      "ticket_id": "1767577020242_od6my",
+      "amount": 350000,
+      "method": "QR_PAYMENT",
+      "status": "COMPLETED",
+      "transaction_date": "2026-01-05T01:37:00.242Z"
+    },
+    {
+      "id": "PAY_1767577886458",
+      "ticket_id": "1767577886423_5znb4",
+      "amount": 350000,
+      "method": "QR_PAYMENT",
+      "status": "COMPLETED",
+      "transaction_date": "2026-01-05T01:51:26.423Z"
     }
   ],
   "users": [
@@ -4202,16 +4244,15 @@
       "updated_at": "2025-01-01"
     },
     {
-      "id": "10",
-      "route_id": "9",
+      "route_id": "6",
       "bus_id": "2",
-      "departure_time": "2025-12-25T20:00",
-      "arrival_time": "2025-12-26T08:00",
-      "total_seats": 40,
-      "available_seats": 32,
+      "total_seats": 34,
+      "available_seats": 34,
       "status": "AVAILABLE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "departure_time": "2026-01-07T08:00",
+      "arrival_time": "2026-01-08T00:00",
+      "updated_at": "2026-01-05T01:39:59.642Z",
+      "id": "10"
     },
     {
       "id": "11",
@@ -4351,33 +4392,44 @@
       "total_seats": 34,
       "available_seats": 34,
       "status": "AVAILABLE",
-      "departure_time": "2026-01-05T07:30",
-      "arrival_time": "2026-01-06T03:30",
-      "updated_at": "2026-01-04T13:34:07.960Z",
+      "departure_time": "2026-01-02T05:00",
+      "arrival_time": "2026-01-02T01:00",
+      "updated_at": "2026-01-05T01:52:37.690Z",
       "id": "SCH_MQ_001"
     },
     {
+      "id": "schedule_hcm_vt_20260105",
       "route_id": "11",
-      "bus_id": "5",
-      "total_seats": 34,
-      "available_seats": 45,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-05T09:00",
-      "arrival_time": "2026-01-06T05:00",
-      "updated_at": "2026-01-04T13:33:28.305Z",
-      "id": "schedule_hcm_vt_20260105"
-    },
-    {
-      "id": "schedule_vt_hcm_20260105_1530",
-      "route_id": "12",
       "bus_id": "4",
-      "departure_time": "2026-01-05T15:30:00",
-      "arrival_time": "2026-01-05T17:30:00",
+      "departure_time": "2026-01-05T09:00",
+      "arrival_time": "2026-01-05T11:30",
       "total_seats": 45,
       "available_seats": 45,
       "status": "AVAILABLE",
-      "created_at": "2026-01-04T12:00:00.000Z",
-      "updated_at": "2026-01-04T12:00:00.000Z"
+      "created_at": "2026-01-03T12:00:00.000Z",
+      "updated_at": "2026-01-03T12:00:00.000Z"
+    },
+    {
+      "route_id": "1",
+      "bus_id": "5",
+      "total_seats": 34,
+      "available_seats": 34,
+      "status": "AVAILABLE",
+      "departure_time": "2026-01-10T17:00",
+      "arrival_time": "2026-01-11T23:00",
+      "updated_at": "2026-01-05T01:52:49.203Z",
+      "id": "schedule_vt_hcm_20260105_1530"
+    },
+    {
+      "route_id": "1",
+      "bus_id": "3",
+      "total_seats": 9,
+      "available_seats": 9,
+      "status": "AVAILABLE",
+      "departure_time": "2026-01-10T00:00",
+      "arrival_time": "2026-01-11T06:00",
+      "updated_at": "2026-01-05T01:52:28.664Z",
+      "id": "91de"
     }
   ],
   "seat_schedule": [
@@ -4459,6 +4511,20 @@
       "full_name": "Hoàng Nguyễn",
       "phone": "0338470809",
       "email": "nguyenquanghoang1080@gmail.com"
+    },
+    {
+      "id": "1767577020254_P_pa7x6",
+      "ticket_id": "1767577020242_od6my",
+      "full_name": "Hoàng Nguyễn",
+      "phone": "0338470809",
+      "email": "nguyenquanghoang1080@gmail.com"
+    },
+    {
+      "id": "1767577886438_P_lzppy",
+      "ticket_id": "1767577886423_5znb4",
+      "full_name": "Hoàng Nguyễn",
+      "phone": "0338470809",
+      "email": "nguyenquanghoang1080@gmail.com"
     }
   ],
   "payment_providers": [
@@ -4533,40 +4599,17 @@
   ],
   "bus_reviews": [
     {
-      "id": "1",
-      "user_id": "1",
-      "bus_id": "1",
-      "rating": 5,
-      "review": "Xe sạch, chạy êm",
-      "status": "VISIBLE",
-      "created_at": "2025-01-05",
-      "updated_at": "2025-01-05"
-    },
-    {
-      "id": "cb8a",
+      "id": "ced3",
       "bus_id": "80a0525f-078a-457c-a546-cd931e143e02",
       "user_id": "bba5",
-      "booking_id": "ticket_04",
-      "ticket_id": "ticket_04",
-      "rating": 4,
-      "review": "test 2",
-      "created_at": "2026-01-04T02:44:47.660Z",
-      "is_verified": true,
-      "status": "VISIBLE",
-      "updated_at": "2026-01-04T02:44:47.660Z"
-    },
-    {
-      "id": "536b",
-      "bus_id": "80a0525f-078a-457c-a546-cd931e143e02",
-      "user_id": "bba5",
-      "booking_id": "ticket_01",
-      "ticket_id": "ticket_01",
+      "booking_id": "1767465753345_95pgf",
+      "ticket_id": "1767465753345_95pgf",
       "rating": 5,
-      "review": "Xe chạy êm, đúng giờ, nhân viên thân thiện.",
-      "created_at": "2026-01-04T06:17:46.477Z",
+      "review": "Xe chạy êm, đúng giờ, dịch vụ tốt.",
+      "created_at": "2026-01-05T02:23:12.475Z",
       "is_verified": true,
       "status": "VISIBLE",
-      "updated_at": "2026-01-04T06:17:46.477Z"
+      "updated_at": "2026-01-05T02:23:12.475Z"
     }
   ],
   "banners": [
