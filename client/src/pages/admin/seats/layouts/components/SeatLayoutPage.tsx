@@ -100,6 +100,30 @@ export default function SeatLayoutPage() {
       alert('Vui lòng chọn xe trước khi tạo sơ đồ.');
       return;
     }
+
+    // Reuse existing layout with same signature to avoid duplicate records
+    const existingLayouts = await seatService.getAllLayouts();
+    const scopedLayouts = isBusCompany && busCompanyId
+      ? (existingLayouts || []).filter(l => String(l.bus_company_id ?? l.company_id) === String(busCompanyId))
+      : (existingLayouts || []);
+    const duplicate = scopedLayouts.find(l =>
+      String(l.layout_name) === String(layoutData.layout_name) &&
+      Number(l.total_rows) === Number(layoutData.total_rows) &&
+      Number(l.total_columns) === Number(layoutData.total_columns) &&
+      Number(l.floor_count) === Number(layoutData.floor_count) &&
+      l.is_template === false
+    );
+    if (duplicate?.id) {
+      await busService.updateBusLayout(selectedBusId, duplicate.id);
+      const details = await seatService.getLayoutDetails(duplicate.id);
+      if (details) {
+        setLayout(details.layout);
+        setPositions(details.positions);
+      }
+      setIsModalOpen(false);
+      alert(`Đã gán sơ đồ có sẵn "${duplicate.layout_name}" cho xe, không tạo bản ghi trùng.`);
+      return;
+    }
     const layoutPayload: Partial<BusLayout> = {
       ...layoutData,
       ...(isBusCompany && busCompanyId ? { bus_company_id: busCompanyId } : {}),

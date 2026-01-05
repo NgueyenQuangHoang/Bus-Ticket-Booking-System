@@ -11,6 +11,7 @@ import { fetchBusCompanies } from "../../../slices/busCompanySlice";
 import type { Bus } from "../../../types";
 import { ticketService, type TicketUI } from "../../../services/ticketService";
 import { Pagination, Stack } from "@mui/material";
+import { getStoredBusCompanyId, getStoredRole } from "../../../utils/authStorage";
 
 // --- MOCK DATA ---
 // const CUSTOMERS = [
@@ -46,24 +47,31 @@ export default function TicketsPage() {
   const [page, setPage] = useState(1)
   const {companies} = useAppSelector(state => state.busCompany)
   const dispatch = useAppDispatch()  
+  const role = getStoredRole();
+  const busCompanyId = getStoredBusCompanyId();
   useEffect(() => {
-    dispatch(fetchBusCompanies())
-  }, [dispatch])
+    if (role !== "BUS_COMPANY") {
+      dispatch(fetchBusCompanies())
+    }
+  }, [dispatch, role])
 
   const [buses, setBuses] = useState<Bus[]>([])
   const [tickets, setTickets] = useState<TicketUI[]>([])
   
   useEffect(() => {
-    busService.getAllBuses().then((res) => {
-      if(res){
-        setBuses(res)
-      }
-    })
-    ticketService.getAllTickets().then((res) => {
-      setTickets(res)
-      console.log(res);
-    })
-  }, [])
+    const loadData = async () => {
+      const allBuses = await busService.getAllBuses();
+      const scopedBuses = role === "BUS_COMPANY" && busCompanyId
+        ? (allBuses || []).filter(b => String(b.bus_company_id ?? b.company_id) === String(busCompanyId))
+        : (allBuses || []);
+      setBuses(scopedBuses);
+
+      const allowedBusIds = scopedBuses.map(b => String(b.id ?? b.bus_id)).filter(Boolean) as string[];
+      const ticketData = await ticketService.getAllTickets(role === "BUS_COMPANY" ? allowedBusIds : []);
+      setTickets(ticketData);
+    };
+    loadData();
+  }, [role, busCompanyId])
 
   const [idBus, setIdBus] = useState("");
   const [selectedTicket, setSelectedTicket] = useState<TicketUI | null>(null);
@@ -101,7 +109,7 @@ export default function TicketsPage() {
     });
   };
 
-  const filteredData : TicketUI[] = idBus ? tickets.filter(item => item.busInfo.id === idBus) : []
+  const filteredData : TicketUI[] = idBus ? tickets.filter(item => String(item.busInfo.id) === String(idBus)) : (role === "BUS_COMPANY" ? tickets : [])
   const paginatedData : TicketUI[] = filteredData.slice((page-1) * 10, page * 10)
 
   return (
@@ -115,7 +123,9 @@ export default function TicketsPage() {
         value={idBus}
         onChange={(val) => { setIdBus(val) }}
         bus={buses}
-        companies={companies}
+        companies={role === "BUS_COMPANY" && busCompanyId ? companies.filter(c => String(c.id) === String(busCompanyId)) : companies}
+        isBusCompany={role === "BUS_COMPANY"}
+        busCompanyId={busCompanyId || undefined}
       />
 
       <TicketTable

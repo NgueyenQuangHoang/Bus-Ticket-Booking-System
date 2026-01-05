@@ -137,6 +137,17 @@ const seatService = {
     }
   },
 
+  updateTemplate: async (id: string | number, data: Partial<BusLayout>): Promise<BusLayout | null> => {
+    try {
+      const payload = { ...data, is_template: true };
+      const response = await api.put(`/bus_layouts/${id}`, payload);
+      return response as unknown as BusLayout;
+    } catch (error) {
+      console.error('Error updating template:', error);
+      return null;
+    }
+  },
+
   deleteTemplate: async (id: string | number): Promise<boolean> => {
     try {
       await api.delete(`/bus_layouts/${id}`);

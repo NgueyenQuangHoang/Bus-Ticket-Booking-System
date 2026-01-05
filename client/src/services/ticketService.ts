@@ -127,10 +127,135 @@ export const ticketService = {
     getMyTickets: async (userId: string): Promise<TicketUI[]> => {
         try {
             // 1. Fetch tickets
-            const response = await api.get<TicketResponse[]>(
-                `/tickets?user_id=${userId}&_sort=created_at&_order=desc`
-            );
+            const response = await api.get<TicketResponse[]>(`/tickets?_sort=created_at&_order=desc`);
             const tickets = response as unknown as TicketResponse[];
+            const tickets = response as unknown as TicketResponse[];
+            if (tickets.length === 0) return [];
+
+            // 2. Parallel fetch related entities
+            const [buses, routes, stations, schedules, cities, seatPositions, allSeats, allUser] = await Promise.all([
+                api.get<Bus[]>(`/buses`),
+                api.get<Route[]>(`/routes`),
+                api.get<Station[]>(`/stations`),
+                api.get<Schedule[]>(`/schedules`),
+                api.get<City[]>('/cities'),
+                api.get<SeatPosition[]>('/seat_positions'),
+                api.get<Seat[]>('/seats'),
+                api.get<User[]>('/users')
+            ]);
+
+            const busesArr = buses as unknown as Bus[];
+            const routesArr = routes as unknown as Route[];
+            const stationsArr = stations as unknown as Station[];
+            const schedulesArr = schedules as unknown as Schedule[];
+            const citiesArr = cities as unknown as City[];
+            const seatPositionsArr = seatPositions as unknown as SeatPosition[];
+            const allSeatsArr = allSeats as unknown as Seat[];
+            const users = allUser as unknown as User[];
+
+            // 3. Map to UI Model
+            const mappedTickets: TicketUI[] = [];
+
+            for (const ticket of tickets) {
+                const schedule = schedulesArr.find(s => s.id === ticket.schedule_id);
+
+                if (!schedule) {
+                    console.warn(`Ticket ${ticket.id} missing schedule data`);
+                    continue;
+                }
+
+                const bus = busesArr.find(b => b.id === schedule.bus_id);
+                const route = routesArr.find(r => r.id === schedule.route_id);
+
+                const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
+                const seatSchedules = seatSchedulesRes as unknown as SeatSchedule[];
+
+                // Fallback: If no seat_schedules found but ticket has seat_id (Legacy/Manual data support)
+                if (seatSchedules.length === 0 && ticket.seat_id) {
+                    // Try to finding label directly from seat_positions
+                    const pos = seatPositionsArr.find(p => p.id === ticket.seat_id);
+                    seatSchedules.push({
+                        id: 'temp_' + ticket.id,
+                        schedule_id: ticket.schedule_id,
+                        ticket_id: ticket.id,
+                        status: ticket.status,
+                        price: ticket.price,
+                        seat_id: ticket.seat_id,
+                        seat_name: pos?.label // Use label from seat_positions if found
+                    } as SeatSchedule);
+                }
+
+                const seatNames = seatSchedules.map(s => {
+                    const sId = s.seat_id;
+                    if (!sId) return "Ghe";
+
+                    const pos = seatPositionsArr.find(p => p.id === sId);
+                    if (pos && pos.label) {
+                        return pos.label;
+                    }
+
+                    if (bus) {
+                        const seat = allSeatsArr.find(st => st.id === sId && st.bus_id === bus.id);
+                        if (seat) return seat.seat_label || seat.seat_number;
+                    }
+
+                    return s.seat_name || sId;
+                });
+
+                const uniqueSeatNames = Array.from(new Set(seatNames));
+
+                const depStation = stationsArr.find(s => s.id === route?.departure_station_id);
+                const arrStation = stationsArr.find(s => s.id === route?.arrival_station_id);
+
+                const depCity = citiesArr.find(c => c.id === depStation?.city_id);
+                const arrCity = citiesArr.find(c => c.id === arrStation?.city_id);
+                const user = users.find(u => u.id === ticket.user_id);
+
+                const routeName = (depCity && arrCity)
+                    ? `${depCity.city_name} - ${arrCity.city_name}`
+                    : (depStation && arrStation)
+                        ? `${depStation.station_name} - ${arrStation.station_name}`
+                        : "Tuyến đường không xác định";
+
+                const departureDate = new Date(schedule.departure_time);
+
+                const isPast = departureDate < new Date();
+                let uiStatus = ticket.status;
+
+                if (ticket.status === 'BOOKED' && isPast) {
+                    uiStatus = 'COMPLETED';
+                    api.patch(`/tickets/${ticket.id}`, {
+                        status: 'COMPLETED',
+                        updated_at: new Date().toISOString()
+                    }).catch(console.error);
+                }
+
+                mappedTickets.push({
+                    id: ticket.id,
+                    code: ticket.code || ticket.id,
+                    status: uiStatus,
+                    busInfo: {
+                        id: bus?.id || "",
+                        time: departureDate.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+                        date: departureDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+                        name: bus?.name || "Xe khách",
+                        route: routeName,
+                        price: ticket.total_price || ticket.price,
+                        type: "Giường nằm"
+                    },
+                    pickup: depStation?.station_name || "Điểm đón",
+                    dropoff: arrStation?.station_name || "Điểm trả",
+                    seats: uniqueSeatNames.length > 0 ? uniqueSeatNames : ["N/A"],
+                    passengerInfo: {
+                        email: user?.email || '',
+                        fullName: user ? user.first_name + " " + user.last_name : '',
+                        phone: user?.phone || ""
+                    }
+                });
+            }
+
+            return mappedTickets;
+
 
             if (tickets.length === 0) return [];
 
@@ -420,7 +545,7 @@ export const ticketService = {
             return null;
         }
     },
-    getAllTickets: async (): Promise<TicketUI[]> => {
+    getAllTickets: async (allowedBusIds: string[] = []): Promise<TicketUI[]> => {
         try {
             // 1. Fetch all tickets
             const response = await api.get<TicketResponse[]>(
@@ -463,6 +588,10 @@ export const ticketService = {
                 }
 
                 const bus = busesArr.find(b => b.id === schedule.bus_id);
+
+                if (allowedBusIds.length > 0 && (!bus || !allowedBusIds.includes(String(bus.id)))) {
+                    continue;
+                }
                 const route = routesArr.find(r => r.id === schedule.route_id);
 
                 const seatSchedulesRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticket.id}`);
