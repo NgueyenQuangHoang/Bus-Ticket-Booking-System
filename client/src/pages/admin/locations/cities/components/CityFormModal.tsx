@@ -1,7 +1,7 @@
 import { Add, Close } from '@mui/icons-material'
 import {
     Box, Button, MenuItem, Modal, TextField,
-    Typography, InputAdornment, Divider, IconButton
+    Typography, Divider, IconButton
 } from '@mui/material'
 import { useState, type ChangeEvent } from 'react';
 import {
@@ -34,10 +34,31 @@ const modalStyle = {
     outline: 'none'
 };
 
-export default function CityFormModal({ numberCities, onAdd }: { numberCities: number, onAdd : (city: City) => void}) {
+// Xóa khai báo Props cũ
+export default function CityFormModal({ numberCities, onAdd }: { numberCities: number, onAdd : (city: City, thumbnailFile?: File) => void}) {
     const [open, setOpen] = useState(false)
-    const handleOpen = () => setOpen(true)
-    const handleClose = () => setOpen(false)
+    const handleOpen = () => {
+        handleReset();
+        setOpen(true);
+    }
+    const handleClose = () => {
+        setOpen(false)
+        handleReset() // Reset form on close
+    }
+
+    /* ===== A. STATE HÌNH ẢNH ===== */
+    const [thumbnailPreview, setThumbnailPreview] = useState("");
+    const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
+
+    const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setThumbnailFile(file);
+            setThumbnailPreview(URL.createObjectURL(file));
+             // Optional: Clear string input if any
+             handleChange({ target: { name: 'image_city', value: '' } } as any);
+        }
+    };
 
     // Khởi tạo state
     const [formData, setFormData] = useState<City>({
@@ -62,11 +83,13 @@ export default function CityFormModal({ numberCities, onAdd }: { numberCities: n
             image_city: '',
             description: ''
         });
+        setThumbnailPreview("");
+        setThumbnailFile(undefined);
     };
 
     const handleSubmit = () => {
-        // Gộp description vào formData khi gửi đi
-        onAdd(formData);
+        if (!formData.city_name) return; // Simple validation
+        onAdd(formData, thumbnailFile);
         handleClose();
     };
 
@@ -160,28 +183,40 @@ export default function CityFormModal({ numberCities, onAdd }: { numberCities: n
                             </TextField>
                         </div>
 
-                        {/* Link Ảnh */}
+                        {/* ẢNH ĐẠI DIỆN - UI GIỐNG BUS FORM */}
                         <div className="col-span-2 space-y-1.5">
-                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                           <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
                                 <ImageIcon fontSize="small" className="text-blue-500" />
-                                Đường dẫn hình ảnh (URL)
+                                Hình ảnh thành phố
                             </label>
-                            <TextField
-                                fullWidth
-                                name="image_city"
-                                value={formData.image_city}
-                                onChange={handleChange}
-                                placeholder="https://example.com/image.jpg"
-                                variant="outlined"
-                                size="small"
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <span className="text-xs text-gray-400 font-bold">URL</span>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
+
+                            <div className="flex items-start gap-4">
+                                <div className="w-32 h-24 border border-gray-300 rounded overflow-hidden flex items-center justify-center bg-gray-50">
+                                {thumbnailPreview || formData.image_city ? (
+                                    <img 
+                                    src={thumbnailPreview || formData.image_city} 
+                                    alt="thumbnail" 
+                                    className="w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    <span className="text-gray-400 text-xs">Chưa có ảnh</span>
+                                )}
+                                </div>
+                                <div>
+                                <label className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded cursor-pointer hover:bg-blue-100 transition text-sm font-medium">
+                                    Chọn ảnh
+                                    <input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    hidden 
+                                    onChange={handleThumbnailChange}
+                                    />
+                                </label>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    Hỗ trợ JPG, PNG, WEBP.
+                                </p>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Description - React Quill New */}

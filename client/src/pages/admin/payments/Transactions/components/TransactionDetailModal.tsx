@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Close, Description, Lock } from '@mui/icons-material';
 import type { Transaction } from './TransactionTable';
+import { paymentService, type PaymentDetail } from '../../../../../services/paymentService'; // Adjust path if needed
 
 interface TransactionDetailModalProps {
   isOpen: boolean;
@@ -8,23 +10,47 @@ interface TransactionDetailModalProps {
 }
 
 export default function TransactionDetailModal({ isOpen, onClose, transaction }: TransactionDetailModalProps) {
+  const [details, setDetails] = useState<{
+      userInfo: PaymentDetail['userInfo'] | null;
+      ticketInfo: PaymentDetail['ticketInfo'] | null;
+      loading: boolean;
+  }>({
+      userInfo: null,
+      ticketInfo: null,
+      loading: true
+  });
+
+  useEffect(() => {
+    if (isOpen && transaction) {
+        setDetails({ userInfo: null, ticketInfo: null, loading: true });
+        
+        const fetchData = async () => {
+            if (!transaction.ticket_id) {
+                 setDetails(prev => ({ ...prev, loading: false }));
+                 return;
+            }
+
+            const data = await paymentService.getPaymentDetail(String(transaction.ticket_id));
+            
+            if (data) {
+                setDetails({
+                    userInfo: data.userInfo,
+                    ticketInfo: data.ticketInfo,
+                    loading: false
+                });
+            } else {
+                 setDetails(prev => ({ ...prev, loading: false }));
+            }
+        };
+        fetchData();
+    }
+  }, [isOpen, transaction]);
+
   if (!isOpen || !transaction) return null;
 
-  // Mock secondary data since we only have transaction info
-  const ticketInfo = {
-      route: "Bến xe Miền Đông → Kon Tum",
-      time: "22/12/2025 - 17:15",
-      seat: "A3 (VIP)",
-      status: transaction.status === 'REFUNDED' ? 'CANCELLED' : 'CONFIRMED'
-  };
-
-  const userInfo = {
-      name: "Nguyễn Văn A",
-      email: "nguyenvana@gmail.com",
-      phone: "0909 123 456",
-      passenger: "Nguyễn Văn A | CCCD: 012345678912"
-  };
-
+  const { userInfo, ticketInfo, loading } = details;
+  
+  // Handlers and helpers
   const getProviderName = (id: number) => {
     const providers: Record<number, string> = { 1: 'VNPay', 2: 'MoMo', 3: 'ZaloPay' };
     return providers[id] || `Provider #${id}`;
@@ -39,7 +65,6 @@ export default function TransactionDetailModal({ isOpen, onClose, transaction }:
     // Format similar to screenshot
     const date = new Date(dateString);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    // Or full format if needed: return date.toLocaleString('vi-VN');
   };
   
   const getStatusColor = (status: string) => {
@@ -81,6 +106,11 @@ export default function TransactionDetailModal({ isOpen, onClose, transaction }:
             </button>
         </div>
         
+        {loading ? (
+             <div className="p-10 text-center text-slate-500">
+                Đang tải thông tin chi tiết...
+             </div>
+        ) : (
         <div className="p-6 space-y-6">
             {/* Transaction Info - Structure from Screenshot 2, Style from Ticket Modal */}
              <div className="space-y-4">
@@ -92,7 +122,7 @@ export default function TransactionDetailModal({ isOpen, onClose, transaction }:
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label className="text-xs text-slate-500 block mb-1">Cổng thanh toán</label>
-                        <p className="font-medium text-slate-800">{getProviderName(transaction.payment_provider_id)}</p>
+                        <p className="font-medium text-slate-800">{getProviderName(Number(transaction.payment_provider_id))}</p>
                     </div>
                     <div>
                         <label className="text-xs text-slate-500 block mb-1">Phương thức</label>
@@ -119,23 +149,23 @@ export default function TransactionDetailModal({ isOpen, onClose, transaction }:
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                          <label className="text-xs text-slate-500 block mb-1">Mã vé</label>
-                         <p className="font-bold text-slate-800">#{transaction.ticket_id}</p>
+                         <p className="font-bold text-slate-800">{ticketInfo?.code || 'N/A'}</p>
                     </div>
                     <div>
                          <label className="text-xs text-slate-500 block mb-1">Trạng thái vé</label>
-                         <p className="font-medium text-slate-800">{ticketInfo.status}</p>
+                         <p className="font-medium text-slate-800">{ticketInfo?.status || 'N/A'}</p>
                     </div>
                     <div className="md:col-span-2">
                          <label className="text-xs text-slate-500 block mb-1">Tuyến xe</label>
-                         <p className="font-medium text-slate-800">{ticketInfo.route}</p>
+                         <p className="font-medium text-slate-800">{ticketInfo?.route || 'N/A'}</p>
                     </div>
                     <div>
                          <label className="text-xs text-slate-500 block mb-1">Thời gian</label>
-                         <p className="font-medium text-slate-800">{ticketInfo.time}</p>
+                         <p className="font-medium text-slate-800">{ticketInfo?.time || 'N/A'}</p>
                     </div>
                     <div>
                          <label className="text-xs text-slate-500 block mb-1">Ghế</label>
-                         <p className="font-medium text-slate-800">{ticketInfo.seat}</p>
+                         <p className="font-medium text-slate-800">{ticketInfo?.seat || 'N/A'}</p>
                     </div>
                  </div>
             </div>
@@ -150,24 +180,24 @@ export default function TransactionDetailModal({ isOpen, onClose, transaction }:
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                          <label className="text-xs text-slate-500 block mb-1">Người đặt</label>
-                         <p className="font-medium text-slate-800">{userInfo.name}</p>
+                         <p className="font-medium text-slate-800">{userInfo?.name || 'N/A'}</p>
                     </div>
                     <div>
                          <label className="text-xs text-slate-500 block mb-1">SĐT</label>
-                         <p className="font-medium text-slate-800">{userInfo.phone}</p>
+                         <p className="font-medium text-slate-800">{userInfo?.phone || 'N/A'}</p>
                     </div>
                     <div className="md:col-span-2">
                          <label className="text-xs text-slate-500 block mb-1">Email</label>
-                         <p className="font-medium text-slate-800">{userInfo.email}</p>
+                         <p className="font-medium text-slate-800">{userInfo?.email || 'N/A'}</p>
                     </div>
                     <div className="md:col-span-2 bg-slate-50 p-3 rounded-lg">
                          <label className="text-xs text-slate-500 block mb-1">Hành khách</label>
-                         <p className="font-medium text-slate-800 text-sm">• {userInfo.passenger}</p>
+                         <p className="font-medium text-slate-800 text-sm">• {userInfo?.passenger || 'N/A'}</p>
                     </div>
                  </div>
             </div>
-
         </div>
+        )}
 
         {/* Footer - Styled like Ticket Modal */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">

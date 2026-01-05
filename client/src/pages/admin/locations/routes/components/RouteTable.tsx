@@ -48,7 +48,7 @@ export default function RouteTable({routes, stationMapping: stations} : PropType
                                     />
                                 </TableCell>
                                 <TableCell align="right">
-                                    <RouteAction id={item.id} route={item} stations={stations}/>
+                                    <RouteAction id={item.id} route={item}/>
                                 </TableCell>
                             </TableRow>
                         )

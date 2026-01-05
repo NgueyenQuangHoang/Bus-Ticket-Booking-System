@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { addNewCity, deleteCity, fetchCities, updateCity } from '../../../../slices/citySlice'
 import { removeRoute } from '../../../../slices/routesSlice'
 import { removeStation } from '../../../../slices/stationSlice'
+import { busImageService } from '../../../../services/admin/busImageService'
 
 export default function CitiesPage() {
     const itemsPerPage = 10
@@ -46,8 +47,18 @@ export default function CitiesPage() {
         }
     })
 
-    const addNewCities = ((city: City) => {
+    const addNewCities = (async (city: City, file?: File) => {
         if (cities){
+            if (file) {
+                 try {
+                     const url = await busImageService.uploadFileToCloudinary(file);
+                     city.image_city = url;
+                 } catch (error) {
+                     console.error("Upload failed", error);
+                     // Allow continuing without image or show error?
+                     // For now, continue
+                 }
+            }
             dispatch(addNewCity(city))
         }
     })    

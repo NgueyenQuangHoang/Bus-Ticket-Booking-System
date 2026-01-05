@@ -22,7 +22,7 @@ export default function RouteAdminPage() {
     const [inputData, setInputData] = useState<string>('')
     const [currentPage, setCurrentPage] = useState(1)
 
-    const handleSetPage = (event: React.ChangeEvent<unknown>, page: number) => {
+    const handleSetPage = (_: React.ChangeEvent<unknown>, page: number) => {
         setCurrentPage(page)
     }
 
@@ -34,7 +34,7 @@ export default function RouteAdminPage() {
     return (
         <div className='py-5'>
             <div className='py-5'>
-                        <RouteFormModal stationMapping={stationMap} length={routes.length}/>
+                        <RouteFormModal length={routes.length}/>
                         <Paper className="shadow-sm rounded-xl overflow-hidden border border-gray-100">
                         <RouteSearch onChangeInput={setInputData} 
                         length={routes.length}
