@@ -1,28 +1,26 @@
 import { Visibility } from "@mui/icons-material";
+import type { TicketUI } from "../../../../services/ticketService";
 
 export type TicketStatus = "BOOKED" | "CANCELLED" | "COMPLETED" | "USED"; // Added USED
 export type PaymentStatus = "PENDING" | "PAID" | "REFUNDED"; // Added PaymentStatus
 
-// Match backend structure + UI helpers
-export type TicketUI = {
-  // Backend keys
-  ticket_id: number;
-  ticket_code: string; // NEW: Display code for user
-  user_id: number;
-  schedule_id: number;
-  seat_id: number;
-  seat_type: string;
-  price: number;
-  status: TicketStatus;
-  payment_status: PaymentStatus; // NEW: Payment status
-  created_at: string;
-  updated_at?: string;
-  id?: string; // string ID from old structure, can map to ticket_code if redundant of keep for safety
+// export type TicketUI = {
+//   ticket_id: number;
+//   ticket_code: string; 
+//   user_id: number;
+//   schedule_id: number;
+//   seat_id: number;
+//   seat_type: string;
+//   price: number;
+//   status: TicketStatus;
+//   payment_status: PaymentStatus; 
+//   created_at: string;
+//   updated_at?: string;
+//   id?: string; 
 
-  // UI Helper fields (to be populated from IDs)
-  customer_name?: string; 
-  trip_name?: string; 
-};
+//   customer_name?: string; 
+//   trip_name?: string; 
+// };
 
 type Props = {
   data: TicketUI[];
@@ -34,7 +32,8 @@ export default function TicketTable({ data, onView }: Props) {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
   };
-
+  console.log('data', data);
+  
   return (
     <div className='bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden'>
       {/* ================= TABLE (>= 1024px? actually standard responsive) ================= */}
@@ -53,26 +52,27 @@ export default function TicketTable({ data, onView }: Props) {
           </thead>
           <tbody className='divide-y divide-slate-200'>
             {data.map((item) => (
-              <tr key={item.ticket_id} className='hover:bg-slate-50 transition-colors'>
+              <tr key={item.id} className='hover:bg-slate-50 transition-colors'>
                 {/* ID */}
                 <td className='px-6 py-4 text-sm text-slate-600 font-medium'>
-                  #{item.ticket_id}
+                  #{item.id}
                 </td>
 
                 {/* CUSTOMER */}
                 {/* CUSTOMER */}
+                
                 <td className='px-6 py-4 text-sm font-medium text-slate-900'>
-                  {item.customer_name || `User #${item.user_id}`}
+                  {item.passengerInfo?.fullName}
                 </td>
 
                 {/* TRIP */}
                 <td className='px-6 py-4 text-sm text-slate-600 font-medium'>
-                  #{item.trip_name || item.schedule_id}
+                  #{item.busInfo.name}
                 </td>
 
                 {/* PRICE */}
                 <td className='px-6 py-4 text-sm font-bold text-slate-900 text-right'>
-                  {formatCurrency(item.price)}
+                  {formatCurrency(item.busInfo.price)}
                 </td>
 
                 {/* STATUS */}
@@ -95,7 +95,7 @@ export default function TicketTable({ data, onView }: Props) {
 
                 {/* DATE */}
                 <td className='px-6 py-4 text-center text-sm text-slate-600'>
-                   {item.created_at}
+                   {item.busInfo.time}
                 </td>
 
                 {/* ACTION */}
@@ -125,13 +125,13 @@ export default function TicketTable({ data, onView }: Props) {
       <div className="space-y-4 p-4 [@media(min-width:640px)]:hidden">
         {data.map((item) => (
           <div
-            key={item.ticket_id}
+            key={item.id}
             className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3"
           >
             <div className="flex justify-between items-start">
               <div>
-                <p className="font-bold text-slate-900">#{item.ticket_id}</p>
-                <p className="text-sm text-slate-500">{item.customer_name || `User #${item.user_id}`}</p>
+                <p className="font-bold text-slate-900">#{item.id}</p>
+                <p className="text-sm text-slate-500">{item.passengerInfo?.fullName}</p>
               </div>
               <span
                 className={`
@@ -151,13 +151,13 @@ export default function TicketTable({ data, onView }: Props) {
 
             <div className="grid grid-cols-2 gap-2 text-sm">
                 <div className="text-slate-600">Chuyến:</div>
-                <div className="font-medium text-slate-900">#{item.trip_name || item.schedule_id}</div>
+                <div className="font-medium text-slate-900">#{item.busInfo.time}</div>
                 
                 <div className="text-slate-600">Giá vé:</div>
-                <div className="font-bold text-slate-900">{formatCurrency(item.price)}</div>
+                <div className="font-bold text-slate-900">{formatCurrency(item.busInfo.price)}</div>
 
                 <div className="text-slate-600">Ngày đặt:</div>
-                <div className="text-slate-800">{item.created_at}</div>
+                <div className="text-slate-800">{item.busInfo.time}</div>
             </div>
           </div>
         ))}

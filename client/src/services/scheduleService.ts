@@ -51,7 +51,8 @@ export const scheduleService = {
                     }),
                     total_seats: totalSeats,
                     available_seats: availableSeats,
-                    available_seat: availableSeats // For backward compatibility if needed
+                    available_seat: availableSeats, // For backward compatibility if needed
+                    schedule_id: schedule.id
                 };
             });
 
@@ -98,7 +99,7 @@ export const scheduleService = {
                 const busySeats = schedule.seat_schedules
                     ? schedule.seat_schedules.filter((ss: any) =>
                         ss.status !== 'AVAILABLE' && ss.status !== 'CANCELLED'
-                      ).length
+                    ).length
                     : 0;
 
                 const availableSeats = Math.max(0, totalSeats - busySeats);

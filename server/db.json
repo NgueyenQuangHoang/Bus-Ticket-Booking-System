@@ -6,54 +6,10 @@
       "schedule_id": "SCH_MQ_001",
       "seat_id": "ff4c",
       "code": "TICKET__95PGF",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 100000,
       "created_at": "2026-01-03T18:42:33.345Z",
-      "updated_at": "2026-01-04T02:28:12.161Z"
-    },
-    {
-      "id": "ticket_01",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "seat_01",
-      "price": 320000,
-      "status": "COMPLETED",
-      "code": "VX-204912",
-      "created_at": "2025-12-20T10:00:00Z",
-      "updated_at": "2025-12-20T10:00:00Z"
-    },
-    {
-      "id": "ticket_02",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "seat_02",
-      "price": 280000,
-      "status": "BOOKED",
-      "code": "VX-204913",
-      "created_at": "2026-01-01T08:00:00Z",
-      "updated_at": "2026-01-01T08:00:00Z"
-    },
-    {
-      "id": "ticket_03",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "seat_03",
-      "price": 150000,
-      "status": "CANCELLED",
-      "code": "VX-204914",
-      "created_at": "2026-01-02T09:00:00Z",
-      "updated_at": "2026-01-02T10:00:00Z"
-    },
-    {
-      "id": "ticket_04",
-      "user_id": "bba5",
-      "schedule_id": "SCH_MQ_001",
-      "seat_id": "seat_05",
-      "price": 300000,
-      "status": "COMPLETED",
-      "code": "VX-204915",
-      "created_at": "2025-12-25T10:00:00Z",
-      "updated_at": "2025-12-25T10:00:00Z"
+      "updated_at": "2026-01-05T01:46:28.763Z"
     },
     {
       "id": "1767498502272_8w2p1",
@@ -61,7 +17,7 @@
       "schedule_id": "SCH_MQ_001",
       "seat_id": "608d",
       "code": "TICKET__8W2P1",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 100000,
       "created_at": "2026-01-04T03:48:22.272Z",
       "updated_at": "2026-01-04T03:48:22.272Z"
@@ -2181,16 +2137,15 @@
       "updated_at": "2025-01-01"
     },
     {
-      "id": "10",
-      "route_id": "9",
+      "route_id": "6",
       "bus_id": "2",
-      "departure_time": "2025-12-25T20:00",
-      "arrival_time": "2025-12-26T08:00",
-      "total_seats": 40,
-      "available_seats": 32,
+      "total_seats": 34,
+      "available_seats": 34,
       "status": "AVAILABLE",
-      "created_at": "2025-01-01",
-      "updated_at": "2025-01-01"
+      "departure_time": "2026-01-07T08:00",
+      "arrival_time": "2026-01-08T00:00",
+      "updated_at": "2026-01-05T01:39:59.642Z",
+      "id": "10"
     },
     {
       "id": "11",
@@ -2330,30 +2285,39 @@
       "total_seats": 34,
       "available_seats": 34,
       "status": "AVAILABLE",
-      "departure_time": "2026-01-05T07:30",
-      "arrival_time": "2026-01-06T03:30",
-      "updated_at": "2026-01-04T13:34:07.960Z",
+      "departure_time": "2026-01-02T05:00",
+      "arrival_time": "2026-01-02T01:00",
+      "updated_at": "2026-01-05T01:52:37.690Z",
       "id": "SCH_MQ_001"
     },
     {
+      "id": "schedule_hcm_vt_20260105",
       "route_id": "11",
-      "bus_id": "5",
-      "total_seats": 34,
-      "available_seats": 45,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-05T09:00",
-      "arrival_time": "2026-01-06T05:00",
-      "updated_at": "2026-01-04T13:33:28.305Z",
-      "id": "schedule_hcm_vt_20260105"
-    },
-    {
-      "id": "schedule_vt_hcm_20260105_1530",
-      "route_id": "12",
       "bus_id": "4",
-      "departure_time": "2026-01-05T15:30:00",
-      "arrival_time": "2026-01-05T17:30:00",
+      "departure_time": "2026-01-05T09:00",
+      "arrival_time": "2026-01-05T11:30",
       "total_seats": 45,
       "available_seats": 45,
+      "status": "AVAILABLE",
+      "created_at": "2026-01-03T12:00:00.000Z",
+      "updated_at": "2026-01-03T12:00:00.000Z"
+    },
+    {
+      "route_id": "1",
+      "bus_id": "5",
+      "total_seats": 34,
+      "available_seats": 34,
+      "status": "AVAILABLE",
+      "departure_time": "2026-01-10T17:00",
+      "arrival_time": "2026-01-10T23:00",
+      "updated_at": "2026-01-05T01:52:49.203Z",
+      "id": "schedule_vt_hcm_20260105_1530"
+    },
+    {
+      "route_id": "1",
+      "bus_id": "3",
+      "total_seats": 9,
+      "available_seats": 9,
       "status": "AVAILABLE",
       "created_at": "2026-01-04T12:00:00.000Z",
       "updated_at": "2026-01-04T12:00:00.000Z"
@@ -2574,40 +2538,17 @@
   ],
   "bus_reviews": [
     {
-      "id": "1",
-      "user_id": "1",
-      "bus_id": "1",
-      "rating": 5,
-      "review": "Xe sạch, chạy êm",
-      "status": "VISIBLE",
-      "created_at": "2025-01-05",
-      "updated_at": "2025-01-05"
-    },
-    {
-      "id": "cb8a",
+      "id": "ced3",
       "bus_id": "80a0525f-078a-457c-a546-cd931e143e02",
       "user_id": "bba5",
-      "booking_id": "ticket_04",
-      "ticket_id": "ticket_04",
-      "rating": 4,
-      "review": "test 2",
-      "created_at": "2026-01-04T02:44:47.660Z",
-      "is_verified": true,
-      "status": "VISIBLE",
-      "updated_at": "2026-01-04T02:44:47.660Z"
-    },
-    {
-      "id": "536b",
-      "bus_id": "80a0525f-078a-457c-a546-cd931e143e02",
-      "user_id": "bba5",
-      "booking_id": "ticket_01",
-      "ticket_id": "ticket_01",
+      "booking_id": "1767465753345_95pgf",
+      "ticket_id": "1767465753345_95pgf",
       "rating": 5,
-      "review": "Xe chạy êm, đúng giờ, nhân viên thân thiện.",
-      "created_at": "2026-01-04T06:17:46.477Z",
+      "review": "Xe chạy êm, đúng giờ, dịch vụ tốt.",
+      "created_at": "2026-01-05T02:23:12.475Z",
       "is_verified": true,
       "status": "VISIBLE",
-      "updated_at": "2026-01-04T06:17:46.477Z"
+      "updated_at": "2026-01-05T02:23:12.475Z"
     }
   ],
   "banners": [

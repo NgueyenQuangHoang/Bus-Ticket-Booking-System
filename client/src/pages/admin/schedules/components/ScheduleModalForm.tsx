@@ -105,8 +105,8 @@ export default function ScheduleModalForm({ open, onClose, onSubmit, initialData
                    // 2. Fetch Stations Details to get their City IDs
                    // We need to fetch ALL stations or just specific ones? 
                    // stationService.getParticularStation takes number.
-                   const depStation = await stationService.getParticularStation(Number(depStationId));
-                   const arrStation = await stationService.getParticularStation(Number(arrStationId));
+                   const depStation = await stationService.getParticularStation(depStationId);
+                   const arrStation = await stationService.getParticularStation(arrStationId);
 
                    if (depStation && arrStation) {
                        // 3. Set Cities

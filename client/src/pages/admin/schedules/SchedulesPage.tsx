@@ -115,11 +115,11 @@ export default function SchedulesPage() {
         // Fetch live seat status; fallback gracefully on error
         try {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const stats = await seatStatusService.getSeatStatusBySchedule(String((item as any).id ?? item.schedule_id ?? item.id));
+          const stats = await seatStatusService.getSeatStatusBySchedule(String(item.schedule_id));
           availableSeat = stats.available;
           totalSeats = stats.totalSeats;
         } catch (err) {
-          console.warn("Failed to fetch seat status for schedule", item.id, err);
+          console.warn("Failed to fetch seat status for schedule", item.schedule_id, err);
         }
 
         return {
@@ -130,8 +130,7 @@ export default function SchedulesPage() {
           departure_time_str: timeStr,
           available_seat: availableSeat,
           total_seats: totalSeats,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          schedule_id: (item as any).id,
+
         };
         }));
 
