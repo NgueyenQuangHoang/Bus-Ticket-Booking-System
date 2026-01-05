@@ -4,9 +4,7 @@ import {
 } from '@mui/material';
 import StationAction from './StationAction';
 import type { City, Station } from '../../../../../types';
-import { useEffect, useState } from 'react';
-import { cityService } from '../../../../../services/cityService';
-// import StationAction, { type Station } from './StationAction';
+import { useAppSelector } from '../../../../../hooks';
 
 interface PropType {
   stations: (Station & { city_name?: string })[]
@@ -15,10 +13,7 @@ interface PropType {
 }
 
 export default function StationTable({ stations, onDelete, onEdit }: PropType) {
-  const [cities, setCities] = useState<City[]>([])
-  useEffect(() => {
-    cityService.getAllCities().then((res) => setCities(res))
-  }, [])
+  const { cities } = useAppSelector(state => state.city);
 
   const cityMapping: Record<string, string> = cities.reduce((acc, city) => {
     return {

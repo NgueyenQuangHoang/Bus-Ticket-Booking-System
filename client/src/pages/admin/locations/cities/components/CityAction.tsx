@@ -6,6 +6,8 @@ import type { City } from '../../../../../types';
 import ReactQuill from 'react-quill-new';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks';
 import { fetchStations } from '../../../../../slices/stationSlice';
+import { busImageService } from '../../../../../services/admin/busImageService';
+import { Image as ImageIcon } from '@mui/icons-material';
 
 
 const modalStyle = {
@@ -42,6 +44,18 @@ export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropT
             [name]: value
         }));
     };
+
+    // Image State
+    const [thumbnailPreview, setThumbnailPreview] = useState("");
+    const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
+
+    const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setThumbnailFile(file);
+            setThumbnailPreview(URL.createObjectURL(file));
+        }
+    };
     
     const handleDeleteClick = () => {
         const stationsDelete = stations.reduce((acc, item) => {
@@ -73,16 +87,27 @@ export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropT
         });
     };
 
-    const handleSave = () => {
-        updateCitiesOnFix(formData)
-        Swal.fire({
-            title: "Thành công",
-            text: "Thông tin thành phố đã được cập nhật",
-            icon: "success",
-            timer: 1500,
-            showConfirmButton: false
-        });
-        handleClose();
+    const handleSave = async () => {
+        try {
+            const submitData = { ...formData };
+            if (thumbnailFile) {
+                const url = await busImageService.uploadFileToCloudinary(thumbnailFile);
+                submitData.image_city = url;
+            }
+
+            updateCitiesOnFix(submitData);
+            Swal.fire({
+                title: "Thành công",
+                text: "Thông tin thành phố đã được cập nhật",
+                icon: "success",
+                timer: 1500,
+                showConfirmButton: false
+            });
+            handleClose();
+        } catch (error) {
+            console.error("Update city failed", error);
+            Swal.fire("Lỗi", "Cập nhật thất bại", "error");
+        }
     };
     const dispatch = useAppDispatch()
     useEffect(() => {
@@ -146,6 +171,38 @@ export default function CityAction({ onDelete, updateCitiesOnFix , city }: PropT
                                 <MenuItem value="Trung">Miền Trung</MenuItem>
                                 <MenuItem value="Nam">Miền Nam</MenuItem>
                             </TextField>
+                        </div>
+
+                        {/* ẢNH ĐẠI DIỆN */}
+                        <div className="space-y-1">
+                           <label className="text-xs font-bold text-gray-600 uppercase flex items-center gap-1">
+                                <ImageIcon className="text-[16px] text-blue-500" /> Hình ảnh thành phố
+                            </label>
+                            
+                            <div className="flex items-start gap-4">
+                                <div className="w-32 h-24 border border-gray-300 rounded overflow-hidden flex items-center justify-center bg-gray-50">
+                                {thumbnailPreview || formData.image_city ? (
+                                    <img 
+                                    src={thumbnailPreview || formData.image_city} 
+                                    alt="thumbnail" 
+                                    className="w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    <span className="text-gray-400 text-xs">Chưa có ảnh</span>
+                                )}
+                                </div>
+                                <div>
+                                    <label className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded cursor-pointer hover:bg-blue-100 transition text-sm font-medium">
+                                        Thay đổi ảnh
+                                        <input 
+                                        type="file" 
+                                        accept="image/*" 
+                                        hidden 
+                                        onChange={handleThumbnailChange}
+                                        />
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Mô tả */}

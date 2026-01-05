@@ -7,12 +7,19 @@ import { useAppDispatch } from '../../../../../hooks';
 import { createPostRoute } from '../../../../../slices/routesSlice';
 import { v4 as uuidv4 } from 'uuid';
 // Style cho thân Modal
+import { fetchCities } from '../../../../../slices/citySlice'; // Import fetchCities
+import { useAppSelector } from '../../../../../hooks';
+import { busImageService } from '../../../../../services/admin/busImageService';
+import { Image as ImageIcon } from '@mui/icons-material';
+
+// Style cho thân Modal
 const modalStyle = {
-    position: 'absolute',
+    position: 'absolute' as const,
+    // ... (rest same)
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: { xs: '95%', sm: 700 },
+    width: { xs: '95%', sm: 800 }, // Wider for better layout
     bgcolor: 'background.paper',
     borderRadius: 4,
     boxShadow: 24,
@@ -23,11 +30,10 @@ const modalStyle = {
 };
 
 interface PropType {
-    stationMapping: {[key: string] : string},
     length: number
 }
 
-export default function RouteFormModal({stationMapping: stations, length}: PropType) {
+export default function RouteFormModal({length}: PropType) {
 
     const modules = useMemo(() => ({
         toolbar: [
@@ -43,7 +49,7 @@ export default function RouteFormModal({stationMapping: stations, length}: PropT
 
 
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    /* const handleOpen = () => setOpen(true); -- Removed duplicate */
     const handleClose = () => setOpen(false);
 
     // Khởi tạo state dựa trên Interface Route
@@ -51,13 +57,46 @@ export default function RouteFormModal({stationMapping: stations, length}: PropT
         id: uuidv4(),
         departure_station_id: '',
         arrival_station_id: '',
-        base_price: 0,
         duration: 0,
         distance: 0,
         description: '',
+        image: '',
         created_at: (new Date()).toString(),
         updated_at: (new Date()).toString()
     });
+
+    // Redux Selectors
+    const dispatch = useAppDispatch();
+    const { cities } = useAppSelector(state => state.city);
+    const { stations } = useAppSelector(state => state.station);
+
+    // Cascading State
+    const [selectedCityFrom, setSelectedCityFrom] = useState<string>('');
+    const [selectedCityTo, setSelectedCityTo] = useState<string>('');
+
+    // Derived Stations based on Cities
+    const stationsFrom = useMemo(() => stations.filter(s => String(s.city_id) === String(selectedCityFrom)), [stations, selectedCityFrom]);
+    const stationsTo = useMemo(() => stations.filter(s => String(s.city_id) === String(selectedCityTo)), [stations, selectedCityTo]);
+
+    // Image State
+    const [thumbnailPreview, setThumbnailPreview] = useState("");
+    const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
+
+    const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setThumbnailFile(file);
+            setThumbnailPreview(URL.createObjectURL(file));
+            // Optional: reset image string
+            setFormData(prev => ({...prev, image: ''}));
+        }
+    };
+
+    const handleOpen = () => {
+        handleReset();
+        setOpen(true);
+        dispatch(fetchCities()); // Fetch cities when opening
+    }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -78,13 +117,30 @@ export default function RouteFormModal({stationMapping: stations, length}: PropT
             duration: 0,
             distance: 0,
             description: '',
+            image: ''
         });
+        setSelectedCityFrom('');
+        setSelectedCityTo('');
+        setThumbnailPreview("");
+        setThumbnailFile(undefined);
     };
-const dispatch = useAppDispatch()
-    const handleSubmit = () => {
-        console.log("Dữ liệu Route:", formData);
-        dispatch(createPostRoute(formData))
-        handleClose();
+    /* const dispatch = useAppDispatch() -- Moved up */ 
+    const handleSubmit = async () => {
+        try {
+            const submitData = { ...formData };
+            
+            // Upload Image
+            if (thumbnailFile) {
+                const url = await busImageService.uploadFileToCloudinary(thumbnailFile);
+                submitData.image = url;
+            }
+
+            console.log("Dữ liệu Route:", submitData);
+            dispatch(createPostRoute(submitData));
+            handleClose();
+        } catch (error) {
+             console.error("Error creating route:", error);
+        }
     };
 
     return (
@@ -124,49 +180,100 @@ const dispatch = useAppDispatch()
                     {/* Form Layout */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
 
-                        {/* Ga đi */}
-                        <div className="space-y-1.5">
-                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                        {/* === GA ĐI (Cascading) === */}
+                        <div className="space-y-4 border p-4 rounded-lg bg-gray-50">
+                             <h3 className="font-bold text-gray-700 flex items-center gap-2">
                                 <LocationOn fontSize="small" className="text-red-500" />
-                                Ga khởi hành *
-                            </label>
-                            <TextField
-                                select
-                                fullWidth
-                                size="small"
-                                name="departure_station_id"
-                                value={formData.departure_station_id}
-                                onChange={handleChange}
-                            >
-                                {Object.entries(stations).map(([id, name]) => (
-                                    <MenuItem value={id}>{name}</MenuItem>
-                                ))}
-                                {/* <MenuItem value={0}>Chọn ga đi</MenuItem>
-                                <MenuItem value={2}>Ga Hà Nội</MenuItem> */}
-                            </TextField>
+                                Điểm Khởi Hành
+                             </h3>
+                             
+                             {/* Chọn Thành Phố Đi */}
+                             <div className="space-y-1.5">
+                                <label className="text-xs font-semibold text-gray-600">Thành phố đi</label>
+                                <TextField
+                                    select fullWidth size="small"
+                                    value={selectedCityFrom}
+                                    onChange={(e) => {
+                                        setSelectedCityFrom(e.target.value);
+                                        setFormData(prev => ({ ...prev, departure_station_id: '' })); // Reset station when city changes
+                                    }}
+                                    className="bg-white"
+                                >
+                                    <MenuItem value=""><em>Chọn thành phố...</em></MenuItem>
+                                    {cities.map(c => (
+                                        <MenuItem key={c.id} value={c.id}>{c.city_name}</MenuItem>
+                                    ))}
+                                </TextField>
+                             </div>
+
+                             {/* Chọn Ga Đi */}
+                             <div className="space-y-1.5">
+                                <label className="text-xs font-semibold text-gray-600">Ga khởi hành *</label>
+                                <TextField
+                                    select fullWidth size="small"
+                                    name="departure_station_id"
+                                    value={formData.departure_station_id}
+                                    onChange={handleChange}
+                                    disabled={!selectedCityFrom}
+                                    className="bg-white"
+                                >
+                                    {stationsFrom.length > 0 ? (
+                                        stationsFrom.map(s => (
+                                            <MenuItem key={s.id} value={s.id}>{s.station_name}</MenuItem>
+                                        ))
+                                    ) : (
+                                        <MenuItem value="" disabled>Không có ga nào</MenuItem>
+                                    )}
+                                </TextField>
+                             </div>
                         </div>
 
-                        {/* Ga đến */}
-                        <div className="space-y-1.5">
-                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                        {/* === GA ĐẾN (Cascading) === */}
+                        <div className="space-y-4 border p-4 rounded-lg bg-gray-50">
+                             <h3 className="font-bold text-gray-700 flex items-center gap-2">
                                 <LocationOn fontSize="small" className="text-green-500" />
-                                Ga kết thúc *
-                            </label>
-                            <TextField
-                                select
-                                fullWidth
-                                size="small"
-                                name="arrival_station_id"
-                                value={formData.arrival_station_id}
-                                onChange={handleChange}
-                            >
-                                {Object.entries(stations).map(([id, name]) => (
-                                    <MenuItem value={id}>{name}</MenuItem>
-                                ))}
-                                {/* <MenuItem value={0}>Chọn ga đến</MenuItem>
-                                <MenuItem value={3}>Ga Đà Nẵng</MenuItem>
-                                <MenuItem value={4}>Ga Huế</MenuItem> */}
-                            </TextField>
+                                Điểm Kết Thúc
+                             </h3>
+                             
+                             {/* Chọn Thành Phố Đến */}
+                             <div className="space-y-1.5">
+                                <label className="text-xs font-semibold text-gray-600">Thành phố đến</label>
+                                <TextField
+                                    select fullWidth size="small"
+                                    value={selectedCityTo}
+                                    onChange={(e) => {
+                                        setSelectedCityTo(e.target.value);
+                                        setFormData(prev => ({ ...prev, arrival_station_id: '' }));
+                                    }}
+                                    className="bg-white"
+                                >
+                                    <MenuItem value=""><em>Chọn thành phố...</em></MenuItem>
+                                    {cities.map(c => (
+                                        <MenuItem key={c.id} value={c.id}>{c.city_name}</MenuItem>
+                                    ))}
+                                </TextField>
+                             </div>
+
+                             {/* Chọn Ga Đến */}
+                             <div className="space-y-1.5">
+                                <label className="text-xs font-semibold text-gray-600">Ga kết thúc *</label>
+                                <TextField
+                                    select fullWidth size="small"
+                                    name="arrival_station_id"
+                                    value={formData.arrival_station_id}
+                                    onChange={handleChange}
+                                    disabled={!selectedCityTo}
+                                    className="bg-white"
+                                >
+                                    {stationsTo.length > 0 ? (
+                                        stationsTo.map(s => (
+                                            <MenuItem key={s.id} value={s.id}>{s.station_name}</MenuItem>
+                                        ))
+                                    ) : (
+                                        <MenuItem value="" disabled>Không có ga nào</MenuItem>
+                                    )}
+                                </TextField>
+                             </div>
                         </div>
 
                         {/* Giá cơ bản */}
@@ -224,6 +331,39 @@ const dispatch = useAppDispatch()
                                     endAdornment: <InputAdornment position="end">Km</InputAdornment>,
                                 }}
                             />
+                        </div>
+
+                        {/* === HÌNH ẢNH TUYẾN ĐƯỜNG === */}
+                         <div className="col-span-1 md:col-span-2 space-y-1.5">
+                            <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
+                                <ImageIcon fontSize="small" className="text-blue-500" />
+                                Hình ảnh mô tả tuyến đường
+                            </label>
+                            
+                            <div className="flex items-start gap-4">
+                                <div className="w-32 h-24 border border-gray-300 rounded overflow-hidden flex items-center justify-center bg-gray-50">
+                                {thumbnailPreview || formData.image ? (
+                                    <img 
+                                    src={thumbnailPreview || formData.image} 
+                                    alt="thumbnail" 
+                                    className="w-full h-full object-cover" 
+                                    />
+                                ) : (
+                                    <span className="text-gray-400 text-xs">Chưa có ảnh</span>
+                                )}
+                                </div>
+                                <div className="mt-2">
+                                    <label className="inline-block px-4 py-2 bg-blue-50 text-blue-600 rounded cursor-pointer hover:bg-blue-100 transition text-sm font-medium">
+                                        Chọn ảnh
+                                        <input 
+                                        type="file" 
+                                        accept="image/*" 
+                                        hidden 
+                                        onChange={handleThumbnailChange}
+                                        />
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Mô tả */}
