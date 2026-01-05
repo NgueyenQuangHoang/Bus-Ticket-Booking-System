@@ -99,6 +99,20 @@
       "ticket_id": "1767498502272_8w2p1",
       "status": "BOOKED",
       "price": 100000
+    },
+    {
+      "id": "SCH_CP_TEST_001_69_BOOKED",
+      "schedule_id": "SCH_CP_TEST_001",
+      "seat_id": "69",
+      "status": "BOOKED",
+      "price": 200000
+    },
+    {
+      "id": "SCH_CP_TEST_001_70_BOOKED",
+      "schedule_id": "SCH_CP_TEST_001",
+      "seat_id": "70",
+      "status": "BOOKED",
+      "price": 200000
     }
   ],
   "payments": [
@@ -4375,6 +4389,18 @@
       "arrival_time": "2026-01-05T17:30:00",
       "total_seats": 45,
       "available_seats": 45,
+      "status": "AVAILABLE",
+      "created_at": "2026-01-04T12:00:00.000Z",
+      "updated_at": "2026-01-04T12:00:00.000Z"
+    },
+    {
+      "id": "SCH_CP_TEST_001",
+      "route_id": "10",
+      "bus_id": "df1f232e-df8a-4481-b00d-2fa44ac1fb57",
+      "departure_time": "2026-01-05T08:00",
+      "arrival_time": "2026-01-05T18:00",
+      "total_seats": 48,
+      "available_seats": 46,
       "status": "AVAILABLE",
       "created_at": "2026-01-04T12:00:00.000Z",
       "updated_at": "2026-01-04T12:00:00.000Z"

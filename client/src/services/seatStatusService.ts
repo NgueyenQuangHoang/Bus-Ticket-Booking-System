@@ -52,6 +52,7 @@ export interface Bus {
   name: string;
   layout_id: string;
   bus_company_id: string;
+  company_id?: string;
 }
 
 export interface Passenger {
