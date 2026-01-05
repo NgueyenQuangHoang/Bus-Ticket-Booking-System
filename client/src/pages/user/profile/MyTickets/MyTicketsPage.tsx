@@ -79,6 +79,27 @@ export default function MyTicketsPage() {
         user_id: CURRENT_USER_ID,
       };
 
+      // --- PREPARE BUS & COMPANY INFO ---
+      const busId = selectedTicket?.busInfo?.id;
+      let busCompanyId: string | undefined;
+
+      if (busId) {
+          try {
+             // Fetch bus to get company ID early
+             const busRes = await api.get(`/buses/${busId}`);
+             const bus = busRes as any;
+             busCompanyId = bus?.bus_company_id;
+
+             // Add company ID to payload
+             if (busCompanyId) {
+                 (reviewPayload as any).bus_company_id = busCompanyId;
+             }
+          } catch (e) {
+              console.error("Could not fetch bus info for review linkage", e);
+          }
+      }
+
+      // --- SAVE/UPDATE REVIEW ---
       if (selectedTicket?.review) {
         // UPDATE EXISTING REVIEW
         await reviewService.updateReview(selectedTicket.review.id, reviewPayload);
@@ -100,51 +121,47 @@ export default function MyTicketsPage() {
       }
 
       // --- UPDATE BUS COMPANY RATING LOGIC ---
-      const busId = selectedTicket?.busInfo?.id;
-      if (busId) {
+      if (busCompanyId) { // We already have the ID
           try {
-             const busRes = await api.get(`/buses/${busId}`);
-             const bus = busRes as any;
+             // Re-use logic or re-fetch company? We need current stats.
+             const companyRes = await api.get(`/bus_companies/${busCompanyId}`);
+             const company = companyRes as any;
 
-             if (bus && bus.bus_company_id) {
-                 const companyRes = await api.get(`/bus_companies/${bus.bus_company_id}`);
-                 const company = companyRes as any;
+             let oldAvg = Number(company.rating_avg || 0);
+             let oldCount = Number(company.rating_count || 0);
+             const newRating = Number(reviewPayload.rating);
 
-                 let oldAvg = Number(company.rating_avg || 0);
-                 let oldCount = Number(company.rating_count || 0);
-                 const newRating = Number(reviewPayload.rating);
+             let newAvg = 0;
+             let newCount = 0;
 
-                 let newAvg = 0;
-                 let newCount = 0;
+             if (selectedTicket?.review) {
+                 // EDIT MODE
+                 const oldRating = Number(selectedTicket.review.rating);
+                 const oldSum = oldAvg * oldCount;
+                 newCount = oldCount;
 
-                 if (selectedTicket?.review) {
-                     // EDIT MODE
-                     const oldRating = Number(selectedTicket.review.rating);
-                     const oldSum = oldAvg * oldCount;
-                     newCount = oldCount; // Count doesn't change on edit
-
-                     if (newCount > 0) {
-                        newAvg = (oldSum - oldRating + newRating) / newCount;
-                     } else {
-                        newAvg = newRating;
-                        newCount = 1;
-                     }
-
+                 if (newCount > 0) {
+                     newAvg = (oldSum - oldRating + newRating) / newCount;
                  } else {
-                     // CREATE MODE
-                     newCount = oldCount + 1;
-                     newAvg = (oldAvg * oldCount + newRating) / newCount;
+                     newAvg = newRating;
+                     newCount = 1;
                  }
-
-                 await api.patch(`/bus_companies/${bus.bus_company_id}`, {
-                     rating_avg: Number(newAvg.toFixed(1)),
-                     rating_count: newCount
-                 });
+             } else {
+                 // CREATE MODE
+                 newCount = oldCount + 1;
+                 newAvg = (oldAvg * oldCount + newRating) / newCount;
              }
+
+             await api.patch(`/bus_companies/${busCompanyId}`, {
+                 rating_avg: Number(newAvg.toFixed(1)),
+                 rating_count: newCount
+             });
           } catch (err) {
               console.error("Failed to update bus company rating stats", err);
           }
       }
+
+
       
       setIsReviewOpen(false);
       // Refresh tickets to update review status

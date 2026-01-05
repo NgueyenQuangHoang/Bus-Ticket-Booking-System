@@ -113,11 +113,60 @@ export interface TicketUI {
 export const ticketService = {
     cancelTicket: async (ticketId: string): Promise<TicketResponse> => {
         try {
+            // 1. Fetch the ticket first to get the authoritative schedule and seat info
+            const ticketRes = await api.get<TicketResponse>(`/tickets/${ticketId}`);
+            const ticket = ticketRes as unknown as TicketResponse;
+
+            if (!ticket) throw new Error("Ticket not found");
+
+            // 2. Identify all seats associated with this ticket
+            // Source A: The ticket's own seat_id
+            const targetSeats: { scheduleId: string, seatId: string }[] = [];
+            if (ticket.schedule_id && ticket.seat_id) {
+                targetSeats.push({ scheduleId: ticket.schedule_id, seatId: ticket.seat_id });
+            }
+
+            // Source B: Any seat_schedules explicitly linked to this ticket (in case of multi-seat or mismatch)
+            const linkedSeatsRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticketId}`);
+            const linkedSeats = linkedSeatsRes as unknown as SeatSchedule[];
+
+            linkedSeats.forEach(s => {
+                if (s.schedule_id && s.seat_id) {
+                    targetSeats.push({ scheduleId: s.schedule_id, seatId: s.seat_id });
+                }
+            });
+
+            // Deduplicate targets
+            const uniqueTargets = targetSeats.filter((v, i, a) =>
+                a.findIndex(t => t.scheduleId === v.scheduleId && t.seatId === v.seatId) === i
+            );
+
+            // 3. "Deep Clean": Find ALL records for these slots (including stale HOLDs) and release them
+            for (const target of uniqueTargets) {
+                // Fetch matches by schedule + seat (ignores ticket_id, so catches metadata-less HOLDs)
+                const allRecordsForSlotRes = await api.get<SeatSchedule[]>(`/seat_schedules?schedule_id=${target.scheduleId}&seat_id=${target.seatId}`);
+                const allRecordsForSlot = allRecordsForSlotRes as unknown as SeatSchedule[];
+
+                // Delete ALL found records (including duplicates)
+                // Deleting ensures "HELD" or duplicates are removed. "No record" = AVAILABLE in UI.
+                // Note: If multiple records have the same ID (db corruption), calling delete multiple times 
+                // (once per record found) effectively cleans them all up one by one.
+                // We use sequential execution to prevent race conditions with json-server on same ID.
+                for (const record of allRecordsForSlot) {
+                    try {
+                        await api.delete(`/seat_schedules/${record.id}`);
+                    } catch (e) {
+                        console.warn(`Failed to delete seat schedule ${record.id}`, e);
+                    }
+                }
+            }
+
+            // 4. Cancel the ticket itself
             const response = await api.patch<TicketResponse>(`/tickets/${ticketId}`, {
                 status: "CANCELLED",
                 updated_at: new Date().toISOString()
             });
-            // Also cancel seat schedules?? Ideally yes, but keeping it simple for now or separate call.
+
             return response as unknown as TicketResponse;
         } catch (error) {
             console.error("Error cancelling ticket:", error);
