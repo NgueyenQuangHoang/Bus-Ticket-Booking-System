@@ -6,10 +6,10 @@
       "schedule_id": "SCH_MQ_001",
       "seat_id": "ff4c",
       "code": "TICKET__95PGF",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 100000,
       "created_at": "2026-01-03T18:42:33.345Z",
-      "updated_at": "2026-01-04T02:28:12.161Z"
+      "updated_at": "2026-01-05T02:12:38.064Z"
     },
     {
       "id": "ticket_01",
@@ -28,10 +28,10 @@
       "schedule_id": "SCH_MQ_001",
       "seat_id": "seat_02",
       "price": 280000,
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "code": "VX-204913",
       "created_at": "2026-01-01T08:00:00Z",
-      "updated_at": "2026-01-01T08:00:00Z"
+      "updated_at": "2026-01-05T02:12:37.859Z"
     },
     {
       "id": "ticket_03",
@@ -61,10 +61,10 @@
       "schedule_id": "SCH_MQ_001",
       "seat_id": "608d",
       "code": "TICKET__8W2P1",
-      "status": "BOOKED",
+      "status": "COMPLETED",
       "price": 100000,
       "created_at": "2026-01-04T03:48:22.272Z",
-      "updated_at": "2026-01-04T03:48:22.272Z"
+      "updated_at": "2026-01-05T02:12:38.079Z"
     }
   ],
   "seat_schedules": [
