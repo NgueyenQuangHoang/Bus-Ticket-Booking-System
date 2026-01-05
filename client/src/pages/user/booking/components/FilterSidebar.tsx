@@ -47,7 +47,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ onFilterChange, busCompan
             tieu_chi_pho_bien: filters.popular,
             tu_khoa_tim_kiem: filters.busCompanySearch
         };
-        console.log("Dữ liệu lọc hiện tại (TS):", logData);
+        // console debug removed for production noise
 
         // Gọi callback để truyền dữ liệu lên parent
         if (onFilterChange) {

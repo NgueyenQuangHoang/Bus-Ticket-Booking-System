@@ -1,4 +1,5 @@
 import api from '../api/api';
+import { seatStatusService } from './seatStatusService';
 import type { City } from '../types/index';
 
 // Interfaces for API responses
@@ -81,7 +82,7 @@ export const tripSearchService = {
   /**
    * Tìm kiếm chuyến xe theo thành phố đi và đến
    */
-  searchTrips: async (params: SearchParams): Promise<TripSearchResult[]> => {
+    searchTrips: async (params: SearchParams): Promise<TripSearchResult[]> => {
     try {
       // 1. Fetch tất cả dữ liệu cần thiết
       const [cities, stations, routes, schedules, buses, busCompanies, reviews] = await Promise.all([
@@ -163,6 +164,7 @@ export const tripSearchService = {
       // Filter theo ngày nếu có
       if (params.date) {
         matchingSchedules = matchingSchedules.filter(s => {
+          if (!s.departure_time) return false;
           const scheduleDate = s.departure_time.split('T')[0];
           return scheduleDate === params.date;
         });
@@ -173,11 +175,24 @@ export const tripSearchService = {
       const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000); // Thêm 1 tiếng
 
       matchingSchedules = matchingSchedules.filter(s => {
+        if (!s.departure_time) return false;
         const departureTime = new Date(s.departure_time);
         return departureTime >= oneHourFromNow;
       });
 
-      // 6. Build kết quả
+      // 6. Lấy thống kê ghế thực tế cho từng lịch (ưu tiên dữ liệu seat_schedules)
+      const seatStatsEntries = await Promise.all(matchingSchedules.map(async (s) => {
+        try {
+          const stats = await seatStatusService.getSeatStatusBySchedule(String(s.id));
+          return { id: s.id, available: stats.available, total: stats.totalSeats };
+        } catch (err) {
+          console.warn('Failed seat stats for schedule', s.id, err);
+          return { id: s.id, available: s.available_seats, total: s.total_seats };
+        }
+      }));
+      const seatStatsMap = new Map(seatStatsEntries.map(e => [e.id, e]));
+
+      // 7. Build kết quả
       const results: TripSearchResult[] = matchingSchedules.map(schedule => {
         const route = matchingRoutes.find(r => r.id === schedule.route_id)!;
         const bus = busesArr.find(b => b.id === schedule.bus_id);
@@ -197,8 +212,8 @@ export const tripSearchService = {
           arrival_time: schedule.arrival_time,
           duration: route.duration,
           price: route.base_price,
-          available_seats: schedule.available_seats,
-          total_seats: schedule.total_seats,
+          available_seats: seatStatsMap.get(schedule.id)?.available ?? schedule.available_seats,
+          total_seats: seatStatsMap.get(schedule.id)?.total ?? schedule.total_seats,
           bus_name: bus?.name || 'Không xác định',
           bus_amenities: bus?.amenities || '',
           layout_id: bus?.layout_id,

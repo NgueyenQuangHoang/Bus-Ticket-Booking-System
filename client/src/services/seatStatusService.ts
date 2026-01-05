@@ -164,9 +164,28 @@ export const seatStatusService = {
         });
 
         // 6. Merge Data
-        // Create a map for quick lookup of status by seat_id (assuming seat_position.id matches seat_schedule.seat_id)
+        // Normalize to one record per seat with priority: BOOKED > valid HOLD > AVAILABLE
         const statusMap = new Map<string, SeatSchedule>();
-        seatStatuses.forEach(s => statusMap.set(String(s.seat_id), s));
+        seatStatuses.forEach((record) => {
+          const seatKey = String(record.seat_id);
+          const existing = statusMap.get(seatKey);
+          if (!existing) {
+            statusMap.set(seatKey, record);
+            return;
+          }
+          // Prefer BOOKED over anything else. If both are holds, keep the one with later expiry.
+          if (record.status === 'BOOKED' && existing.status !== 'BOOKED') {
+            statusMap.set(seatKey, record);
+            return;
+          }
+          if (record.status === 'HOLD' && existing.status === 'HOLD') {
+            const existingExpiry = existing.hold_expired_at ? new Date(existing.hold_expired_at).getTime() : 0;
+            const recordExpiry = record.hold_expired_at ? new Date(record.hold_expired_at).getTime() : 0;
+            if (recordExpiry > existingExpiry) {
+              statusMap.set(seatKey, record);
+            }
+          }
+        });
 
         const resultSeats: SeatStatusData[] = positions.map(pos => {
             const statusRecord = statusMap.get(pos.id);
