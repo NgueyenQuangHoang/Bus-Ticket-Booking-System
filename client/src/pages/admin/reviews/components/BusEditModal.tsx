@@ -78,7 +78,7 @@ export default function BusEditModal({ open, review, onClose, onSave }: Props) {
             </p>
             <div className="space-y-1.5 text-gray-600">
               <p>Người dùng: <b className="text-gray-900">{getUserName(review.user)}</b></p>
-              <p>Mã đặt vé: <b className="text-blue-600 font-mono">{review.booking_id}</b></p>
+              <p>Mã đặt vé: <b className="text-blue-600 font-mono">{review.ticket?.code || review.booking_id}</b></p>
               <p>Xe: <b className="text-gray-900 font-mono text-xs">
                   {busName ? `${busName} - ` : ""}
                   {review.bus_id && review.bus_id.length > 8 ? `${review.bus_id.substring(0, 8)}...` : review.bus_id}
