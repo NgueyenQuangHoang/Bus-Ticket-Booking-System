@@ -61,6 +61,9 @@ export interface BusLayout {
   total_rows: number;
   total_columns: number;
   floor_count: number;
+  is_template?: boolean;
+  bus_company_id?: string | number;
+  company_id?: string | number;
   created_at?: Timestamp;
   updated_at?: Timestamp;
   id?: string;
