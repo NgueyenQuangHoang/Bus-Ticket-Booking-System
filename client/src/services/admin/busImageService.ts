@@ -37,8 +37,8 @@ export const busImageService = {
      * Upload file to Cloudinary
      */
     uploadFileToCloudinary: async (file: File): Promise<string> => {
-        const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-        const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+        const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dnvt1jxoe';
+        const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'Vivutoday';
 
         if (!cloudName || !uploadPreset) {
             throw new Error("Cloudinary configuration is missing in .env");

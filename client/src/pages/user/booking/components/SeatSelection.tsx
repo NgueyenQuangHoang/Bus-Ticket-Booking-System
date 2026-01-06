@@ -104,8 +104,14 @@ function PriceLine({ price }: PriceLineProps) {
 
 const resolveSeatTypeColor = (type: SeatType | undefined): string => {
   if (!type) return "#6b7280"; // default gray
+  
+  // Use DB color if valid hex
+  if (type.color && /^#([0-9A-F]{3}){1,2}$/i.test(type.color)) {
+    return type.color;
+  }
+
   const name = (type.type_name || "").toLowerCase();
-  // Preferred brand colors
+  // Preferred brand colors (fallback)
   if (name.includes("giường đôi")) return "#0ea5e9"; // cyan/blue
   if (name.includes("giường đơn")) return "#7c3aed"; // purple
   if (name.includes("vip")) return "#f97316"; // orange accent
