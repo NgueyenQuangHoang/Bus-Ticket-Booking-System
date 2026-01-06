@@ -13,12 +13,26 @@ export const scheduleService = {
     getAllSchedules: async (): Promise<ScheduleUI[]> => {
         try {
             // Fetch schedules with related data
-            const schedulesRes = await api.get<any[]>('/schedules?_expand=bus&_expand=route&_embed=seat_schedules');
-            // Fetch all seats to calculate capacity
-            const seatsRes = await api.get<any[]>('/seats');
+            // Removed _embed=seat_schedules as we handle it manually now
+            const [schedulesRes, seatsRes, seatSchedulesRes] = await Promise.all([
+                api.get<any[]>('/schedules?_expand=bus&_expand=route'),
+                api.get<any[]>('/seats'),
+                api.get<any[]>('/seat_schedules'),
+            ]);
 
             const schedules = schedulesRes as unknown as any[];
             const allSeats = seatsRes as unknown as any[];
+            const allSeatSchedules = seatSchedulesRes as unknown as any[];
+
+            // Group seat_schedules by schedule_id (or scheduleId alias if present)
+            const seatScheduleMap = new Map<string, any[]>();
+            allSeatSchedules.forEach((ss: any) => {
+                const sId = String(ss.schedule_id || ss.scheduleId);
+                const list = seatScheduleMap.get(sId) || [];
+                list.push(ss);
+                seatScheduleMap.set(sId, list);
+            });
+
 
             const data = schedules.map(schedule => {
                 // Calculate Total Seats (Bookable) for this bus
@@ -30,14 +44,17 @@ export const scheduleService = {
                 // Fallback to schedule.total_seats if no physical seats found (e.g. mock data or missing bus)
                 const totalSeats = busSeats.length > 0 ? busSeats.length : (schedule.total_seats || 0);
 
+                // Get seat_schedules from our manual map
+                const currentSeatSchedules = seatScheduleMap.get(String(schedule.id)) || [];
+
                 // Calculate Busy Seats from seat_schedules
                 // Filter out entries that are explicitly 'AVAILABLE' (if any)
                 // Assuming presence in seat_schedules usually means interaction (booked/held),
                 // but checking status is safer as user requested.
                 // Common busy statuses: BOOKED, SOLD, HOLD, PENDING, COMPLETED, etc.
-                const busySeats = schedule.seat_schedules ? schedule.seat_schedules.filter((ss: any) =>
+                const busySeats = currentSeatSchedules.filter((ss: any) =>
                     ss.status !== 'AVAILABLE' && ss.status !== 'CANCELLED'
-                ).length : 0;
+                ).length;
 
                 const availableSeats = Math.max(0, totalSeats - busySeats);
 
@@ -52,7 +69,8 @@ export const scheduleService = {
                     total_seats: totalSeats,
                     available_seats: availableSeats,
                     available_seat: availableSeats, // For backward compatibility if needed
-                    schedule_id: schedule.id
+                    schedule_id: schedule.id,
+                    seat_schedules: currentSeatSchedules // Add manually embedded data
                 };
             });
 
