@@ -1,28 +1,6 @@
 {
   "tickets": [
     {
-      "id": "1767717991094_joce1",
-      "user_id": "c8ee",
-      "schedule_id": "3aa2",
-      "seat_id": "62c1",
-      "code": "TICKET__JOCE1",
-      "status": "BOOKED",
-      "price": 350000,
-      "created_at": "2026-01-06T16:46:31.089Z",
-      "updated_at": "2026-01-06T16:46:31.089Z"
-    },
-    {
-      "id": "1767718099738_agmnr",
-      "user_id": "c8ee",
-      "schedule_id": "3aa2",
-      "seat_id": "b19b",
-      "code": "TICKET__AGMNR",
-      "status": "BOOKED",
-      "price": 350000,
-      "created_at": "2026-01-06T16:48:19.729Z",
-      "updated_at": "2026-01-06T16:48:19.729Z"
-    },
-    {
       "id": "1767718335222_g2x66",
       "user_id": "eda6d637-dfb5-46ac-9d7c-cb9652e6895f",
       "schedule_id": "3aa2",
@@ -117,44 +95,36 @@
   ],
   "payments": [
     {
-      "id": "PAY_1767717991127",
-      "ticket_id": "1767717991094_joce1",
-      "amount": 350000,
-      "method": "QR_PAYMENT",
-      "status": "COMPLETED",
-      "transaction_date": "2026-01-06T16:46:31.089Z"
-    },
-    {
-      "id": "PAY_1767718099883",
-      "ticket_id": "1767718099738_agmnr",
-      "amount": 350000,
-      "method": "QR_PAYMENT",
-      "status": "COMPLETED",
-      "transaction_date": "2026-01-06T16:48:19.729Z"
-    },
-    {
-      "id": "PAY_1767718335258",
-      "ticket_id": "1767718335222_g2x66",
+      "id": "PAY_1767700533927",
+      "ticket_id": "1767700533894_9ekmr",
       "amount": 525000,
       "method": "QR_PAYMENT",
       "status": "COMPLETED",
-      "transaction_date": "2026-01-06T16:52:15.207Z"
+      "transaction_date": "2026-01-06T11:55:33.886Z"
     },
     {
-      "id": "PAY_1767719151872",
-      "ticket_id": "1767719151838_746rj",
+      "id": "PAY_1767702346551",
+      "ticket_id": "1767702346519_85bri",
       "amount": 525000,
       "method": "QR_PAYMENT",
       "status": "COMPLETED",
-      "transaction_date": "2026-01-06T17:05:51.831Z"
+      "transaction_date": "2026-01-06T12:25:46.514Z"
     },
     {
-      "id": "PAY_1767719203605",
-      "ticket_id": "1767719203574_sfh5w",
+      "id": "PAY_1767702365595",
+      "ticket_id": "1767702365560_gqlh8",
+      "amount": 525000,
+      "method": "QR_PAYMENT",
+      "status": "COMPLETED",
+      "transaction_date": "2026-01-06T12:26:05.554Z"
+    },
+    {
+      "id": "PAY_1767702375694",
+      "ticket_id": "1767702375656_cm80v",
       "amount": 350000,
       "method": "QR_PAYMENT",
       "status": "COMPLETED",
-      "transaction_date": "2026-01-06T17:06:43.557Z"
+      "transaction_date": "2026-01-06T12:26:15.641Z"
     }
   ],
   "users": [
@@ -3186,118 +3156,11 @@
       "total_seats": 54,
       "available_seats": 54,
       "status": "AVAILABLE",
-      "departure_time": "2026-01-09T02:00",
-      "arrival_time": "2026-01-09T03:40",
-      "updated_at": "2026-01-06T15:38:44.264Z",
-      "created_at": "2026-01-06T15:38:44.264Z"
-    },
-    {
-      "id": "ceec",
-      "route_id": "8",
-      "bus_id": "63f48857-dd8a-4236-bad0-550c3dc1f8c3",
-      "total_seats": 72,
-      "available_seats": 72,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-08T02:00",
-      "arrival_time": "2026-01-08T14:00",
-      "updated_at": "2026-01-06T15:39:01.247Z",
-      "created_at": "2026-01-06T15:39:01.247Z"
-    },
-    {
-      "id": "5970",
-      "route_id": "9d29c4f1-771c-4a6f-84e0-5eacdf5cda5b",
-      "bus_id": "2",
-      "total_seats": 40,
-      "available_seats": 40,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-08T00:01",
-      "arrival_time": "2026-01-08T01:41",
-      "updated_at": "2026-01-06T15:52:25.735Z",
-      "created_at": "2026-01-06T15:52:25.735Z"
-    },
-    {
-      "id": "c9c3",
-      "route_id": "8",
-      "bus_id": "5ce952ff-95ca-486d-959b-3030f950bc36",
-      "total_seats": 32,
-      "available_seats": 32,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-10T00:04",
-      "arrival_time": "2026-01-10T12:04",
-      "updated_at": "2026-01-06T15:52:39.686Z",
-      "created_at": "2026-01-06T15:52:39.686Z"
-    },
-    {
-      "id": "fb3e",
-      "route_id": "1",
-      "bus_id": "7",
-      "total_seats": 44,
-      "available_seats": 44,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-12T02:00",
-      "arrival_time": "2026-01-13T08:00",
-      "updated_at": "2026-01-06T15:53:09.879Z",
-      "created_at": "2026-01-06T15:53:09.879Z"
-    },
-    {
-      "id": "5a75",
-      "route_id": "8",
-      "bus_id": "779f2368-72ce-4fa9-bc42-43545f8dae47",
-      "total_seats": 32,
-      "available_seats": 32,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-14T02:00",
-      "arrival_time": "2026-01-14T14:00",
-      "updated_at": "2026-01-06T15:53:25.343Z",
-      "created_at": "2026-01-06T15:53:25.343Z"
-    },
-    {
-      "id": "7387",
-      "route_id": "9d29c4f1-771c-4a6f-84e0-5eacdf5cda5b",
-      "bus_id": "835421d1-36ff-441f-a89a-846c50ed9eb7",
-      "total_seats": 16,
-      "available_seats": 16,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-08T17:00",
-      "arrival_time": "2026-01-08T18:40",
-      "updated_at": "2026-01-06T15:58:27.023Z",
-      "created_at": "2026-01-06T15:58:27.023Z"
-    },
-    {
-      "id": "7079",
-      "route_id": "8",
-      "bus_id": "3",
-      "total_seats": 44,
-      "available_seats": 44,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-09T17:00",
-      "arrival_time": "2026-01-10T05:00",
-      "updated_at": "2026-01-06T15:58:41.247Z",
-      "created_at": "2026-01-06T15:58:41.247Z"
-    },
-    {
-      "id": "3aa2",
-      "route_id": "1",
-      "bus_id": "4",
-      "total_seats": 32,
-      "available_seats": 27,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-08T00:00",
-      "arrival_time": "2026-01-09T06:00",
-      "updated_at": "2026-01-06T16:14:30.246Z",
-      "created_at": "2026-01-06T16:14:30.246Z"
-    },
-    {
-      "id": "87f4",
-      "route_id": "8",
-      "bus_id": "bfad7070-6252-43b0-ab58-ec73a3065329",
-      "total_seats": 44,
-      "available_seats": 44,
-      "status": "AVAILABLE",
-      "departure_time": "2026-01-09T00:00",
-      "arrival_time": "2026-01-09T12:00",
-      "updated_at": "2026-01-06T16:14:44.405Z",
-      "created_at": "2026-01-06T16:14:44.405Z"
+      "departure_time": "2026-01-10T00:00",
+      "arrival_time": "2026-01-11T06:00",
+      "updated_at": "2026-01-06T11:08:40.199Z",
+      "created_at": "2026-01-06T11:08:40.199Z",
+      "price": 350000
     }
   ],
   "passengers": [
