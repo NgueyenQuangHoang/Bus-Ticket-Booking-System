@@ -98,6 +98,9 @@ const BusCompanyDashboard: React.FC = () => {
     }
   }, [isBusCompany, busCompanyId]);
 
+  const getBookedSeats = (schedule: ScheduleUI) =>
+    (schedule.seat_schedules || []).filter((ss) => ss.status === "BOOKED" || ss.status === "COMPLETED");
+
   const today = useMemo(() => {
     const now = new Date();
     const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -110,26 +113,29 @@ const BusCompanyDashboard: React.FC = () => {
     });
 
     const upcoming = tripsToday.filter((s) => new Date(s.departure_time) > now).length;
+    const ticketsSoldToday = tripsToday.reduce((sum, s) => sum + getBookedSeats(s).length, 0);
 
     return {
       trips: tripsToday.length,
       upcomingTrips: upcoming,
-      ticketsSold: tripsToday.reduce((sum, s) => sum + (s.seat_schedules?.length || 0), 0),
+      ticketsSold: ticketsSoldToday,
     };
   }, [schedules]);
 
   const kpi = useMemo(() => {
     const totalTrips = schedules.length;
-    const ticketsSold = schedules.reduce((sum, s) => sum + (s.seat_schedules?.length || 0), 0);
+    const ticketsSold = schedules.reduce((sum, s) => sum + getBookedSeats(s).length, 0);
     // occupancy = busy / capacity
     const capacity = schedules.reduce((sum, s) => sum + (s.total_seats || 0), 0);
     const occupancyRate = capacity > 0 ? Math.round((ticketsSold / capacity) * 100) : 0;
 
-    // fake revenue: base price * ticketsSold if available
+    // Revenue: sum booked/completed seat prices; fallback to schedule price/base_price if seat lacks price
     const revenue = schedules.reduce((sum, s) => {
-      const seatCount = s.seat_schedules?.length || 0;
-      const price = (s.price || s.base_price || 0);
-      return sum + seatCount * price;
+      const bookedSeats = getBookedSeats(s);
+      return (
+        sum +
+        bookedSeats.reduce((seatSum, seat) => seatSum + (seat.price || s.price || s.base_price || 0), 0)
+      );
     }, 0);
 
     return { totalTrips, ticketsSold, revenue, occupancyRate };
@@ -143,7 +149,7 @@ const BusCompanyDashboard: React.FC = () => {
       const key = d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" });
       const current = map.get(key) || { date: key, trips: 0, tickets: 0 };
       current.trips += 1;
-      current.tickets += s.seat_schedules?.length || 0;
+      current.tickets += getBookedSeats(s).length;
       map.set(key, current);
     });
     return Array.from(map.values()).sort((a, b) => {

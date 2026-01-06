@@ -55,18 +55,20 @@ export default function BusesPage() {
                     : [])
                 : (companiesData || []);
 
-            // Include both templates and non-templates so bus companies can also use admin-created/global layouts
+            // Only allow choosing seat layouts that are templates (danh sách sơ đồ mẫu)
+            const templateLayouts = (layoutsData || []).filter((layout) => layout.is_template === true);
+
             const scopedLayouts = isBusCompany
                 ? (busCompanyId
-                    ? (layoutsData || []).filter((layout) => {
+                    ? templateLayouts.filter((layout) => {
                         const layoutCompanyId = layout.bus_company_id ?? layout.company_id;
                         if (!layoutCompanyId) {
-                            return true; // admin/global layout available to all bus companies
+                            return true; // admin/global template available to all bus companies
                         }
                         return String(layoutCompanyId) === String(busCompanyId);
                       })
                     : [])
-                : (layoutsData || []);
+                : templateLayouts;
 
             setBuses(scopedBuses);
             setCompanies(scopedCompanies);

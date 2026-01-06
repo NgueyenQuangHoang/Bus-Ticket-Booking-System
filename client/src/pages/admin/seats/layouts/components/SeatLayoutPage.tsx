@@ -74,10 +74,42 @@ export default function SeatLayoutPage() {
     }
 
     const details = await seatService.getLayoutDetails(bus.layout_id);
-    if (details) {
-      setLayout(details.layout);
-      setPositions(details.positions);
+    if (!details) {
+      return;
     }
+
+    // Nếu xe đang gán layout template (is_template=true) thì clone ra layout riêng cho xe
+    if (details.layout.is_template) {
+      const template = details.layout;
+      const templatePositions = details.positions || [];
+
+      const clonePayload: Partial<BusLayout> = {
+        layout_name: template.layout_name,
+        total_rows: template.total_rows,
+        total_columns: template.total_columns,
+        floor_count: template.floor_count,
+        bus_company_id: bus.bus_company_id ?? bus.company_id ?? busCompanyId,
+        is_template: false,
+      };
+
+      // Sao chép vị trí nhưng bỏ id/layout_id để JSON-server tạo mới
+      const clonedPositions: Partial<SeatPosition>[] = templatePositions.map((pos) => {
+        const { id, position_id, layout_id, ...rest } = pos as any;
+        return { ...rest };
+      });
+
+      const newLayout = await seatService.createLayout(clonePayload, clonedPositions);
+      if (newLayout?.id) {
+        await busService.updateBusLayout(busId, newLayout.id);
+        const clonedDetails = await seatService.getLayoutDetails(newLayout.id);
+        setLayout(clonedDetails?.layout ?? newLayout);
+        setPositions(clonedDetails?.positions ?? []);
+        return;
+      }
+    }
+
+    setLayout(details.layout);
+    setPositions(details.positions);
   };
 
   const handleSave = async () => {
