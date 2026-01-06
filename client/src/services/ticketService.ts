@@ -119,28 +119,53 @@ export const ticketService = {
 
             if (!ticket) throw new Error("Ticket not found");
 
-            // 2. Delete ONLY the seat_schedule records explicitly linked to this ticket
-            // This avoids "deep cleaning" logic which might accidentally delete other tickets' seats
-            // if they share the same seat_id/schedule_id (though that shouldn't happen in valid state)
-            // or if the logic is too aggressive.
-            const linkedSeatsRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticketId}`);
-            const linkedSeats = linkedSeatsRes as unknown as SeatSchedule[];
+            // 2. Identify the seat and schedule to clean up
+            const { schedule_id, seat_id } = ticket;
 
-            // Strict Client-Side Filter: Ensure we ONLY touch records that exactly match this ticket.
-            // This protects against fuzzy matching or API anomalies returning unrelated records.
-            const validTargets = linkedSeats.filter(s => s.ticket_id === ticketId);
+            if (!schedule_id || !seat_id) {
+                console.warn("Ticket missing schedule_id or seat_id, performing fallback cleanup by ticket_id only.");
+                // Fallback: Just delete by ticket_id if we can't identify the seat
+                const linkedSeatsRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticketId}`);
+                const linkedSeats = linkedSeatsRes as unknown as SeatSchedule[];
+                for (const record of linkedSeats) {
+                    if (record.id) await api.delete(`/seat_schedules/${record.id}`);
+                }
+            } else {
+                // 3. Persistent Deletion Loop
+                // Because we might have duplicate IDs (one BOOKED, one HOLD), standard 'json-server' behavior 
+                // might only delete the first instance found. We need to loop until they are all gone.
+                let maxRetries = 5;
+                while (maxRetries > 0) {
+                    // Fetch fresh list
+                    const seatsRes = await api.get<SeatSchedule[]>(`/seat_schedules?schedule_id=${schedule_id}&seat_id=${seat_id}`);
+                    const seats = seatsRes as unknown as SeatSchedule[];
 
-            for (const record of validTargets) {
-                if (record.id) {
-                    try {
-                        await api.delete(`/seat_schedules/${record.id}`);
-                    } catch (e) {
-                        console.warn(`Failed to delete seat schedule ${record.id}`, e);
+                    // Filter targets
+                    const targets = seats.filter(record => {
+                        const isTargetTicket = record.ticket_id === ticketId;
+                        const isHold = record.status === 'HOLD';
+                        return isTargetTicket || isHold;
+                    });
+
+                    if (targets.length === 0) break; // All clean!
+
+                    // Delete matches found in this pass
+                    for (const record of targets) {
+                        try {
+                            if (record.id) await api.delete(`/seat_schedules/${record.id}`);
+                        } catch (e) {
+                            // Ignore 404s if it was just deleted
+                            console.warn(`Attempted delete on ${record.id}`, e);
+                        }
                     }
+
+                    // Wait a bit before next check to allow server/file IO to catch up
+                    await new Promise(r => setTimeout(r, 200));
+                    maxRetries--;
                 }
             }
 
-            // 4. Cancel the ticket itself
+            // 5. Cancel the ticket itself
             const response = await api.patch<TicketResponse>(`/tickets/${ticketId}`, {
                 status: "CANCELLED",
                 updated_at: new Date().toISOString()
