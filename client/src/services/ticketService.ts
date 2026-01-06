@@ -119,40 +119,19 @@ export const ticketService = {
 
             if (!ticket) throw new Error("Ticket not found");
 
-            // 2. Identify all seats associated with this ticket
-            // Source A: The ticket's own seat_id
-            const targetSeats: { scheduleId: string, seatId: string }[] = [];
-            if (ticket.schedule_id && ticket.seat_id) {
-                targetSeats.push({ scheduleId: ticket.schedule_id, seatId: ticket.seat_id });
-            }
-
-            // Source B: Any seat_schedules explicitly linked to this ticket (in case of multi-seat or mismatch)
+            // 2. Delete ONLY the seat_schedule records explicitly linked to this ticket
+            // This avoids "deep cleaning" logic which might accidentally delete other tickets' seats
+            // if they share the same seat_id/schedule_id (though that shouldn't happen in valid state)
+            // or if the logic is too aggressive.
             const linkedSeatsRes = await api.get<SeatSchedule[]>(`/seat_schedules?ticket_id=${ticketId}`);
             const linkedSeats = linkedSeatsRes as unknown as SeatSchedule[];
 
-            linkedSeats.forEach(s => {
-                if (s.schedule_id && s.seat_id) {
-                    targetSeats.push({ scheduleId: s.schedule_id, seatId: s.seat_id });
-                }
-            });
+            // Strict Client-Side Filter: Ensure we ONLY touch records that exactly match this ticket.
+            // This protects against fuzzy matching or API anomalies returning unrelated records.
+            const validTargets = linkedSeats.filter(s => s.ticket_id === ticketId);
 
-            // Deduplicate targets
-            const uniqueTargets = targetSeats.filter((v, i, a) =>
-                a.findIndex(t => t.scheduleId === v.scheduleId && t.seatId === v.seatId) === i
-            );
-
-            // 3. "Deep Clean": Find ALL records for these slots (including stale HOLDs) and release them
-            for (const target of uniqueTargets) {
-                // Fetch matches by schedule + seat (ignores ticket_id, so catches metadata-less HOLDs)
-                const allRecordsForSlotRes = await api.get<SeatSchedule[]>(`/seat_schedules?schedule_id=${target.scheduleId}&seat_id=${target.seatId}`);
-                const allRecordsForSlot = allRecordsForSlotRes as unknown as SeatSchedule[];
-
-                // Delete ALL found records (including duplicates)
-                // Deleting ensures "HELD" or duplicates are removed. "No record" = AVAILABLE in UI.
-                // Note: If multiple records have the same ID (db corruption), calling delete multiple times 
-                // (once per record found) effectively cleans them all up one by one.
-                // We use sequential execution to prevent race conditions with json-server on same ID.
-                for (const record of allRecordsForSlot) {
+            for (const record of validTargets) {
+                if (record.id) {
                     try {
                         await api.delete(`/seat_schedules/${record.id}`);
                     } catch (e) {
