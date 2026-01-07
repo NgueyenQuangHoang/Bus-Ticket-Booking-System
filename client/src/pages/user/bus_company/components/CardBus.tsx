@@ -35,10 +35,10 @@ export default function CardBus({ busCompanies, itemPerPage, currentPage }: prop
     hover:-translate-y-1 hover:shadow-xl
     overflow-hidden cursor-pointer
   "
-              onClick={() => { navigate('/detailBusCompany/'+item.id) }}
+              onClick={() => { navigate('/detailBusCompany/' + item.id) }}
             >
               <img
-                src={logo}
+                src={item.image}
                 alt="Nhà xe Thanh Nhung"
                 className="
       w-full object-cover
