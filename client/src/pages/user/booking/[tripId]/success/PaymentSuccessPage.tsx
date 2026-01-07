@@ -32,7 +32,6 @@ export default function PaymentSuccessPage({
   onHome,
 }: PaymentSuccessPageProps) {
   const ticketCode = tripData.ticketCode || tripData.ticketCodes?.[0] || "VÉ123456789";
-
   return (
     <div className="min-h-screen bg-[#f2f4f7] pb-12">
       <main className="max-w-6xl mx-auto px-4 pt-6">
