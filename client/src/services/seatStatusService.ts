@@ -80,7 +80,7 @@ export interface BusCompany {
 export const seatStatusService = {
   // Fetch all bus companies
   getBusCompanies: async (): Promise<BusCompany[]> => {
-      const response = await api.get<BusCompany[]>('/bus_companies');
+      const response = await api.get<BusCompany[]>('/bus-companies');
       return response as unknown as BusCompany[];
   },
 
@@ -143,11 +143,11 @@ export const seatStatusService = {
         if (!bus) throw new Error("Bus not found");
 
          // 3. Get Seat Positions for the Layout
-        const positionsRes = await api.get<SeatPosition[]>(`/seat_positions?layout_id=${bus.layout_id}`);
+        const positionsRes = await api.get<SeatPosition[]>(`/seat-positions?layout_id=${bus.layout_id}`);
         const positions = positionsRes as unknown as SeatPosition[];
 
         // 4. Get Statuses from seat_schedule
-        const statusesRes = await api.get<SeatSchedule[]>(`/seat_schedules?schedule_id=${scheduleId}`);
+        const statusesRes = await api.get<SeatSchedule[]>(`/seat-schedules?schedule_id=${scheduleId}`);
         const seatStatuses = statusesRes as unknown as SeatSchedule[];
 
         // 5. Get Passengers/Ticket Info for Notes

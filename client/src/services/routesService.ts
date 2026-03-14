@@ -55,7 +55,7 @@ export const routesService = {
     },
     getPopularRoutes: async (limit: number = 5): Promise<Route[]> => {
         try {
-            const response = await api.get(`/routes?_sort=total_bookings&_order=desc&_limit=${limit}`);
+            const response = await api.get(`/routes?sort=total_bookings&order=desc&limit=${limit}`);
             return response as unknown as Route[];
         } catch (error) {
             console.error('Error fetching popular routes:', error);

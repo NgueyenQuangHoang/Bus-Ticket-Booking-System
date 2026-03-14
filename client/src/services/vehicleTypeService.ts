@@ -10,7 +10,7 @@ export interface VehicleType {
 export const vehicleTypeService = {
     getAllVehicleTypes: async (): Promise<VehicleType[] | undefined> => {
         try {
-            const response: VehicleType[] = await api.get('/vehicle_types');
+            const response: VehicleType[] = await api.get('/vehicle-types');
             return response ? response : undefined;
         } catch (error) {
             console.error('Error fetching vehicle types:', error);
@@ -20,7 +20,7 @@ export const vehicleTypeService = {
 
     createVehicleType: async (data: Omit<VehicleType, 'id'> & { id?: string }): Promise<VehicleType> => {
         try {
-            const response = await api.post('/vehicle_types', data);
+            const response = await api.post('/vehicle-types', data);
             return response as unknown as VehicleType;
         } catch (error) {
             console.error('Error creating vehicle type:', error);
@@ -30,7 +30,7 @@ export const vehicleTypeService = {
 
     updateVehicleType: async (id: string, data: Partial<VehicleType>): Promise<VehicleType> => {
         try {
-            const response = await api.patch(`/vehicle_types/${id}`, data);
+            const response = await api.patch(`/vehicle-types/${id}`, data);
             return response as unknown as VehicleType;
         } catch (error) {
             console.error('Error updating vehicle type:', error);
@@ -40,7 +40,7 @@ export const vehicleTypeService = {
 
     deleteVehicleType: async (id: string): Promise<void> => {
         try {
-            await api.delete(`/vehicle_types/${id}`);
+            await api.delete(`/vehicle-types/${id}`);
         } catch (error) {
             console.error('Error deleting vehicle type:', error);
             throw error;

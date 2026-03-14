@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const busImageService = {
     getImagesByBusId: async (busId: number | string): Promise<BusImage[]> => {
         try {
-            const response = await api.get(`/bus_images?bus_id=${busId}`);
+            const response = await api.get(`/bus-images?bus_id=${busId}`);
             return response as unknown as BusImage[];
         } catch (error) {
             console.error('Error fetching bus images:', error);
@@ -15,7 +15,7 @@ export const busImageService = {
 
     getAllImages: async (): Promise<BusImage[]> => {
         try {
-            const response = await api.get('/bus_images');
+            const response = await api.get('/bus-images');
             return response as unknown as BusImage[];
         } catch (error) {
             console.error('Error fetching all bus images:', error);
@@ -25,7 +25,7 @@ export const busImageService = {
 
     createBusImage: async (data: Omit<BusImage, 'bus_image_id' | 'id'>): Promise<BusImage> => {
         try {
-            const response = await api.post('/bus_images', data);
+            const response = await api.post('/bus-images', data);
             return response as unknown as BusImage;
         } catch (error) {
             console.error('Error creating bus image:', error);
@@ -83,7 +83,7 @@ export const busImageService = {
                 bus_id: busId, // Removed Number() casting
                 image_url: imageUrl
             };
-            const response = await api.post('/bus_images', data);
+            const response = await api.post('/bus-images', data);
             return response as unknown as BusImage;
         } catch (error) {
             console.error('Error uploading bus image:', error);
@@ -93,7 +93,7 @@ export const busImageService = {
 
     deleteBusImage: async (id: string): Promise<void> => {
         try {
-            await api.delete(`/bus_images/${id}`);
+            await api.delete(`/bus-images/${id}`);
         } catch (error) {
             console.error('Error deleting bus image:', error);
             throw error;

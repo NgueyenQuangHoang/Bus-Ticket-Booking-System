@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:8080'; // Updated to match api.ts configuration
+import api from '../api/api';
 
 export interface User {
     id: string;
@@ -38,36 +36,20 @@ export interface Review {
 export const reviewService = {
     getReviewsByCompanyId: async (companyId: string, page: number = 1, limit: number = 5, rating?: number | null) => {
         try {
-            let url = `${API_URL}/bus_reviews?bus_company_id=${companyId}&_expand=user&_sort=created_at&_order=desc`;
-
-            if (page && limit) {
-                url += `&_page=${page}&_limit=${limit}`;
-            }
+            let url = `/reviews?bus_company_id=${companyId}&page=${page}&limit=${limit}`;
 
             if (rating) {
                 url += `&rating=${rating}`;
             }
 
-            const response = await axios.get(url);
+            const response: any = await api.get(url);
 
-            const totalHeader = response.headers['x-total-count'] || response.headers['X-Total-Count'];
-            const totalCount = parseInt(totalHeader || '0', 10);
-
-            const reviews = response.data as Review[];
-            const reviewsWithUser = await Promise.all(reviews.map(async (review) => {
-                if (!review.user && review.user_id) {
-                    try {
-                        const userRes = await axios.get(`${API_URL}/users/${review.user_id}`);
-                        review.user = userRes.data;
-                    } catch (e) {
-                        console.warn(`Could not fetch user ${review.user_id} for review ${review.id}`);
-                    }
-                }
-                return review;
-            }));
+            // api interceptor returns { data, total } for paginated responses
+            const reviews = response.data || response;
+            const totalCount = response.total || (Array.isArray(reviews) ? reviews.length : 0);
 
             return {
-                data: reviewsWithUser,
+                data: Array.isArray(reviews) ? reviews as Review[] : [],
                 total: totalCount
             };
         } catch (error) {
@@ -78,37 +60,19 @@ export const reviewService = {
 
     getReviewsByBusId: async (busId: string, page: number = 1, limit: number = 5, rating?: number | null) => {
         try {
-            let url = `${API_URL}/bus_reviews?bus_id=${busId}&_expand=user&_sort=created_at&_order=desc`;
-
-            if (page && limit) {
-                url += `&_page=${page}&_limit=${limit}`;
-            }
+            let url = `/reviews?bus_id=${busId}&page=${page}&limit=${limit}`;
 
             if (rating) {
                 url += `&rating=${rating}`;
             }
 
-            const response = await axios.get(url);
+            const response: any = await api.get(url);
 
-            // json-server returns total count in headers when using pagination
-            const totalHeader = response.headers['x-total-count'] || response.headers['X-Total-Count'];
-            const totalCount = parseInt(totalHeader || '0', 10);
-
-            const reviews = response.data as Review[];
-            const reviewsWithUser = await Promise.all(reviews.map(async (review) => {
-                if (!review.user && review.user_id) {
-                    try {
-                        const userRes = await axios.get(`${API_URL}/users/${review.user_id}`);
-                        review.user = userRes.data;
-                    } catch (e) {
-                        console.warn(`Could not fetch user ${review.user_id} for review ${review.id}`);
-                    }
-                }
-                return review;
-            }));
+            const reviews = response.data || response;
+            const totalCount = response.total || (Array.isArray(reviews) ? reviews.length : 0);
 
             return {
-                data: reviewsWithUser,
+                data: Array.isArray(reviews) ? reviews as Review[] : [],
                 total: totalCount
             };
         } catch (error) {
@@ -120,8 +84,9 @@ export const reviewService = {
     // Helper to fetch all reviews for stats (Company level)
     getAllReviewsForCompanyStats: async (companyId: string) => {
         try {
-            const response = await axios.get(`${API_URL}/bus_reviews?bus_company_id=${companyId}`);
-            return response.data as Review[];
+            const response: any = await api.get(`/reviews?bus_company_id=${companyId}&limit=1000`);
+            const reviews = response.data || response;
+            return Array.isArray(reviews) ? reviews as Review[] : [];
         } catch (error) {
             console.error('Error fetching all reviews for company stats:', error);
             throw error;
@@ -132,8 +97,9 @@ export const reviewService = {
     // Legacy: by Bus ID
     getAllReviewsForStats: async (busId: string) => {
         try {
-            const response = await axios.get(`${API_URL}/bus_reviews?bus_id=${busId}`);
-            return response.data as Review[];
+            const response: any = await api.get(`/reviews?bus_id=${busId}&limit=1000`);
+            const reviews = response.data || response;
+            return Array.isArray(reviews) ? reviews as Review[] : [];
         } catch (error) {
             console.error('Error fetching all reviews for stats:', error);
             throw error;
@@ -147,8 +113,8 @@ export const reviewService = {
                 status: "VISIBLE",
                 updated_at: new Date().toISOString()
             };
-            const response = await axios.post(`${API_URL}/bus_reviews`, newReview);
-            return response.data as Review;
+            const response: Review = await api.post('/reviews', newReview);
+            return response;
         } catch (error) {
             console.error('Error creating review:', error);
             throw error;
@@ -161,8 +127,8 @@ export const reviewService = {
                 ...review,
                 updated_at: new Date().toISOString()
             };
-            const response = await axios.patch(`${API_URL}/bus_reviews/${id}`, updatedReview);
-            return response.data as Review;
+            const response: Review = await api.patch(`/reviews/${id}`, updatedReview);
+            return response;
         } catch (error) {
             console.error('Error updating review:', error);
             throw error;
@@ -171,7 +137,7 @@ export const reviewService = {
 
     deleteReview: async (id: string) => {
         try {
-            await axios.delete(`${API_URL}/bus_reviews/${id}`);
+            await api.delete(`/reviews/${id}`);
         } catch (error) {
             console.error('Error deleting review:', error);
             throw error;
@@ -180,81 +146,23 @@ export const reviewService = {
     // Admin: Get all reviews
     getAllReviews: async (page: number = 1, limit: number = 10, search: string = "", busIds: string[] = []) => {
         try {
-            let url = `${API_URL}/bus_reviews?_expand=user&_sort=created_at&_order=desc`;
-
-            if (page && limit) {
-                url += `&_page=${page}&_limit=${limit}`;
-            }
+            let url = `/reviews/all?page=${page}&limit=${limit}`;
 
             if (search) {
-                url += `&q=${search}`;
+                url += `&search=${encodeURIComponent(search)}`;
             }
 
             if (busIds && busIds.length > 0) {
-                // json-server treats repeated query params as AND; use regex matching for OR semantics
-                url += `&bus_id_like=${busIds.join('|')}`;
+                url += `&busIds=${busIds.join(',')}`;
             }
 
-            const response = await axios.get(url);
-            const totalHeader = response.headers['x-total-count'] || response.headers['X-Total-Count'];
-            let totalCount = parseInt(totalHeader || '0', 10);
+            const response: any = await api.get(url);
 
-            let reviews = response.data as Review[];
-
-            // Fallback if header is missing but data exists (common in some CORS setups or json-server versions)
-            if (totalCount === 0 && reviews.length > 0) {
-                if (page === 1 && reviews.length < limit) {
-                    totalCount = reviews.length;
-                } else {
-                    // Best effort guess if we assume it's at least the current page amount
-                    // If we are on page 1 and length == limit, likely at least limit.
-                    totalCount = reviews.length;
-                }
-            }
-
-            // Client-side guard to ensure bus-company only sees its own buses
-            if (busIds && busIds.length > 0) {
-                reviews = reviews.filter(r => busIds.includes(String(r.bus_id)));
-                totalCount = reviews.length;
-            }
-
-            // Enrich with User and Bus info
-            const enrichedReviews = await Promise.all(reviews.map(async (review) => {
-                // Fetch User if missing
-                if (!review.user && review.user_id) {
-                    try {
-                        const userRes = await axios.get(`${API_URL}/users/${review.user_id}`);
-                        review.user = userRes.data;
-                    } catch (e) {
-                        // console.warn(`Could not fetch user ${review.user_id}`);
-                    }
-                }
-
-                // Fetch Bus Info
-                if (review.bus_id) {
-                    try {
-                        const busRes = await axios.get(`${API_URL}/buses/${review.bus_id}`);
-                        review.bus = busRes.data;
-                    } catch (e) {
-                        // console.warn(`Could not fetch bus ${review.bus_id}`);
-                    }
-                }
-
-                // Fetch Ticket Info
-                if (review.ticket_id) {
-                    try {
-                        const ticketRes = await axios.get(`${API_URL}/tickets/${review.ticket_id}`);
-                        review.ticket = ticketRes.data;
-                    } catch (e) {
-                        // console.warn(`Could not fetch ticket ${review.ticket_id}`);
-                    }
-                }
-
-                return review;
-            }));
+            const reviews = response.data || response;
+            const totalCount = response.total || (Array.isArray(reviews) ? reviews.length : 0);
 
             return {
-                data: enrichedReviews,
+                data: Array.isArray(reviews) ? reviews as Review[] : [],
                 total: totalCount
             };
         } catch (error) {

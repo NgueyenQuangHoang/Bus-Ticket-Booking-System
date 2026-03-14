@@ -81,11 +81,11 @@ export interface Schedule {
 // New interfaces for DB Schema
 export interface Ticket {
   id: string;
-  user_id?: string; 
+  user_id?: string;
   schedule_id: string;
   code: string;
   status: 'BOOKED' | 'COMPLETED' | 'CANCELLED' | 'PENDING';
-  price: number; 
+  price: number;
   seat_id: string;
   created_at: string;
   updated_at: string;
@@ -112,18 +112,18 @@ export interface Payment {
 const bookingService = {
   getSeatSchedule: async (scheduleId: string | number): Promise<SeatSchedule[]> => {
     try {
-      const response = await api.get<SeatSchedule[]>(`/seat_schedules?schedule_id=${scheduleId}`);
+      const response = await api.get<SeatSchedule[]>(`/seat-schedules/schedule/${scheduleId}`);
       const schedules = response as unknown as SeatSchedule[];
-      
-      // Filter out expired holds
+
+      // Filter out expired holds client-side as extra safety
       const now = new Date();
-      return schedules.filter(s => {
-         if (s.status === 'HOLD' && s.hold_expired_at) {
-             const expiredAt = new Date(s.hold_expired_at);
-             return expiredAt > now; // Only keep if not expired
-         }
-         return true; // Keep BOOKED and others
-      });
+      return Array.isArray(schedules) ? schedules.filter(s => {
+        if (s.status === 'HOLD' && s.hold_expired_at) {
+          const expiredAt = new Date(s.hold_expired_at);
+          return expiredAt > now;
+        }
+        return true;
+      }) : [];
     } catch (error) {
       console.error('Error fetching seat schedule:', error);
       return [];
@@ -132,48 +132,17 @@ const bookingService = {
 
   holdSeats: async (scheduleId: string, seatIds: string[], holderId?: string): Promise<boolean> => {
     try {
-      const now = new Date();
-      const expiredAt = new Date(now.getTime() + 15 * 60000).toISOString(); // 15 minutes
+      const response: any = await api.post('/bookings/hold-seats', {
+        schedule_id: scheduleId,
+        seat_ids: seatIds,
+        user_id: holderId
+      });
 
-      // We need to check if these seats are already booked
-      const currentSchedule = await bookingService.getSeatSchedule(scheduleId);
-      
-      // Filter for conflicts
-      const conflicts = currentSchedule.filter(s => 
-        seatIds.includes(String(s.seat_id)) && 
-        (s.status === 'BOOKED' || (s.status === 'HOLD' && new Date(s.hold_expired_at || '') > now && s.user_id !== holderId))
-      );
-
-      if (conflicts.length > 0) {
-        return false; // Some seats are not available
-      }
-      
-      // Upsert hold entries (one seat_schedules record per seat)
-      for (const seatId of seatIds) {
-        const existing = currentSchedule.find(s => String(s.seat_id) === String(seatId));
-        const payload = {
-          schedule_id: scheduleId,
-          seat_id: seatId,
-          status: 'HOLD' as const,
-          hold_expired_at: expiredAt,
-          user_id: holderId,
-          ticket_id: null,
-          price: existing?.price,
-        };
-
-        if (existing?.id) {
-          await api.patch(`/seat_schedules/${existing.id}`, payload);
-        } else {
-          await api.post('/seat_schedules', {
-            id: `${scheduleId}_${seatId}`,
-            ...payload,
-          });
-        }
-      }
-      return true;
+      // Backend returns success/failure
+      return response !== null && response !== undefined;
     } catch (error) {
-       console.error('Error holding seats:', error);
-       return false;
+      console.error('Error holding seats:', error);
+      return false;
     }
   },
 
@@ -183,105 +152,32 @@ const bookingService = {
     seatPriceMap: Record<string, number> = {}
   ): Promise<(Booking & { ticketCodes: string[] }) | null> => {
     try {
-      const now = new Date().toISOString();
-      const scheduleId = bookingData.tripInfo.id;
-      const defaultPricePerSeat = selectedSeats.length > 0 ? bookingData.totalPrice / selectedSeats.length : 0;
-      
-      const ticketsCreated: string[] = [];
-      const ticketCodes: string[] = [];
-      const scheduleEntries = await api.get<SeatSchedule[]>(`/seat_schedules?schedule_id=${scheduleId}`) as unknown as SeatSchedule[];
-
-      // Loop through each seat to create individual tickets
-      for (const seatId of selectedSeats) {
-        const seatPrice = seatPriceMap[String(seatId)] ?? defaultPricePerSeat;
-        const ticketId = `${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-        ticketsCreated.push(ticketId);
-
-        // 1. Create Ticket
-        const code = `TICKET_${ticketId.slice(-6).toUpperCase()}`;
-        const ticket: Ticket = {
-          id: ticketId,
-          user_id: bookingData.userId,
-          schedule_id: scheduleId,
-          seat_id: seatId,
-          code,
-          status: bookingData.status === 'CONFIRMED' ? 'BOOKED' : 'PENDING',
-          price: seatPrice,
-          created_at: bookingData.createdAt,
-          updated_at: now,
-        };
-        await api.post('/tickets', ticket);
-        ticketCodes.push(code);
-
-        // 2. Create Passenger
-        const passenger: Passenger = {
-          id: `${Date.now()}_P_${Math.random().toString(36).substr(2, 5)}`,
-          ticket_id: ticketId,
+      // Backend handles the entire transaction: tickets, passengers, seat_schedules, payments
+      const response: any = await api.post('/bookings/create', {
+        schedule_id: bookingData.tripInfo.id,
+        seat_ids: selectedSeats,
+        seat_price_map: seatPriceMap,
+        contact_info: {
           full_name: bookingData.contactInfo.fullName,
           phone: bookingData.contactInfo.phone,
-          email: bookingData.contactInfo.email,
-        };
-        await api.post('/passengers', passenger);
+          email: bookingData.contactInfo.email
+        },
+        total_price: bookingData.totalPrice,
+        payment_method: bookingData.paymentMethod,
+        user_id: bookingData.userId,
+        status: bookingData.status === 'CONFIRMED' ? 'BOOKED' : 'PENDING'
+      });
 
-        // 3. Create Seat Schedule (for availability check)
-        const existingSeatSchedules = scheduleEntries.filter(s => String(s.seat_id) === String(seatId));
-        const seatSchedulePayload = {
-          schedule_id: scheduleId,
-          seat_id: seatId,
-          ticket_id: ticketId,
-          status: 'BOOKED' as const,
-          price: seatPrice,
-          hold_expired_at: null,
-          user_id: bookingData.userId,
-        };
-
-        if (existingSeatSchedules.length > 0) {
-          // Transition all existing records for this seat to BOOKED to avoid stale HOLD rows
-          for (const entry of existingSeatSchedules) {
-            if (entry?.id) {
-              await api.patch(`/seat_schedules/${entry.id}`, seatSchedulePayload);
-            }
-          }
-        } else {
-          await api.post('/seat_schedules', {
-            id: `${scheduleId}_${seatId}`,
-            ...seatSchedulePayload,
-          });
-        }
+      if (response && response.ticketCodes) {
+        return { ...bookingData, ticketCodes: response.ticketCodes };
       }
 
-      // 4. Create Payment (Linked to the first ticket for reference, or separate handling)
-      if (ticketsCreated.length > 0) {
-        const paymentAmount = Object.keys(seatPriceMap).length > 0
-          ? Object.values(seatPriceMap).reduce((sum, value) => sum + value, 0)
-          : bookingData.totalPrice;
-        const payment: Payment = {
-          id: `PAY_${Date.now()}`,
-          ticket_id: ticketsCreated[0], // Link to first ticket
-          amount: paymentAmount,
-          method: bookingData.paymentMethod,
-          status: 'COMPLETED',
-          transaction_date: now
-        };
-        await api.post('/payments', payment);
+      // Fallback: if backend returns ticket_codes in a different format
+      if (response && response.ticket_codes) {
+        return { ...bookingData, ticketCodes: response.ticket_codes };
       }
 
-      // 4. Update Available Seats in Schedule
-      try {
-        const scheduleResponse = await api.get<Schedule>(`/schedules/${scheduleId}`) as unknown as Schedule;
-        if (scheduleResponse) {
-          const currentAvailable = scheduleResponse.available_seats || 0;
-          const newAvailable = Math.max(0, currentAvailable - selectedSeats.length);
-
-          await api.patch(`/schedules/${scheduleId}`, {
-            available_seats: newAvailable
-          });
-        }
-      } catch (scheduleError) {
-        console.error('Error updating schedule availability:', scheduleError);
-      }
-
-      return { ...bookingData, ticketCodes };
+      return { ...bookingData, ticketCodes: [] };
     } catch (error) {
       console.error('Error creating booking:', error);
       return null;

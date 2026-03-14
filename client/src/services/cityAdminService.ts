@@ -12,7 +12,7 @@ const cityAdminService = {
     },
     deleteCityData: async (city_id : number | string) => {
         try {
-            const responsePostCity : City = await api.delete('/cities?city_id='+city_id)
+            const responsePostCity : City = await api.delete('/cities/'+city_id)
             console.log(responsePostCity)
         } catch (error) {
             console.log(error)

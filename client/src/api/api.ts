@@ -1,19 +1,16 @@
 import axios from 'axios';
 
-//Khởi tạo instance với các cấu hình cơ bản
 const api = axios.create({
-  baseURL: 'http://localhost:8080', // Địa chỉ json-server
-  timeout: 10000, 
+  baseURL: 'http://localhost:8080/api',
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-//Request Interceptor: Xử lý trước khi gửi yêu cầu đi
-//dùng chỗ này để đính kèm Token đăng nhập vào Header
+// Request Interceptor: Đính kèm JWT token
 api.interceptors.request.use(
   (config) => {
-    //lưu token trong localStorage
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -25,19 +22,33 @@ api.interceptors.request.use(
   }
 );
 
-//Response Interceptor: Xử lý dữ liệu hoặc lỗi khi Server phản hồi
+// Response Interceptor: Extract data từ backend format { success, data, message }
 api.interceptors.response.use(
   (response) => {
-    //Trả về dữ liệu trực tiếp để ở Component không cần dùng response.data
-    return response.data;
+    const body = response.data;
+    // Backend trả { success, data, ... }
+    if (body && typeof body === 'object' && 'success' in body) {
+      // Paginated response: giữ { data, total, page, limit }
+      if ('total' in body) {
+        return { data: body.data, total: body.total, page: body.page, limit: body.limit } as any;
+      }
+      // Single/list response: extract .data
+      return body.data;
+    }
+    // Fallback cho các response không theo format mới
+    return body;
   },
   (error) => {
-    //Xử lý lỗi tập trung
     console.error('API Error:', error.response ? error.response.data : error.message);
-    
+
     if (error.response?.status === 401) {
-      //Nếu lỗi 401 thì đẩy người dùng về trang Login
-      window.location.href = '/login';
+      // Chỉ redirect nếu không phải đang ở trang login
+      if (!window.location.pathname.includes('/login')) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
+        localStorage.removeItem('isLogin');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

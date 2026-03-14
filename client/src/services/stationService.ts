@@ -48,7 +48,7 @@ export const stationService = {
     getPopularStations: async (limit: number = 5): Promise<Station[]> => {
         try {
             // For now, just fetching stations. In real app, might sort by bookings or rating.
-            const response = await api.get(`/stations?_limit=${limit}`);
+            const response = await api.get(`/stations?limit=${limit}`);
             return response as unknown as Station[];
         } catch (error) {
             console.error('Error fetching popular stations:', error);
