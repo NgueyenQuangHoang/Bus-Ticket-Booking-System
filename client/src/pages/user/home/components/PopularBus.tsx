@@ -76,8 +76,8 @@ export default function PopularBus() {
             }}
             className="mySwiper"
           >
-            {popularCompanies.map((company) => (
-              <SwiperSlide key={company.bus_company_id}>
+            {(Array.isArray(popularCompanies) ? popularCompanies : []).map((company) => (
+              <SwiperSlide key={company.id}>
                 <div
                   className="flex flex-col items-start p-4 gap-3 h-[250px] rounded-[10px] hover:shadow-md transition duration-300"
                   style={{

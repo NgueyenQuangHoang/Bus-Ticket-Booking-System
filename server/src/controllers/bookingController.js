@@ -1,10 +1,7 @@
 import pool from '../config/db.js';
 import * as seatScheduleModel from '../models/seatScheduleModel.js';
 import * as ticketModel from '../models/ticketModel.js';
-import * as passengerModel from '../models/passengerModel.js';
-import * as paymentModel from '../models/paymentModel.js';
-import * as scheduleModel from '../models/scheduleModel.js';
-import { generateUUID, nowMySQL } from '../utils/helpers.js';
+import { generateUUID } from '../utils/helpers.js';
 
 export const holdSeats = async (req, res, next) => {
   try {
@@ -17,7 +14,7 @@ export const holdSeats = async (req, res, next) => {
     const userId = req.user.id;
     const result = await seatScheduleModel.holdSeats(schedule_id, seat_ids, userId);
 
-    const heldSeats = result.filter(s => s.status === 'hold' && s.user_id === userId);
+    const heldSeats = result.filter(s => s.status === 'HOLD' && s.user_id === userId);
     if (heldSeats.length !== seat_ids.length) {
       return res.status(409).json({
         success: false,
@@ -52,7 +49,7 @@ export const createBooking = async (req, res, next) => {
     }
 
     const userId = req.user.id;
-    const now = nowMySQL();
+    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const seatIds = seats.map(s => s.seat_id);
 
     await conn.beginTransaction();
@@ -61,7 +58,7 @@ export const createBooking = async (req, res, next) => {
     const placeholders = seatIds.map(() => '?').join(', ');
     const [holdCheck] = await conn.query(
       `SELECT * FROM seat_schedules
-       WHERE schedule_id = ? AND seat_id IN (${placeholders}) AND status = 'hold' AND user_id = ?`,
+       WHERE schedule_id = ? AND seat_id IN (${placeholders}) AND status = 'HOLD' AND user_id = ?`,
       [schedule_id, ...seatIds, userId]
     );
 
@@ -71,47 +68,39 @@ export const createBooking = async (req, res, next) => {
       return res.status(409).json({ success: false, message: 'Some seats are no longer held by you' });
     }
 
-    // 2. Create ticket
-    const ticketId = generateUUID();
+    // 2. Create ticket(s) — one ticket per seat
     const ticketCode = 'TK' + Date.now() + Math.floor(Math.random() * 1000);
-    const totalAmount = seats.reduce((sum, s) => sum + (s.price || 0), 0);
+    const totalPrice = seats.reduce((sum, s) => sum + (s.price || 0), 0);
 
+    // Create a single ticket for the first seat, or one per seat
+    const ticketId = generateUUID();
     await conn.query(
-      `INSERT INTO tickets (id, ticket_code, user_id, schedule_id, contact_name, contact_email, contact_phone, total_amount, status, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [ticketId, ticketCode, userId, schedule_id, passenger.full_name, passenger.email || null, passenger.phone, totalAmount, 'confirmed', now, now]
+      `INSERT INTO tickets (id, schedule_id, seat_id, user_id, code, price, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [ticketId, schedule_id, seatIds[0] || null, userId, ticketCode, totalPrice, 'BOOKED', now, now]
     );
 
-    // 3. Create passenger for each seat
-    for (const seat of seats) {
-      const passengerId = generateUUID();
-      // Get seat label
-      const [seatRows] = await conn.query(
-        'SELECT seat_label FROM seats WHERE id = ?',
-        [seat.seat_id]
-      );
-      const seatLabel = seatRows.length > 0 ? seatRows[0].seat_label : null;
-
-      await conn.query(
-        `INSERT INTO passengers (id, ticket_id, passenger_name, passenger_phone, seat_id, seat_label, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-        [passengerId, ticketId, passenger.full_name, passenger.phone, seat.seat_id, seatLabel, now, now]
-      );
-    }
-
-    // 4. Update seat_schedules to BOOKED
+    // 3. Create passenger record
+    const passengerId = generateUUID();
     await conn.query(
-      `UPDATE seat_schedules SET status = 'booked', updated_at = ?
+      `INSERT INTO passengers (id, ticket_id, full_name, phone, email, identity_number)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [passengerId, ticketId, passenger.full_name, passenger.phone, passenger.email || null, passenger.identity_number || null]
+    );
+
+    // 4. Update seat_schedules to BOOKED with ticket_id
+    await conn.query(
+      `UPDATE seat_schedules SET status = 'BOOKED', ticket_id = ?
        WHERE schedule_id = ? AND seat_id IN (${placeholders})`,
-      [now, schedule_id, ...seatIds]
+      [ticketId, schedule_id, ...seatIds]
     );
 
     // 5. Create payment record
     const paymentId = generateUUID();
     await conn.query(
-      `INSERT INTO payments (id, ticket_id, provider_id, payment_method, transaction_id, amount, status, paid_at, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [paymentId, ticketId, null, payment_method || 'cash', null, totalAmount, 'pending', null, now, now]
+      `INSERT INTO payments (id, payment_provider_id, user_id, ticket_id, payment_method, amount, status, transaction_date)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [paymentId, null, userId, ticketId, payment_method || 'CASH', totalPrice, 'PENDING', now]
     );
 
     // 6. Update schedule available_seats

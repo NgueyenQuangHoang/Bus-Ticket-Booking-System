@@ -71,11 +71,6 @@ export default function ViewUserModal({ isOpen, onClose, user, roleName }: ViewU
           </div>
 
 
-          <div>
-            <label className="block text-sm font-medium text-slate-500 mb-1">Mật khẩu</label>
-            <div className="text-slate-900 font-medium bg-slate-50 px-3 py-2 rounded-lg border border-slate-100">{user.password}</div>
-          </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-500 mb-1">Vai trò</label>

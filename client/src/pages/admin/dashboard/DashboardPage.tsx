@@ -201,7 +201,7 @@ const DashboardPage = () => {
                                     <td className="px-6 py-4 text-center">{comp.ticketsSold}</td>
                                     <td className="px-6 py-4 text-center">
                                         <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                                            {comp.rating.toFixed(1)} ★
+                                            {Number(comp.rating).toFixed(1)} ★
                                         </span>
                                     </td>
                                 </tr>

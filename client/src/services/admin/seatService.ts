@@ -5,8 +5,8 @@ const seatService = {
   // --- Seat Types ---
   getAllSeatTypes: async (): Promise<SeatType[]> => {
     try {
-      const response = await api.get('/seat-types');
-      return response as unknown as SeatType[];
+      const response: any = await api.get('/seat-types', { params: { limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
     } catch (error) {
       console.error('Error fetching seat types:', error);
       return [];
@@ -45,9 +45,9 @@ const seatService = {
 
   // --- Bus Layouts ---
   getAllLayouts: async (): Promise<BusLayout[]> => {
-     try {
-      const response = await api.get('/bus-layouts');
-      return response as unknown as BusLayout[];
+    try {
+      const response: any = await api.get('/bus-layouts', { params: { limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
     } catch (error) {
       console.error('Error fetching layouts:', error);
       return [];
@@ -80,7 +80,8 @@ const seatService = {
   getLayoutDetails: async (layoutId: string | number): Promise<{ layout: BusLayout, positions: SeatPosition[] } | null> => {
       try {
           const layout = await api.get(`/bus-layouts/${layoutId}`) as unknown as BusLayout;
-          const positions = await api.get(`/seat-positions?layout_id=${layoutId}`) as unknown as SeatPosition[];
+          const posRes: any = await api.get('/seat-positions', { params: { layout_id: layoutId, limit: 10000 } });
+          const positions: SeatPosition[] = Array.isArray(posRes) ? posRes : (posRes?.data ?? []);
           return { layout, positions };
       } catch (error) {
           console.error('Error fetching layout details:', error);
@@ -91,21 +92,23 @@ const seatService = {
   updateLayoutPositions: async (layoutId: string | number, positions: SeatPosition[]): Promise<boolean> => {
     try {
       // 1. Get existing positions for this layout
-      const existingPositions = await api.get(`/seat-positions?layout_id=${layoutId}`) as unknown as SeatPosition[];
-      
+      const posRes: any = await api.get('/seat-positions', { params: { layout_id: layoutId, limit: 10000 } });
+      const existingPositions: SeatPosition[] = Array.isArray(posRes) ? posRes : (posRes?.data ?? []);
+
       // 2. Delete all existing positions
       const deletePromises = existingPositions
         .map(pos => pos.id ?? pos.position_id)
         .filter((id): id is string | number => id !== undefined && id !== null)
         .map(id => api.delete(`/seat-positions/${id}`));
       await Promise.all(deletePromises);
-      
-      // 3. Create new positions
-      const createPromises = positions.map(pos => 
-        api.post('/seat-positions', { ...pos, layout_id: layoutId })
-      );
-      await Promise.all(createPromises);
-      
+
+      // 3. Create new positions via bulk endpoint
+      if (positions.length > 0) {
+        await api.post('/seat-positions/bulk', {
+          positions: positions.map(pos => ({ ...pos, layout_id: layoutId }))
+        });
+      }
+
       return true;
     } catch (error) {
       console.error('Error updating layout positions:', error);
@@ -116,8 +119,8 @@ const seatService = {
   // --- Seat Templates (Now part of bus_layouts) ---
   getAllTemplates: async (): Promise<BusLayout[]> => {
     try {
-      const response = await api.get('/bus-layouts?is_template=true');
-      return response as unknown as BusLayout[];
+      const response: any = await api.get('/bus-layouts', { params: { is_template: true, limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
     } catch (error) {
       console.error('Error fetching templates:', error);
       return [];

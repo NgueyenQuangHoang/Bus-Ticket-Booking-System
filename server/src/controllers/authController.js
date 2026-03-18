@@ -2,11 +2,11 @@ import * as userModel from '../models/userModel.js';
 import pool from '../config/db.js';
 import { hashPassword, comparePassword } from '../utils/password.js';
 import { generateToken } from '../utils/jwt.js';
-import { generateUUID, nowMySQL } from '../utils/helpers.js';
+import { generateUUID } from '../utils/helpers.js';
 
 export const register = async (req, res, next) => {
   try {
-    const { first_name, last_name, email, password, phone } = req.body;
+    const { first_name, last_name, email, password, phone, id } = req.body;
 
     if (!first_name || !last_name || !email || !password) {
       return res.status(400).json({ success: false, message: 'first_name, last_name, email and password are required' });
@@ -18,20 +18,20 @@ export const register = async (req, res, next) => {
     }
 
     const hashed = await hashPassword(password);
-    const full_name = `${first_name} ${last_name}`;
 
     const user = await userModel.create({
-      full_name,
+      id: id || undefined,
+      first_name,
+      last_name,
       email,
       phone: phone || null,
       password: hashed,
     });
 
     // Assign USER role (role_id = '1')
-    const now = nowMySQL();
     await pool.query(
-      'INSERT INTO user_roles (id, user_id, role_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-      [generateUUID(), user.id, '1', now, now]
+      'INSERT INTO user_role (id, user_id, role_id) VALUES (?, ?, ?)',
+      [generateUUID(), user.id, '1']
     );
 
     const token = generateToken({ id: user.id, email: user.email, role: 'USER', bus_company_id: null });
@@ -65,15 +65,8 @@ export const login = async (req, res, next) => {
     }
 
     const roles = await userModel.findUserRoles(user.id);
-    const roleNames = roles.map(r => r.role_name);
-    const role = roleNames[0] || 'USER';
-
-    // Check if user is associated with a bus company
-    const [companyRows] = await pool.query(
-      'SELECT bus_company_id FROM user_bus_companies WHERE user_id = ? LIMIT 1',
-      [user.id]
-    ).catch(() => [[]]);
-    const bus_company_id = companyRows.length > 0 ? companyRows[0].bus_company_id : null;
+    const role = roles.length > 0 ? roles[0].role_name : 'USER';
+    const bus_company_id = user.bus_company_id || null;
 
     const token = generateToken({ id: user.id, email: user.email, role, bus_company_id });
 
@@ -81,7 +74,7 @@ export const login = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { token, user: userWithoutPassword },
+      data: { token, user: userWithoutPassword, role, bus_company_id },
       message: 'Login successful',
     });
   } catch (err) {
@@ -115,12 +108,7 @@ export const loginAdmin = async (req, res, next) => {
     }
 
     const role = roleNames.includes('ADMIN') ? 'ADMIN' : 'BUS_COMPANY';
-
-    const [companyRows] = await pool.query(
-      'SELECT bus_company_id FROM user_bus_companies WHERE user_id = ? LIMIT 1',
-      [user.id]
-    ).catch(() => [[]]);
-    const bus_company_id = companyRows.length > 0 ? companyRows[0].bus_company_id : null;
+    const bus_company_id = user.bus_company_id || null;
 
     const token = generateToken({ id: user.id, email: user.email, role, bus_company_id });
 
@@ -128,7 +116,7 @@ export const loginAdmin = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { token, user: userWithoutPassword },
+      data: { token, user: userWithoutPassword, role, bus_company_id },
       message: 'Admin login successful',
     });
   } catch (err) {

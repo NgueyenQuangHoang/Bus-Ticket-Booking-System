@@ -38,7 +38,7 @@ export default function StationTable({ stations, onDelete, onEdit }: PropType) {
           {
             stations.map((station, index) => (
               <TableRow key={station.id} hover className="transition-colors">
-                <TableCell className="text-gray-600">{index + 1}</TableCell>
+                <TableCell className="text-gray-600 font-mono">#{index + 1}</TableCell>
                 <TableCell className="font-medium">{station.station_name}</TableCell>
                 <TableCell className="font-medium">{cityMapping[station.city_id]}</TableCell>
 

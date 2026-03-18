@@ -233,7 +233,10 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 label="Nhà xe"
                 value={form.company}
                 error={errors.company}
-                options={busCompanies.map(c => ({ value: String(c.id || c.bus_company_id), label: c.company_name, }))}
+                options={[
+                  { value: "", label: "-- Chọn nhà xe --" },
+                  ...busCompanies.map(c => ({ value: String(c.id || c.bus_company_id), label: c.company_name }))
+                ]}
                 disabled={isBusCompany}
                 onChange={(v) =>
                   handleChange("company", v)
@@ -258,7 +261,10 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 label="Loại xe"
                 value={form.type}
                 error={errors.type}
-                options={vehicleTypes.map(v => ({ value: String(v.id), label: v.display_name }))}
+                options={[
+                  { value: "", label: "-- Chọn loại xe --" },
+                  ...vehicleTypes.map(v => ({ value: String(v.id), label: v.display_name }))
+                ]}
                 onChange={(v) =>
                   handleChange("type", v)
                 }
@@ -270,10 +276,14 @@ export default function BusFormModal({ open, onClose, onSubmit, initialData, bus
                 error={errors.layout}
                 options={[
                   { value: "", label: "-- Chọn layout --" },
-                  ...filteredLayouts.map((l) => ({
-                    value: String(l.id || l.layout_id),
-                    label: `${l.layout_name} (Hàng: ${l.total_rows || 0}, Cột: ${l.total_columns || 0}, Tầng: ${l.floor_count || 1})`,
-                  })),
+                  ...filteredLayouts.map((l) => {
+                    const isGlobal = !l.bus_company_id && !(l as any).company_id;
+                    const badge = isGlobal ? " [Mẫu chung]" : "";
+                    return {
+                      value: String(l.id || l.layout_id),
+                      label: `${l.layout_name}${badge} (Hàng: ${l.total_rows || 0}, Cột: ${l.total_columns || 0}, Tầng: ${l.floor_count || 1})`,
+                    };
+                  }),
                 ]}
                 onChange={handleLayoutChange}
               />

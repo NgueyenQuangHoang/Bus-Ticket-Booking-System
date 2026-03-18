@@ -80,44 +80,44 @@ export interface BusCompany {
 export const seatStatusService = {
   // Fetch all bus companies
   getBusCompanies: async (): Promise<BusCompany[]> => {
-      const response = await api.get<BusCompany[]>('/bus-companies');
-      return response as unknown as BusCompany[];
+      const response: any = await api.get('/bus-companies', { params: { limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
   },
 
   // Fetch buses by company
   getBusesByCompany: async (companyId: string): Promise<Bus[]> => {
-      const response = await api.get<Bus[]>(`/buses?bus_company_id=${companyId}`);
-      return response as unknown as Bus[];
+      const response: any = await api.get('/buses', { params: { bus_company_id: companyId, limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
   },
 
   // Fetch all buses
   getAllBuses: async (): Promise<Bus[]> => {
-      const response = await api.get<Bus[]>('/buses');
-      return response as unknown as Bus[];
+      const response: any = await api.get('/buses', { params: { limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
   },
 
   // Fetch all routes for the dropdown
   getRoutes: async (): Promise<Route[]> => {
-    const response = await api.get<Route[]>('/routes');
-    return response as unknown as Route[];
+    const response: any = await api.get('/routes', { params: { limit: 10000 } });
+    return Array.isArray(response) ? response : (response?.data ?? []);
   },
 
   // Fetch schedules for a specific route
   getSchedulesByRoute: async (routeId: string): Promise<Schedule[]> => {
-    const response = await api.get<Schedule[]>(`/schedules?route_id=${routeId}`);
-    return response as unknown as Schedule[];
+    const response: any = await api.get('/schedules', { params: { route_id: routeId, limit: 10000 } });
+    return Array.isArray(response) ? response : (response?.data ?? []);
   },
 
   // Fetch schedules by bus
   getSchedulesByBus: async (busId: string): Promise<Schedule[]> => {
-      const response = await api.get<Schedule[]>(`/schedules?bus_id=${busId}`);
-      return response as unknown as Schedule[];
+      const response: any = await api.get('/schedules', { params: { bus_id: busId, limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
   },
 
   // Fetch all schedules (for filtering valid buses/companies)
   getAllSchedules: async (): Promise<Schedule[]> => {
-      const response = await api.get<Schedule[]>('/schedules');
-      return response as unknown as Schedule[];
+      const response: any = await api.get('/schedules', { params: { limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
   },
 
   // Main function to get the full seat map with status
@@ -143,16 +143,21 @@ export const seatStatusService = {
         if (!bus) throw new Error("Bus not found");
 
          // 3. Get Seat Positions for the Layout
-        const positionsRes = await api.get<SeatPosition[]>(`/seat-positions?layout_id=${bus.layout_id}`);
-        const positions = positionsRes as unknown as SeatPosition[];
+        const positionsRes: any = await api.get('/seat-positions', { params: { layout_id: bus.layout_id, limit: 10000 } });
+        const positions: SeatPosition[] = Array.isArray(positionsRes) ? positionsRes : (positionsRes?.data ?? []);
 
         // 4. Get Statuses from seat_schedule
-        const statusesRes = await api.get<SeatSchedule[]>(`/seat-schedules?schedule_id=${scheduleId}`);
-        const seatStatuses = statusesRes as unknown as SeatSchedule[];
+        const statusesRes: any = await api.get(`/seat-schedules/schedule/${scheduleId}`);
+        const seatStatuses: SeatSchedule[] = Array.isArray(statusesRes) ? statusesRes : (statusesRes?.data ?? []);
 
-        // 5. Get Passengers/Ticket Info for Notes
-        const passengersRes = await api.get<Passenger[]>('/passengers');
-        const passengers = passengersRes as unknown as Passenger[];
+        // 5. Get Passengers/Ticket Info for Notes (optional — endpoint may not exist)
+        let passengers: Passenger[] = [];
+        try {
+            const passengersRes: any = await api.get('/passengers', { params: { limit: 10000 } });
+            passengers = Array.isArray(passengersRes) ? passengersRes : (passengersRes?.data ?? []);
+        } catch {
+            // Passengers endpoint not available — notes will be empty
+        }
         
         // Map ticket_id to passenger info
         const ticketPassengerMap = new Map<string, string>();

@@ -29,7 +29,7 @@ export default function CityTable({ cities, onDelete, onUpdateCities }: PropType
                 <TableBody>
                     {cities.map((city, index) => (
                         <TableRow key={city.id} hover className="transition-colors">
-                            <TableCell className="text-gray-600">{index+1}</TableCell>
+                            <TableCell className="text-gray-600 font-mono">#{index+1}</TableCell>
                             <TableCell className="font-medium">{city.city_name}</TableCell>
                             <TableCell>
                                 <Chip

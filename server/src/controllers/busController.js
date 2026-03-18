@@ -40,7 +40,6 @@ export const getById = async (req, res, next) => {
 export const create = async (req, res, next) => {
   try {
     const bus = await busModel.create(req.body);
-
     res.status(201).json({ success: true, data: bus, message: 'Bus created successfully' });
   } catch (err) {
     next(err);
@@ -55,7 +54,6 @@ export const update = async (req, res, next) => {
     }
 
     const bus = await busModel.update(req.params.id, req.body);
-
     res.json({ success: true, data: bus, message: 'Bus updated successfully' });
   } catch (err) {
     next(err);

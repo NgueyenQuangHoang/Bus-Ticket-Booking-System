@@ -1,6 +1,5 @@
 import pool from '../config/db.js';
 import * as ticketModel from '../models/ticketModel.js';
-import { nowMySQL } from '../utils/helpers.js';
 
 export const getAll = async (req, res, next) => {
   try {
@@ -81,35 +80,35 @@ export const cancelTicket = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Ticket not found' });
     }
 
-    if (ticket.status === 'cancelled') {
+    if (ticket.status === 'CANCELLED') {
       conn.release();
       return res.status(400).json({ success: false, message: 'Ticket is already cancelled' });
     }
 
-    const now = nowMySQL();
+    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     await conn.beginTransaction();
 
-    // 1. Update ticket status to cancelled
+    // 1. Update ticket status to CANCELLED
     await conn.query(
       'UPDATE tickets SET status = ?, updated_at = ? WHERE id = ?',
-      ['cancelled', now, ticketId]
+      ['CANCELLED', now, ticketId]
     );
 
-    // 2. Get passengers to find seat_ids
-    const [passengers] = await conn.query(
-      'SELECT seat_id FROM passengers WHERE ticket_id = ?',
+    // 2. Find seat_schedules linked to this ticket
+    const [seatSchedules] = await conn.query(
+      'SELECT seat_id FROM seat_schedules WHERE ticket_id = ?',
       [ticketId]
     );
-    const seatIds = passengers.map(p => p.seat_id).filter(Boolean);
+    const seatIds = seatSchedules.map(ss => ss.seat_id).filter(Boolean);
 
-    // 3. Release seat_schedules back to available
+    // 3. Release seat_schedules back to AVAILABLE
     if (seatIds.length > 0) {
       const placeholders = seatIds.map(() => '?').join(', ');
       await conn.query(
-        `UPDATE seat_schedules SET status = 'available', user_id = NULL, hold_expires_at = NULL, updated_at = ?
+        `UPDATE seat_schedules SET status = 'AVAILABLE', user_id = NULL, hold_expired_at = NULL, ticket_id = NULL
          WHERE schedule_id = ? AND seat_id IN (${placeholders})`,
-        [now, ticket.schedule_id, ...seatIds]
+        [ticket.schedule_id, ...seatIds]
       );
 
       // 4. Update schedule available_seats

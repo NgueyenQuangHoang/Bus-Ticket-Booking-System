@@ -41,7 +41,7 @@ export default function BusReviewTable({ data, onEdit, onDelete }: Props) {
           className="border-b last:border-0 border-gray-100 sm:grid sm:grid-cols-[60px_2fr_2fr_1.5fr_2fr_1fr_100px] items-center text-sm hover:bg-blue-50/50 transition-colors duration-150"
         >
           <div className="hidden sm:block p-4 font-mono text-xs text-gray-500 truncate" title={String(item.id)}>
-              {item.id.length > 8 ? `${item.id.substring(0, 8)}...` : item.id}
+              #{item.id.length > 8 ? item.id.substring(0, 8) : item.id}
           </div>
           <div className="hidden sm:block p-4 font-medium text-gray-800">{getUserName(item.user)}</div>
           <div className="hidden sm:block p-4 text-xs space-y-1">

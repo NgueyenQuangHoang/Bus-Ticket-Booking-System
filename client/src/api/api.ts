@@ -47,6 +47,8 @@ api.interceptors.response.use(
         localStorage.removeItem('accessToken');
         localStorage.removeItem('user');
         localStorage.removeItem('isLogin');
+        localStorage.removeItem('role');
+        localStorage.removeItem('bus_company_id');
         window.location.href = '/login';
       }
     }

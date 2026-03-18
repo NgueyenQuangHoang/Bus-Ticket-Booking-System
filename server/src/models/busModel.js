@@ -20,7 +20,7 @@ export async function findAll(filters = {}) {
   }
 
   if (filters.search) {
-    where.push('(b.bus_name LIKE ? OR b.license_plate LIKE ? OR bc.company_name LIKE ?)');
+    where.push('(b.name LIKE ? OR b.license_plate LIKE ? OR bc.company_name LIKE ?)');
     params.push(`%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`);
   }
 
@@ -72,12 +72,13 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO buses (id, bus_name, license_plate, bus_company_id, vehicle_type_id, layout_id, total_seats, status, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO buses (id, bus_company_id, name, descriptions, license_plate, capacity, vehicle_type_id, layout_id, thumbnail_image, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      id, data.bus_name, data.license_plate || null, data.bus_company_id,
+      id, data.bus_company_id, data.name, data.descriptions || null,
+      data.license_plate || null, data.capacity || 0,
       data.vehicle_type_id || null, data.layout_id || null,
-      data.total_seats || 0, data.status || 'active', now, now
+      data.thumbnail_image || null, data.status || 'ACTIVE', now, now
     ]
   );
   return findById(id);
@@ -87,12 +88,14 @@ export async function update(id, data) {
   const fields = [];
   const params = [];
 
-  if (data.bus_name !== undefined) { fields.push('bus_name = ?'); params.push(data.bus_name); }
+  if (data.name !== undefined) { fields.push('name = ?'); params.push(data.name); }
+  if (data.descriptions !== undefined) { fields.push('descriptions = ?'); params.push(data.descriptions); }
   if (data.license_plate !== undefined) { fields.push('license_plate = ?'); params.push(data.license_plate); }
   if (data.bus_company_id !== undefined) { fields.push('bus_company_id = ?'); params.push(data.bus_company_id); }
   if (data.vehicle_type_id !== undefined) { fields.push('vehicle_type_id = ?'); params.push(data.vehicle_type_id); }
   if (data.layout_id !== undefined) { fields.push('layout_id = ?'); params.push(data.layout_id); }
-  if (data.total_seats !== undefined) { fields.push('total_seats = ?'); params.push(data.total_seats); }
+  if (data.capacity !== undefined) { fields.push('capacity = ?'); params.push(data.capacity); }
+  if (data.thumbnail_image !== undefined) { fields.push('thumbnail_image = ?'); params.push(data.thumbnail_image); }
   if (data.status !== undefined) { fields.push('status = ?'); params.push(data.status); }
 
   if (fields.length === 0) return findById(id);

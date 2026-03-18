@@ -59,15 +59,6 @@ export default function SeatLegend({ seatTypes }: Props) {
                     </div>
                     <div>
                         <div className='font-medium text-gray-800'>{type.type_name || 'Loại ghế'}</div>
-                        <div className='text-sm text-gray-900 font-bold'>
-                            {type.price_multiplier > 0 ? (
-                                <>
-                                    {(350000 * type.price_multiplier).toLocaleString()}đ
-                                     <span className='text-gray-400 font-normal text-xs ml-2 line-through'>{(450000 * type.price_multiplier).toLocaleString()}đ</span>
-                                </>
-                            ) : 'Liên hệ'}
-                           
-                        </div>
                     </div>
                 </div>
             ))}

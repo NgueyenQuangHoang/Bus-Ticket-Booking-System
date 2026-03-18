@@ -43,9 +43,9 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO cities (id, city_name, region, image, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [id, data.city_name, data.region || null, data.image || null, now, now]
+    `INSERT INTO cities (id, city_name, image_city, region, description, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [id, data.city_name, data.image_city || null, data.region || null, data.description || null, now, now]
   );
   return findById(id);
 }
@@ -55,8 +55,9 @@ export async function update(id, data) {
   const params = [];
 
   if (data.city_name !== undefined) { fields.push('city_name = ?'); params.push(data.city_name); }
+  if (data.image_city !== undefined) { fields.push('image_city = ?'); params.push(data.image_city); }
   if (data.region !== undefined) { fields.push('region = ?'); params.push(data.region); }
-  if (data.image !== undefined) { fields.push('image = ?'); params.push(data.image); }
+  if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
 
   if (fields.length === 0) return findById(id);
 

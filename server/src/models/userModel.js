@@ -10,8 +10,8 @@ export async function findAll(filters = {}) {
   let params = [];
 
   if (filters.search) {
-    where.push('(u.full_name LIKE ? OR u.email LIKE ?)');
-    params.push(`%${filters.search}%`, `%${filters.search}%`);
+    where.push('(u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ?)');
+    params.push(`%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`);
   }
 
   if (filters.status) {
@@ -27,9 +27,14 @@ export async function findAll(filters = {}) {
   );
 
   const [rows] = await pool.query(
-    `SELECT u.id, u.full_name, u.email, u.phone, u.avatar, u.status, u.created_at, u.updated_at
+    `SELECT u.id, u.first_name, u.last_name, u.email, u.phone, u.bus_company_id, u.status, u.created_at, u.updated_at,
+            GROUP_CONCAT(r.role_name ORDER BY r.role_name SEPARATOR ',') AS role_names,
+            GROUP_CONCAT(r.id ORDER BY r.role_name SEPARATOR ',') AS role_ids_list
      FROM users u
+     LEFT JOIN user_role ur ON ur.user_id = u.id
+     LEFT JOIN roles r ON r.id = ur.role_id
      ${whereClause}
+     GROUP BY u.id, u.first_name, u.last_name, u.email, u.phone, u.bus_company_id, u.status, u.created_at, u.updated_at
      ORDER BY u.created_at DESC
      LIMIT ? OFFSET ?`,
     [...params, limit, offset]
@@ -40,7 +45,7 @@ export async function findAll(filters = {}) {
 
 export async function findById(id) {
   const [rows] = await pool.query(
-    `SELECT id, full_name, email, phone, avatar, status, created_at, updated_at
+    `SELECT id, first_name, last_name, email, phone, bus_company_id, status, created_at, updated_at
      FROM users WHERE id = ?`,
     [id]
   );
@@ -49,7 +54,7 @@ export async function findById(id) {
 
 export async function findByEmail(email) {
   const [rows] = await pool.query(
-    `SELECT id, full_name, email, phone, password, avatar, status, created_at, updated_at
+    `SELECT id, first_name, last_name, email, phone, password, bus_company_id, status, created_at, updated_at
      FROM users WHERE email = ?`,
     [email]
   );
@@ -57,12 +62,12 @@ export async function findByEmail(email) {
 }
 
 export async function create(data) {
-  const id = generateUUID();
+  const id = data.id || generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO users (id, full_name, email, phone, password, avatar, status, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [id, data.full_name, data.email, data.phone || null, data.password, data.avatar || null, data.status || 'active', now, now]
+    `INSERT INTO users (id, first_name, last_name, email, phone, password, bus_company_id, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [id, data.first_name, data.last_name, data.email, data.phone || null, data.password, data.bus_company_id || null, data.status || 'ACTIVE', now, now]
   );
   return findById(id);
 }
@@ -71,11 +76,12 @@ export async function update(id, data) {
   const fields = [];
   const params = [];
 
-  if (data.full_name !== undefined) { fields.push('full_name = ?'); params.push(data.full_name); }
+  if (data.first_name !== undefined) { fields.push('first_name = ?'); params.push(data.first_name); }
+  if (data.last_name !== undefined) { fields.push('last_name = ?'); params.push(data.last_name); }
   if (data.email !== undefined) { fields.push('email = ?'); params.push(data.email); }
   if (data.phone !== undefined) { fields.push('phone = ?'); params.push(data.phone); }
   if (data.password !== undefined) { fields.push('password = ?'); params.push(data.password); }
-  if (data.avatar !== undefined) { fields.push('avatar = ?'); params.push(data.avatar); }
+  if (data.bus_company_id !== undefined) { fields.push('bus_company_id = ?'); params.push(data.bus_company_id); }
   if (data.status !== undefined) { fields.push('status = ?'); params.push(data.status); }
 
   if (fields.length === 0) return findById(id);
@@ -100,7 +106,7 @@ export async function findUserRoles(userId) {
   const [rows] = await pool.query(
     `SELECT r.id, r.role_name
      FROM roles r
-     INNER JOIN user_roles ur ON ur.role_id = r.id
+     INNER JOIN user_role ur ON ur.role_id = r.id
      WHERE ur.user_id = ?`,
     [userId]
   );
@@ -111,14 +117,15 @@ export async function updateUserRoles(userId, roleIds) {
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
-    await conn.query('DELETE FROM user_roles WHERE user_id = ?', [userId]);
+    await conn.query('DELETE FROM user_role WHERE user_id = ?', [userId]);
 
     if (roleIds && roleIds.length > 0) {
-      const values = roleIds.map(roleId => [generateUUID(), userId, roleId, nowMySQL(), nowMySQL()]);
-      await conn.query(
-        `INSERT INTO user_roles (id, user_id, role_id, created_at, updated_at) VALUES ?`,
-        [values]
-      );
+      for (const roleId of roleIds) {
+        await conn.query(
+          'INSERT INTO user_role (id, user_id, role_id) VALUES (?, ?, ?)',
+          [generateUUID(), userId, roleId]
+        );
+      }
     }
 
     await conn.commit();

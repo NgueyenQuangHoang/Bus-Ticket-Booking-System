@@ -26,7 +26,7 @@ export default function SeatTypeTable({ seatTypes, onUpdate, onDelete }: Props) 
         <tbody>
           {seatTypes.map((st) => (
             <tr key={st.id || st.seat_type_id} className="bg-white border-b hover:bg-gray-50">
-              <td className="px-6 py-4">{st.id || st.seat_type_id}</td>
+              <td className="px-6 py-4 font-mono text-sm text-gray-600">#{String(st.id || st.seat_type_id).slice(0, 8)}</td>
               <td className="px-6 py-4 font-medium text-gray-900">{st.type_name}</td>
               <td className="px-6 py-4 text-gray-500">{st.description}</td>
               <td className="px-6 py-4">

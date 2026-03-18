@@ -54,9 +54,9 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO stations (id, station_name, address, city_id, latitude, longitude, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [id, data.station_name, data.address || null, data.city_id, data.latitude || null, data.longitude || null, now, now]
+    `INSERT INTO stations (id, station_name, city_id, image, wallpaper, description, location, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [id, data.station_name, data.city_id, data.image || null, data.wallpaper || null, data.description || null, data.location || null, now, now]
   );
   return findById(id);
 }
@@ -66,10 +66,11 @@ export async function update(id, data) {
   const params = [];
 
   if (data.station_name !== undefined) { fields.push('station_name = ?'); params.push(data.station_name); }
-  if (data.address !== undefined) { fields.push('address = ?'); params.push(data.address); }
   if (data.city_id !== undefined) { fields.push('city_id = ?'); params.push(data.city_id); }
-  if (data.latitude !== undefined) { fields.push('latitude = ?'); params.push(data.latitude); }
-  if (data.longitude !== undefined) { fields.push('longitude = ?'); params.push(data.longitude); }
+  if (data.image !== undefined) { fields.push('image = ?'); params.push(data.image); }
+  if (data.wallpaper !== undefined) { fields.push('wallpaper = ?'); params.push(data.wallpaper); }
+  if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
+  if (data.location !== undefined) { fields.push('location = ?'); params.push(data.location); }
 
   if (fields.length === 0) return findById(id);
 

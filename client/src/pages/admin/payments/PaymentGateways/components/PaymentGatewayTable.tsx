@@ -33,7 +33,7 @@ export default function PaymentGatewayTable({ payments, onDelete, onEdit }: Paym
             <tbody className='divide-y divide-slate-200'>
               {payments.map((p) => (
                 <tr key={p.payment_provider_id} className='hover:bg-slate-50 transition-colors'>
-                  <td className='px-6 py-4 text-sm text-slate-600 font-medium'>#{p.payment_provider_id}</td>
+                  <td className='px-6 py-4 text-sm text-slate-600 font-medium font-mono'>#{p.payment_provider_id}</td>
                   <td className='px-6 py-4 text-sm font-medium text-slate-900'>{p.provider_name}</td>
                    <td className='px-6 py-4'>
                     <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getTypeColor(p.provider_type)}`}>

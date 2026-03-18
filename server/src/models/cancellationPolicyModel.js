@@ -13,7 +13,7 @@ export async function findAll(filters = {}) {
   const whereClause = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
 
   const [rows] = await pool.query(
-    `SELECT * FROM cancellation_policies ${whereClause} ORDER BY hours_before ASC`,
+    `SELECT * FROM cancellation_policies ${whereClause} ORDER BY cancellation_time_limit ASC`,
     params
   );
   return rows;
@@ -31,11 +31,11 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO cancellation_policies (id, route_id, hours_before, refund_percentage, description, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO cancellation_policies (id, route_id, cancellation_time_limit, refund_percentage, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?)`,
     [
-      id, data.route_id || null, data.hours_before, data.refund_percentage,
-      data.description || null, now, now
+      id, data.route_id || null, data.cancellation_time_limit,
+      data.refund_percentage, now, now
     ]
   );
   return findById(id);
@@ -46,9 +46,8 @@ export async function update(id, data) {
   const params = [];
 
   if (data.route_id !== undefined) { fields.push('route_id = ?'); params.push(data.route_id); }
-  if (data.hours_before !== undefined) { fields.push('hours_before = ?'); params.push(data.hours_before); }
+  if (data.cancellation_time_limit !== undefined) { fields.push('cancellation_time_limit = ?'); params.push(data.cancellation_time_limit); }
   if (data.refund_percentage !== undefined) { fields.push('refund_percentage = ?'); params.push(data.refund_percentage); }
-  if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
 
   if (fields.length === 0) return findById(id);
 

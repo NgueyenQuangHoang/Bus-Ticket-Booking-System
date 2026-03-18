@@ -11,7 +11,7 @@ import { scheduleService } from "../../../services/scheduleService";
 import { routesService } from "../../../services/routesService";
 import busService from "../../../services/admin/busService";
 import { stationService } from "../../../services/stationService";
-import { seatStatusService } from "../../../services/seatStatusService";
+
 import { getStoredBusCompanyId, getStoredRole } from "../../../utils/authStorage";
 
 export default function SchedulesPage() {
@@ -69,11 +69,11 @@ export default function SchedulesPage() {
             : [])
         : schedules;
 
-        // Enrich Data + pull live seat status per schedule to get accurate available/total
-        const enrichedData = await Promise.all(scopedSchedules.map(async item => {
+        // Enrich Data — seat counts already calculated by backend SQL subqueries
+        const enrichedData = scopedSchedules.map(item => {
         const route = routeMap.get(String(item.route_id));
         const bus = busMap.get(String(item.bus_id));
-        
+
         let routeName = "Tuyến chưa xác định";
         if (route) {
           if (route.departure_station_id && route.arrival_station_id) {
@@ -88,7 +88,7 @@ export default function SchedulesPage() {
              routeName = route.description || `Route #${item.route_id}`;
           }
         }
-        
+
         let timeStr = "";
         if (item.departure_time) {
           try {
@@ -107,32 +107,14 @@ export default function SchedulesPage() {
           }
         }
 
-        // Default from API fields
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let availableSeat = (item as any).available_seats !== undefined ? (item as any).available_seats : item.available_seat;
-        let totalSeats = item.total_seats;
-
-        // Fetch live seat status; fallback gracefully on error
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const stats = await seatStatusService.getSeatStatusBySchedule(String(item.schedule_id));
-          availableSeat = stats.available;
-          totalSeats = stats.totalSeats;
-        } catch (err) {
-          console.warn("Failed to fetch seat status for schedule", item.schedule_id, err);
-        }
-
         return {
           ...item,
           route_name: routeName,
           bus_name: bus ? bus.name : `Bus #${item.bus_id}`,
           bus_license: bus ? bus.license_plate : "",
           departure_time_str: timeStr,
-          available_seat: availableSeat,
-          total_seats: totalSeats,
-
         };
-        }));
+        });
 
       setData(enrichedData);
     } catch (error) {

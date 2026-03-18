@@ -8,6 +8,7 @@ const router = Router();
 router.get('/', busLayoutController.getAll);
 router.get('/:id', busLayoutController.getById);
 router.post('/', authenticate, requireRole('ADMIN', 'BUS_COMPANY'), busLayoutController.create);
+router.post('/:id/clone', authenticate, requireRole('ADMIN', 'BUS_COMPANY'), busLayoutController.clone);
 router.put('/:id', authenticate, requireRole('ADMIN', 'BUS_COMPANY'), busLayoutController.update);
 router.delete('/:id', authenticate, requireRole('ADMIN', 'BUS_COMPANY'), busLayoutController.remove);
 

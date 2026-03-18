@@ -9,6 +9,7 @@ router.get('/', busCompanyController.getAll);
 router.get('/:id', busCompanyController.getById);
 router.post('/', authenticate, requireRole('ADMIN'), busCompanyController.create);
 router.put('/:id', authenticate, requireRole('ADMIN'), busCompanyController.update);
+router.patch('/:id', authenticate, requireRole('ADMIN'), busCompanyController.update);
 router.delete('/:id', authenticate, requireRole('ADMIN'), busCompanyController.remove);
 
 export default router;

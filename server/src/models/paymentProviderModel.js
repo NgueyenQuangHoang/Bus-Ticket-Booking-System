@@ -17,16 +17,12 @@ export async function findById(id) {
 }
 
 export async function create(data) {
-  const id = generateUUID();
+  const id = data.id || generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO payment_providers (id, provider_name, provider_code, logo, is_active, config, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      id, data.provider_name, data.provider_code || null, data.logo || null,
-      data.is_active !== undefined ? data.is_active : true,
-      data.config ? JSON.stringify(data.config) : null, now, now
-    ]
+    `INSERT INTO payment_providers (id, provider_name, provider_type, api_endpoint, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, data.provider_name, data.provider_type || null, data.api_endpoint || null, now, now]
   );
   return findById(id);
 }
@@ -36,10 +32,8 @@ export async function update(id, data) {
   const params = [];
 
   if (data.provider_name !== undefined) { fields.push('provider_name = ?'); params.push(data.provider_name); }
-  if (data.provider_code !== undefined) { fields.push('provider_code = ?'); params.push(data.provider_code); }
-  if (data.logo !== undefined) { fields.push('logo = ?'); params.push(data.logo); }
-  if (data.is_active !== undefined) { fields.push('is_active = ?'); params.push(data.is_active); }
-  if (data.config !== undefined) { fields.push('config = ?'); params.push(JSON.stringify(data.config)); }
+  if (data.provider_type !== undefined) { fields.push('provider_type = ?'); params.push(data.provider_type); }
+  if (data.api_endpoint !== undefined) { fields.push('api_endpoint = ?'); params.push(data.api_endpoint); }
 
   if (fields.length === 0) return findById(id);
 

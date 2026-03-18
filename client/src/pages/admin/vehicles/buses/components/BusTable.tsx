@@ -61,9 +61,9 @@ export default function BusTable({
           >
             {/* ID */}
             <div className="p-3 text-center font-mono" title={String(bus.id || bus.bus_id)}>
-              {(() => {
+              #{(() => {
                   const id = String(bus.id || bus.bus_id);
-                  return id.length > 8 ? id.substring(0, 8) + '...' : id;
+                  return id.length > 8 ? id.substring(0, 8) : id;
               })()}
             </div>
 

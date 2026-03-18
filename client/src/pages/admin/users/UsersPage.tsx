@@ -8,11 +8,11 @@ import ViewUserModal from "./components/ViewUserModal";
 import type { User, UserRole } from "../../../types";
 import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { fetch_Roles, fetchUser_Roles, fetchUsers, postNewUser, removeUser, updateStatus, updateUser } from "../../../slices/userSlice";
+import { fetch_Roles, fetchUsers, postNewUser, removeUser, updateStatus, updateUser } from "../../../slices/userSlice";
 
 
 export default function UsersPage() {
-    const {users, roles: listRole, user_roles} = useAppSelector(state=> state.user)
+    const {users} = useAppSelector(state=> state.user)
     const dispatch = useAppDispatch()
     const [searchTerm, setSearchTerm] = useState("");
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -20,22 +20,14 @@ export default function UsersPage() {
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [statusForm, setStatus] = useState<'edit' | 'add'>('add')
     
-    const roleMapping = listRole.reduce((acc: { [key: string | number]: string }, role) => {
-        acc[role.id] = role.role_name
-        return acc
-    }, {})
-
-    const urMapping = user_roles.reduce((acc: { [key: string | number]: string }, role) => {
-        acc[role.user_id] = roleMapping[role.role_id]
-        return acc
-    }, {})
 
 
     const handleToggleStatus = (id: string, status: string) => {
         const user = users.find(item => item.id == id)
         const newUser = {...user, status} as User
         if(newUser){
-            dispatch(updateStatus({user: newUser}))
+            dispatch(updateStatus({user: newUser})).unwrap()
+                .catch((err) => Swal.fire({ title: 'Lỗi!', text: `Không thể đổi trạng thái: ${err?.message || err}`, icon: 'error' }))
         }
     };
 
@@ -75,7 +67,9 @@ export default function UsersPage() {
     };
 
     const handleEdit = (user: User, role_id: string) => {
-        dispatch(updateUser({user, roleId: role_id}))
+        dispatch(updateUser({user, roleId: role_id})).unwrap()
+            .then(() => Swal.fire({ title: 'Thành công!', text: 'Cập nhật người dùng thành công.', icon: 'success', timer: 1500, showConfirmButton: false }))
+            .catch((err) => Swal.fire({ title: 'Lỗi!', text: `Cập nhật thất bại: ${err?.message || err}`, icon: 'error' }))
     }
 
     const handleDeleteClick = (user: User) => {
@@ -112,12 +106,8 @@ export default function UsersPage() {
     useEffect(() => {
         dispatch(fetchUsers())
         dispatch(fetch_Roles())
-        dispatch(fetchUser_Roles())
     }, [dispatch])
 
-    
-    console.log(urMapping, roleMapping);
-    
 
     return (
         <div className="space-y-6">
@@ -134,7 +124,6 @@ export default function UsersPage() {
 
             <UserTable
                 users={filteredUsers}
-                roles={urMapping}
                 onToggleStatus={handleToggleStatus}
                 onView={handleViewClick}
                 onEdit={handleEditClick}
@@ -147,7 +136,7 @@ export default function UsersPage() {
                 onAdd={handleAddUser}
                 user={selectedUser ? {
                     ...selectedUser,
-                    role_id: user_roles.find(ur => ur.user_id === selectedUser.id)?.role_id
+                    role_id: selectedUser.role_ids_list?.split(',')[0] || ''
                 } as any : null}
                 statusForm={statusForm}
                 Edit={handleEdit}
@@ -157,7 +146,7 @@ export default function UsersPage() {
                 isOpen={isViewModalOpen}
                 onClose={() => setIsViewModalOpen(false)}
                 user={selectedUser}
-                roleName={selectedUser ? urMapping[selectedUser.id] : ''}
+                roleName={selectedUser ? (selectedUser.role_names || '') : ''}
             />
         </div>
     );

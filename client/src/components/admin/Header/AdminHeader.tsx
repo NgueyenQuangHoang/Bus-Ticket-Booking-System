@@ -1,6 +1,7 @@
 import { Menu } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../../../services/authService";
 
 interface AdminHeaderProps {
   onToggleSidebar: () => void;
@@ -23,9 +24,8 @@ const AdminHeader = ({ onToggleSidebar }: AdminHeaderProps) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("isLogin");
-    localStorage.removeItem("user");
-    navigate("/admin/auth"); // hoặc "/" nếu bạn muốn
+    authService.logout();
+    navigate("/admin/auth");
   };
 
   return (

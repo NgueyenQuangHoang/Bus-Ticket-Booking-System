@@ -3,7 +3,7 @@ import { generateUUID, nowMySQL } from '../utils/helpers.js';
 
 export async function findAll() {
   const [rows] = await pool.query(
-    'SELECT * FROM banners ORDER BY sort_order ASC, created_at DESC'
+    'SELECT * FROM banners ORDER BY position ASC, created_at DESC'
   );
   return rows;
 }
@@ -14,14 +14,15 @@ export async function findById(id) {
 }
 
 export async function create(data) {
-  const id = generateUUID();
+  const id = data.id || generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO banners (id, title, image_url, link_url, sort_order, is_active, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO banners (id, image_url, position, target_type, target_id, start_date, end_date, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      id, data.title || null, data.image_url, data.link_url || null,
-      data.sort_order || 0, data.is_active !== undefined ? data.is_active : true, now, now
+      id, data.image_url, data.position || 0,
+      data.target_type || null, data.target_id || null,
+      data.start_date || null, data.end_date || null, now, now
     ]
   );
   return findById(id);
@@ -31,11 +32,12 @@ export async function update(id, data) {
   const fields = [];
   const params = [];
 
-  if (data.title !== undefined) { fields.push('title = ?'); params.push(data.title); }
   if (data.image_url !== undefined) { fields.push('image_url = ?'); params.push(data.image_url); }
-  if (data.link_url !== undefined) { fields.push('link_url = ?'); params.push(data.link_url); }
-  if (data.sort_order !== undefined) { fields.push('sort_order = ?'); params.push(data.sort_order); }
-  if (data.is_active !== undefined) { fields.push('is_active = ?'); params.push(data.is_active); }
+  if (data.position !== undefined) { fields.push('position = ?'); params.push(data.position); }
+  if (data.target_type !== undefined) { fields.push('target_type = ?'); params.push(data.target_type); }
+  if (data.target_id !== undefined) { fields.push('target_id = ?'); params.push(data.target_id); }
+  if (data.start_date !== undefined) { fields.push('start_date = ?'); params.push(data.start_date); }
+  if (data.end_date !== undefined) { fields.push('end_date = ?'); params.push(data.end_date); }
 
   if (fields.length === 0) return findById(id);
 

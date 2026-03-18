@@ -54,8 +54,8 @@ export default function TicketTable({ data, onView }: Props) {
             {data.map((item) => (
               <tr key={item.id} className='hover:bg-slate-50 transition-colors'>
                 {/* ID */}
-                <td className='px-6 py-4 text-sm text-slate-600 font-medium'>
-                  #{item.id}
+                <td className='px-6 py-4 text-sm text-slate-600 font-medium font-mono'>
+                  #{String(item.id).slice(0, 8)}
                 </td>
 
                 {/* CUSTOMER */}
@@ -130,7 +130,7 @@ export default function TicketTable({ data, onView }: Props) {
           >
             <div className="flex justify-between items-start">
               <div>
-                <p className="font-bold text-slate-900">#{item.id}</p>
+                <p className="font-bold text-slate-900 font-mono">#{String(item.id).slice(0, 8)}</p>
                 <p className="text-sm text-slate-500">{item.passengerInfo?.fullName}</p>
               </div>
               <span

@@ -25,7 +25,7 @@ export default function PermissionTable({ role, openModalEdit, setRole , onDelet
                             role.map((item, index) => (
 
                                 <tr key={index} className='hover:bg-slate-50 transition-colors'>
-                                    <td className='px-6 py-4 text-sm text-slate-600 font-medium'>{index + 1}</td>
+                                    <td className='px-6 py-4 text-sm text-slate-600 font-medium font-mono'>#{index + 1}</td>
                                     <td className='px-6 py-4 text-sm font-medium text-slate-900'>{item.role_name}</td>
                                     <td className='px-6 py-4'>
                                         <div className='flex items-center justify-end gap-2'>

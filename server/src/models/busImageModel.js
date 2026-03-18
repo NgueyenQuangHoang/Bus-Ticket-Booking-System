@@ -2,10 +2,6 @@ import pool from '../config/db.js';
 import { generateUUID, nowMySQL } from '../utils/helpers.js';
 
 export async function findAll(filters = {}) {
-  const page = filters.page || 1;
-  const limit = filters.limit || 10;
-  const offset = (page - 1) * limit;
-
   let where = [];
   let params = [];
 
@@ -16,17 +12,12 @@ export async function findAll(filters = {}) {
 
   const whereClause = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
 
-  const [countResult] = await pool.query(
-    `SELECT COUNT(*) AS total FROM bus_images ${whereClause}`,
+  const [rows] = await pool.query(
+    `SELECT * FROM bus_images ${whereClause} ORDER BY created_at DESC`,
     params
   );
 
-  const [rows] = await pool.query(
-    `SELECT * FROM bus_images ${whereClause} ORDER BY sort_order ASC, created_at DESC LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
-  );
-
-  return { data: rows, total: countResult[0].total };
+  return rows;
 }
 
 export async function findById(id) {
@@ -35,12 +26,12 @@ export async function findById(id) {
 }
 
 export async function create(data) {
-  const id = generateUUID();
+  const id = data.id || generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO bus_images (id, bus_id, image_url, sort_order, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [id, data.bus_id, data.image_url, data.sort_order || 0, now, now]
+    `INSERT INTO bus_images (id, bus_id, image_url, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?)`,
+    [id, data.bus_id, data.image_url, now, now]
   );
   return findById(id);
 }
@@ -51,7 +42,6 @@ export async function update(id, data) {
 
   if (data.bus_id !== undefined) { fields.push('bus_id = ?'); params.push(data.bus_id); }
   if (data.image_url !== undefined) { fields.push('image_url = ?'); params.push(data.image_url); }
-  if (data.sort_order !== undefined) { fields.push('sort_order = ?'); params.push(data.sort_order); }
 
   if (fields.length === 0) return findById(id);
 

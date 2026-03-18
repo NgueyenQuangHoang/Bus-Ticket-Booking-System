@@ -1,9 +1,9 @@
 import pool from '../config/db.js';
-import { generateUUID, nowMySQL } from '../utils/helpers.js';
+import { generateUUID } from '../utils/helpers.js';
 
 export async function findByTicketId(ticketId) {
   const [rows] = await pool.query(
-    'SELECT * FROM passengers WHERE ticket_id = ? ORDER BY created_at ASC',
+    'SELECT * FROM passengers WHERE ticket_id = ?',
     [ticketId]
   );
   return rows;
@@ -16,13 +16,12 @@ export async function findById(id) {
 
 export async function create(data) {
   const id = generateUUID();
-  const now = nowMySQL();
   await pool.query(
-    `INSERT INTO passengers (id, ticket_id, passenger_name, passenger_phone, seat_id, seat_label, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO passengers (id, ticket_id, full_name, phone, email, identity_number)
+     VALUES (?, ?, ?, ?, ?, ?)`,
     [
-      id, data.ticket_id, data.passenger_name, data.passenger_phone || null,
-      data.seat_id || null, data.seat_label || null, now, now
+      id, data.ticket_id, data.full_name, data.phone,
+      data.email || null, data.identity_number || null
     ]
   );
   return findById(id);
@@ -33,15 +32,13 @@ export async function update(id, data) {
   const params = [];
 
   if (data.ticket_id !== undefined) { fields.push('ticket_id = ?'); params.push(data.ticket_id); }
-  if (data.passenger_name !== undefined) { fields.push('passenger_name = ?'); params.push(data.passenger_name); }
-  if (data.passenger_phone !== undefined) { fields.push('passenger_phone = ?'); params.push(data.passenger_phone); }
-  if (data.seat_id !== undefined) { fields.push('seat_id = ?'); params.push(data.seat_id); }
-  if (data.seat_label !== undefined) { fields.push('seat_label = ?'); params.push(data.seat_label); }
+  if (data.full_name !== undefined) { fields.push('full_name = ?'); params.push(data.full_name); }
+  if (data.phone !== undefined) { fields.push('phone = ?'); params.push(data.phone); }
+  if (data.email !== undefined) { fields.push('email = ?'); params.push(data.email); }
+  if (data.identity_number !== undefined) { fields.push('identity_number = ?'); params.push(data.identity_number); }
 
   if (fields.length === 0) return findById(id);
 
-  fields.push('updated_at = ?');
-  params.push(nowMySQL());
   params.push(id);
 
   await pool.query(`UPDATE passengers SET ${fields.join(', ')} WHERE id = ?`, params);

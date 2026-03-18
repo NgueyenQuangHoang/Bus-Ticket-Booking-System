@@ -8,8 +8,8 @@ import type { Route } from "../types/route"
 export const routesService = {
     getAllRoutes: async (): Promise<Route[]> => {
         try {
-            const response = await api.get<Route[]>('/routes');
-            return response as unknown as Route[];
+            const response: any = await api.get('/routes', { params: { limit: 10000 } });
+            return Array.isArray(response) ? response : (response?.data ?? []);
         } catch (error) {
             console.error('Error fetching all routes:', error);
             throw error;
@@ -17,8 +17,8 @@ export const routesService = {
     },
     getRoutesByStations: async (dep_id: number | string, arr_id: number | string): Promise<Route[]> => {
         try {
-            const response = await api.get<Route[]>(`/routes?departure_station_id=${dep_id}&arrival_station_id=${arr_id}`);
-            return response as unknown as Route[];
+            const response: any = await api.get(`/routes?departure_station_id=${dep_id}&arrival_station_id=${arr_id}`);
+            return Array.isArray(response) ? response : (response?.data ?? []);
         } catch (error) {
             console.error('Error fetching routes by stations:', error);
             return [];
@@ -26,8 +26,10 @@ export const routesService = {
     },
     getInformationRoutes: async (): Promise<routesInfomation[] | undefined> => {
         try {
-            const responseGetRoutes: Route[] = await api.get('/routes');
-            const responseGetStations: Station[] = await api.get('/stations')
+            const rawRoutes: any = await api.get('/routes', { params: { limit: 10000 } });
+            const responseGetRoutes: Route[] = Array.isArray(rawRoutes) ? rawRoutes : (rawRoutes?.data ?? []);
+            const rawStations: any = await api.get('/stations', { params: { limit: 10000 } });
+            const responseGetStations: Station[] = Array.isArray(rawStations) ? rawStations : (rawStations?.data ?? [])
             const stationMap = responseGetStations.reduce((acc, curr) => {
                 acc[String(curr.id)] = curr.station_name;
                 return acc;
@@ -55,8 +57,8 @@ export const routesService = {
     },
     getPopularRoutes: async (limit: number = 5): Promise<Route[]> => {
         try {
-            const response = await api.get(`/routes?sort=total_bookings&order=desc&limit=${limit}`);
-            return response as unknown as Route[];
+            const response: any = await api.get('/routes', { params: { sort: 'total_bookings', order: 'desc', limit } });
+            return Array.isArray(response) ? response : (response?.data ?? []);
         } catch (error) {
             console.error('Error fetching popular routes:', error);
             throw error;
@@ -89,7 +91,7 @@ export const routesService = {
         }
     },
     getParticularRoute: async (id: string): Promise<Route> => {
-        const response : Route= await api.get('routes/'+id)
+        const response : Route= await api.get('/routes/'+id)
         return response
     }
 }

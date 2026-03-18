@@ -33,6 +33,7 @@ import cancellationPolicyRoutes from './routes/cancellationPolicyRoutes.js';
 import seatScheduleRoutes from './routes/seatScheduleRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import tripRoutes from './routes/tripRoutes.js';
+import roleRoutes from './routes/roleRoutes.js';
 
 dotenv.config();
 
@@ -81,6 +82,7 @@ app.use('/api/cancellation-policies', cancellationPolicyRoutes);
 app.use('/api/seat-schedules', seatScheduleRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/trips', tripRoutes);
+app.use('/api/roles', roleRoutes);
 
 // 404 handler
 app.use((req, res) => {

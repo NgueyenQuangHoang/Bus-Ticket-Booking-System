@@ -39,9 +39,9 @@ export default function VehiclesTypePage() {
   }, []);
 
   useEffect(() => {
-    const results = vehicleTypes.filter(item => 
-      item.display_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.code.toLowerCase().includes(searchTerm.toLowerCase())
+    const results = vehicleTypes.filter(item =>
+      (item.display_name ?? '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.code ?? '').toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(results);
     setPage(1); // Reset to first page on search

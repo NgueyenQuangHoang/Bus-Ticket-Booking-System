@@ -11,6 +11,8 @@ export interface User {
   updated_at?: Timestamp;
   id: string;
   bus_company_id?: string;
+  role_names?: string;
+  role_ids_list?: string;
 }
 
 export interface Role {

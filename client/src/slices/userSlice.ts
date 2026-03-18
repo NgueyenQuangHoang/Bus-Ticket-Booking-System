@@ -20,11 +20,11 @@ const initialState : UserSliceType = {
 
 export const fetchUsers = createAsyncThunk('user/fetchData', async () => {
     try {
-        const response = authService.getAllUsers()
+        const response = await authService.getAllUsers()
         return response
     } catch (error) {
         console.log(error);
-        return "loi roi"
+        return []
     }
 })
 
@@ -56,7 +56,6 @@ export const removeUser = createAsyncThunk('user/removeUser', async({idU} : {idU
 export const updateUser = createAsyncThunk('user/updateUser', async (input : {user: User, roleId: string}) => {
     const {user, roleId} = input
     await authService.updateUser(user, roleId)
-    await authService.updateRoleUser
     return input
 })
 
@@ -106,7 +105,8 @@ const userSlice = createSlice({
         builder
             .addCase(postNewUser.fulfilled, (state, action) => {
                 const {user, ur} = action.payload
-                state.users = [...state.users, user]
+                const roleName = state.roles.find(r => r.id == ur.role_id)?.role_name || ''
+                state.users = [...state.users, {...user, role_names: roleName, role_ids_list: String(ur.role_id)}]
                 state.user_roles = [...state.user_roles, ur]
             })
 
@@ -119,9 +119,10 @@ const userSlice = createSlice({
         builder
             .addCase(updateUser.fulfilled, (state, action) => {
                 const {user, roleId} = action.payload
+                const roleName = state.roles.find(r => r.id == roleId)?.role_name || ''
                 state.users = state.users.map(item => {
                     if(item.id == user.id){
-                        return user
+                        return {...user, role_names: roleName, role_ids_list: String(roleId)}
                     }
                     return item
                 })

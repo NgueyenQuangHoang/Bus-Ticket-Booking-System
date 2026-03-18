@@ -42,7 +42,7 @@ export default function PolicyTable({
           <tbody className="divide-y divide-slate-200">
             {policies.map((policy) => (
               <tr key={policy.id} className="hover:bg-slate-50 transition-colors">
-                <td className="px-6 py-4 text-sm text-slate-600">
+                <td className="px-6 py-4 text-sm text-slate-600 font-mono">
                   #{policy.id}
                 </td>
                 <td className="px-6 py-4 text-sm font-medium text-slate-800">

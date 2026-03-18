@@ -37,11 +37,8 @@ export default function BusCompanyTable({
                   key={item.id}
                   className="hover:bg-gray-50"
                 >
-                  <td className="px-4 py-3" title={String(item.id)}>
-                    {(() => {
-                        const id = String(item.id);
-                        return id.length > 8 ? id.substring(0, 8) + '. . .' : id;
-                    })()}
+                  <td className="px-4 py-3 font-mono text-sm text-gray-600" title={String(item.id)}>
+                    #{String(item.id).slice(0, 8)}
                   </td>
 
                   <td className="px-4 py-3 font-medium">

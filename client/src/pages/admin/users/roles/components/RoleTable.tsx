@@ -3,7 +3,7 @@ import type { UserRole } from '../RolesPage';
 
 interface RoleTableProps {
   roles: UserRole[];
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
   onEdit: (role: UserRole) => void;
 }
 
@@ -31,7 +31,7 @@ export default function RoleTable({ roles, onDelete, onEdit }: RoleTableProps) {
           <tbody className='divide-y divide-slate-200'>
             {roles.map((role) => (
               <tr key={role.id} className='hover:bg-slate-50 transition-colors'>
-                <td className='px-6 py-4 text-sm text-slate-600 font-medium'>#{role.id}</td>
+                <td className='px-6 py-4 text-sm text-slate-600 font-medium font-mono'>#{role.id.slice(0, 8)}</td>
                 <td className='px-6 py-4'>
                   <div className='text-sm font-medium text-slate-900'>{role.userName}</div>
                 </td>

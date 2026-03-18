@@ -51,7 +51,7 @@ export const fetchPopularRoutes = createAsyncThunk(
         if (!departureCity || !arrivalCity) return null;
 
         return {
-          id: pr.popular_route_id,
+          id: pr.id,
           routeId: pr.route_id,
           image: pr.image_url,
           title: `${departureCity.city_name} - ${arrivalCity.city_name}`,

@@ -77,6 +77,7 @@ CREATE TABLE bus_companies (
 -- 7. vehicle_types
 CREATE TABLE vehicle_types (
   vehicle_type_id VARCHAR(36) PRIMARY KEY,
+  code VARCHAR(100) NOT NULL DEFAULT '',
   type_name VARCHAR(100) NOT NULL,
   description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

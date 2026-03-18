@@ -10,7 +10,7 @@ export async function findAll(filters = {}) {
   let params = [];
 
   if (filters.search) {
-    where.push('(company_name LIKE ? OR email LIKE ? OR phone LIKE ?)');
+    where.push('(company_name LIKE ? OR contact_email LIKE ? OR contact_phone LIKE ?)');
     params.push(`%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`);
   }
 
@@ -43,12 +43,13 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO bus_companies (id, company_name, logo, description, phone, email, address, rating, status, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO bus_companies (id, company_name, image, license_number, contact_phone, contact_email, address, description, rating_avg, rating_count, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      id, data.company_name, data.logo || null, data.description || null,
-      data.phone || null, data.email || null, data.address || null,
-      data.rating || 0, data.status || 'active', now, now
+      id, data.company_name, data.image || null, data.license_number || null,
+      data.contact_phone || null, data.contact_email || null, data.address || null,
+      data.description || null, data.rating_avg || 0, data.rating_count || 0,
+      data.status || 'ACTIVE', now, now
     ]
   );
   return findById(id);
@@ -59,12 +60,14 @@ export async function update(id, data) {
   const params = [];
 
   if (data.company_name !== undefined) { fields.push('company_name = ?'); params.push(data.company_name); }
-  if (data.logo !== undefined) { fields.push('logo = ?'); params.push(data.logo); }
-  if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
-  if (data.phone !== undefined) { fields.push('phone = ?'); params.push(data.phone); }
-  if (data.email !== undefined) { fields.push('email = ?'); params.push(data.email); }
+  if (data.image !== undefined) { fields.push('image = ?'); params.push(data.image); }
+  if (data.license_number !== undefined) { fields.push('license_number = ?'); params.push(data.license_number); }
+  if (data.contact_phone !== undefined) { fields.push('contact_phone = ?'); params.push(data.contact_phone); }
+  if (data.contact_email !== undefined) { fields.push('contact_email = ?'); params.push(data.contact_email); }
   if (data.address !== undefined) { fields.push('address = ?'); params.push(data.address); }
-  if (data.rating !== undefined) { fields.push('rating = ?'); params.push(data.rating); }
+  if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
+  if (data.rating_avg !== undefined) { fields.push('rating_avg = ?'); params.push(data.rating_avg); }
+  if (data.rating_count !== undefined) { fields.push('rating_count = ?'); params.push(data.rating_count); }
   if (data.status !== undefined) { fields.push('status = ?'); params.push(data.status); }
 
   if (fields.length === 0) return findById(id);
@@ -78,6 +81,66 @@ export async function update(id, data) {
 }
 
 export async function remove(id) {
-  const [result] = await pool.query('DELETE FROM bus_companies WHERE id = ?', [id]);
-  return result.affectedRows > 0;
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    // Get all buses for this company
+    const [buses] = await conn.query('SELECT id FROM buses WHERE bus_company_id = ?', [id]);
+    const busIds = buses.map(b => b.id);
+
+    if (busIds.length > 0) {
+      const placeholders = busIds.map(() => '?').join(',');
+
+      // Get all schedules for these buses
+      const [schedules] = await conn.query(
+        `SELECT id FROM schedules WHERE bus_id IN (${placeholders})`, busIds
+      );
+      const scheduleIds = schedules.map(s => s.id);
+
+      if (scheduleIds.length > 0) {
+        const sPlaceholders = scheduleIds.map(() => '?').join(',');
+
+        // Get ticket IDs for these schedules
+        const [tickets] = await conn.query(
+          `SELECT id FROM tickets WHERE schedule_id IN (${sPlaceholders})`, scheduleIds
+        );
+        const ticketIds = tickets.map(t => t.id);
+
+        if (ticketIds.length > 0) {
+          const tPlaceholders = ticketIds.map(() => '?').join(',');
+          // Nullify payment references to these tickets
+          await conn.query(
+            `UPDATE payments SET ticket_id = NULL WHERE ticket_id IN (${tPlaceholders})`, ticketIds
+          );
+        }
+
+        // Delete seat_schedules (RESTRICT on schedule_id)
+        await conn.query(
+          `DELETE FROM seat_schedules WHERE schedule_id IN (${sPlaceholders})`, scheduleIds
+        );
+
+        // Delete tickets (passengers cascade via FK)
+        await conn.query(
+          `DELETE FROM tickets WHERE schedule_id IN (${sPlaceholders})`, scheduleIds
+        );
+
+        // Delete schedules
+        await conn.query(
+          `DELETE FROM schedules WHERE id IN (${sPlaceholders})`, scheduleIds
+        );
+      }
+    }
+
+    // Delete bus company — buses cascade (bus_images, seats, bus_reviews all have ON DELETE CASCADE)
+    const [result] = await conn.query('DELETE FROM bus_companies WHERE id = ?', [id]);
+
+    await conn.commit();
+    return result.affectedRows > 0;
+  } catch (err) {
+    await conn.rollback();
+    throw err;
+  } finally {
+    conn.release();
+  }
 }

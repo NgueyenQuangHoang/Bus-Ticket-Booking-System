@@ -32,7 +32,7 @@ export default function RouteTable({routes, stationMapping: stations} : PropType
                     {routes.map((item, index) => {
                         return (
                             <TableRow key={index} hover className="transition-colors">
-                                <TableCell className="text-gray-600">{index+1}</TableCell>
+                                <TableCell className="text-gray-600 font-mono">#{index+1}</TableCell>
                                 <TableCell className="font-medium">{stations[item.departure_station_id]}</TableCell>
                                 <TableCell className="font-medium">{stations[item.arrival_station_id]}</TableCell>
                                 <TableCell className="font-medium">{item.distance} km</TableCell>

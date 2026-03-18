@@ -5,8 +5,8 @@ import type { Seat } from '../../types/seat';
 const busService = {
   getAllBuses: async (): Promise<Bus[]> => {
     try {
-      const response = await api.get('/buses');
-      return response as unknown as Bus[];
+      const response: any = await api.get('/buses', { params: { limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
     } catch (error) {
       console.error('Error fetching buses:', error);
       return [];
@@ -15,8 +15,8 @@ const busService = {
 
   getBusesByCompanyId: async (companyId: string): Promise<Bus[]> => {
     try {
-      const response = await api.get(`/buses?bus_company_id=${companyId}`);
-      return response as unknown as Bus[];
+      const response: any = await api.get('/buses', { params: { bus_company_id: companyId, limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
     } catch (error) {
       console.error(`Error fetching buses for company ${companyId}:`, error);
       return [];
@@ -25,12 +25,41 @@ const busService = {
 
   getAllBusLayouts: async (): Promise<import('../../types/bus').BusLayout[]> => {
     try {
-      const response = await api.get('/bus-layouts');
-      return response as unknown as import('../../types/bus').BusLayout[];
+      const response: any = await api.get('/bus-layouts', { params: { is_template: 1, limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
     } catch (error) {
       console.error('Error fetching bus layouts:', error);
       return [];
     }
+  },
+
+  getAllBusLayoutsAll: async (): Promise<import('../../types/bus').BusLayout[]> => {
+    try {
+      const response: any = await api.get('/bus-layouts', { params: { limit: 10000 } });
+      return Array.isArray(response) ? response : (response?.data ?? []);
+    } catch (error) {
+      console.error('Error fetching all bus layouts:', error);
+      return [];
+    }
+  },
+
+  getBusLayoutById: async (id: string): Promise<import('../../types/bus').BusLayout | null> => {
+    try {
+      const response: any = await api.get(`/bus-layouts/${id}`);
+      return response?.data ?? response ?? null;
+    } catch (error) {
+      console.error(`Error fetching bus layout ${id}:`, error);
+      return null;
+    }
+  },
+
+  cloneLayout: async (sourceId: string, busCompanyId: string, layoutName: string): Promise<import('../../types/bus').BusLayout> => {
+    const response: any = await api.post(`/bus-layouts/${sourceId}/clone`, {
+      bus_company_id: busCompanyId,
+      layout_name: layoutName,
+      is_template: true,
+    });
+    return response?.data ?? response;
   },
 
   getBusById: async (id: number | string): Promise<Bus | null> => {

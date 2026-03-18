@@ -4,8 +4,9 @@ import type { City } from '../types/index';
 export const cityService = {
   getAllCities: async (): Promise<City[]> => {
     try {
-      const response = await api.get<City[]>('/cities');
-      return response as unknown as City[];
+      const response = await api.get<any>('/cities');
+      // Extract data if response is a paginated object
+      return response.data ? response.data : response;
     } catch (error) {
       console.error('Error fetching cities:', error);
       throw error;

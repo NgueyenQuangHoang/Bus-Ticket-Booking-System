@@ -32,19 +32,33 @@ export const adminDashboardService = {
             const response: any = await api.get('/dashboard/overview');
 
             // Map backend response to match the existing frontend interface format
-            return {
+            const customerStats = response.customerStats ?? {};
+        return {
                 system: {
-                    totalRevenue: response.totalRevenue ?? response.system?.totalRevenue ?? 0,
-                    totalTickets: response.totalTickets ?? response.system?.totalTickets ?? 0,
-                    totalUsers: response.totalUsers ?? response.system?.totalUsers ?? 0,
-                    totalCompanies: response.totalCompanies ?? response.system?.totalCompanies ?? 0,
-                    newCustomers: response.newCustomers ?? response.system?.newCustomers ?? 0,
-                    loyalCustomers: response.loyalCustomers ?? response.system?.loyalCustomers ?? 0,
-                    cancellationRate: response.cancellationRate ?? response.system?.cancellationRate ?? 0
+                    totalRevenue: Number(response.totalRevenue ?? 0),
+                    totalTickets: Number(response.totalTickets ?? 0),
+                    totalUsers: Number(response.totalUsers ?? 0),
+                    totalCompanies: Number(response.totalCompanies ?? 0),
+                    newCustomers: Number(customerStats.newCustomers ?? response.newCustomers ?? 0),
+                    loyalCustomers: Number(customerStats.loyalCustomers ?? response.loyalCustomers ?? 0),
+                    cancellationRate: Number(response.cancellationRate ?? 0),
                 },
-                revenueChartData: response.revenueChartData ?? [],
-                companyPerformance: response.companyPerformance ?? [],
-                paymentMethodStats: response.paymentMethodStats ?? []
+                revenueChartData: (response.revenueByDay ?? response.revenueChartData ?? []).map((r: any) => ({
+                    date: r.date,
+                    revenue: Number(r.revenue ?? 0),
+                    ticketsSold: Number(r.ticketsSold ?? 0),
+                })),
+                companyPerformance: (response.companyPerformance ?? []).map((c: any) => ({
+                    id: c.id,
+                    name: c.name ?? c.company_name ?? '',
+                    revenue: Number(c.revenue ?? 0),
+                    ticketsSold: Number(c.ticketsSold ?? 0),
+                    rating: Number(c.rating ?? 0),
+                })),
+                paymentMethodStats: (response.paymentMethodStats ?? []).map((p: any) => ({
+                    name: p.name,
+                    value: Number(p.value ?? 0),
+                })),
             };
 
         } catch (error) {

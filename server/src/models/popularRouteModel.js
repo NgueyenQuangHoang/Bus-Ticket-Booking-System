@@ -4,18 +4,18 @@ import { generateUUID, nowMySQL } from '../utils/helpers.js';
 export async function findAll() {
   const [rows] = await pool.query(
     `SELECT pr.*,
-       r.distance, r.duration,
+       r.base_price, r.distance, r.duration,
        ds.station_name AS departure_station_name,
-       dc.city_name AS departure_city_name, dc.image AS departure_city_image,
+       dc.city_name AS departure_city_name, dc.image_city AS departure_city_image,
        ars.station_name AS arrival_station_name,
-       ac.city_name AS arrival_city_name, ac.image AS arrival_city_image
+       ac.city_name AS arrival_city_name, ac.image_city AS arrival_city_image
      FROM popular_routes pr
      LEFT JOIN routes r ON pr.route_id = r.id
      LEFT JOIN stations ds ON r.departure_station_id = ds.id
      LEFT JOIN stations ars ON r.arrival_station_id = ars.id
      LEFT JOIN cities dc ON ds.city_id = dc.id
      LEFT JOIN cities ac ON ars.city_id = ac.id
-     ORDER BY pr.sort_order ASC, pr.created_at DESC`
+     ORDER BY pr.priority ASC, pr.created_at DESC`
   );
   return rows;
 }
@@ -23,7 +23,7 @@ export async function findAll() {
 export async function findById(id) {
   const [rows] = await pool.query(
     `SELECT pr.*,
-       r.distance, r.duration,
+       r.base_price, r.distance, r.duration,
        ds.station_name AS departure_station_name,
        dc.city_name AS departure_city_name,
        ars.station_name AS arrival_station_name,
@@ -41,15 +41,12 @@ export async function findById(id) {
 }
 
 export async function create(data) {
-  const id = generateUUID();
+  const id = data.id || generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO popular_routes (id, route_id, image, sort_order, is_active, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [
-      id, data.route_id, data.image || null,
-      data.sort_order || 0, data.is_active !== undefined ? data.is_active : true, now, now
-    ]
+    `INSERT INTO popular_routes (id, route_id, image_url, priority, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, data.route_id, data.image_url || null, data.priority || 0, now, now]
   );
   return findById(id);
 }
@@ -59,9 +56,8 @@ export async function update(id, data) {
   const params = [];
 
   if (data.route_id !== undefined) { fields.push('route_id = ?'); params.push(data.route_id); }
-  if (data.image !== undefined) { fields.push('image = ?'); params.push(data.image); }
-  if (data.sort_order !== undefined) { fields.push('sort_order = ?'); params.push(data.sort_order); }
-  if (data.is_active !== undefined) { fields.push('is_active = ?'); params.push(data.is_active); }
+  if (data.image_url !== undefined) { fields.push('image_url = ?'); params.push(data.image_url); }
+  if (data.priority !== undefined) { fields.push('priority = ?'); params.push(data.priority); }
 
   if (fields.length === 0) return findById(id);
 

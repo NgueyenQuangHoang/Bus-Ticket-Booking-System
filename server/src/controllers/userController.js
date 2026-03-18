@@ -47,6 +47,10 @@ export const create = async (req, res, next) => {
 
     const user = await userModel.create(data);
 
+    if (data.role_id && user) {
+      await userModel.updateUserRoles(user.id, [data.role_id]);
+    }
+
     res.status(201).json({ success: true, data: user, message: 'User created successfully' });
   } catch (err) {
     next(err);
@@ -60,7 +64,14 @@ export const update = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    const user = await userModel.update(req.params.id, req.body);
+    const data = { ...req.body };
+    if (data.password) {
+      data.password = await hashPassword(data.password);
+    } else {
+      delete data.password;
+    }
+
+    const user = await userModel.update(req.params.id, data);
 
     res.json({ success: true, data: user, message: 'User updated successfully' });
   } catch (err) {
@@ -95,9 +106,9 @@ export const getUserRoles = async (req, res, next) => {
 
 export const updateUserRoles = async (req, res, next) => {
   try {
-    const { role_ids } = req.body;
+    const role_ids = req.body.role_ids ?? req.body.roleIds;
 
-    if (!role_ids || !Array.isArray(role_ids)) {
+    if (!Array.isArray(role_ids)) {
       return res.status(400).json({ success: false, message: 'role_ids must be an array' });
     }
 

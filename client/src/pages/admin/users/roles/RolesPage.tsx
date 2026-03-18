@@ -1,32 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import RoleHeader from "./components/RoleHeader";
 import RoleTable from "./components/RoleTable";
 import RoleFormModal from "./components/RoleFormModal";
 import UserSearch from "../components/UserSearch";
+import { authService } from "../../../../services/authService";
+import api from "../../../../api/api";
 
 export interface UserRole {
-  id: number;
+  id: string;
   userName: string;
-  role: "ADMIN" | "USER" | "BUS_COMPANY";
+  role: string;
+  role_id: string;
 }
 
-const initialRoles: UserRole[] = [
-  { id: 1, userName: "Nguyễn Phát", role: "USER" },
-  { id: 2, userName: "Admin System", role: "ADMIN" },
-  { id: 3, userName: "áljdf alsddf", role: "USER" },
-  { id: 4, userName: "áljdf laf", role: "USER" },
-  { id: 5, userName: "tho ákđ", role: "USER" },
-  { id: 6, userName: "Nhà xe Minh", role: "BUS_COMPANY" },
-];
-
 export default function RolesPage() {
-  const [roles, setRoles] = useState<UserRole[]>(initialRoles);
+  const [roles, setRoles] = useState<UserRole[]>([]);
+  const [allUsers, setAllUsers] = useState<{ id: string; userName: string }[]>([]);
+  const [availableRoles, setAvailableRoles] = useState<{ id: string; role_name: string }[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
 
-  const handleDelete = (id: number) => {
+  const fetchData = async () => {
+    const [users, rolesData] = await Promise.all([
+      authService.getAllUsers(),
+      authService.getRoles(),
+    ]);
+
+    const userList = (users || []).map((u: any) => ({
+      id: u.id,
+      userName: `${u.first_name || ""} ${u.last_name || ""}`.trim(),
+    }));
+    setAllUsers(userList);
+    setAvailableRoles((rolesData as any) || []);
+
+    const userRoles: UserRole[] = (users || [])
+      .filter((u: any) => u.role_names)
+      .map((u: any) => {
+        const roleNames = (u.role_names as string).split(",");
+        const roleIds = u.role_ids_list ? (u.role_ids_list as string).split(",") : [];
+        return {
+          id: u.id,
+          userName: `${u.first_name || ""} ${u.last_name || ""}`.trim(),
+          role: roleNames[0] || "",
+          role_id: roleIds[0] || "",
+        };
+      });
+    setRoles(userRoles);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleDelete = (id: string) => {
     Swal.fire({
       title: "Xác nhận xóa?",
       text: "Bạn có chắc chắn muốn xóa phân quyền này không?",
@@ -36,14 +64,11 @@ export default function RolesPage() {
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Xóa bỏ",
       cancelButtonText: "Hủy",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        setRoles(roles.filter((r) => r.id !== id));
-        Swal.fire(
-          "Đã xóa!",
-          "Role assignment deleted successfully.",
-          "success"
-        );
+        await api.put(`/users/${id}/roles`, { role_ids: [] });
+        setRoles((prev) => prev.filter((r) => r.id !== id));
+        Swal.fire("Đã xóa!", "Phân quyền đã được xóa thành công.", "success");
       }
     });
   };
@@ -53,16 +78,13 @@ export default function RolesPage() {
     setIsModalOpen(true);
   };
 
-  const handleSave = (roleData: Omit<UserRole, "id"> | UserRole) => {
-    if ("id" in roleData) {
-      // Update
-      setRoles(roles.map((r) => (r.id === roleData.id ? roleData : r)));
-    } else {
-      // Add
-      const newId = Math.max(...roles.map((r) => r.id), 0) + 1;
-      const newRole = { ...roleData, id: newId } as UserRole;
-      setRoles([newRole, ...roles]);
-    }
+  const handleSave = async (data: UserRole) => {
+    await api.put(`/users/${data.id}/roles`, { role_ids: [data.role_id] });
+    setRoles((prev) => {
+      const exists = prev.find((r) => r.id === data.id);
+      if (exists) return prev.map((r) => (r.id === data.id ? data : r));
+      return [data, ...prev];
+    });
   };
 
   const filteredRoles = roles.filter(
@@ -95,6 +117,8 @@ export default function RolesPage() {
         onClose={() => setIsModalOpen(false)}
         onSave={handleSave}
         role={selectedRole}
+        allUsers={allUsers}
+        availableRoles={availableRoles}
       />
     </div>
   );

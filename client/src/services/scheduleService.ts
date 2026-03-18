@@ -13,9 +13,10 @@ export const scheduleService = {
     getAllSchedules: async (): Promise<ScheduleUI[]> => {
         try {
             // Backend does JOINs and returns enriched data with bus/route info
-            const schedules: any[] = await api.get('/schedules');
+            const res: any = await api.get('/schedules', { params: { limit: 10000 } });
+            const schedules: any[] = Array.isArray(res) ? res : (res?.data ?? []);
 
-            const data = (Array.isArray(schedules) ? schedules : []).map(schedule => {
+            const data = schedules.map(schedule => {
                 return {
                     ...schedule,
                     route_name: schedule.route_name || (schedule.route ? schedule.route.route_name : `Route #${schedule.route_id}`),
@@ -24,9 +25,9 @@ export const scheduleService = {
                     departure_time_str: new Date(schedule.departure_time).toLocaleString('vi-VN', {
                         hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric'
                     }),
-                    total_seats: schedule.total_seats || 0,
-                    available_seats: schedule.available_seats || 0,
-                    available_seat: schedule.available_seats || 0, // For backward compatibility
+                    total_seats: schedule.calculated_total_seats ?? schedule.total_seats ?? 0,
+                    available_seats: schedule.calculated_available_seats ?? schedule.available_seats ?? 0,
+                    available_seat: schedule.calculated_available_seats ?? schedule.available_seats ?? 0,
                     schedule_id: schedule.id,
                     seat_schedules: schedule.seat_schedules || []
                 };
@@ -61,8 +62,8 @@ export const scheduleService = {
                 const companyId = schedule.bus_company_id || (schedule.bus ? (schedule.bus.bus_company_id ?? schedule.bus.company_id) : null);
                 if (!companyId) return;
 
-                const totalSeats = schedule.total_seats || 0;
-                const availableSeats = schedule.available_seats || 0;
+                const totalSeats = schedule.calculated_total_seats ?? schedule.total_seats ?? 0;
+                const availableSeats = schedule.calculated_available_seats ?? schedule.available_seats ?? 0;
 
                 const key = String(companyId);
                 const current = companyMap.get(key) || {

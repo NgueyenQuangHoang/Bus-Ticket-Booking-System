@@ -47,7 +47,7 @@ export default function ScheduleTable({
             {data.map((item) => (
               <tr key={item.schedule_id} className='hover:bg-slate-50 transition-colors'>
                 {/* ID */}
-                <td className='px-6 py-4 text-sm text-slate-600 font-medium'>
+                <td className='px-6 py-4 text-sm text-slate-600 font-medium font-mono'>
                   #{item.schedule_id}
                 </td>
 

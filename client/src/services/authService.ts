@@ -123,8 +123,8 @@ export const authService = {
 
     getAllUsers: async (): Promise<User[]> => {
         try {
-            const response: User[] = await api.get('/users');
-            return response;
+            const response: any = await api.get('/users', { params: { limit: 10000 } });
+            return Array.isArray(response) ? response : (response?.data ?? []);
         } catch (error) {
             console.log(error);
             return [];
@@ -143,20 +143,12 @@ export const authService = {
     },
 
     updateStatus: async (uFix: User): Promise<void> => {
-        try {
-            await api.put('/users/' + uFix.id, { status: uFix.status });
-        } catch (error) {
-            console.log(error);
-        }
+        await api.put('/users/' + uFix.id, { status: uFix.status });
     },
 
     updateUser: async (uFix: User, role: string): Promise<void> => {
-        try {
-            await api.put('/users/' + uFix.id, uFix);
-            await api.put(`/users/${uFix.id}/roles`, { roleIds: [role] });
-        } catch (error) {
-            console.log(error);
-        }
+        await api.put('/users/' + uFix.id, uFix);
+        await api.put(`/users/${uFix.id}/roles`, { roleIds: [role] });
     },
 
     createRole: async (role: Role) => {

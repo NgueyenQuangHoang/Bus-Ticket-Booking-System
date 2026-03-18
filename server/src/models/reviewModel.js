@@ -15,7 +15,7 @@ export async function findAll(filters = {}) {
   }
 
   if (filters.bus_company_id) {
-    where.push('b.bus_company_id = ?');
+    where.push('br.bus_company_id = ?');
     params.push(filters.bus_company_id);
   }
 
@@ -30,7 +30,7 @@ export async function findAll(filters = {}) {
   }
 
   if (filters.search) {
-    where.push('(br.comment LIKE ? OR u.full_name LIKE ?)');
+    where.push('(br.review LIKE ? OR CONCAT(u.first_name, " ", u.last_name) LIKE ?)');
     params.push(`%${filters.search}%`, `%${filters.search}%`);
   }
 
@@ -40,14 +40,14 @@ export async function findAll(filters = {}) {
     `SELECT COUNT(*) AS total
      FROM bus_reviews br
      LEFT JOIN users u ON br.user_id = u.id
-     LEFT JOIN buses b ON br.bus_id = b.id
      ${whereClause}`,
     params
   );
 
   const [rows] = await pool.query(
-    `SELECT br.*, u.full_name AS user_name, u.avatar AS user_avatar,
-       b.bus_name, bc.company_name
+    `SELECT br.*,
+       u.first_name AS user_first_name, u.last_name AS user_last_name, u.email AS user_email,
+       b.name AS bus_name, bc.company_name
      FROM bus_reviews br
      LEFT JOIN users u ON br.user_id = u.id
      LEFT JOIN buses b ON br.bus_id = b.id
@@ -58,13 +58,26 @@ export async function findAll(filters = {}) {
     [...params, limit, offset]
   );
 
-  return { data: rows, total: countResult[0].total };
+  // Map to include user object for frontend compatibility
+  const data = rows.map(r => ({
+    ...r,
+    user: r.user_first_name ? {
+      id: r.user_id,
+      first_name: r.user_first_name,
+      last_name: r.user_last_name,
+      email: r.user_email,
+    } : undefined,
+    bus: r.bus_name ? { id: r.bus_id, name: r.bus_name } : undefined,
+  }));
+
+  return { data, total: countResult[0].total };
 }
 
 export async function findById(id) {
   const [rows] = await pool.query(
-    `SELECT br.*, u.full_name AS user_name, u.avatar AS user_avatar,
-       b.bus_name, bc.company_name
+    `SELECT br.*,
+       u.first_name AS user_first_name, u.last_name AS user_last_name, u.email AS user_email,
+       b.name AS bus_name, bc.company_name
      FROM bus_reviews br
      LEFT JOIN users u ON br.user_id = u.id
      LEFT JOIN buses b ON br.bus_id = b.id
@@ -72,16 +85,23 @@ export async function findById(id) {
      WHERE br.id = ?`,
     [id]
   );
-  return rows[0] || null;
+  if (!rows[0]) return null;
+  const r = rows[0];
+  return {
+    ...r,
+    user: r.user_first_name ? { id: r.user_id, first_name: r.user_first_name, last_name: r.user_last_name, email: r.user_email } : undefined,
+    bus: r.bus_name ? { id: r.bus_id, name: r.bus_name } : undefined,
+  };
 }
 
 export async function create(data) {
-  const id = generateUUID();
+  const id = data.id || generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO bus_reviews (id, bus_id, user_id, rating, comment, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [id, data.bus_id, data.user_id, data.rating, data.comment || null, now, now]
+    `INSERT INTO bus_reviews (id, user_id, bus_id, bus_company_id, ticket_id, rating, review, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [id, data.user_id, data.bus_id, data.bus_company_id || null, data.ticket_id || null,
+     data.rating, data.review || null, data.status || 'VISIBLE', now, now]
   );
   return findById(id);
 }
@@ -91,7 +111,8 @@ export async function update(id, data) {
   const params = [];
 
   if (data.rating !== undefined) { fields.push('rating = ?'); params.push(data.rating); }
-  if (data.comment !== undefined) { fields.push('comment = ?'); params.push(data.comment); }
+  if (data.review !== undefined) { fields.push('review = ?'); params.push(data.review); }
+  if (data.status !== undefined) { fields.push('status = ?'); params.push(data.status); }
 
   if (fields.length === 0) return findById(id);
 

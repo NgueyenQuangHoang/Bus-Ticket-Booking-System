@@ -31,7 +31,7 @@ export async function findAll(filters = {}) {
      FROM seats s
      LEFT JOIN seat_types st ON s.seat_type_id = st.seat_type_id
      ${whereClause}
-     ORDER BY s.floor ASC, s.row_pos ASC, s.col_pos ASC
+     ORDER BY s.seat_number ASC
      LIMIT ? OFFSET ?`,
     [...params, limit, offset]
   );
@@ -54,12 +54,13 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO seats (id, bus_id, seat_label, seat_type_id, row_pos, col_pos, floor, price, status, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO seats (id, bus_id, seat_number, seat_label, seat_type_id, price_extra, is_available_for_booking, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      id, data.bus_id, data.seat_label, data.seat_type_id || null,
-      data.row_pos, data.col_pos, data.floor || 1,
-      data.price || 0, data.status || 'available', now, now
+      id, data.bus_id, data.seat_number || null, data.seat_label || null,
+      data.seat_type_id || null, data.price_extra || 0,
+      data.is_available_for_booking !== undefined ? data.is_available_for_booking : true,
+      data.status || 'AVAILABLE', now, now
     ]
   );
   return findById(id);
@@ -70,12 +71,11 @@ export async function update(id, data) {
   const params = [];
 
   if (data.bus_id !== undefined) { fields.push('bus_id = ?'); params.push(data.bus_id); }
+  if (data.seat_number !== undefined) { fields.push('seat_number = ?'); params.push(data.seat_number); }
   if (data.seat_label !== undefined) { fields.push('seat_label = ?'); params.push(data.seat_label); }
   if (data.seat_type_id !== undefined) { fields.push('seat_type_id = ?'); params.push(data.seat_type_id); }
-  if (data.row_pos !== undefined) { fields.push('row_pos = ?'); params.push(data.row_pos); }
-  if (data.col_pos !== undefined) { fields.push('col_pos = ?'); params.push(data.col_pos); }
-  if (data.floor !== undefined) { fields.push('floor = ?'); params.push(data.floor); }
-  if (data.price !== undefined) { fields.push('price = ?'); params.push(data.price); }
+  if (data.price_extra !== undefined) { fields.push('price_extra = ?'); params.push(data.price_extra); }
+  if (data.is_available_for_booking !== undefined) { fields.push('is_available_for_booking = ?'); params.push(data.is_available_for_booking); }
   if (data.status !== undefined) { fields.push('status = ?'); params.push(data.status); }
 
   if (fields.length === 0) return findById(id);

@@ -106,10 +106,6 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
       bus_company_id: role_id === '3' ? formData.bus_company_id : undefined
     };
 
-    if (user) {
-      finalData.password = user.password;
-    }
-
     if (statusForm == 'add') {
       onAdd(finalData, role_id);
     } else if (user) {
@@ -119,11 +115,11 @@ export default function AddUserModal({ isOpen, onClose, onAdd, user, statusForm,
         last_name: formData.last_name,
         email: formData.email,
         phone: formData.phone || '',
-        password: formData.password ? formData.password : user.password,
+        password: formData.password || '',
         bus_company_id: role_id === '3' ? formData.bus_company_id : undefined,
         updated_at: (new Date()).toString()
       }
-      
+
       Edit(newUser, role_id)
     }
     onClose();

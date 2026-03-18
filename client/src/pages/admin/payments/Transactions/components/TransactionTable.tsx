@@ -82,7 +82,7 @@ export default function TransactionTable({
             <tbody className='divide-y divide-slate-200'>
               {transactions.map((t, index) => (
                 <tr key={t.id} className='hover:bg-slate-50 transition-colors'>
-                  <td className='px-6 py-4 text-sm text-slate-600 font-medium'>{(currentPage - 1) * 10 + index + 1}</td>
+                  <td className='px-6 py-4 text-sm text-slate-600 font-medium font-mono'>#{(currentPage - 1) * 10 + index + 1}</td>
                   <td className='px-6 py-4 text-sm font-medium text-slate-900'>{t.transaction_code}</td>
                   <td className='px-6 py-4 text-sm text-slate-600'>{t.ticket_code || 'N/A'}</td>
                   <td className='px-6 py-4 text-sm text-slate-900'>{t.provider_name || getProviderName(Number(t.payment_provider_id))}</td>

@@ -20,9 +20,9 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO seat_types (seat_type_id, type_name, description, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?)`,
-    [id, data.type_name, data.description || null, now, now]
+    `INSERT INTO seat_types (seat_type_id, type_name, description, price_multiplier, color, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [id, data.type_name, data.description || null, data.price_multiplier || 1.00, data.color || null, now, now]
   );
   return findById(id);
 }
@@ -33,6 +33,8 @@ export async function update(id, data) {
 
   if (data.type_name !== undefined) { fields.push('type_name = ?'); params.push(data.type_name); }
   if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
+  if (data.price_multiplier !== undefined) { fields.push('price_multiplier = ?'); params.push(data.price_multiplier); }
+  if (data.color !== undefined) { fields.push('color = ?'); params.push(data.color); }
 
   if (fields.length === 0) return findById(id);
 

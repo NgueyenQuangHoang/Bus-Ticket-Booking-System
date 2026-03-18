@@ -8,10 +8,9 @@ interface UserTableProps {
   onView: (user: User) => void;
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
-  roles: {[x:string]:string}
 }
 
-export default function UserTable({ users, onToggleStatus, onView, onEdit, onDelete, roles }: UserTableProps) {
+export default function UserTable({ users, onToggleStatus, onView, onEdit, onDelete }: UserTableProps) {
   return (
     <div className='bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden'>
       <div className='overflow-x-auto'>
@@ -30,7 +29,7 @@ export default function UserTable({ users, onToggleStatus, onView, onEdit, onDel
           <tbody className='divide-y divide-slate-200'>
             {users.map((user, index) => (
               <tr key={index} className='hover:bg-slate-50 transition-colors'>
-                <td className='px-6 py-4 text-sm text-slate-600 font-medium'>#{index+1}</td>
+                <td className='px-6 py-4 text-sm text-slate-600 font-medium font-mono'>#{index+1}</td>
                 <td className='px-6 py-4'>
                   <div className='text-sm font-medium text-slate-900'>{user.first_name} {user.last_name}</div>
                 </td>
@@ -39,13 +38,13 @@ export default function UserTable({ users, onToggleStatus, onView, onEdit, onDel
                 <td className='px-6 py-4 text-center'>
                   <UserStatusBadge status={user.status ? user.status : 'ACTIVE'} />
                 </td>
-                <td className='px-6 py-4 text-sm text-slate-600 text-center'>{roles[user.id]}</td>
+                <td className='px-6 py-4 text-sm text-slate-600 text-center'>{user.role_names || ''}</td>
                 <td className='px-6 py-4'>
                   <div className='flex items-center justify-end gap-2'>
                       <button 
                           onClick={() => {
                             if (user.status === 'ACTIVE'){
-                              onToggleStatus(user.id ? user.id : "", 'LOCKED')
+                              onToggleStatus(user.id ? user.id : "", 'INACTIVE')
                             }else{
                               onToggleStatus(user.id ? user.id : "", 'ACTIVE')
                             }

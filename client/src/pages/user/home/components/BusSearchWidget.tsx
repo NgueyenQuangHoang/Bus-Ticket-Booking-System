@@ -224,9 +224,9 @@ export default function BusSearchWidget() {
   };
 
   // Sắp xếp cities theo tên
-  const sortedCities = [...cities].sort((a, b) =>
+  const sortedCities = Array.isArray(cities) ? [...cities].sort((a, b) =>
     a.city_name.localeCompare(b.city_name, 'vi')
-  );
+  ) : [];
 
   return (
     <div className="font-['Segoe_UI'] w-full flex justify-center">

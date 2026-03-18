@@ -22,6 +22,8 @@ export default function BusesPage() {
     const [buses, setBuses] = useState<Bus[]>([]);
     const [companies, setCompanies] = useState<BusCompany[]>([]);
     const [layouts, setLayouts] = useState<BusLayout[]>([]);
+    // All layouts (including non-template clones) used for table enrichment
+    const [allLayouts, setAllLayouts] = useState<BusLayout[]>([]);
     const [vehicleTypes, setVehicleTypes] = useState<VehicleType[]>([]);
     const [loading, setLoading] = useState(true);
     const [openModal, setOpenModal] = useState(false);
@@ -33,7 +35,7 @@ export default function BusesPage() {
             const [busesData, companiesData, layoutsData, typesData] = await Promise.all([
                 busService.getAllBuses(),
                 busCompanyService.getAllBusCompanies(),
-                busService.getAllBusLayouts(),
+                busService.getAllBusLayoutsAll(),
                 vehicleTypeService.getAllVehicleTypes()
             ]);
 
@@ -55,15 +57,16 @@ export default function BusesPage() {
                     : [])
                 : (companiesData || []);
 
-            // Only allow choosing seat layouts that are templates (danh sách sơ đồ mẫu)
-            const templateLayouts = (layoutsData || []).filter((layout) => layout.is_template === true);
+            // Only template layouts (is_template=1) for the dropdown choices
+            // MySQL returns is_template as 1/0 (number), not true/false
+            const templateLayouts = (layoutsData || []).filter((layout) => !!layout.is_template);
 
             const scopedLayouts = isBusCompany
                 ? (busCompanyId
                     ? templateLayouts.filter((layout) => {
                         const layoutCompanyId = layout.bus_company_id ?? layout.company_id;
                         if (!layoutCompanyId) {
-                            return true; // admin/global template available to all bus companies
+                            return true; // global template available to all bus companies
                         }
                         return String(layoutCompanyId) === String(busCompanyId);
                       })
@@ -73,6 +76,7 @@ export default function BusesPage() {
             setBuses(scopedBuses);
             setCompanies(scopedCompanies);
             setLayouts(scopedLayouts);
+            setAllLayouts(layoutsData || []);
             setVehicleTypes(typesData || []);
         } catch (error) {
             console.error("Failed to fetch data", error);
@@ -92,8 +96,8 @@ export default function BusesPage() {
             const busCoId = bus.company_id ?? bus.bus_company_id;
             return busCoId && String(c.id) === String(busCoId);
         });
-        // Compare with both string and number representations just in case
-        const layout = layouts.find(l => String(l.layout_id) === String(bus.layout_id) || String(l.id) === String(bus.layout_id));
+        // Use allLayouts (includes clones) so buses with non-template layout_ids still resolve
+        const layout = allLayouts.find(l => String(l.layout_id) === String(bus.layout_id) || String(l.id) === String(bus.layout_id));
         const type = vehicleTypes.find(v => String(v.id) === String(bus.vehicle_type_id) || String(v.code) === String(bus.vehicle_type_id)); // Handle inconsistent ID usage if any
 
         return {
@@ -113,7 +117,6 @@ export default function BusesPage() {
     };
 
     const handleEdit = (bus: Bus) => {
-        // bus from table might have extra props, but we pass it as initialData which is compatible
         setSelectedBus(bus);
         setOpenModal(true);
     };
@@ -155,6 +158,35 @@ export default function BusesPage() {
             const busData = { ...data };
             if (uploadedThumbnail) {
                 busData.thumbnail_image = uploadedThumbnail;
+            }
+
+            // 3. If a global layout is selected, prompt manager to name the clone
+            if (busData.layout_id && busData.bus_company_id) {
+                const selectedLayout = allLayouts.find(
+                    (l) => String(l.id || l.layout_id) === String(busData.layout_id)
+                );
+                const isGlobal = selectedLayout && !selectedLayout.bus_company_id && !(selectedLayout as any).company_id;
+                if (isGlobal && selectedLayout) {
+                    const { value: cloneName, isConfirmed } = await Swal.fire({
+                        title: 'Tùy chỉnh layout cho nhà xe',
+                        text: 'Đây là layout mẫu chung. Đặt tên cho bản sao của nhà xe bạn:',
+                        input: 'text',
+                        inputLabel: 'Tên layout',
+                        inputValue: selectedLayout.layout_name,
+                        showCancelButton: true,
+                        confirmButtonText: 'Tạo bản sao',
+                        cancelButtonText: 'Hủy',
+                        inputValidator: (v) => (!v?.trim() ? 'Vui lòng nhập tên layout' : null),
+                    });
+                    if (!isConfirmed) return; // user cancelled the whole action
+                    const name = cloneName?.trim() || selectedLayout.layout_name;
+                    const cloned = await busService.cloneLayout(
+                        String(selectedLayout.id || selectedLayout.layout_id),
+                        String(busData.bus_company_id),
+                        name
+                    );
+                    busData.layout_id = (cloned as any).id || (cloned as any).layout_id;
+                }
             }
 
             if (selectedBus) {

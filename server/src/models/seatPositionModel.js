@@ -2,10 +2,6 @@ import pool from '../config/db.js';
 import { generateUUID, nowMySQL } from '../utils/helpers.js';
 
 export async function findAll(filters = {}) {
-  const page = filters.page || 1;
-  const limit = filters.limit || 10;
-  const offset = (page - 1) * limit;
-
   let where = [];
   let params = [];
 
@@ -21,22 +17,16 @@ export async function findAll(filters = {}) {
 
   const whereClause = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
 
-  const [countResult] = await pool.query(
-    `SELECT COUNT(*) AS total FROM seat_positions sp ${whereClause}`,
-    params
-  );
-
   const [rows] = await pool.query(
     `SELECT sp.*, st.type_name AS seat_type_name
      FROM seat_positions sp
      LEFT JOIN seat_types st ON sp.seat_type_id = st.seat_type_id
      ${whereClause}
-     ORDER BY sp.floor ASC, sp.row_pos ASC, sp.col_pos ASC
-     LIMIT ? OFFSET ?`,
-    [...params, limit, offset]
+     ORDER BY sp.floor ASC, sp.row_index ASC, sp.column_index ASC`,
+    params
   );
 
-  return { data: rows, total: countResult[0].total };
+  return { data: rows, total: rows.length };
 }
 
 export async function findById(id) {
@@ -51,15 +41,17 @@ export async function findById(id) {
 }
 
 export async function create(data) {
-  const id = generateUUID();
+  const id = data.id || generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO seat_positions (id, layout_id, seat_label, seat_type_id, row_pos, col_pos, floor, is_active, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO seat_positions (id, layout_id, floor, row_index, column_index, seat_type_id, is_driver_seat, is_door, is_stair, is_aisle, label, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      id, data.layout_id, data.seat_label, data.seat_type_id || null,
-      data.row_pos, data.col_pos, data.floor || 1,
-      data.is_active !== undefined ? data.is_active : true, now, now
+      id, data.layout_id, data.floor || 1,
+      data.row_index, data.column_index, data.seat_type_id || null,
+      data.is_driver_seat ? 1 : 0, data.is_door ? 1 : 0,
+      data.is_stair ? 1 : 0, data.is_aisle ? 1 : 0,
+      data.label || null, data.status || 'ACTIVE', now, now
     ]
   );
   return findById(id);
@@ -70,12 +62,16 @@ export async function update(id, data) {
   const params = [];
 
   if (data.layout_id !== undefined) { fields.push('layout_id = ?'); params.push(data.layout_id); }
-  if (data.seat_label !== undefined) { fields.push('seat_label = ?'); params.push(data.seat_label); }
-  if (data.seat_type_id !== undefined) { fields.push('seat_type_id = ?'); params.push(data.seat_type_id); }
-  if (data.row_pos !== undefined) { fields.push('row_pos = ?'); params.push(data.row_pos); }
-  if (data.col_pos !== undefined) { fields.push('col_pos = ?'); params.push(data.col_pos); }
   if (data.floor !== undefined) { fields.push('floor = ?'); params.push(data.floor); }
-  if (data.is_active !== undefined) { fields.push('is_active = ?'); params.push(data.is_active); }
+  if (data.row_index !== undefined) { fields.push('row_index = ?'); params.push(data.row_index); }
+  if (data.column_index !== undefined) { fields.push('column_index = ?'); params.push(data.column_index); }
+  if (data.seat_type_id !== undefined) { fields.push('seat_type_id = ?'); params.push(data.seat_type_id); }
+  if (data.is_driver_seat !== undefined) { fields.push('is_driver_seat = ?'); params.push(data.is_driver_seat ? 1 : 0); }
+  if (data.is_door !== undefined) { fields.push('is_door = ?'); params.push(data.is_door ? 1 : 0); }
+  if (data.is_stair !== undefined) { fields.push('is_stair = ?'); params.push(data.is_stair ? 1 : 0); }
+  if (data.is_aisle !== undefined) { fields.push('is_aisle = ?'); params.push(data.is_aisle ? 1 : 0); }
+  if (data.label !== undefined) { fields.push('label = ?'); params.push(data.label); }
+  if (data.status !== undefined) { fields.push('status = ?'); params.push(data.status); }
 
   if (fields.length === 0) return findById(id);
 
@@ -97,20 +93,22 @@ export async function bulkCreate(positions) {
 
   const now = nowMySQL();
   const values = positions.map(pos => [
-    generateUUID(), pos.layout_id, pos.seat_label, pos.seat_type_id || null,
-    pos.row_pos, pos.col_pos, pos.floor || 1,
-    pos.is_active !== undefined ? pos.is_active : true, now, now
+    pos.id || generateUUID(), pos.layout_id, pos.floor || 1,
+    pos.row_index, pos.column_index, pos.seat_type_id || null,
+    pos.is_driver_seat ? 1 : 0, pos.is_door ? 1 : 0,
+    pos.is_stair ? 1 : 0, pos.is_aisle ? 1 : 0,
+    pos.label || null, pos.status || 'ACTIVE', now, now
   ]);
 
   await pool.query(
-    `INSERT INTO seat_positions (id, layout_id, seat_label, seat_type_id, row_pos, col_pos, floor, is_active, created_at, updated_at)
+    `INSERT INTO seat_positions (id, layout_id, floor, row_index, column_index, seat_type_id, is_driver_seat, is_door, is_stair, is_aisle, label, status, created_at, updated_at)
      VALUES ?`,
     [values]
   );
 
   const layoutId = positions[0].layout_id;
   const [rows] = await pool.query(
-    'SELECT * FROM seat_positions WHERE layout_id = ? ORDER BY floor ASC, row_pos ASC, col_pos ASC',
+    'SELECT * FROM seat_positions WHERE layout_id = ? ORDER BY floor ASC, row_index ASC, column_index ASC',
     [layoutId]
   );
   return rows;

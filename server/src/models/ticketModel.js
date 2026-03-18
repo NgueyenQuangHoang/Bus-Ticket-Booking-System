@@ -10,8 +10,8 @@ export async function findAll(filters = {}) {
   let params = [];
 
   if (filters.search) {
-    where.push('(t.ticket_code LIKE ? OR t.contact_name LIKE ? OR t.contact_phone LIKE ?)');
-    params.push(`%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`);
+    where.push('t.code LIKE ?');
+    params.push(`%${filters.search}%`);
   }
 
   if (filters.status) {
@@ -56,13 +56,13 @@ export async function findById(id) {
 export async function findByUserId(userId) {
   const [rows] = await pool.query(
     `SELECT t.*,
-       sc.departure_time, sc.arrival_time, sc.price AS schedule_price,
-       b.bus_name, b.license_plate,
-       bc.company_name, bc.logo AS company_logo,
-       r.distance, r.duration,
-       ds.station_name AS departure_station_name, ds.address AS departure_address,
+       sc.departure_time, sc.arrival_time,
+       b.name AS bus_name, b.license_plate,
+       bc.company_name, bc.image AS company_image,
+       r.distance, r.duration, r.base_price,
+       ds.station_name AS departure_station_name, ds.location AS departure_location,
        dc.city_name AS departure_city_name,
-       ars.station_name AS arrival_station_name, ars.address AS arrival_address,
+       ars.station_name AS arrival_station_name, ars.location AS arrival_location,
        ac.city_name AS arrival_city_name
      FROM tickets t
      LEFT JOIN schedules sc ON t.schedule_id = sc.id
@@ -83,14 +83,14 @@ export async function findByUserId(userId) {
 export async function findByCodeAndPhone(code, phone) {
   const [rows] = await pool.query(
     `SELECT t.*,
-       sc.departure_time, sc.arrival_time, sc.price AS schedule_price,
-       b.bus_name, b.license_plate,
+       sc.departure_time, sc.arrival_time,
+       b.name AS bus_name, b.license_plate,
        bc.company_name,
        ds.station_name AS departure_station_name,
        dc.city_name AS departure_city_name,
        ars.station_name AS arrival_station_name,
        ac.city_name AS arrival_city_name,
-       p.passenger_name, p.passenger_phone, p.seat_label
+       p.full_name AS passenger_name, p.phone AS passenger_phone
      FROM tickets t
      LEFT JOIN schedules sc ON t.schedule_id = sc.id
      LEFT JOIN buses b ON sc.bus_id = b.id
@@ -101,7 +101,7 @@ export async function findByCodeAndPhone(code, phone) {
      LEFT JOIN cities dc ON ds.city_id = dc.id
      LEFT JOIN cities ac ON ars.city_id = ac.id
      LEFT JOIN passengers p ON p.ticket_id = t.id
-     WHERE t.ticket_code = ? AND t.contact_phone = ?`,
+     WHERE t.code = ? AND p.phone = ?`,
     [code, phone]
   );
   return rows;
@@ -111,12 +111,11 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO tickets (id, ticket_code, user_id, schedule_id, contact_name, contact_email, contact_phone, total_amount, status, note, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO tickets (id, schedule_id, seat_id, user_id, code, price, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      id, data.ticket_code, data.user_id || null, data.schedule_id,
-      data.contact_name, data.contact_email || null, data.contact_phone,
-      data.total_amount || 0, data.status || 'pending', data.note || null, now, now
+      id, data.schedule_id, data.seat_id || null, data.user_id || null,
+      data.code, data.price || 0, data.status || 'PENDING', now, now
     ]
   );
   return findById(id);
@@ -126,15 +125,12 @@ export async function update(id, data) {
   const fields = [];
   const params = [];
 
-  if (data.ticket_code !== undefined) { fields.push('ticket_code = ?'); params.push(data.ticket_code); }
-  if (data.user_id !== undefined) { fields.push('user_id = ?'); params.push(data.user_id); }
   if (data.schedule_id !== undefined) { fields.push('schedule_id = ?'); params.push(data.schedule_id); }
-  if (data.contact_name !== undefined) { fields.push('contact_name = ?'); params.push(data.contact_name); }
-  if (data.contact_email !== undefined) { fields.push('contact_email = ?'); params.push(data.contact_email); }
-  if (data.contact_phone !== undefined) { fields.push('contact_phone = ?'); params.push(data.contact_phone); }
-  if (data.total_amount !== undefined) { fields.push('total_amount = ?'); params.push(data.total_amount); }
+  if (data.seat_id !== undefined) { fields.push('seat_id = ?'); params.push(data.seat_id); }
+  if (data.user_id !== undefined) { fields.push('user_id = ?'); params.push(data.user_id); }
+  if (data.code !== undefined) { fields.push('code = ?'); params.push(data.code); }
+  if (data.price !== undefined) { fields.push('price = ?'); params.push(data.price); }
   if (data.status !== undefined) { fields.push('status = ?'); params.push(data.status); }
-  if (data.note !== undefined) { fields.push('note = ?'); params.push(data.note); }
 
   if (fields.length === 0) return findById(id);
 

@@ -39,9 +39,9 @@ export async function findAll(filters = {}) {
 
   const [rows] = await pool.query(
     `SELECT r.*,
-       ds.station_name AS departure_station_name, ds.address AS departure_address,
+       ds.station_name AS departure_station_name, ds.location AS departure_location,
        dc.city_name AS departure_city_name, dc.id AS departure_city_id,
-       as2.station_name AS arrival_station_name, as2.address AS arrival_address,
+       as2.station_name AS arrival_station_name, as2.location AS arrival_location,
        ac.city_name AS arrival_city_name, ac.id AS arrival_city_id
      FROM routes r
      LEFT JOIN stations ds ON r.departure_station_id = ds.id
@@ -60,9 +60,9 @@ export async function findAll(filters = {}) {
 export async function findById(id) {
   const [rows] = await pool.query(
     `SELECT r.*,
-       ds.station_name AS departure_station_name, ds.address AS departure_address,
+       ds.station_name AS departure_station_name, ds.location AS departure_location,
        dc.city_name AS departure_city_name, dc.id AS departure_city_id,
-       as2.station_name AS arrival_station_name, as2.address AS arrival_address,
+       as2.station_name AS arrival_station_name, as2.location AS arrival_location,
        ac.city_name AS arrival_city_name, ac.id AS arrival_city_id
      FROM routes r
      LEFT JOIN stations ds ON r.departure_station_id = ds.id
@@ -76,12 +76,16 @@ export async function findById(id) {
 }
 
 export async function create(data) {
-  const id = generateUUID();
+  const id = data.id || generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO routes (id, departure_station_id, arrival_station_id, distance, duration, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [id, data.departure_station_id, data.arrival_station_id, data.distance || null, data.duration || null, now, now]
+    `INSERT INTO routes (id, departure_station_id, arrival_station_id, base_price, duration, distance, description, image, total_bookings, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      id, data.departure_station_id, data.arrival_station_id,
+      data.base_price || 0, data.duration || null, data.distance || null,
+      data.description || null, data.image || null, data.total_bookings || 0, now, now
+    ]
   );
   return findById(id);
 }
@@ -92,8 +96,12 @@ export async function update(id, data) {
 
   if (data.departure_station_id !== undefined) { fields.push('departure_station_id = ?'); params.push(data.departure_station_id); }
   if (data.arrival_station_id !== undefined) { fields.push('arrival_station_id = ?'); params.push(data.arrival_station_id); }
-  if (data.distance !== undefined) { fields.push('distance = ?'); params.push(data.distance); }
+  if (data.base_price !== undefined) { fields.push('base_price = ?'); params.push(data.base_price); }
   if (data.duration !== undefined) { fields.push('duration = ?'); params.push(data.duration); }
+  if (data.distance !== undefined) { fields.push('distance = ?'); params.push(data.distance); }
+  if (data.description !== undefined) { fields.push('description = ?'); params.push(data.description); }
+  if (data.image !== undefined) { fields.push('image = ?'); params.push(data.image); }
+  if (data.total_bookings !== undefined) { fields.push('total_bookings = ?'); params.push(data.total_bookings); }
 
   if (fields.length === 0) return findById(id);
 

@@ -67,13 +67,32 @@ export async function findAll(filters = {}) {
 
   const [rows] = await pool.query(
     `SELECT sc.*,
-       r.distance, r.duration,
-       b.bus_name, b.license_plate, b.total_seats,
-       bc.company_name, bc.logo AS company_logo, bc.id AS bus_company_id,
-       ds.station_name AS departure_station_name, ds.address AS departure_address,
+       r.distance, r.duration, r.base_price,
+       b.name AS bus_name, b.license_plate, b.capacity,
+       bc.company_name, bc.image AS company_image, bc.id AS bus_company_id,
+       ds.station_name AS departure_station_name, ds.location AS departure_location,
        dc.city_name AS departure_city_name, dc.id AS departure_city_id,
-       ars.station_name AS arrival_station_name, ars.address AS arrival_address,
-       ac.city_name AS arrival_city_name, ac.id AS arrival_city_id
+       ars.station_name AS arrival_station_name, ars.location AS arrival_location,
+       ac.city_name AS arrival_city_name, ac.id AS arrival_city_id,
+       (SELECT COUNT(*) FROM seat_positions sp_t
+        WHERE sp_t.layout_id = b.layout_id
+          AND sp_t.is_driver_seat = FALSE AND sp_t.is_door = FALSE
+          AND sp_t.is_stair = FALSE AND sp_t.is_aisle = FALSE
+       ) AS calculated_total_seats,
+       (
+         (SELECT COUNT(*) FROM seat_positions sp_t2
+          WHERE sp_t2.layout_id = b.layout_id
+            AND sp_t2.is_driver_seat = FALSE AND sp_t2.is_door = FALSE
+            AND sp_t2.is_stair = FALSE AND sp_t2.is_aisle = FALSE)
+         -
+         (SELECT COUNT(*) FROM seat_schedules ss_bh
+          INNER JOIN seat_positions sp_bh ON ss_bh.seat_id = sp_bh.id
+          WHERE ss_bh.schedule_id = sc.id
+            AND (ss_bh.status = 'BOOKED'
+                 OR (ss_bh.status = 'HOLD' AND (ss_bh.hold_expired_at IS NULL OR ss_bh.hold_expired_at > NOW())))
+            AND sp_bh.is_driver_seat = FALSE AND sp_bh.is_door = FALSE
+            AND sp_bh.is_stair = FALSE AND sp_bh.is_aisle = FALSE)
+       ) AS calculated_available_seats
      FROM schedules sc
      LEFT JOIN routes r ON sc.route_id = r.id
      LEFT JOIN buses b ON sc.bus_id = b.id
@@ -94,13 +113,32 @@ export async function findAll(filters = {}) {
 export async function findById(id) {
   const [rows] = await pool.query(
     `SELECT sc.*,
-       r.distance, r.duration,
-       b.bus_name, b.license_plate, b.total_seats,
-       bc.company_name, bc.logo AS company_logo, bc.id AS bus_company_id,
-       ds.station_name AS departure_station_name, ds.address AS departure_address,
+       r.distance, r.duration, r.base_price,
+       b.name AS bus_name, b.license_plate, b.capacity,
+       bc.company_name, bc.image AS company_image, bc.id AS bus_company_id,
+       ds.station_name AS departure_station_name, ds.location AS departure_location,
        dc.city_name AS departure_city_name, dc.id AS departure_city_id,
-       ars.station_name AS arrival_station_name, ars.address AS arrival_address,
-       ac.city_name AS arrival_city_name, ac.id AS arrival_city_id
+       ars.station_name AS arrival_station_name, ars.location AS arrival_location,
+       ac.city_name AS arrival_city_name, ac.id AS arrival_city_id,
+       (SELECT COUNT(*) FROM seat_positions sp_t
+        WHERE sp_t.layout_id = b.layout_id
+          AND sp_t.is_driver_seat = FALSE AND sp_t.is_door = FALSE
+          AND sp_t.is_stair = FALSE AND sp_t.is_aisle = FALSE
+       ) AS calculated_total_seats,
+       (
+         (SELECT COUNT(*) FROM seat_positions sp_t2
+          WHERE sp_t2.layout_id = b.layout_id
+            AND sp_t2.is_driver_seat = FALSE AND sp_t2.is_door = FALSE
+            AND sp_t2.is_stair = FALSE AND sp_t2.is_aisle = FALSE)
+         -
+         (SELECT COUNT(*) FROM seat_schedules ss_bh
+          INNER JOIN seat_positions sp_bh ON ss_bh.seat_id = sp_bh.id
+          WHERE ss_bh.schedule_id = sc.id
+            AND (ss_bh.status = 'BOOKED'
+                 OR (ss_bh.status = 'HOLD' AND (ss_bh.hold_expired_at IS NULL OR ss_bh.hold_expired_at > NOW())))
+            AND sp_bh.is_driver_seat = FALSE AND sp_bh.is_door = FALSE
+            AND sp_bh.is_stair = FALSE AND sp_bh.is_aisle = FALSE)
+       ) AS calculated_available_seats
      FROM schedules sc
      LEFT JOIN routes r ON sc.route_id = r.id
      LEFT JOIN buses b ON sc.bus_id = b.id
@@ -119,11 +157,11 @@ export async function create(data) {
   const id = generateUUID();
   const now = nowMySQL();
   await pool.query(
-    `INSERT INTO schedules (id, route_id, bus_id, departure_time, arrival_time, price, available_seats, status, created_at, updated_at)
+    `INSERT INTO schedules (id, route_id, bus_id, departure_time, arrival_time, total_seats, available_seats, status, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      id, data.route_id, data.bus_id, data.departure_time, data.arrival_time || null,
-      data.price || 0, data.available_seats || 0, data.status || 'active', now, now
+      id, data.route_id, data.bus_id, data.departure_time, data.arrival_time || data.departure_time,
+      data.total_seats || 0, data.available_seats || 0, data.status || 'AVAILABLE', now, now
     ]
   );
   return findById(id);
@@ -137,7 +175,7 @@ export async function update(id, data) {
   if (data.bus_id !== undefined) { fields.push('bus_id = ?'); params.push(data.bus_id); }
   if (data.departure_time !== undefined) { fields.push('departure_time = ?'); params.push(data.departure_time); }
   if (data.arrival_time !== undefined) { fields.push('arrival_time = ?'); params.push(data.arrival_time); }
-  if (data.price !== undefined) { fields.push('price = ?'); params.push(data.price); }
+  if (data.total_seats !== undefined) { fields.push('total_seats = ?'); params.push(data.total_seats); }
   if (data.available_seats !== undefined) { fields.push('available_seats = ?'); params.push(data.available_seats); }
   if (data.status !== undefined) { fields.push('status = ?'); params.push(data.status); }
 
